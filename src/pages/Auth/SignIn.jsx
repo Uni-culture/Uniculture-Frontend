@@ -18,6 +18,8 @@ const SignIn = () => {
     const resetInput = () => {
         setEmail('');
         setPw('');
+        setEmailValid(false);
+        setPwValid(false);
     }
     const handleLogin = async () => {
         console.log('Login start');
@@ -107,6 +109,12 @@ const SignIn = () => {
         });
     };
 
+    const handleKeyDown = async (e) => {
+        if (e.key === 'Enter' && !notAllow) {
+            await handleLogin();
+        }
+    };
+
     return (
         <div style={{ backgroundColor: '#FBFBF3', minHeight: '100vh' }}>
             <IoArrowBack style={{ fontSize: '25px', marginTop: '20px', marginLeft: '20px'}} onClick={goBackToPreviousPath}/>
@@ -115,7 +123,7 @@ const SignIn = () => {
                 <div className="sub-title">나의 성장을 돕는 언어교류 플랫폼</div>
                 <div className="inputTitle">✉️ 이메일</div>
                 <div className="inputWrap">
-                    <input className="input" type="email" placeholder="test@example.com" value={email} onChange={handleEmail}/>
+                    <input className="input" type="email" placeholder="test@example.com" value={email} onChange={handleEmail} onKeyDown={handleKeyDown}/>
                 </div>
                 <div className="errorMessageWrap">
                     {!emailValid && email.length > 0 && (
@@ -124,7 +132,7 @@ const SignIn = () => {
                 </div>
                 <div className="inputTitle">🔒 비밀번호</div>
                 <div className="inputWrap">
-                    <input className="input" type={showPassword ? "text" : "password"} placeholder="영문, 숫자, 특수문자 포함 8자 이상" value={pw} onChange={handlePw}/>
+                    <input className="input" type={showPassword ? "text" : "password"} placeholder="영문, 숫자, 특수문자 포함 8자 이상" value={pw} onChange={handlePw} onKeyDown={handleKeyDown}/>
                 </div>
                 <div className="errorMessageWrap">
                     {!pwValid && pw.length > 0 && (
