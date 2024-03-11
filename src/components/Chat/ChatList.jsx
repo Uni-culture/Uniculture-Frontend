@@ -41,10 +41,6 @@ const ChatList = ({onSelectedChatRoom}) => {
       fetchChatRooms();
     }, [navigate]);
     
-
-    
-
-
     return (
         <div className="chat-list">
             {chatRooms.map((room) => (
@@ -52,7 +48,6 @@ const ChatList = ({onSelectedChatRoom}) => {
                 {room.name}
               </div>
             ))}
-
         </div>
     );
 };
