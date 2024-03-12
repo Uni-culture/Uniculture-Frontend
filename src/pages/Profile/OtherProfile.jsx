@@ -3,12 +3,14 @@ import Layout from '../../components/Layout';
 import styles from './Profile.module.css';
 import PercentBar from "../../components/PercentBar/PercentBar";
 import { FaExchangeAlt } from "react-icons/fa";
-import { useNavigate } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import { PiPlusCircleBold, PiPlusCircleFill } from "react-icons/pi";
 import LanguageList from './components/LanguageList';
+import Swal from "sweetalert2";
 
 export default function OtherProfile({myInformation, otherInformation}) {
+    const location = useLocation();
     const [myInfo, setMyInfo] = useState(myInformation);
     const [otherInfo, setOtherInfo] = useState(otherInformation);
     const navigate = useNavigate();
@@ -71,6 +73,15 @@ export default function OtherProfile({myInformation, otherInformation}) {
         }
     };
 
+    const LoginWarning = () => {
+        Swal.fire({
+            icon: "warning",
+            title: "<div style='font-size: 21px; margin-bottom: 10px;'>로그인 후 이용해 주세요.</div>",
+            confirmButtonColor: "#8BC765",
+            confirmButtonText: "확인",
+        });
+    };
+
     //친구 신청
     const sendFriendRequest = async () => {
         try {
@@ -84,19 +95,19 @@ export default function OtherProfile({myInformation, otherInformation}) {
                         Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                     }
                 });
-                if(response.status ==200){
+                if(response.status === 200){
                     alert("친구 신청 성공");
                 }
-                else if(response.status ==400){
+                else if(response.status === 400){
                     console.log("친구 신청 클라이언트 에러");
                 }
-                else if(response.status == 500){
+                else if(response.status === 500){
                     console.log("친구 신청 서버 에러");
                 }
             }
             else {
-                alert("로그인 해주세요.");
-                navigate("/sign-in");
+                LoginWarning(); // 로그인 후 이용해 주세요.
+                navigate("/sign-in", {state: {from: location.pathname}}); // 현재 경로를 저장하고 로그인 페이지로 이동
             }
         } catch (error) {
             console.error('친구 걸기 오류 발생:', error);
@@ -116,19 +127,19 @@ export default function OtherProfile({myInformation, otherInformation}) {
                         Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                     }
                 });
-                if(response.status ==200){
+                if(response.status === 200){
                     alert("친구 신청 성공");
                 }
-                else if(response.status ==400){
+                else if(response.status === 400){
                     console.log("채팅 보내기 클라이언트 에러");
                 }
-                else if(response.status == 500){
+                else if(response.status === 500){
                     console.log("채팅 보내기 서버 에러");
                 }
             }
             else {
-                alert("로그인 해주세요.");
-                navigate("/sign-in");
+                LoginWarning(); // 로그인 후 이용해 주세요.
+                navigate("/sign-in", {state: {from: location.pathname}}); // 현재 경로를 저장하고 로그인 페이지로 이동
             }
         } catch (error) {
             console.error('채팅 보내기 오류 발생:', error);
