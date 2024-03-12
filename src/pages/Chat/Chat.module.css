@@ -1,0 +1,22 @@
+.page_layout {
+  display: flex;
+  height: calc(100vh - 60px); /* 헤더 높이를 제외한 높이 */
+  background-color: #FBFBF3;
+}
+
+.box {
+  display: flex;
+  width: 100%;
+}
+
+/* aside {
+  width: 30%;
+  border-right: 1px solid #ddd;
+  overflow-y: auto;
+  border-right: 1px solid black;
+}
+
+div {
+  flex-grow: 1;
+  overflow-y: auto;
+} */

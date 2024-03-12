@@ -1,10 +1,19 @@
 import React from "react";
 import "./ChatMain.css";
 
-const ChatMain = () => {
+const ChatMain = ({selectedChatRoom}) => {
+
+    
+
     return (
         <div className="chat-main">
-            가변너비
+            {selectedChatRoom ? (
+                <div>
+                    <h3>{selectedChatRoom.name}</h3>
+                </div>
+            ):(
+                <div>채팅방을 선택해주세요.</div>
+            )}
         </div>
     );
 };
