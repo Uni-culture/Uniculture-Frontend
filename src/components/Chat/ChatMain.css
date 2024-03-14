@@ -2,3 +2,15 @@
     background-color: #ddd;
     padding: 20px;
 }
+
+.chat-main {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-main h3 {
+    margin-bottom: 20px;
+}
+
+/* 여기에 채팅 메시지 스타일 추가 가능 */
