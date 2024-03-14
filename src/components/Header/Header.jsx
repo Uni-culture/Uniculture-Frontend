@@ -68,7 +68,7 @@ const Header = () => {
     };
 
     const activePage = (link) => {
-        return location.pathname === link ? 'active' : '';
+        return location.pathname === link ? 'active fw-bold' : '';
     };
 
     /*const NavItem = ({ to, text, activePage }) => (
@@ -108,7 +108,7 @@ const Header = () => {
             <nav className={`navbar navbar-expand-lg`} style={{ backgroundColor: '#C8DCA0' }}>
                 <div className="container-fluid" style={{paddingLeft: "100px", paddingRight: "100px"}}>
                     <div className="d-flex align-items-center">
-                        <Link to="/" className={`navbar-brand ${activePage('/')}`} aria-current="page" style={{ fontFamily: "SuezOne"}}>
+                        <Link to="/" className={`navbar-brand`} aria-current="page" style={{ fontFamily: "SuezOne"}}>
                             <img src={logoImg} alt="Logo" width="30" height="24" className="d-inline-block align-text-top"/>
                             UniCulture
                         </Link>
@@ -144,19 +144,19 @@ const Header = () => {
 
                     <div className={`collapse navbar-collapse ${isNavOpen ? 'show' : ''}`}>
                         <ul className="navbar-nav">
-                            <li className={`nav-item ${activePage("/")}`}>
+                            <li className="nav-item">
                                 <Link to="/" className={`nav-link ${activePage("/")}`}>홈</Link>
                             </li>
-                            <li className={`nav-item ${activePage("/friends")}`}>
+                            <li className="nav-item">
                                 <button className={`btn nav-link ${activePage("/friends")}`} onClick={() => handleNavigation("/friends")}>친구</button>
                             </li>
-                            <li className={`nav-item ${activePage("/study")}`}>
+                            <li className="nav-item">
                                 <button className={`btn nav-link ${activePage("/study")}`} onClick={() => handleNavigation("/study")}>스터디</button>
                             </li>
-                            <li className={`nav-item ${activePage("/chatting")}`}>
+                            <li className="nav-item">
                                 <button className={`btn nav-link ${activePage("/chatting")}`} onClick={() => handleNavigation("/chatting")}>채팅</button>
                             </li>
-                            <li className={`nav-item ${activePage(`/profile/${myNickname}`)}`}>
+                            <li className="nav-item">
                                 <button className={`btn nav-link ${activePage(`/profile/${myNickname}`)}`} onClick={() => handleNavigation(`/profile/${myNickname}`)}>프로필</button>
                             </li>
                         </ul>
