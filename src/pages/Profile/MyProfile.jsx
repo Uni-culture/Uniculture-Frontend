@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
+import { AiOutlineBell, AiOutlineUser } from "react-icons/ai";
+import { Badge, Dropdown, Menu } from "antd";
 import axios from 'axios';
 import styles from './Profile.module.css';
 import Layout from "../../components/Layout";
@@ -11,7 +13,7 @@ import { FaExchangeAlt } from "react-icons/fa";
 import LanguageList from './components/LanguageList';
 
 export default function MyProfile({myInformation, handleMyInfo}) {
-    const [myInfo, setMyInfo] = useState(myInformation);
+    const [myInfo, setMyInfo] = useState(myInformation); // 매개변수로 받은것을 가지고 다시 상태유지
 
     const [maxCanLanguage, setMaxCanLanguage] = useState(); // 능숙도가 가장 높은 사용 언어
     const [maxWantLanguage, setMaxWantLanguage] = useState(); // 능숙도가 가장 높은 학습 언어
@@ -134,7 +136,7 @@ export default function MyProfile({myInformation, handleMyInfo}) {
             if(response.status == 200){
                 console.log("친구 삭제 : " + userInfo.nickname);
                 setFriendList(friendList.filter(request => request.id !== userInfo.id)); //친구 목록에서 삭제
-                handleMyInfo();
+                handleMyInfo(); // 전체 페이지 리렌더링, 교체필요성
             }
             else if(response.status == 400){
                 console.log("클라이언트 오류");
@@ -179,7 +181,7 @@ export default function MyProfile({myInformation, handleMyInfo}) {
     };
 
     // 친구 신청 받기
-    const  acceptReceivedRequest = async (userInfo) => {
+    const acceptReceivedRequest = async (userInfo) => {
         try {
             const token = getToken();
 
@@ -195,7 +197,7 @@ export default function MyProfile({myInformation, handleMyInfo}) {
                 console.log(userInfo.nickname + "님의 친구 요청을 수락했습니다.");
                 setReceivedRequests(receivedRequests.filter(request => request.id !== userInfo.id)); //받은 친구 신청 목록에서 삭제
                 setFriendList([...friendList, userInfo]); //친구 목록에 추가
-                handleMyInfo();
+                handleMyInfo(); // 전체 페이지 리렌더링(친구수가 바뀌니깐 업데이트 필요성있음), 교체필요성
             }
             else if(response.status == 400){
                 console.log("클라이언트 오류");
@@ -351,8 +353,15 @@ export default function MyProfile({myInformation, handleMyInfo}) {
                     <div>
                         <div className={styles.post}>게시글</div>
                         <div className={styles.postNum}>{myInfo?.postnum}</div>
+                        {/* 친구, 친구수중 아무거나 클릭하더라도 setShowFriend state 를 변경시켜서 모달창을띄움(useEffect 에 showfriend 가 걸려있기때문에 리렌더링) */}
                         <div className={styles.friend} onClick={()=> {setShowFriend(true)}}>친구</div>
                         <div className={styles.friendNum} onClick={()=> {setShowFriend(true)}}>{myInfo?.friendnum}</div>
+                        <Badge count={myInfo?.receiverequestnum} size="small" overflowCount={10}>
+                            <AiOutlineBell size={20} onClick={() => {
+                                setShowFriend(true);
+                                setActiveTab('receivedRequests');
+                            }}/>
+                        </Badge>
                     </div>
 
                     {/* 언어 */}
