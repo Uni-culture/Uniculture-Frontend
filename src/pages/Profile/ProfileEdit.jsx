@@ -4,11 +4,14 @@ import Sidebar from "../../components/ProfileSidebar/Sidebar";
 import axios from 'axios';
 import { useState, useEffect, useRef } from 'react';
 import AddLanuageModal from "./Modal/AddLanuageModal";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const ProfileEdit = () => {
     const [userInfo, setUserInfo] = useState(null);
     const [profileImg, setProfileImg] = useState(null);
     const selectFile = useRef(null);
+    const navigate = useNavigate();
 
     const [isModalOpened1, setIsModalOpened1] = useState(false); //사용 언어 추가 모달창
     const [isModalOpened2, setIsModalOpened2] = useState(false); //학습 언어 추가 모달창
@@ -38,8 +41,15 @@ const ProfileEdit = () => {
                 console.log('서버에러');
             }
         } catch (error) {
-            console.error('Error fetching user info:', error);
-            throw error;
+            Swal.fire({
+                title: "로그인 해주세요.",
+                text: "로그인 창으로 이동합니다.",
+                icon: "warning",
+                confirmButtonColor: "#dc3545",
+                confirmButtonText: "확인"
+            }).then(() => {
+                navigate("/sign-in");
+            });
         }
     };
     

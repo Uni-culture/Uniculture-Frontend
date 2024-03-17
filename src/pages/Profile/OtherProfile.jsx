@@ -7,8 +7,10 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { PiPlusCircleBold, PiPlusCircleFill } from "react-icons/pi";
 import LanguageList from './components/LanguageList';
+import Swal from 'sweetalert2';
 
-export default function OtherProfile({otherInformation, handleOtherInfo}) {
+
+export default function OtherProfile({otherInformation}) {
     const [otherInfo, setOtherInfo] = useState(otherInformation);
     const navigate = useNavigate();
 
@@ -29,12 +31,6 @@ export default function OtherProfile({otherInformation, handleOtherInfo}) {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
     };
 
-    /*
-    useEffect(() => {
-        setOtherInfo(otherInformation); // myInformation을 props로 받아서 업데이트
-    }, [otherInformation]);
-    */
-
     useEffect(() => {
         // 사용 언어 배열로 변환하여 업데이트한 후 능숙도가 높은 순으로 정렬
         const canLanguagesArray = Object.entries(otherInfo.canlanguages).map(([language, value]) => ({ language, value }));
@@ -44,10 +40,10 @@ export default function OtherProfile({otherInformation, handleOtherInfo}) {
         // 학습 언어 배열로 변환하여 업데이트한 후 능숙도가 높은 순으로 정렬
         const wantLanguagesArray = Object.entries(otherInfo.wantlanguages).map(([language, value]) => ({ language, value }));
         setWantLanguages(wantLanguagesArray);
+
         setWantLanguages(prevWantLanguages => [...prevWantLanguages].sort((a, b) => b.value - a.value));
 
         setFriendStatus(otherInfo.friendstatus);
-
     }, [otherInfo]);
 
     useEffect(() => {
@@ -82,6 +78,8 @@ export default function OtherProfile({otherInformation, handleOtherInfo}) {
                         ))}
                     </div>
                 );
+            default:
+                return ;
         }
     };
 
@@ -92,132 +90,36 @@ export default function OtherProfile({otherInformation, handleOtherInfo}) {
                 return (
                     <button
                         className={styles.buttonStyle}
-                        onClick={deleteFriend}>
-                        친구</button>
+                        onClick={deleteFriend}
+                    >친구 끊기</button>
                 );
 
             case 2 :
                 return (
                     <button
                         className={styles.buttonStyle}
-                        onClick={sendFriendRequest}>
-                        친구요청</button>
+                        onClick={sendFriendRequest}
+                    >친구 걸기</button>
                 );
 
             case 3 :
                 return (
                     <button
                         className={styles.buttonStyle}
-                        onClick={cancelRequest}>
-                        친구신청중..</button>
+                        onClick={cancelRequest}
+                    >신청 취소</button>
                 );
             case 4 :
                 return (
                     <button
                         className={styles.buttonStyle}
-                        onClick={acceptReceivedRequest}>
-                        친구수락</button>
+                        onClick={acceptReceivedRequest}
+                    >친구 수락</button>
                 );
-        }
-    }
-
-    const deleteFriend = async () => {
-        try {
-            const token = getToken();
-
-            if(token) {
-                const response = await axios.delete('/api/auth/friend/deleteFriend', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    },
-                    data: {
-                        targetId: otherInfo.id
-                    }
-                });
-
-                if (response.status === 200) {
-                    alert("친구 삭제 성공");
-                    setFriendStatus(2);
-                    setFriendNum(friendNum-1);
-                } else if (response.status === 400) {
-                    console.log("클라이언트 오류");
-                } else if (response.status === 500) {
-                    console.log("서버 오류");
-                }
-            }
-            else {
-                alert("로그인 해주세요.");
-                navigate("/sign-in");
-            }
-        } catch (error) {
-            console.error('친구 삭제 중 에러 발생:', error);
+            default:
+                return ;
         }
     };
-
-    const acceptReceivedRequest = async () => {
-        try {
-            const token = getToken();
-
-            if(token) {
-                const response = await axios.post('/api/auth/friend/accept', {
-                    targetId: otherInfo.id
-                }, {
-                    headers: {
-                        Authorization: `Bearer ${token}` // 헤더에 토큰 추가
-                    }
-                });
-
-                if (response.status === 200) {
-                    alert("친구 수락 성공");
-                    setFriendStatus(1);
-                    setFriendNum(friendNum+1);
-                } else if (response.status === 400) {
-                    console.log("클라이언트 오류");
-                } else if (response.status === 500) {
-                    console.log("서버 오류");
-                }
-            }
-            else {
-                alert("로그인 해주세요.");
-                navigate("/sign-in");
-            }
-        } catch (error) {
-            console.error('친구 삭제 중 에러 발생:', error);
-        }
-    };
-
-    const cancelRequest = async () => {
-        try {
-            const token = getToken();
-
-            if(token) {
-                const response = await axios.delete('/api/auth/friend', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    },
-                    data: {
-                        targetId: otherInfo.id
-                    }
-                });
-
-                if (response.status === 200) {
-                    alert("친구 신청 취소 성공");
-                    setFriendStatus(2);
-                } else if (response.status === 400) {
-                    console.log("클라이언트 오류");
-                } else if (response.status === 500) {
-                    console.log("서버 오류");
-                }
-            }
-            else {
-                alert("로그인 해주세요.");
-                navigate("/sign-in");
-            }
-        } catch (error) {
-            console.error('친구 삭제 중 에러 발생:', error);
-        }
-    };
-
 
     //친구 신청
     const sendFriendRequest = async () => {
@@ -234,7 +136,8 @@ export default function OtherProfile({otherInformation, handleOtherInfo}) {
                 });
                 if(response.status === 200){
                     alert("친구 신청 성공");
-                    setFriendStatus(3);
+                    setFriendStatus(3); //친구 신청 중으로 변경
+
                 }
                 else if(response.status === 400){
                     console.log("친구 신청 클라이언트 에러");
@@ -251,6 +154,111 @@ export default function OtherProfile({otherInformation, handleOtherInfo}) {
             console.error('친구 걸기 오류 발생:', error);
         }
     }
+
+    // 친구 삭제
+    const deleteFriend = () => {
+        Swal.fire({
+            title: "정말 이 친구를 삭제하시겠어요?",
+            text: "삭제 시 해당 친구가 친구 목록에서 사라집니다.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#dc3545",
+            cancelButtonColor: "#6c757d",
+            confirmButtonText: "삭제",
+            cancelButtonText: "취소"
+        }).then(async (result) => { // async 키워드를 사용하여 비동기 함수로 변환
+            if (result.isConfirmed) {
+                try {
+                    const token = getToken();
+
+                    const response = await axios.delete('/api/auth/friend/deleteFriend', {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        },
+                        data: {
+                            targetId: otherInfo.id
+                        }
+                    });
+                    
+                    if(response.status === 200){
+                        console.log("친구 삭제 : " + otherInfo.nickname);
+                        setFriendStatus(2);
+                        setFriendNum(friendNum-1);
+                    }
+                    else if(response.status === 400){
+                        console.log("클라이언트 오류");
+                    }
+                    else if(response.status === 500){
+                        console.log("서버 오류");
+                    }
+                    
+                } catch (error) {
+                    console.error('친구 삭제 중 에러 발생:', error);
+                }      
+            }
+        });
+    };
+
+
+    // 보낸 친구 신청 취소
+    const  cancelRequest = async () => {
+        try {
+            const token = getToken();
+
+            const response = await axios.delete('/api/auth/friend', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                data: {
+                    targetId: otherInfo.id
+                }
+            });
+            
+            if(response.status === 200){
+                console.log(otherInfo.nickname + "님에게 보낸 친구 신청을 취소합니다.");
+                setFriendStatus(2); 
+            }
+            else if(response.status === 400){
+                console.log("클라이언트 오류");
+            }
+            else if(response.status === 500){
+                console.log("서버 오류");
+            }
+            
+        } catch (error) {
+            console.error('보낸 친구 신청 취소 중 에러 발생:', error);
+        }
+    };
+
+    // 친구 신청 받기
+    const  acceptReceivedRequest = async () => {
+        try {
+            const token = getToken();
+
+            const response = await axios.post('/api/auth/friend/accept', {
+                targetId: otherInfo.id
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            
+            if(response.status === 200){
+                console.log(otherInfo.nickname + "님의 친구 요청을 수락했습니다.");
+                setFriendStatus(1); //친구 상태로 변경
+                setFriendNum(friendNum+1);
+            }
+            else if(response.status === 400){
+                console.log("클라이언트 오류");
+            }
+            else if(response.status === 500){
+                console.log("서버 오류");
+            }
+            
+        } catch (error) {
+            console.error('친구 신청 수락 중 에러 발생:', error);
+        }
+    };
 
     //채팅 보내기
     const sendMessage = async () => {
@@ -300,17 +308,11 @@ export default function OtherProfile({otherInformation, handleOtherInfo}) {
 
                     <div style={{display:"flex"}}>
                         {/* 친구 걸기/채팅 보내기 */}
+
                         {friendButton()}
 
                         <button
-                            style={{
-                                borderRadius:"15px",
-                                backgroundColor:"#B7DAA1",
-                                border:"0px",
-                                marginLeft: "10px",
-                                width:"200px",
-                                height:"30px"
-                            }}
+                            className={styles.buttonStyle}
                             onClick={sendMessage}
                         >채팅 보내기</button>
                     </div>

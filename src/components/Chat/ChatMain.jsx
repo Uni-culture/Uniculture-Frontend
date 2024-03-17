@@ -2,9 +2,6 @@ import React from "react";
 import "./ChatMain.css";
 
 const ChatMain = ({selectedChatRoom}) => {
-
-    
-
     return (
         <div className="chat-main">
             {selectedChatRoom ? (
