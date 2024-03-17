@@ -74,14 +74,9 @@ const Profile = () => {
         fetchUserInfo();
     },[nickname]);
 
-    // 리렌더링을 해주는 함수
-    const handleInfo = () => {
-        fetchUserInfo();
-    }
-
     return (
         <>
-           {myProfile ? <MyProfile myInformation={myInfo} handleInfo={handleInfo} /> : (otherInfo && <OtherProfile myInformation={myInfo} otherInformation={otherInfo} handleInfo={handleInfo}/>)} 
+           {myProfile ? <MyProfile myInformation={myInfo} /> : (otherInfo && <OtherProfile myInformation={myInfo} otherInformation={otherInfo} />)} 
         </>
     );
 };
