@@ -9,6 +9,7 @@ import { PiPlusCircleBold, PiPlusCircleFill } from "react-icons/pi";
 import { IoIosSettings } from "react-icons/io";
 import { FaExchangeAlt } from "react-icons/fa";
 import LanguageList from './components/LanguageList';
+import MyBoardList from "./MyBoardList";
 
 export default function MyProfile({myInformation, handleMyInfo}) {
     const [myInfo, setMyInfo] = useState(myInformation);
@@ -383,8 +384,12 @@ export default function MyProfile({myInformation, handleMyInfo}) {
                         </div>
                     }
                 </div>
-
             </div>
+            <div>
+                <MyBoardList />
+            </div>
+
+
 
             {/* 친구리스트 모달창 */}
             {showFriend && (

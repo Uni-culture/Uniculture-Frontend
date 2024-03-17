@@ -1,0 +1,44 @@
+.home-layout {
+    background-color: #FBFBF3;
+}
+
+.home-nav-layout {
+    margin-left: 88px;
+    margin-right: 80px;
+
+    /*background-color: antiquewhite;*/
+}
+
+.home-content-layout {
+    margin-left: 50px;
+    margin-right: 50px;
+
+    /*background-color: antiquewhite;*/
+}
+
+.nav-tab {
+    margin-top: 20px;
+    /*background-color: yellow;*/
+}
+
+.write-button {
+    margin-top: 15px;
+    font-size: 15px;
+    border: none;
+    border-radius: 7px;
+    background-color: lightgrey;
+    padding: 7px 20px;
+}
+
+.write-button:hover {
+    background-color: #a8c768;
+}
+
+.write-button:active {
+    background-color: #c8dca0;
+}
+
+.write-link {
+    text-decoration: none;
+    color: black;
+}

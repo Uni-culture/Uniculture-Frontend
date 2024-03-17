@@ -106,7 +106,7 @@ const Header = () => {
 
     return (
             <nav className={`navbar navbar-expand-lg`} style={{ backgroundColor: '#C8DCA0' }}>
-                <div className="container-fluid" style={{paddingLeft: "100px", paddingRight: "100px"}}>
+                <div className="container-fluid" style={{paddingLeft: "80px", paddingRight: "70px"}}>
                     <div className="d-flex align-items-center">
                         <Link to="/" className={`navbar-brand`} aria-current="page" style={{ fontFamily: "SuezOne"}}>
                             <img src={logoImg} alt="Logo" width="30" height="24" className="d-inline-block align-text-top"/>
@@ -145,7 +145,7 @@ const Header = () => {
                     <div className={`collapse navbar-collapse ${isNavOpen ? 'show' : ''}`}>
                         <ul className="navbar-nav">
                             <li className="nav-item">
-                                <Link to="/" className={`nav-link ${activePage("/")}`}>홈</Link>
+                                <Link to="/?page=0" className={`nav-link ${activePage("/")}`}>홈</Link>
                             </li>
                             <li className="nav-item">
                                 <button className={`btn nav-link ${activePage("/friends")}`} onClick={() => handleNavigation("/friends")}>친구</button>
