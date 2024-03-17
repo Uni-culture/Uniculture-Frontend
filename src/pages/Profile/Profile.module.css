@@ -14,6 +14,15 @@
     text-align:center;
 }
 
+.buttonStyle {
+    border-radius: 15px;
+    background-color: #B7DAA1;
+    border: 0;
+    margin-left: 10px;
+    width: 200px;
+    height: 30px;
+}
+
 .imageWrapper {
     width: 200px;
     height: 200px;
@@ -64,5 +73,10 @@
 
 .friendNum{
     display: inline-block;
-    padding-right: 50px;
+    padding-right: 10px;
+}
+
+.friendRequest{
+    display: inline-block;
+    padding-right: 0px;
 }
