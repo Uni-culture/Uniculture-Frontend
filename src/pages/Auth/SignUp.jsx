@@ -264,6 +264,12 @@ const SignUp = () => {
         navigate(previousPath, {}); // 이전 페이지로 이동
     };
 
+    const handleKeyDown = async (e) => {
+        if (e.key === 'Enter' && !notAllow) {
+            await handleInputClick();
+        }
+    };
+
     return (
         <div style={{ backgroundColor: '#FBFBF3', minHeight: '100vh' }}>
             <IoArrowBack style={{ fontSize: '25px', marginTop: '20px', marginLeft: '20px'}} onClick={goBackToPreviousPath}/>
@@ -276,7 +282,7 @@ const SignUp = () => {
 
                 <div className="inputTitle">이메일</div>
                 <div className="inputWrap">
-                    <input className="input" type="email" placeholder="test@example.com" value={email} onChange={handleEmail}/>
+                    <input className="input" type="email" placeholder="test@example.com" value={email} onChange={handleEmail} onKeyDown={handleKeyDown}/>
                 </div>
                 <div className="errorMessageWrap">
                     {!emailValid && email.length > 0 && (
@@ -286,7 +292,7 @@ const SignUp = () => {
 
                 <div className="inputTitle">비밀번호</div>
                 <div className="inputWrap">
-                    <input className="input" type={showPassword ? "text" : "password"} placeholder="영문, 숫자, 특수문자 포함 8자 이상" value={pw} onChange={handlePw}/>
+                    <input className="input" type={showPassword ? "text" : "password"} placeholder="영문, 숫자, 특수문자 포함 8자 이상" value={pw} onChange={handlePw} onKeyDown={handleKeyDown}/>
                 </div>
                 <div className="errorMessageWrap">
                     {!pwValid && pw.length > 0 && (
@@ -300,7 +306,7 @@ const SignUp = () => {
 
                 <div className="inputTitle">비밀번호 확인</div>
                 <div className="inputWrap">
-                    <input className="input" type={showPassword2 ? "text" : "password"} placeholder="영문, 숫자, 특수문자 포함 8자 이상" value={pw2} onChange={handlePw2}/>
+                    <input className="input" type={showPassword2 ? "text" : "password"} placeholder="영문, 숫자, 특수문자 포함 8자 이상" value={pw2} onChange={handlePw2} onKeyDown={handleKeyDown}/>
                 </div>
                 <div className="errorMessageWrap">
                     {!passwordsMatch && pw2.length > 0 && (
@@ -370,7 +376,7 @@ const SignUp = () => {
 
                 <div className="inputTitle">닉네임</div>
                 <div className="inputWrap" style={{padding: '10px'}}>
-                    <input className="input" type="text" placeholder="닉네임을 입력하세요" style={{width: '80%', marginTop: '9px'}} value={nickName} onChange={changeNickName}/>
+                    <input className="input" type="text" placeholder="닉네임을 입력하세요" style={{width: '80%', marginTop: '9px'}} value={nickName} onChange={changeNickName} onKeyDown={handleKeyDown}/>
                     <button className='nickNameButton' onClick={handleNickName}>중복확인</button>
                 </div>
                 <div className="nickNameMessageWrap">

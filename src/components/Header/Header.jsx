@@ -7,15 +7,13 @@ import Swal from "sweetalert2";
 
 const Header = () => {
     const navigate = useNavigate(); // 다른 component 로 이동할 때 사용
+    const location = useLocation();
     const [isNavOpen, setNavOpen] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
-    const [myNickname, setMyNickname] = useState('');
 
     useEffect(() => {
         loginCheck(); // 컴포넌트가 마운트될 때 로그인 상태 확인
     }, []);
-
-    const location = useLocation();
 
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 로컬 스토리지에서 토큰 가져옴
@@ -33,7 +31,7 @@ const Header = () => {
         });
         setIsLogin(false);
     };
-    
+
     const loginCheck = async () => {
         console.log('loginCheck');
         try {
@@ -44,15 +42,7 @@ const Header = () => {
                         Authorization: `Bearer ${token}`
                     }
                 });
-
-                const response2 = await axios.get('/api/auth/member/myPage', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-
                if(response.status === 200){
-                    setMyNickname(response2.data.nickname);
                     setIsLogin(true);
                 }
             }
@@ -72,18 +62,37 @@ const Header = () => {
         return location.pathname === link ? 'active' : '';
     };
 
-    const NavItem = ({ to, text, activePage }) => (
+    /*const NavItem = ({ to, text, activePage }) => (
         <li className={`nav-item ${activePage(to)}`}>
             <Link to={isLogin ? to : '/sign-in'} className={`nav-link ${activePage(to)}`}>{text}</Link>
         </li>
-    );
+    );*/
 
     const handleSignUp = () => {
-        navigate("/sign-up", { state: { from: location.pathname } }); // 회원가입 페이지로 이동
+        navigate("/sign-up", { state: { from: location.pathname } }); // 현재 경로를 저장하고 회원가입 페이지로 이동
     };
 
     const handleSignIn = () => {
-        navigate("/sign-in", { state: { from: location.pathname } }); // 로그인 페이지로 이동
+        navigate("/sign-in", { state: { from: location.pathname } }); // 현재 경로를 저장하고 로그인 페이지로 이동
+    };
+
+    const LoginWarning = () => {
+        Swal.fire({
+            icon: "warning",
+            title: "<div style='font-size: 21px; margin-bottom: 10px;'>로그인 후 이용해 주세요.</div>",
+            confirmButtonColor: "#8BC765",
+            confirmButtonText: "확인",
+        });
+    };
+
+    const handleNavigation = (to) => {
+        if(isLogin) {
+            navigate(to);
+        }
+        else {
+            LoginWarning();
+            navigate("/sign-in", {state: {from: location.pathname}}); // 현재 경로를 저장하고 로그인 페이지로 이동
+        }
     };
 
     return (
@@ -129,10 +138,18 @@ const Header = () => {
                             <li className={`nav-item ${activePage("/")}`}>
                                 <Link to="/" className={`nav-link ${activePage("/")}`}>홈</Link>
                             </li>
-                            <NavItem to="/friends" text="친구" activePage={activePage} />
-                            <NavItem to="/study" text="스터디" activePage={activePage} />
-                            <NavItem to="/chatting" text="채팅" activePage={activePage} />
-                            <NavItem to={`/profile/${myNickname}`} text="프로필" activePage={activePage}/> 
+                            <li className={`nav-item ${activePage("/friends")}`}>
+                                <button className={`btn nav-link ${activePage("/friends")}`} onClick={() => handleNavigation("/friends")}>친구</button>
+                            </li>
+                            <li className={`nav-item ${activePage("/study")}`}>
+                                <button className={`btn nav-link ${activePage("/study")}`} onClick={() => handleNavigation("/study")}>스터디</button>
+                            </li>
+                            <li className={`nav-item ${activePage("/chatting")}`}>
+                                <button className={`btn nav-link ${activePage("/chatting")}`} onClick={() => handleNavigation("/chatting")}>채팅</button>
+                            </li>
+                            <li className={`nav-item ${activePage(`/profile`)}`}>
+                                <button className={`btn nav-link ${activePage("/profile")}`} onClick={() => handleNavigation(`/profile`)}>프로필</button>
+                            </li>
                         </ul>
                     </div>
                 </div>
