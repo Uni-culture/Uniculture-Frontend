@@ -59,7 +59,13 @@ const Header = () => {
     };
 
     const activePage = (link) => {
-        return location.pathname === link ? 'active' : '';
+        if (location.pathname === link) {
+            return 'active';
+        } else if (location.pathname.startsWith('/profile/') && link === '/friend') {
+            return 'active';
+        } else {
+            return '';
+        }
     };
 
     /*const NavItem = ({ to, text, activePage }) => (
@@ -138,8 +144,8 @@ const Header = () => {
                             <li className={`nav-item ${activePage("/")}`}>
                                 <Link to="/" className={`nav-link ${activePage("/")}`}>홈</Link>
                             </li>
-                            <li className={`nav-item ${activePage("/friends")}`}>
-                                <button className={`btn nav-link ${activePage("/friends")}`} onClick={() => handleNavigation("/friends")}>친구</button>
+                            <li className={`nav-item ${activePage("/friend")}`}>
+                                <button className={`btn nav-link ${activePage("/friend")}`} onClick={() => handleNavigation("/friend")}>친구</button>
                             </li>
                             <li className={`nav-item ${activePage("/study")}`}>
                                 <button className={`btn nav-link ${activePage("/study")}`} onClick={() => handleNavigation("/study")}>스터디</button>
