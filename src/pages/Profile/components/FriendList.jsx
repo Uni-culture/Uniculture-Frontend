@@ -1,12 +1,27 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 export default function FriendList({action, userInfo, deleteFriend, cancelSentFriendRequest, acceptReceivedRequest, rejectReceivedRequest}) {
+    const navigate = useNavigate();
 
     //친구 삭제
     const handleDeleteFriend = () => {
-        if (window.confirm("정말 이 친구를 삭제하시겠어요?\n삭제 시 해당 친구가 친구 목록에서 사라집니다.")) {
-            deleteFriend(userInfo);   
-        }
+        Swal.fire({
+            title: "정말 이 친구를 삭제하시겠어요?",
+            text: "삭제 시 해당 친구가 친구 목록에서 사라집니다.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#dc3545",
+            cancelButtonColor: "#6c757d",
+            confirmButtonText: "삭제",
+            cancelButtonText: "취소"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // 친구 삭제하는 함수 호출
+                deleteFriend(userInfo);
+            }
+        });
     }
 
     //친구 신청 취소
@@ -24,14 +39,28 @@ export default function FriendList({action, userInfo, deleteFriend, cancelSentFr
         rejectReceivedRequest(userInfo);
     }
 
+    //친구 프로필로 이동
+    const handleProfile = () => {
+        navigate(`/profile/${userInfo.nickname}`);
+    }
+
     return (
-        <div style={{ display: 'flex', width: "280px", justifyContent: 'space-between', borderBottom: '1px solid #E0E0E0', padding: '10px 0' }}>
-            <div>
-                {userInfo?.nickname}
+        <div style={{ display: 'flex', width: "280px", justifyContent: 'space-between', borderBottom: '1px solid #E0E0E0', padding: '10px 0', alignItems:"center" }}>
+            <div style={{ display: 'flex', alignItems:"center"}}>
+                <div style={{marginRight:"10px"}} onClick={handleProfile}>
+                    <img
+                    src={userInfo?.profileImage ? userInfo.profileImage : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                    alt="profile"
+                    style={{width:"40px", borderRadius: "50%"}}
+                    />
+                </div>
+                <div onClick={handleProfile}>
+                    {userInfo?.nickname}
+                </div>
             </div>
 
             {/* 친구 목록 */}
-            {action == 'friends' && 
+            {action === 'friends' && 
                 <div>
                     <button 
                         onClick={handleDeleteFriend}
@@ -65,7 +94,7 @@ export default function FriendList({action, userInfo, deleteFriend, cancelSentFr
             }
 
             {/* 보낸 친구 신청 */}
-            {action == 'sentRequests' && 
+            {action === 'sentRequests' && 
                 <div>
                     <button 
                         onClick= {handleCancelRequest}
@@ -85,7 +114,7 @@ export default function FriendList({action, userInfo, deleteFriend, cancelSentFr
             }
 
             {/* 받은 친구 신청 */}
-            {action == 'receivedRequests' && 
+            {action === 'receivedRequests' && 
                 <div>
                     <button 
                         onClick={handleRejectRequest}

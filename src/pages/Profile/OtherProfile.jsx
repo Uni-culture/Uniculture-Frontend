@@ -7,10 +7,12 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { PiPlusCircleBold, PiPlusCircleFill } from "react-icons/pi";
 import LanguageList from './components/LanguageList';
+import Swal from 'sweetalert2';
 
-export default function OtherProfile({myInformation, otherInformation}) {
+export default function OtherProfile({myInformation, otherInformation, handleInfo, friendstatus}) {
     const [myInfo, setMyInfo] = useState(myInformation);
     const [otherInfo, setOtherInfo] = useState(otherInformation);
+    const [friendStatus, setFriendStatus] = useState(friendstatus);
     const navigate = useNavigate();
 
     const [maxCanLanguage, setMaxCanLanguage] = useState(); // 능숙도가 가장 높은 사용 언어
@@ -38,6 +40,8 @@ export default function OtherProfile({myInformation, otherInformation}) {
         const wantLanguagesArray = Object.entries(otherInfo.wantlanguages).map(([language, value]) => ({ language, value }));
         setWantLanguages(wantLanguagesArray);
         setWantLanguages(prevWantLanguages => [...prevWantLanguages].sort((a, b) => b.value - a.value));  
+
+        setFriendStatus(friendstatus);
     }, [otherInfo]);
 
     useEffect(() => {
@@ -47,7 +51,6 @@ export default function OtherProfile({myInformation, otherInformation}) {
     useEffect(() => {
         setMaxWantLanguage(wantLanguages[0]);
     }, [wantLanguages]);
-
 
     // 언어 모달창 : 선택된 탭에 따라 해당 목록을 표시하는 함수
     const renderTabContent = () => {
@@ -84,13 +87,14 @@ export default function OtherProfile({myInformation, otherInformation}) {
                         Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                     }
                 });
-                if(response.status ==200){
+                if(response.status === 200){
                     alert("친구 신청 성공");
+                    setFriendStatus(3); //친구 신청 중으로 변경
                 }
-                else if(response.status ==400){
+                else if(response.status === 400){
                     console.log("친구 신청 클라이언트 에러");
                 }
-                else if(response.status == 500){
+                else if(response.status === 500){
                     console.log("친구 신청 서버 에러");
                 }
             }
@@ -102,6 +106,111 @@ export default function OtherProfile({myInformation, otherInformation}) {
             console.error('친구 걸기 오류 발생:', error);
         }
     }
+
+    // 친구 삭제
+    const deleteFriend = () => {
+        Swal.fire({
+            title: "정말 이 친구를 삭제하시겠어요?",
+            text: "삭제 시 해당 친구가 친구 목록에서 사라집니다.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#dc3545",
+            cancelButtonColor: "#6c757d",
+            confirmButtonText: "삭제",
+            cancelButtonText: "취소"
+        }).then(async (result) => { // async 키워드를 사용하여 비동기 함수로 변환
+            if (result.isConfirmed) {
+                try {
+                    const token = getToken();
+
+                    const response = await axios.delete('/api/auth/friend/deleteFriend', {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        },
+                        data: {
+                            targetId: otherInfo.id
+                        }
+                    });
+                    
+                    if(response.status === 200){
+                        console.log("친구 삭제 : " + otherInfo.nickname);
+                        setFriendStatus(2);
+                        handleInfo();
+                    }
+                    else if(response.status === 400){
+                        console.log("클라이언트 오류");
+                    }
+                    else if(response.status === 500){
+                        console.log("서버 오류");
+                    }
+                    
+                } catch (error) {
+                    console.error('친구 삭제 중 에러 발생:', error);
+                }      
+            }
+        });
+    };
+
+
+    // 보낸 친구 신청 취소
+    const  cancelSentFriendRequest = async () => {
+        try {
+            const token = getToken();
+
+            const response = await axios.delete('/api/auth/friend', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+                data: {
+                    targetId: otherInfo.id
+                }
+            });
+            
+            if(response.status === 200){
+                console.log(otherInfo.nickname + "님에게 보낸 친구 신청을 취소합니다.");
+                setFriendStatus(2); 
+            }
+            else if(response.status === 400){
+                console.log("클라이언트 오류");
+            }
+            else if(response.status === 500){
+                console.log("서버 오류");
+            }
+            
+        } catch (error) {
+            console.error('보낸 친구 신청 취소 중 에러 발생:', error);
+        }
+    };
+
+    // 친구 신청 받기
+    const  acceptReceivedRequest = async () => {
+        try {
+            const token = getToken();
+
+            const response = await axios.post('/api/auth/friend/accept', {
+                targetId: otherInfo.id
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            
+            if(response.status === 200){
+                console.log(otherInfo.nickname + "님의 친구 요청을 수락했습니다.");
+                setFriendStatus(1); //친구 상태로 변경
+                handleInfo();
+            }
+            else if(response.status === 400){
+                console.log("클라이언트 오류");
+            }
+            else if(response.status === 500){
+                console.log("서버 오류");
+            }
+            
+        } catch (error) {
+            console.error('친구 신청 수락 중 에러 발생:', error);
+        }
+    };
 
     //채팅 보내기
     const sendMessage = async () => {
@@ -116,13 +225,13 @@ export default function OtherProfile({myInformation, otherInformation}) {
                         Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                     }
                 });
-                if(response.status ==200){
+                if(response.status === 200){
                     alert("친구 신청 성공");
                 }
-                else if(response.status ==400){
+                else if(response.status === 400){
                     console.log("채팅 보내기 클라이언트 에러");
                 }
-                else if(response.status == 500){
+                else if(response.status === 500){
                     console.log("채팅 보내기 서버 에러");
                 }
             }
@@ -151,29 +260,74 @@ export default function OtherProfile({myInformation, otherInformation}) {
 
                     <div style={{display:"flex"}}>
                         {/* 친구 걸기/채팅 보내기 */}
-                    <button
-                        style={{
-                            borderRadius:"15px",
-                            backgroundColor:"#B7DAA1", 
-                            border:"0px",
-                            marginLeft: "10px",
-                            width:"200px",
-                            height:"30px"
-                        }}
-                        onClick={sendFriendRequest}
-                    >친구 걸기</button>
+        
+                        {friendStatus === 1 &&
+                            <button
+                                style={{
+                                    borderRadius:"15px",
+                                    backgroundColor:"#B7DAA1", 
+                                    border:"0px",
+                                    marginLeft: "10px",
+                                    width:"100px",
+                                    height:"30px"
+                                }}
+                                onClick={deleteFriend}
+                            >친구 끊기</button>
+                        }
 
-                    <button
-                        style={{
-                            borderRadius:"15px",
-                            backgroundColor:"#B7DAA1", 
-                            border:"0px",
-                            marginLeft: "10px",
-                            width:"200px",
-                            height:"30px"
-                        }}
-                        onClick={sendMessage}
-                    >채팅 보내기</button>
+                        {friendStatus === 2 &&
+                            <button
+                                style={{
+                                    borderRadius:"15px",
+                                    backgroundColor:"#B7DAA1", 
+                                    border:"0px",
+                                    marginLeft: "10px",
+                                    width:"100px",
+                                    height:"30px"
+                                }}
+                                onClick={sendFriendRequest}
+                            >친구 걸기</button>
+                        }
+
+                        {friendStatus === 3 &&
+                            <button
+                                style={{
+                                    borderRadius:"15px",
+                                    backgroundColor:"#B7DAA1", 
+                                    border:"0px",
+                                    marginLeft: "10px",
+                                    width:"100px",
+                                    height:"30px"
+                                }}
+                                onClick={cancelSentFriendRequest}
+                            >신청 취소</button>
+                        }
+
+                        {friendStatus === 4 &&
+                            <button
+                                style={{
+                                    borderRadius:"15px",
+                                    backgroundColor:"#B7DAA1", 
+                                    border:"0px",
+                                    marginLeft: "10px",
+                                    width:"100px",
+                                    height:"30px"
+                                }}
+                                onClick={acceptReceivedRequest}
+                            >친구 수락</button>
+                        }
+
+                        <button
+                            style={{
+                                borderRadius:"15px",
+                                backgroundColor:"#B7DAA1", 
+                                border:"0px",
+                                marginLeft: "10px",
+                                width:"100px",
+                                height:"30px"
+                            }}
+                            onClick={sendMessage}
+                        >채팅 보내기</button>
                     </div>
                 </div>
 

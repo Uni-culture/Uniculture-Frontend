@@ -10,7 +10,7 @@ import { IoIosSettings } from "react-icons/io";
 import { FaExchangeAlt } from "react-icons/fa";
 import LanguageList from './components/LanguageList';
 
-export default function MyProfile({myInformation, handleMyInfo}) {
+export default function MyProfile({myInformation, handleInfo}) {
     const [myInfo, setMyInfo] = useState(myInformation);
 
     const [maxCanLanguage, setMaxCanLanguage] = useState(); // 능숙도가 가장 높은 사용 언어
@@ -134,7 +134,7 @@ export default function MyProfile({myInformation, handleMyInfo}) {
             if(response.status == 200){
                 console.log("친구 삭제 : " + userInfo.nickname);
                 setFriendList(friendList.filter(request => request.id !== userInfo.id)); //친구 목록에서 삭제
-                handleMyInfo();
+                handleInfo();
             }
             else if(response.status == 400){
                 console.log("클라이언트 오류");
@@ -195,7 +195,7 @@ export default function MyProfile({myInformation, handleMyInfo}) {
                 console.log(userInfo.nickname + "님의 친구 요청을 수락했습니다.");
                 setReceivedRequests(receivedRequests.filter(request => request.id !== userInfo.id)); //받은 친구 신청 목록에서 삭제
                 setFriendList([...friendList, userInfo]); //친구 목록에 추가
-                handleMyInfo();
+                handleInfo();
             }
             else if(response.status == 400){
                 console.log("클라이언트 오류");

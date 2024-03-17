@@ -6,10 +6,9 @@
 .left{
     float: left;
     margin-right: 100px;
-    /* background-color : green; */
     border-radius: 50%;
     width: 200px;
-    height: 400px;
+    height: 300px;
     display: table-cell;
     vertical-align: middle;
     text-align:center;

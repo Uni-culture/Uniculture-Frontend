@@ -9,6 +9,7 @@ const Profile = () => {
     const [myProfile, setMyProfile] = useState(false);
     const [myInfo, setMyInfo] = useState(null);
     const [otherInfo, setOtherInfo] = useState(null);
+    const [friendStatus, setFriendStatus] = useState(null);
     const navigate = useNavigate();
 
     // 로그인 후 저장된 토큰 가져오는 함수
@@ -28,7 +29,11 @@ const Profile = () => {
                     }
                 });
     
-                const response2 = await axios.get(`/api/member/otherPage/${nickname}`);
+                const response2 = await axios.get(`/api/member/otherPage/${nickname}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}` // 헤더에 토큰 추가
+                    }
+                });
 
                 if (response.status === 200) {
                     if(nickname === response.data.nickname){
@@ -39,6 +44,8 @@ const Profile = () => {
                         setMyInfo(response.data);
                         setOtherInfo(response2.data);
                         setMyProfile(false); //다른 사람 프로필 보여주기
+
+                        setFriendStatus(response2.data.friendstatus);
                     }
                 }
             }
@@ -48,6 +55,8 @@ const Profile = () => {
                 if (response.status === 200) {
                     setOtherInfo(response.data);
                     setMyProfile(false); //다른 사람 프로필 보여주기
+
+                    setFriendStatus(response.data.friendstatus);
                 }
             }
             
@@ -56,22 +65,18 @@ const Profile = () => {
             console.error('사용자 정보를 가져오는 도중 오류 발생:', error);
         }
     };
-    
+
     useEffect(() => {
         fetchUserInfo();
     },[nickname]);
 
-    const handleMyInfo = () => {
+    const handleInfo = () => {
         fetchUserInfo();
-    }
-
-    const handleOtherInfo = (otherInfo) => {
-        setOtherInfo(otherInfo);
     }
 
     return (
         <>
-            {myProfile ? <MyProfile myInformation={myInfo} handleMyInfo={handleMyInfo} /> : (otherInfo && <OtherProfile myInformation={myInfo} otherInformation={otherInfo} handleMyInfo={handleMyInfo} handleOtherInfo={handleOtherInfo} />)}
+            {myProfile ? <MyProfile myInformation={myInfo} handleInfo={handleInfo} /> : (otherInfo && <OtherProfile myInformation={myInfo} otherInformation={otherInfo} handleInfo={handleInfo} friendstatus={friendStatus} />)}
         </>
     );
 };
