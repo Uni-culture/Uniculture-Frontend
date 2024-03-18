@@ -10,7 +10,6 @@ const Header = () => {
     const location = useLocation();
     const [isNavOpen, setNavOpen] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
-    const [myNickname, setMyNickname] = useState('');
 
     useEffect(() => {
         loginCheck(); // 컴포넌트가 마운트될 때 로그인 상태 확인
@@ -43,15 +42,7 @@ const Header = () => {
                         Authorization: `Bearer ${token}`
                     }
                 });
-
-                const response2 = await axios.get('/api/auth/member/myPage', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-
                if(response.status === 200){
-                    setMyNickname(response2.data.nickname);
                     setIsLogin(true);
                 }
             }
@@ -156,8 +147,8 @@ const Header = () => {
                             <li className="nav-item">
                                 <button className={`btn nav-link ${activePage("/chatting")}`} onClick={() => handleNavigation("/chatting")}>채팅</button>
                             </li>
-                            <li className="nav-item">
-                                <button className={`btn nav-link ${activePage(`/profile/${myNickname}`)}`} onClick={() => handleNavigation(`/profile/${myNickname}`)}>프로필</button>
+                            <li className={`nav-item ${activePage(`/profile`)}`}>
+                                <button className={`btn nav-link ${activePage("/profile")}`} onClick={() => handleNavigation(`/profile`)}>프로필</button>
                             </li>
                         </ul>
                     </div>

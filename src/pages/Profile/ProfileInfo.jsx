@@ -1,9 +1,13 @@
+import Swal from "sweetalert2";
 import Layout from "../../components/Layout";
 import Sidebar from "../../components/ProfileSidebar/Sidebar";
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 
 const ProfileInfo = () => {
+    const navigate = useNavigate();
+
     const [userInfo, setUserInfo] = useState(null);
     const [originalNickname, setOriginalNickname] = useState(null);
 
@@ -40,7 +44,7 @@ const ProfileInfo = () => {
             if(response.status === 200) {
                 setUserInfo(response.data); // 서버에서 받은 사용자 정보 반환
                 setOriginalNickname(response.data.nickname);
-                setAge(response.data.age||0);
+                setAge(response.data.age);
                 setSelectedYear(response.data.year);
                 setSelectedMonth(response.data.month);
                 setSelectedDay(response.data.day);
@@ -52,8 +56,15 @@ const ProfileInfo = () => {
                 console.log('서버에러');
             }
         } catch (error) {
-            console.error('Error fetching user info:', error);
-            throw error;
+            Swal.fire({
+                title: "로그인 해주세요.",
+                text: "로그인 창으로 이동합니다.",
+                icon: "warning",
+                confirmButtonColor: "#dc3545",
+                confirmButtonText: "확인"
+            }).then(() => {
+                navigate("/sign-in");
+            });
         }
     };
 

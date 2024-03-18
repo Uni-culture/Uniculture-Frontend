@@ -3,6 +3,7 @@ import Sidebar from "../../components/ProfileSidebar/Sidebar";
 import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const ProfileDelete = () => {
     const [deleteInput, setDeleteInput] = useState('');
@@ -11,7 +12,7 @@ const ProfileDelete = () => {
     const navigate = useNavigate();
 
     const handleModal = () => {
-        setIsModalOpened(!isModalOpened);
+        loginCheck();
     };
 
     // 로그인 후 저장된 토큰 가져오는 함수
@@ -21,6 +22,37 @@ const ProfileDelete = () => {
 
     const removeToken = () => {
         localStorage.removeItem('accessToken'); // 로컬 스토리지에서 토큰 가져옴
+    };
+
+    const loginCheck = async () => {
+        console.log('loginCheck');
+        try {
+            const token = getToken(); // 토큰 가져오기
+            if(token){
+                const response = await axios.get('/api/auth/sec/home', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+
+               if(response.status === 200){
+                    setIsModalOpened(!isModalOpened);
+                }
+            }
+            else{
+                Swal.fire({
+                    title: "로그인 해주세요.",
+                    text: "로그인 창으로 이동합니다.",
+                    icon: "warning",
+                    confirmButtonColor: "#dc3545",
+                    confirmButtonText: "확인"
+                }).then(() => {
+                    navigate("/sign-in");
+                });
+            }
+        } catch (error) {
+            console.error("회원 탈퇴 중 오류 : ", error);
+        }
     };
 
     // 회원 삭제
