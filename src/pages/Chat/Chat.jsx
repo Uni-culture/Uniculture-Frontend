@@ -78,7 +78,10 @@ const Chat = () => {
                         <ChatList onSelectedChatRoom={handleSelectChatRoom}/>
                     </aside>
                     <div>
-                        <ChatMain selectedChatRoom={selectedChatRoom}/>
+                        {
+                            selectedChatRoom== null ? "야호~": <ChatMain selectedChatRoom={selectedChatRoom}/>
+                        }
+                        
                     </div>
                 </section>
             </div>
