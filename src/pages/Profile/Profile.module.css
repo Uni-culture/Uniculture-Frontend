@@ -6,13 +6,21 @@
 .left{
     float: left;
     margin-right: 100px;
-    /* background-color : green; */
     border-radius: 50%;
     width: 200px;
-    height: 400px;
+    height: 300px;
     display: table-cell;
     vertical-align: middle;
     text-align:center;
+}
+
+.buttonStyle {
+    border-radius: 15px;
+    background-color: #B7DAA1;
+    border: 0;
+    margin-left: 10px;
+    width: 200px;
+    height: 30px;
 }
 
 .imageWrapper {
@@ -65,5 +73,10 @@
 
 .friendNum{
     display: inline-block;
-    padding-right: 50px;
+    padding-right: 10px;
+}
+
+.friendRequest{
+    display: inline-block;
+    padding-right: 0px;
 }

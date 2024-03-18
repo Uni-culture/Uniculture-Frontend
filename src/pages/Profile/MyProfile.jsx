@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
+import { AiOutlineBell } from "react-icons/ai";
+import { Badge} from "antd";
 import axios from 'axios';
 import styles from './Profile.module.css';
 import Layout from "../../components/Layout";
@@ -10,8 +12,9 @@ import { IoIosSettings } from "react-icons/io";
 import { FaExchangeAlt } from "react-icons/fa";
 import LanguageList from './components/LanguageList';
 
-export default function MyProfile({myInformation, handleMyInfo}) {
-    const [myInfo, setMyInfo] = useState(myInformation);
+export default function MyProfile({myInformation}) {
+    const [myInfo, setMyInfo] = useState(myInformation); // 매개변수로 받은것을 가지고 다시 상태유지
+    const [friendNum, setFriendNum] = useState(myInformation.friendnum) // 친구수락, 삭제시 친구수 관리를 위해
 
     const [maxCanLanguage, setMaxCanLanguage] = useState(); // 능숙도가 가장 높은 사용 언어
     const [maxWantLanguage, setMaxWantLanguage] = useState(); // 능숙도가 가장 높은 학습 언어
@@ -50,13 +53,13 @@ export default function MyProfile({myInformation, handleMyInfo}) {
                 }
             });
             
-            if(response.status == 200){
+            if(response.status === 200){
                 setFriendList(response.data);
             }
-            else if(response.status == 400){
+            else if(response.status === 400){
                 console.log("클라이언트 오류");
             }
-            else if(response.status == 500){
+            else if(response.status === 500){
                 console.log("서버 오류");
             }
             
@@ -76,13 +79,13 @@ export default function MyProfile({myInformation, handleMyInfo}) {
                 }
             });
             
-            if(response.status == 200){
+            if(response.status === 200){
                 setSentRequests(response.data);
             }
-            else if(response.status == 400){
+            else if(response.status === 400){
                 console.log("클라이언트 오류");
             }
-            else if(response.status == 500){
+            else if(response.status === 500){
                 console.log("서버 오류");
             }
             
@@ -102,13 +105,13 @@ export default function MyProfile({myInformation, handleMyInfo}) {
                 }
             });
             
-            if(response.status == 200){
+            if(response.status === 200){
                 setReceivedRequests(response.data);
             }
-            else if(response.status == 400){
+            else if(response.status === 400){
                 console.log("클라이언트 오류");
             }
-            else if(response.status == 500){
+            else if(response.status === 500){
                 console.log("서버 오류");
             }
         
@@ -131,15 +134,15 @@ export default function MyProfile({myInformation, handleMyInfo}) {
                 }
             });
             
-            if(response.status == 200){
+            if(response.status === 200){
                 console.log("친구 삭제 : " + userInfo.nickname);
                 setFriendList(friendList.filter(request => request.id !== userInfo.id)); //친구 목록에서 삭제
-                handleMyInfo();
+                setFriendNum(friendNum - 1); //친구 수 수정
             }
-            else if(response.status == 400){
+            else if(response.status === 400){
                 console.log("클라이언트 오류");
             }
-            else if(response.status == 500){
+            else if(response.status === 500){
                 console.log("서버 오류");
             }
             
@@ -162,14 +165,14 @@ export default function MyProfile({myInformation, handleMyInfo}) {
                 }
             });
             
-            if(response.status == 200){
+            if(response.status === 200){
                 console.log(userInfo.nickname + "님에게 보낸 친구 신청을 취소합니다.");
                 setSentRequests(sentRequests.filter(request => request.id !== userInfo.id)); //보낸 친구 신청 목록에서 삭제
             }
-            else if(response.status == 400){
+            else if(response.status === 400){
                 console.log("클라이언트 오류");
             }
-            else if(response.status == 500){
+            else if(response.status === 500){
                 console.log("서버 오류");
             }
             
@@ -179,7 +182,7 @@ export default function MyProfile({myInformation, handleMyInfo}) {
     };
 
     // 친구 신청 받기
-    const  acceptReceivedRequest = async (userInfo) => {
+    const acceptReceivedRequest = async (userInfo) => {
         try {
             const token = getToken();
 
@@ -191,16 +194,16 @@ export default function MyProfile({myInformation, handleMyInfo}) {
                 }
             });
             
-            if(response.status == 200){
+            if(response.status === 200){
                 console.log(userInfo.nickname + "님의 친구 요청을 수락했습니다.");
                 setReceivedRequests(receivedRequests.filter(request => request.id !== userInfo.id)); //받은 친구 신청 목록에서 삭제
                 setFriendList([...friendList, userInfo]); //친구 목록에 추가
-                handleMyInfo();
+                setFriendNum(friendNum + 1); //친구 수 수정
             }
-            else if(response.status == 400){
+            else if(response.status === 400){
                 console.log("클라이언트 오류");
             }
-            else if(response.status == 500){
+            else if(response.status === 500){
                 console.log("서버 오류");
             }
             
@@ -222,14 +225,14 @@ export default function MyProfile({myInformation, handleMyInfo}) {
                 }
             });
             
-            if(response.status == 200){
+            if(response.status === 200){
                 console.log(userInfo.nickname + "님의 친구 요청을 거절했습니다.");
                 setReceivedRequests(receivedRequests.filter(request => request.id !== userInfo.id)); //받은 친구 신청 목록에서 삭제
             }
-            else if(response.status == 400){
+            else if(response.status === 400){
                 console.log("클라이언트 오류");
             }
-            else if(response.status == 500){
+            else if(response.status === 500){
                 console.log("서버 오류");
             }
             
@@ -271,6 +274,8 @@ export default function MyProfile({myInformation, handleMyInfo}) {
                         ))}
                     </div>
                 );
+            default:
+                return ;
         }
     };
 
@@ -314,6 +319,8 @@ export default function MyProfile({myInformation, handleMyInfo}) {
                         ))}
                     </div>
                 );
+            default:
+                return ;
         }
     };
 
@@ -351,8 +358,15 @@ export default function MyProfile({myInformation, handleMyInfo}) {
                     <div>
                         <div className={styles.post}>게시글</div>
                         <div className={styles.postNum}>{myInfo?.postnum}</div>
+                        {/* 친구, 친구수중 아무거나 클릭하더라도 setShowFriend state 를 변경시켜서 모달창을띄움(useEffect 에 showfriend 가 걸려있기때문에 리렌더링) */}
                         <div className={styles.friend} onClick={()=> {setShowFriend(true)}}>친구</div>
-                        <div className={styles.friendNum} onClick={()=> {setShowFriend(true)}}>{myInfo?.friendnum}</div>
+                        <div className={styles.friendNum} onClick={()=> {setShowFriend(true)}}>{friendNum}</div>
+                        <Badge count={myInfo?.receiverequestnum} size="small" overflowCount={10}>
+                            <AiOutlineBell size={20} onClick={() => {
+                                setShowFriend(true);
+                                setActiveTab('receivedRequests');
+                            }}/>
+                        </Badge>
                     </div>
 
                     {/* 언어 */}
