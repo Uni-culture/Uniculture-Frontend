@@ -34,7 +34,6 @@ const BoardList = () => {
                     setBoardList(response.data.content);
                     console.log(`totalElements : ${response.data.totalElements}`);
                     setPageCount(Math.ceil( response.data.totalElements / 8));
-                    console.log(`pageCount : ${pageCount}`);
                     console.log("200 성공");
                 }
 
