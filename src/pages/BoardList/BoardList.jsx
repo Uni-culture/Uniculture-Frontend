@@ -17,24 +17,24 @@ const BoardList = () => {
 
     useEffect(() => {
         const fetchBoardData = async () => {
-            setPageCount(Math.ceil( 7/ 4));
-
-            console.log('hanbleButtonClick start');
+            console.log('fetchBoardData start');
             try {
                 const token = getToken(); // 토큰 가져오기
                 const page_number = searchParams.get("page");
-                const response = await axios.get(`/api/auth/post?page=${page_number}&size=8`, {
+                const response = await axios.get(`/api/post?page=${page_number}&size=8`, {
                     headers: {
                         Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                     }
                 });
                 console.log('서버 응답: ', response);
                 console.log('response.status: ', response.status);
-                // 등록 성공
+                // 게시물 등록 성공
                 if (response.status === 200) {
                     console.log(response.data.content);
                     setBoardList(response.data.content);
-
+                    console.log(`totalElements : ${response.data.totalElements}`);
+                    setPageCount(Math.ceil( response.data.totalElements / 8));
+                    console.log(`pageCount : ${pageCount}`);
                     console.log("200 성공");
                 }
 
