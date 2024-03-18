@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import FriendCard from './components/FriendCard';
 import FriendList from '../Profile/components/FriendList';
-import { Badge, Input, Select} from "antd";
+import { Badge, Input, Pagination} from "antd";
 import { AiOutlineBell } from "react-icons/ai";
 
 export default function Friend() {
@@ -18,6 +18,14 @@ export default function Friend() {
     const [searchResult, setSearchResult] = useState(null); // 검색 결과
 
     const [showFilter, setShowFilter] = useState(false); //친구 필터
+
+    //pagination
+    const [currentPage, setCurrentPage] = useState(1);
+
+    // 친구 목록을 페이지별로 나누는 함수
+    const [indexOfLastFriend, setIndexOfLastFriend] = useState(currentPage * 3);
+    const [indexOfFirstFriend, setIndexOfFirstFriend] = useState(indexOfLastFriend - 3);
+    const [currentFriends, setCurrentFriends] = useState([]);    
 
     //친구 신청 모달창
     const [showRequests, setShowRequests] = useState(false); 
@@ -44,7 +52,7 @@ export default function Friend() {
             
             if(response.status === 200){
                 setFriendList(response.data);
-                console.log(response.data);
+                setCurrentFriends(response.data.slice(indexOfFirstFriend, indexOfLastFriend));
             }
             else if(response.status === 400){
                 console.log("친구 목록 불러오기 클라이언트 오류");
@@ -70,13 +78,24 @@ export default function Friend() {
         fetchFriendList();
     }, []);
 
+    // 페이지 변경 시 해당 상태를 업데이트하는 함수
+    const changePage = (page) => {
+        const newIndexOfLastFriend = page * 3;
+        const newIndexOfFirstFriend = newIndexOfLastFriend - 3;
+
+        setCurrentPage(page); //현재 페이지
+        setIndexOfLastFriend(newIndexOfLastFriend); 
+        setIndexOfFirstFriend(newIndexOfFirstFriend);
+        setCurrentFriends(friendList.slice(newIndexOfFirstFriend, newIndexOfLastFriend)); //현재 보여지는 친구 목록
+    }
+
     //내 친구/추천 친구 선택
     const renderTabContent = () => {
         switch (activeTab) {
             case 'myFriends':
                 return (
                     <div style={{display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "50px", marginTop:"30px"}}>
-                        {friendList && friendList.map((friend) => (
+                        {friendList && currentFriends.map((friend) => (
                             <FriendCard key={friend.id} userInfo={friend} deleteFriend={deleteFriend}/>
                         ))}
                     </div>
@@ -364,7 +383,7 @@ export default function Friend() {
             )} */}
 
             {/* 검색X인 경우 */}
-            {searchResult === null && renderTabContent()}
+            {searchResult === null && currentFriends && renderTabContent()}
 
             {/* 검색O + 검색 결과가 없을 때 표시될 내용 */}
             {searchResult && searchResult.length === 0 && <div style={{marginTop: "30px"}}>검색 결과가 없습니다.</div>}
@@ -378,6 +397,13 @@ export default function Friend() {
                 </div>
             }
 
+            {/* Pagination */}
+            {friendList && (
+                <div style={{textAlign: "center", marginTop: "50px"}}>
+                    <Pagination current={currentPage} total={friendList.length+3} defaultPageSize={5} onChange={(value) => changePage(value)}/>
+                </div>
+            )}
+            
             {/* 친구 신청 모달창 */}
             {showRequests && (
                 <div className="modal fade show" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
