@@ -56,7 +56,7 @@ const BoardList = () => {
         <div className="boardList-wrapper">
             <div className="boardList-body">
                 {boardList.map(post => (
-                    <Card key={post.postId} title={post.title} content={post.content} username={post.writerName}
+                    <Card key={post.postId} board_id={post.postId} title={post.title} content={post.content} username={post.writerName}
                           date={moment(post.createDate).add(9, "hour").format('YYYY-MM-DD')}></Card>
                 ))}
             </div>

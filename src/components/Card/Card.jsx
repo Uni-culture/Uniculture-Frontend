@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 
 export const Card = ({board_id, title, content, username, date}) => {
     const navigate = useNavigate();
+
     return (
         <div className="card-wrapper" onClick={() => {
             navigate(`/board/${board_id}`)

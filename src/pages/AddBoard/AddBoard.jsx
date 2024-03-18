@@ -1,11 +1,12 @@
 // import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
-import {useCallback, useState} from "react";
+import React, {useCallback, useState} from "react";
 import ImageUploader from "../../components/Board/ImageUploader";
 import TextArea from "../../components/Board/TextArea";
 import "./addBoard.scss";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import Header from "../../components/Header/Header";
 
 
 const AddBoard = () => {
@@ -70,39 +71,41 @@ const AddBoard = () => {
     };
 
     return (
-        <div className="addBoard-wrapper">
-            <div className="addBoard-header">
-                게시물 등록하기
-            </div>
-            <div className="submitButton">
-                {canSubmit() ? (
-                    <button
-                        onClick={handleSubmit}
-                        className="success-button"
-                        // variant="outlined"
-                    >
-                        등록하기
-                    </button>
+        <div className="addBoard-layout">
+            <Header/>
+            <div className="addBoard-wrapper">
+                <div className="addBoard-header">
+                    게시물 등록하기
+                </div>
+                <div className="submitButton">
+                    {canSubmit() ? (
+                        <button
+                            onClick={handleSubmit}
+                            className="success-button"
+                            // variant="outlined"
+                        >
+                            등록하기
+                        </button>
 
-                ) : (
-                    <button
-                        className="disable-button"
-                        // variant="outlined"
-                        // size="large"
-                    >
-                        사진과 내용을 모두 입력하세요
-                    </button>
-                )}
+                    ) : (
+                        <button
+                            className="disable-button"
+                            // variant="outlined"
+                            // size="large"
+                        >
+                            사진과 내용을 모두 입력하세요
+                        </button>
+                    )}
+                </div>
+                <div className="addBoard-body">
+                    <ImageUploader setImage={setImage} preview_URL={image.preview_URL}/>
+                    <TextArea setTitle={setTitle} setContent={setContent} title={title} content={content}/>
+                </div>
+                <div className="submitButton">
+                    <button style={{marginRight: "30px"}} onClick={dailyButtonClick}>일상</button>
+                    <button onClick={helpButtonClick}>도움</button>
+                </div>
             </div>
-            <div className="addBoard-body">
-                <ImageUploader setImage={setImage} preview_URL={image.preview_URL}/>
-                <TextArea setTitle={setTitle} setContent={setContent} title={title} content={content}/>
-            </div>
-            <div className="submitButton">
-                <button style={{marginRight: "30px"}} onClick={dailyButtonClick}>일상</button>
-                <button onClick={helpButtonClick}>도움</button>
-            </div>
-
         </div>
     );
 }
