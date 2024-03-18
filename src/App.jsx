@@ -11,6 +11,7 @@ import Profile from './pages/Profile/Profile';
 import ProfileEdit from './pages/Profile/ProfileEdit';
 import ProfileInfo from './pages/Profile/ProfileInfo';
 import ProfileDelete from './pages/Profile/ProfileDelete';
+import { Study } from './pages/Study/Study';
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
             <Route path="/accounts/personal-info" element={<ProfileInfo />} />
             <Route path="/accounts/delete" element={<ProfileDelete />} />
             <Route path="/chat" element={<Chat />} />
+            <Route path='/study' element={<Study/>} />
           </Routes>
         </BrowserRouter>
       </>

@@ -1,0 +1,49 @@
+.background{
+  margin-top: 40px;
+  
+}
+.menu{
+  display: flex;
+  gap: 42px;
+  margin-bottom: 20px;
+}
+
+.menubtn{
+  background-color: transparent;
+  border: none;
+}
+
+.menubtn_selected{
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid green;
+}
+
+.opt{
+  display: flex;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+
+.optbtn{
+  background-color: rgb(200, 200, 200);
+  border-radius: 15px;
+  width: 70px;
+  text-align: center;
+}
+
+.searchBar{
+  display: flex;
+  border-bottom: 1px solid black;
+  align-items: center;
+}
+.search{
+  background-color: transparent;
+  width:200px;
+  border: none;
+}
+
+.studyCards{
+  display: flex;
+  flex-wrap: wrap;
+}
