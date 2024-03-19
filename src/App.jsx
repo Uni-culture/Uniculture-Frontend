@@ -11,6 +11,9 @@ import Profile from './pages/Profile/Profile';
 import ProfileEdit from './pages/Profile/ProfileEdit';
 import ProfileInfo from './pages/Profile/ProfileInfo';
 import ProfileDelete from './pages/Profile/ProfileDelete';
+import AddBoard from "./pages/AddBoard/AddBoard";
+import BoardList from "./pages/BoardList/BoardList";
+import Board from "./pages/Board/Board";
 
 
 function App() {
@@ -27,6 +30,9 @@ function App() {
             <Route path="/accounts/personal-info" element={<ProfileInfo />} />
             <Route path="/accounts/delete" element={<ProfileDelete />} />
             <Route path="/chat" element={<Chat />} />
+            <Route path="/add-board" element={<AddBoard/>} />
+            <Route path="/board-list" element={<BoardList/>} />
+            <Route path="/board/:board_id" element={<Board/>} />
           </Routes>
         </BrowserRouter>
       </>

@@ -1,0 +1,43 @@
+.board-layout {
+    background-color: #FBFBF3;
+}
+
+.board-title {
+    margin-top: 50px;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.board-wrapper {
+    /*background-color: #8BC765;*/
+    min-height: 100vh;
+    margin-left: 80px;
+    margin-right: 80px;
+    position: relative;
+
+    .board-header {
+        justify-content: space-between;
+        align-items: baseline;
+        display: flex;
+        margin-top: 30px;
+        .board-header-username{
+            font-size: 1.0rem;
+        }
+        .board-header-date{
+            font-size: 1.0rem;
+            vertical-align: baseline;
+        }
+    }
+
+    .edit-delete-button {
+        margin-top: 100px;
+        position: absolute;
+        right: 0;
+    }
+}
+
+.delete-button {
+    margin-right: 1rem;
+}
+
+
