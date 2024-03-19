@@ -11,6 +11,7 @@ import { PiPlusCircleBold, PiPlusCircleFill } from "react-icons/pi";
 import { IoIosSettings } from "react-icons/io";
 import { FaExchangeAlt } from "react-icons/fa";
 import LanguageList from './components/LanguageList';
+import MyBoardList from "./MyBoardList";
 
 export default function MyProfile({myInformation}) {
     const [myInfo, setMyInfo] = useState(myInformation); // 매개변수로 받은것을 가지고 다시 상태유지
@@ -394,6 +395,11 @@ export default function MyProfile({myInformation}) {
                     </div>
                 }
             </div>
+            <div>
+                <MyBoardList />
+            </div>
+
+
 
             {/* 친구리스트 모달창 */}
             {showFriend && (
