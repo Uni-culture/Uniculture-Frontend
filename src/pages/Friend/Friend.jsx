@@ -14,18 +14,16 @@ export default function Friend() {
     const [activeTab, setActiveTab] = useState('myFriends'); //컴포넌트 선택
     const [friendList, setFriendList] = useState([]); //친구 목록
 
+    //검색
     const [searchInput, setSearchInput] = useState(''); // 검색창 값
     const [searchResult, setSearchResult] = useState(null); // 검색 결과
 
-    const [showFilter, setShowFilter] = useState(false); //친구 필터
+    //필터
+    const [showFilter, setShowFilter] = useState(false); 
 
     //pagination
     const [currentPage, setCurrentPage] = useState(1);
-
-    // 친구 목록을 페이지별로 나누는 함수
-    const [indexOfLastFriend, setIndexOfLastFriend] = useState(currentPage * 3);
-    const [indexOfFirstFriend, setIndexOfFirstFriend] = useState(indexOfLastFriend - 3);
-    const [currentFriends, setCurrentFriends] = useState([]);    
+    const [currentFriends, setCurrentFriends] = useState([]);  
 
     //친구 신청 모달창
     const [showRequests, setShowRequests] = useState(false); 
@@ -52,7 +50,7 @@ export default function Friend() {
             
             if(response.status === 200){
                 setFriendList(response.data);
-                setCurrentFriends(response.data.slice(indexOfFirstFriend, indexOfLastFriend));
+                setCurrentFriends(response.data.slice(0, 3));
             }
             else if(response.status === 400){
                 console.log("친구 목록 불러오기 클라이언트 오류");
@@ -80,15 +78,15 @@ export default function Friend() {
 
     // 페이지 변경 시 해당 상태를 업데이트하는 함수
     const changePage = (page) => {
-        const newIndexOfLastFriend = page * 3;
-        const newIndexOfFirstFriend = newIndexOfLastFriend - 3;
+        const newIndexOfLast= page * 3;
+        const newIndexOfFirst = newIndexOfLast - 3;
 
         setCurrentPage(page); //현재 페이지
-        setIndexOfLastFriend(newIndexOfLastFriend); 
-        setIndexOfFirstFriend(newIndexOfFirstFriend);
-        setCurrentFriends(friendList.slice(newIndexOfFirstFriend, newIndexOfLastFriend)); //현재 보여지는 친구 목록
-    }
 
+        if(searchInput !== null && searchResult !== null) setCurrentFriends(searchResult.slice(newIndexOfFirst, newIndexOfLast));
+        else if (friendList !== null) setCurrentFriends(friendList.slice(newIndexOfFirst, newIndexOfLast)); //현재 보여지는 친구 목록
+    }
+    
     //내 친구/추천 친구 선택
     const renderTabContent = () => {
         switch (activeTab) {
@@ -311,14 +309,20 @@ export default function Friend() {
 
     // 검색 기능을 수행하는 함수
     const searchFriend = (value) => {
-        if(value === null) {setSearchResult(null)}
+        if(value === '') { //검색X인 경우
+            setSearchResult(null);
+            setCurrentPage(1); //페이지 1로 설정
+            setCurrentFriends(friendList.slice(0, 3)); //currentPage 친구 목록
+        }
+        else{ //검색O인 경우
+            const filteredFriends = friendList.filter(friend => {
+                return friend.nickname.toLowerCase().includes(value?.toLowerCase());
+            });
 
-        const filteredFriends = friendList.filter(friend => {
-            return friend.nickname.toLowerCase().includes(value?.toLowerCase());
-        });
-
-        setSearchInput(value); //추천 친구로 넘어갈 때 search창 null 값으로 하기 위해 
-        setSearchResult(filteredFriends); // 검색 결과 업데이트
+            setSearchResult(filteredFriends); // 검색 결과 업데이트
+            setCurrentPage(1); // 페이지를 1로 설정
+            setCurrentFriends(filteredFriends.slice(0, 3)); // 검색 결과의 첫 페이지의 친구 목록 설정
+        }
     };
 
     return (
@@ -341,16 +345,13 @@ export default function Friend() {
                             </li>
                         </ul>
                     </div>
-                    {/* <div style={{fontSize: "25px", marginRight: "20px", paddingBottom: "5px"}} onClick={()=>{setShowSearch(!showSearch)}}><TbSearch/></div> */}
-                    {/* <div style={{fontSize: "25px", marginRight: "20px", paddingBottom: "5px"}} onClick={()=>{setShowFilter(true)}}><TbAdjustmentsHorizontal/></div> */}
-                
+                    
                     {activeTab === 'myFriends' && (
                         <div style={{marginLeft: "20px"}}>
                             <Input
                                 placeholder="Search for friends"
                                 prefix={<TbSearch style={{ color: 'rgba(0,0,0,.25)' }} />}
                                 style={{width: 300}}
-                                value={searchInput}
                                 onChange={(e) => searchFriend(e.target.value)}
                             />
                         </div>
@@ -370,37 +371,28 @@ export default function Friend() {
                 </div>
             </div>
 
-            {/* 친구 검색 */}
-            {/* {showSearch && (
-                <div style={{marginTop: "10px"}}>
-                    <Input
-                        placeholder="Search for friends"
-                        prefix={<TbSearch style={{ color: 'rgba(0,0,0,.25)' }} />}
-                        style={{width: 300}}
-                        onChange={(e) => searchFriend(e.target.value)}
-                    />
-                </div>
-            )} */}
-
             {/* 검색X인 경우 */}
             {searchResult === null && currentFriends && renderTabContent()}
+            {activeTab === 'myFriends' && searchResult === null && currentFriends && (
+                <div style={{textAlign: "center", marginTop: "50px"}}>
+                    <Pagination current={currentPage} total={friendList.length} defaultPageSize={3} onChange={(value) => changePage(value)}/>
+                </div>
+            )}
 
             {/* 검색O + 검색 결과가 없을 때 표시될 내용 */}
-            {searchResult && searchResult.length === 0 && <div style={{marginTop: "30px"}}>검색 결과가 없습니다.</div>}
+            {activeTab === 'myFriends' && searchResult && searchResult.length === 0 && <div style={{marginTop: "30px"}}>검색 결과가 없습니다.</div>}
             
             {/* 검색O + 검색 결과가 있을 때 표시될 내용 */}
-            {searchResult && searchResult.length !== 0 && 
+            {activeTab === 'myFriends' && searchResult && searchResult.length !== 0 && 
                 <div style={{display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "50px", marginTop:"30px"}}>
-                    {searchResult.map((friend) => (
+                    {currentFriends.map((friend) => (
                         <FriendCard key={friend.id} userInfo={friend} deleteFriend={deleteFriend} />
                     ))}
                 </div>
             }
-
-            {/* Pagination */}
-            {friendList && (
+            { activeTab === 'myFriends' && searchResult && searchResult.length !== 0 &&(
                 <div style={{textAlign: "center", marginTop: "50px"}}>
-                    <Pagination current={currentPage} total={friendList.length+3} defaultPageSize={5} onChange={(value) => changePage(value)}/>
+                    <Pagination current={currentPage} total={searchResult.length} defaultPageSize={3} onChange={(value) => changePage(value)}/>
                 </div>
             )}
             
