@@ -11,10 +11,10 @@ import Profile from './pages/Profile/Profile';
 import ProfileEdit from './pages/Profile/ProfileEdit';
 import ProfileInfo from './pages/Profile/ProfileInfo';
 import ProfileDelete from './pages/Profile/ProfileDelete';
+import Friend from './pages/Friend/Friend';
 import AddBoard from "./pages/AddBoard/AddBoard";
 import BoardList from "./pages/BoardList/BoardList";
 import Board from "./pages/Board/Board";
-
 
 function App() {
   return (
@@ -24,6 +24,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/sign-up" element={<SignUp />} />
             <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/friend" element={<Friend />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/profile/:nickname" element={<Profile />} />
             <Route path="/accounts/edit" element={<ProfileEdit />} />

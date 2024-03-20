@@ -16,7 +16,7 @@ const PercentBar = ({ language, percentage, color}) => {
     return (
         <>
             <div className="d-flex align-items-center">
-                {language && (<label style={{marginRight: "20px"}}>{language}</label>)}
+                {language && (<label style={{width: "50px", marginRight: "10px"}}>{language}</label>)}
                 <div>
                     <div className="progress" style={{ width: '150px'}}>
                         <div
