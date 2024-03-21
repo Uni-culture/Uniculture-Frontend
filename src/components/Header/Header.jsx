@@ -136,7 +136,7 @@ const Header = () => {
                     <div className={`collapse navbar-collapse ${isNavOpen ? 'show' : ''}`}>
                         <ul className="navbar-nav">
                             <li className="nav-item">
-                                <Link to="/?page=0" className={`nav-link ${activePage("/")}`}>홈</Link>
+                                <Link to="/" className={`nav-link ${activePage("/")}`}>홈</Link>
                             </li>
                             <li className="nav-item">
                                 <button className={`btn nav-link ${activePage("/friends")}`} onClick={() => handleNavigation("/friends")}>친구</button>

@@ -8,6 +8,8 @@ import axios from 'axios';
 import { PiPlusCircleBold, PiPlusCircleFill } from "react-icons/pi";
 import LanguageList from './components/LanguageList';
 import Swal from 'sweetalert2';
+import MyBoardList from "./MyBoardList";
+import OtherBoardList from "./OtherBoardList";
 
 
 export default function OtherProfile({otherInformation}) {
@@ -396,6 +398,9 @@ export default function OtherProfile({otherInformation}) {
                     )}
 
                 </div>
+            </div>
+            <div>
+                <OtherBoardList memberId={otherInfo.id} />
             </div>
         </Layout>
     );
