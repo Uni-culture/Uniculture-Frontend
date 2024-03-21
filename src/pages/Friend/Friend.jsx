@@ -6,8 +6,9 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import FriendCard from './components/FriendCard';
 import FriendList from '../Profile/components/FriendList';
-import { Badge, Input, Pagination} from "antd";
+import { Badge, Input} from "antd";
 import { AiOutlineBell } from "react-icons/ai";
+import Pagination from '@mui/material/Pagination';
 
 export default function Friend() {
     const navigate = useNavigate();
@@ -22,6 +23,8 @@ export default function Friend() {
     const [showFilter, setShowFilter] = useState(false); 
 
     //pagination
+    const [pageCount, setPageCount] = useState(1);
+    const [resultPage, setResultPage] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
     const [currentFriends, setCurrentFriends] = useState([]);  
 
@@ -76,8 +79,13 @@ export default function Friend() {
         fetchFriendList();
     }, []);
 
+    useEffect(() => {
+        setPageCount(Math.ceil( friendList.length / 3));
+    }, [friendList]);
+
     // 페이지 변경 시 해당 상태를 업데이트하는 함수
-    const changePage = (page) => {
+    const changePage = (event) => {
+        const page = Number(event.target.outerText);
         const newIndexOfLast= page * 3;
         const newIndexOfFirst = newIndexOfLast - 3;
 
@@ -319,6 +327,7 @@ export default function Friend() {
                 return friend.nickname.toLowerCase().includes(value?.toLowerCase());
             });
 
+            setResultPage(Math.ceil( filteredFriends.length / 3)); //검색 결과 전체 페이지 수
             setSearchResult(filteredFriends); // 검색 결과 업데이트
             setCurrentPage(1); // 페이지를 1로 설정
             setCurrentFriends(filteredFriends.slice(0, 3)); // 검색 결과의 첫 페이지의 친구 목록 설정
@@ -372,29 +381,31 @@ export default function Friend() {
             </div>
 
             {/* 검색X인 경우 */}
-            {searchResult === null && currentFriends && renderTabContent()}
-            {activeTab === 'myFriends' && searchResult === null && currentFriends && (
-                <div style={{textAlign: "center", marginTop: "50px"}}>
-                    <Pagination current={currentPage} total={friendList.length} defaultPageSize={3} onChange={(value) => changePage(value)}/>
-                </div>
-            )}
+            <div style={{float:"left", textAlign:"center"}}>
+                {searchResult === null && currentFriends && renderTabContent()}
+                {activeTab === 'myFriends' && searchResult === null && currentFriends && (
+                    <div style={{display:"inline-block", marginTop: "50px"}}>
+                        <Pagination page={currentPage} count={pageCount}  defaultPage={1} onChange={changePage} showFirstButton showLastButton />
+                    </div>
+                )}
+            </div>
 
             {/* 검색O + 검색 결과가 없을 때 표시될 내용 */}
             {activeTab === 'myFriends' && searchResult && searchResult.length === 0 && <div style={{marginTop: "30px"}}>검색 결과가 없습니다.</div>}
             
             {/* 검색O + 검색 결과가 있을 때 표시될 내용 */}
             {activeTab === 'myFriends' && searchResult && searchResult.length !== 0 && 
-                <div style={{display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "50px", marginTop:"30px"}}>
-                    {currentFriends.map((friend) => (
-                        <FriendCard key={friend.id} userInfo={friend} deleteFriend={deleteFriend} />
-                    ))}
+                <div style={{float:"left", textAlign:"center"}}>
+                    <div style={{display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "50px", marginTop:"30px"}}>
+                        {currentFriends.map((friend) => (
+                            <FriendCard key={friend.id} userInfo={friend} deleteFriend={deleteFriend} />
+                        ))}
+                    </div>
+                    <div style={{display:"inline-block", marginTop: "50px"}}>
+                        <Pagination page={currentPage} count={resultPage}  defaultPage={1} onChange={changePage} showFirstButton showLastButton />
+                    </div>
                 </div>
             }
-            { activeTab === 'myFriends' && searchResult && searchResult.length !== 0 &&(
-                <div style={{textAlign: "center", marginTop: "50px"}}>
-                    <Pagination current={currentPage} total={searchResult.length} defaultPageSize={3} onChange={(value) => changePage(value)}/>
-                </div>
-            )}
             
             {/* 친구 신청 모달창 */}
             {showRequests && (
