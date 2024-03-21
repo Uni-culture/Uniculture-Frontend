@@ -42,7 +42,6 @@ export default function OtherProfile({otherInformation}) {
         // 학습 언어 배열로 변환하여 업데이트한 후 능숙도가 높은 순으로 정렬
         const wantLanguagesArray = Object.entries(otherInfo.wantlanguages).map(([language, value]) => ({ language, value }));
         setWantLanguages(wantLanguagesArray);
-
         setWantLanguages(prevWantLanguages => [...prevWantLanguages].sort((a, b) => b.value - a.value));
 
         setFriendStatus(otherInfo.friendstatus);
