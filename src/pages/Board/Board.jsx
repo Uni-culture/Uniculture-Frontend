@@ -38,7 +38,6 @@ const Board = () => {
                     console.log(`data : `, boardData);
                     setBoard(boardData);
                     setIsLoaded(true);
-                    setLiked(board.isLike);
                     console.log("200 성공~~~~");
                 }
             } catch (error) { // 실패 시
@@ -94,6 +93,12 @@ const Board = () => {
         }
     };
 
+    useEffect(() => {
+        if (board.isLike !== undefined) {
+            setLiked(board.isLike);
+        }
+    }, [board.isLike]); // board.isLike가 변경될 때 liked 상태를 업데이트
+
     return (
         <div className="board-layout">
             <Header/>
@@ -104,11 +109,12 @@ const Board = () => {
                         <div className="board-header-username">{board.writerName}</div>
                         <div className="board-header-dot">·</div>
                         <div className="board-header-date">{moment(board.createDate).add(9,"hour").format('YYYY-MM-DD')}</div>
-                        <div style={{marginLeft: "30px"}}>
-                            {liked ?
-                                <HeartFilled style={{color: 'red'}} onClick={handleLike}/> :
-                                <HeartOutlined onClick={handleLike}/>
-                            }
+                        <div className="like" style={{marginLeft: "30px"}}>
+                            {liked ? (
+                                <HeartFilled style={{color: 'red'}} onClick={handleLike} />
+                            ) : (
+                                <HeartOutlined onClick={handleLike} />
+                            )}
                         </div>
                     </div>
                     <hr/>

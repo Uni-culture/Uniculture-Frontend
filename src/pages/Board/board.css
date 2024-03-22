@@ -49,4 +49,9 @@
     margin-right: 1rem;
 }
 
-
+.like {
+    transition: transform 300ms ease;
+}
+.like:hover {
+    transform: scale(1.1);
+}
