@@ -11,20 +11,29 @@
 .board-wrapper {
     /*background-color: #8BC765;*/
     min-height: 100vh;
-    margin-left: 80px;
-    margin-right: 80px;
+    margin-left: 130px;
+    margin-right: 200px;
     position: relative;
 
     .board-header {
-        justify-content: space-between;
+        /*justify-content: space-between;*/
         align-items: baseline;
         display: flex;
         margin-top: 30px;
-        .board-header-username{
-            font-size: 1.0rem;
+        font-weight: 600;
+        .board-header-username {
+            font-size: 1.2rem;
         }
-        .board-header-date{
-            font-size: 1.0rem;
+        .board-header-dot {
+            margin-left: 10px;
+            color: gray;
+            font-size: 0.9rem;
+        }
+        .board-header-date {
+            font-weight: lighter;
+            margin-left: 10px;
+            font-size: 0.9rem;
+            color: gray;
             vertical-align: baseline;
         }
     }

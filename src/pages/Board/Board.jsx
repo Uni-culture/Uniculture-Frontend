@@ -4,14 +4,17 @@ import {useNavigate, useParams} from "react-router-dom";
 import moment from "moment";
 import Header from "../../components/Header/Header";
 import "./board.css";
+import {HeartOutlined, HeartFilled} from '@ant-design/icons';
 
 const Board = () => {
     const {board_id} = useParams();
     const [board, setBoard] = useState({});
     const [isLoaded, setIsLoaded] = useState(false);
     const navigate = useNavigate();
+    const [liked, setLiked] = useState(false); // 좋아요 상태 관리
     // modal이 보이는 여부 상태(아직 사용x)
     const [show, setShow] = useState(false);
+
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
     };
@@ -34,7 +37,8 @@ const Board = () => {
                     const boardData = response.data;
                     console.log(`data : `, boardData);
                     setBoard(boardData);
-                    setIsLoaded(true)
+                    setIsLoaded(true);
+                    setLiked(board.isLike);
                     console.log("200 성공~~~~");
                 }
             } catch (error) { // 실패 시
@@ -50,6 +54,46 @@ const Board = () => {
         getBoard();
     }, [])
 
+
+    const handleLike = async () => {
+        if (!token) {
+            console.log("로그인이 필요합니다");
+            return;
+        }
+
+        try {
+            if (!liked) {
+                const response = await axios.post(`/api/auth/post/${board_id}/like`, {}, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    },
+                });
+                if (response.status === 200) {
+                    setLiked(true);
+                }
+                console.log("좋아요 누름");
+            } else {
+                const response = await axios.delete(`/api/auth/post/${board_id}/like`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                if (response.status === 200) {
+                    setLiked(false);
+                }
+                console.log("좋아요 취소");
+            }
+        } catch (error) {
+            if(error.response.status === 401) {
+                console.log("토큰이 만료되었습니다.");
+            }
+            else {
+                console.log("서버 오류 입니다.");
+                alert(error.response.data);
+            }
+        }
+    };
+
     return (
         <div className="board-layout">
             <Header/>
@@ -58,12 +102,19 @@ const Board = () => {
                     <div className="board-title">{board.title}</div>
                     <div className="board-header">
                         <div className="board-header-username">{board.writerName}</div>
+                        <div className="board-header-dot">·</div>
                         <div className="board-header-date">{moment(board.createDate).add(9,"hour").format('YYYY-MM-DD')}</div>
+                        <div style={{marginLeft: "30px"}}>
+                            {liked ?
+                                <HeartFilled style={{color: 'red'}} onClick={handleLike}/> :
+                                <HeartOutlined onClick={handleLike}/>
+                            }
+                        </div>
                     </div>
                     <hr/>
                     <div className="board-body">
                         <div className="board-image">
-                            <img src={`/api/image/view/${board_id}`}/>
+                            {/*<img src={`/api/image/view/${board_id}`}/>*/}
                         </div>
                         <div className="board-title-content">
                             <div className="board-content">{board.content}</div>
@@ -72,21 +123,12 @@ const Board = () => {
                     <div className="board-footer"></div>
 
                     {
-                        // jwtUtils.isAuth(token) && jwtUtils.getId(token) === board.user.id &&
+                        board.isMine && // 자신의 게시물이면 활성화
                         <div className="edit-delete-button">
-                            <button
-                                className="delete-button"
-                                onClick={() => {
-                                    setShow(true)
-                                }}
-                            >
+                            <button className="delete-button" onClick={() => {setShow(true)}}>
                                 삭제
                             </button>
-                            <button
-                                onClick={() => {
-                                    navigate(`/edit-board/${board_id}`)
-                                }}
-                            >
+                            <button onClick={() => {navigate(`/edit-board/${board_id}`)}}>
                                 수정
                             </button>
                         </div>

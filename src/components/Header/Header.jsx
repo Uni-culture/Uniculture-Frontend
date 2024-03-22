@@ -48,6 +48,7 @@ const Header = () => {
             }
         } catch (error) {
             if(error.response.status === 401) {
+                localStorage.removeItem('accessToken');
                 console.log("401 오류");
             }
             // else console.error('Login Error:', error);
