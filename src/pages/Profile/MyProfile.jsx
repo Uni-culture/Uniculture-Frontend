@@ -12,7 +12,7 @@ import { IoIosSettings } from "react-icons/io";
 import { FaExchangeAlt } from "react-icons/fa";
 import LanguageList from './components/LanguageList';
 import MyBoardList from "./MyBoardList";
-import BoardList from "../BoardList/BoardList";
+import TotalBoardList from "../BoardList/TotalBoardList";
 
 export default function MyProfile({myInformation}) {
     const [myInfo, setMyInfo] = useState(myInformation); // 매개변수로 받은것을 가지고 다시 상태유지
