@@ -6,9 +6,10 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import FriendCard from './components/FriendCard';
 import FriendList from '../Profile/components/FriendList';
-import { Badge, Input} from "antd";
+import { Badge, Input, Select} from "antd";
 import { AiOutlineBell } from "react-icons/ai";
 import Pagination from '@mui/material/Pagination';
+import { GrCheckmark, GrPowerReset } from "react-icons/gr";
 
 export default function Friend() {
     const navigate = useNavigate();
@@ -20,7 +21,13 @@ export default function Friend() {
     const [searchResult, setSearchResult] = useState(null); // 검색 결과
 
     //필터
-    const [showFilter, setShowFilter] = useState(false); 
+    const { Option } = Select;
+    const [showFilter, setShowFilter] = useState(false); //필터 div 보이기
+    const [friendFilter, setFrinedFilter] = useState(false); //필터링 한 친구 목록인지
+    const [filterContent, setFilterContent] = useState(null); //필터 성별
+    
+    //select
+    const [selectGender, setSelectGender] = useState("GENDER"); //선택 성별
 
     //pagination
     const [pageCount, setPageCount] = useState(0); //전체 페이지 수
@@ -52,7 +59,7 @@ export default function Friend() {
             
             if(response.status === 200){
                 setFriendList(response.data.content);
-                setPageCount(Math.ceil( response.data.totalElements / 3));
+                setPageCount(response.data.totalPages);
             }
             else if(response.status === 400){
                 console.log("친구 목록 불러오기 클라이언트 오류");
@@ -75,11 +82,8 @@ export default function Friend() {
     };
 
     useEffect(() => {
-        fetchFriendList(0);
-    }, []);
-
-    useEffect(() => {
-        fetchFriendList(currentPage);
+        if(filterContent) fetchFriendFilter(currentPage);
+        else fetchFriendList(currentPage);
     }, [currentPage]);
 
     // 페이지 변경 시 해당 상태를 업데이트하는 함수
@@ -307,23 +311,59 @@ export default function Friend() {
         }
     };
 
-    // 검색 기능을 수행하는 함수
-    const searchFriend = (value) => {
-        if(value === '') { //검색X인 경우
-            setSearchResult(null);
-            setCurrentPage(0); //페이지 1로 설정
-            fetchFriendList(0); //현재 페이지 친구 목록 다시 불러오기
-        }
-        else{ //검색O인 경우
-            const filteredFriends = friendList.filter(friend => {
-                return friend.nickname.toLowerCase().includes(value?.toLowerCase());
-            });
+    //Gender 선택
+    const handleGenderFilter = (value) => {
+        console.log(`selected Gender : ${value}`);
+        setSelectGender(value);
+    }
 
-            setResultPage(Math.ceil( filteredFriends.length / 3)); //검색 결과 전체 페이지 수
-            // setSearchResult(filteredFriends); // 검색 결과 업데이트
-            setCurrentPage(0); // 페이지를 1로 설정
+    //친구 필터링
+    const fetchFriendFilter = async (page) => {
+        try {
+            console.log("친구 필터링");
+            const token = getToken();
+
+            let Query= '' 
+            console.log(filterContent.ge);
+            Query= filterContent.ge ? `ge=${filterContent.ge}` : '';
+
+            const response = await axios.get(`/api/auth/friend/serach?${Query}&page=${page}&size=3`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            
+            if(response.status === 200){
+                console.log("성공");
+                setFriendList(response.data.content);
+                setPageCount(response.data.totalPages);
+            }
+            else if(response.status === 400){
+                console.log("친구 필터링 클라이언트 오류");
+            }
+            else if(response.status === 500){
+                console.log("친구 필터링 서버 오류");
+            }
+            
+        } catch (error) {
+            console.log("친구 필터링 오류 :" + error);
         }
     };
+
+    //filterContent 수정
+    const handleFilter = async () => {
+        setFilterContent({ ge: selectGender });
+    }
+
+    //필터내용 바뀌면 실행
+    useEffect(() => {
+        if(filterContent) fetchFriendFilter(0);
+    }, [filterContent]);
+
+    //필터 재설정
+    const resetFilter = () => {
+        setSelectGender("GENDER");
+    }
 
     return (
         <Layout>
@@ -352,12 +392,12 @@ export default function Friend() {
                                 placeholder="Search for friends"
                                 prefix={<TbSearch style={{ color: 'rgba(0,0,0,.25)' }} />}
                                 style={{width: 300}}
-                                onChange={(e) => searchFriend(e.target.value)}
+                                // onChange={(e) => searchFriend(e.target.value)}
                             />
                         </div>
                     )}
 
-                    <div style={{fontSize: "25px", marginLeft: "20px", paddingBottom: "5px"}} onClick={()=>{setShowFilter(true)}}><TbAdjustmentsHorizontal /></div>
+                    <div style={{fontSize: "25px", marginLeft: "20px", paddingBottom: "5px"}} onClick={()=>{setShowFilter(!showFilter); resetFilter();}}><TbAdjustmentsHorizontal /></div>
                 
                 </div>
 
@@ -371,32 +411,33 @@ export default function Friend() {
                 </div>
             </div>
 
-            {/* 검색X인 경우 */}
+            {/* 친구 필터 */}
+            {showFilter && (
+                <div style={{display:"flex", marginTop:"10px"}}>
+                    <Select
+                        defaultValue="GENDER"
+                        value={selectGender} 
+                        style={{ width: 120 }} 
+                        onChange={handleGenderFilter}
+                    >
+                        <Option value="GENDER" disabled>Gender</Option>
+                        <Option value="MAN">Man</Option>
+                        <Option value="WOMAN">Woman</Option>
+                    </Select>
+
+                    <div style={{marginLeft: "10px"}} onClick={() => {setFrinedFilter(true); handleFilter(0)}}><GrCheckmark /></div>
+                    <div style={{marginLeft: "10px"}} onClick={()=> {resetFilter();}}><GrPowerReset /></div>
+                </div>
+            )}
+
             <div style={{float:"left", textAlign:"center"}}>
-                {searchResult === null && renderTabContent()}
-                {activeTab === 'myFriends' && searchResult === null && (
+                {renderTabContent()}
+                {activeTab === 'myFriends' && (
                     <div style={{display: "flex", justifyContent: "center", marginTop: "50px"}}>
                         <Pagination page={currentPage + 1} count={pageCount}  defaultPage={1} onChange={changePage} showFirstButton showLastButton />
                     </div>
                 )}
             </div>
-
-            {/* 검색O + 검색 결과가 없을 때 표시될 내용 */}
-            {activeTab === 'myFriends' && searchResult && searchResult.length === 0 && <div style={{marginTop: "30px"}}>검색 결과가 없습니다.</div>}
-            
-            {/* 검색O + 검색 결과가 있을 때 표시될 내용 */}
-            {activeTab === 'myFriends' && searchResult && searchResult.length !== 0 && (
-                <div style={{float:"left", textAlign:"center"}}>
-                    <div style={{display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "50px", marginTop:"30px"}}>
-                        {searchResult.map((friend) => (
-                            <FriendCard key={friend.id} userInfo={friend} deleteFriend={deleteFriend} />
-                        ))}
-                    </div>
-                    <div style={{display: "flex", justifyContent: "center", marginTop: "50px"}}>
-                        <Pagination page={currentPage} count={resultPage}  defaultPage={1} onChange={changePage} showFirstButton showLastButton />
-                    </div>
-                </div>
-            )}
 
             {/* 친구 신청 모달창 */}
             {showRequests && (
@@ -430,6 +471,7 @@ export default function Friend() {
                     </div>
                 </div>
             )}
+
         </Layout>
     )
 }
