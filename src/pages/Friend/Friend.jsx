@@ -9,7 +9,8 @@ import FriendList from '../Profile/components/FriendList';
 import { Badge, Input, Select} from "antd";
 import { AiOutlineBell } from "react-icons/ai";
 import Pagination from '@mui/material/Pagination';
-import { GrCheckmark, GrPowerReset } from "react-icons/gr";
+import { GrCheckmark, GrPowerReset, GrClose } from "react-icons/gr";
+import AgeFilter from './components/AgeFilter';
 
 export default function Friend() {
     const navigate = useNavigate();
@@ -17,21 +18,21 @@ export default function Friend() {
     const [friendList, setFriendList] = useState([]); //친구 목록
 
     //검색
-    const [searchInput, setSearchInput] = useState(''); // 검색창 값
-    const [searchResult, setSearchResult] = useState(null); // 검색 결과
+    const [searchInput, setSearchInput] = useState(null); // 검색창 값
 
     //필터
     const { Option } = Select;
     const [showFilter, setShowFilter] = useState(false); //필터 div 보이기
-    const [friendFilter, setFrinedFilter] = useState(false); //필터링 한 친구 목록인지
     const [filterContent, setFilterContent] = useState(null); //필터 성별
     
     //select
     const [selectGender, setSelectGender] = useState("GENDER"); //선택 성별
+    const [selectMina, setSelectMina] = useState(0); //선택 최소나이
+    const [selectMaxa, setSelectMaxa] = useState(100); //선택 최대나이
+
 
     //pagination
     const [pageCount, setPageCount] = useState(0); //전체 페이지 수
-    const [resultPage, setResultPage] = useState(0); //검색결과 전체 페이지 수
     const [currentPage, setCurrentPage] = useState(0); //현재 페이지
 
     //친구 신청 모달창
@@ -45,13 +46,15 @@ export default function Friend() {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
     };
 
-    // 친구 목록 불러오기
+    // 친구 목록 불러오기, 검색
     const fetchFriendList = async (page) => {
         try {
             console.log("친구 목록 불러오기");
             const token = getToken();
 
-            const response = await axios.get(`/api/auth/friend/detail?page=${page}&size=3`, {
+            let Query= searchInput ? `name=${searchInput}&` : '';
+
+            const response = await axios.get(`/api/auth/friend/detail?${Query}page=${page}&size=3`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -82,13 +85,24 @@ export default function Friend() {
     };
 
     useEffect(() => {
-        if(filterContent) fetchFriendFilter(currentPage);
-        else fetchFriendList(currentPage);
-    }, [currentPage]);
+        fetchFriendList(0);
+    }, []);
+
+    //검색 내용 바뀌면 실행
+    useEffect(() => {
+        if(searchInput !== null){
+            setCurrentPage(0);
+            fetchFriendList(0);
+        }
+    }, [searchInput]);
 
     // 페이지 변경 시 해당 상태를 업데이트하는 함수
     const changePage = (event) => {
-        setCurrentPage(event.target.outerText - 1); //현재 페이지
+        const page = event.target.outerText - 1;
+        setCurrentPage(page); //현재 페이지
+
+        if(filterContent) fetchFriendFilter(page);
+        else fetchFriendList(page);
     }
     
     //내 친구/추천 친구 선택
@@ -127,7 +141,8 @@ export default function Friend() {
             
             if(response.status === 200){
                 console.log("친구 삭제 : " + friendInfo.nickname);
-                fetchFriendList(currentPage); //현재 페이지 친구 목록 다시 불러오기
+                setCurrentPage(0);
+                fetchFriendList(0);
             }
             else if(response.status === 400){
                 console.log("클라이언트 오류");
@@ -317,17 +332,29 @@ export default function Friend() {
         setSelectGender(value);
     }
 
+    //Min Age 선택
+    const handleMinaFilter = (value) => {
+        console.log(`selected min age: ${value}`);
+        if(value) setSelectMina(parseInt(value));
+    }
+
+    //Max Age 선택
+    const handleMaxaFilter = (value) => {
+        console.log(`selected max age: ${value}`);
+        if(value) setSelectMaxa(parseInt(value));
+    }
+
     //친구 필터링
     const fetchFriendFilter = async (page) => {
         try {
             console.log("친구 필터링");
             const token = getToken();
 
-            let Query= '' 
-            console.log(filterContent.ge);
-            Query= filterContent.ge ? `ge=${filterContent.ge}` : '';
+            let Query= ''; 
+            if (filterContent.ge ) Query += `ge=${filterContent.ge}&`;
+            if (filterContent.mina && filterContent.maxa ) Query += `mina=${filterContent.mina}&maxa=${filterContent.maxa}&`;
 
-            const response = await axios.get(`/api/auth/friend/serach?${Query}&page=${page}&size=3`, {
+            const response = await axios.get(`/api/auth/friend/search?${Query}page=${page}&size=3`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -351,18 +378,36 @@ export default function Friend() {
     };
 
     //filterContent 수정
-    const handleFilter = async () => {
-        setFilterContent({ ge: selectGender });
+    const handleFilter = () => {
+        setCurrentPage(0);
+        
+        if (selectGender !== "GENDER") setFilterContent({ ge: selectGender });
+        if (selectMina !==0 || selectMaxa !== 100 ) {
+            setFilterContent({mina : selectMina});
+            setFilterContent(prevFilterContent => ({...prevFilterContent, maxa : selectMaxa}));
+        }
     }
 
     //필터내용 바뀌면 실행
     useEffect(() => {
         if(filterContent) fetchFriendFilter(0);
+        console.log(filterContent);
     }, [filterContent]);
 
     //필터 재설정
     const resetFilter = () => {
         setSelectGender("GENDER");
+        setSelectMina(0);
+        setSelectMaxa(100);
+    }
+
+    //필터 없애기
+    const resetFriend = () => {
+        resetFilter();
+        setShowFilter(false);
+        setFilterContent('');
+        setCurrentPage(0);
+        fetchFriendList(0);
     }
 
     return (
@@ -380,7 +425,7 @@ export default function Friend() {
                             <li 
                                 className="nav-item"
                                 style={{ width:"70px", fontWeight: activeTab === 'recommended' ? 'bold' : 'normal' }}
-                                onClick={() => {setActiveTab('recommended'); setSearchResult(null); setSearchInput(null)}}>
+                                onClick={() => {setActiveTab('recommended'); setSearchInput(''); setShowFilter(false)}}>
                                 추천 친구
                             </li>
                         </ul>
@@ -392,7 +437,7 @@ export default function Friend() {
                                 placeholder="Search for friends"
                                 prefix={<TbSearch style={{ color: 'rgba(0,0,0,.25)' }} />}
                                 style={{width: 300}}
-                                // onChange={(e) => searchFriend(e.target.value)}
+                                onChange={(e) => setSearchInput(e.target.value)}
                             />
                         </div>
                     )}
@@ -425,8 +470,14 @@ export default function Friend() {
                         <Option value="WOMAN">Woman</Option>
                     </Select>
 
-                    <div style={{marginLeft: "10px"}} onClick={() => {setFrinedFilter(true); handleFilter(0)}}><GrCheckmark /></div>
+                    <input placeholder={selectMina} value={selectMina} onChange={(e) => handleMinaFilter(e.target.value)}/>
+                    <input placeholder={selectMaxa} value={selectMaxa} onChange={(e) => handleMaxaFilter(e.target.value)}/>
+
+                    {/* <AgeFilter/> */}
+
+                    <div style={{marginLeft: "10px"}} onClick={() => {handleFilter()}}><GrCheckmark /></div>
                     <div style={{marginLeft: "10px"}} onClick={()=> {resetFilter();}}><GrPowerReset /></div>
+                    <div style={{marginLeft: "10px"}} onClick={()=> {resetFriend();}}><GrClose/></div>
                 </div>
             )}
 
