@@ -74,8 +74,6 @@ export default function FriendCard({userInfo, deleteFriend}) {
                             )}
                             <div style={{fontSize:"13px", marginLeft:"3px"}}>{userInfo.age}</div>
                         </div>
-
-                        {/* <div style={{fontWeight:"normal", fontSize:"12px", marginLeft:"10px"}}>{userInfo.age} {userInfo.gender} </div> */}
                     </div>
 
                     <div style={{ display: 'flex', alignItems:"center"}}>
@@ -87,10 +85,12 @@ export default function FriendCard({userInfo, deleteFriend}) {
                 </div>
             } 
         >
+            {/* 소개 */}
+            <div style={{textAlign: "left"}}>{userInfo?.introduce}</div>
 
             {/* 사용언어, 학습언어 */}
-            {maxCanLanguage && <p><PercentBar language={maxCanLanguage.language} percentage={maxCanLanguage.level} color={"blue"}/></p>}
-            {maxWantLanguage && <p><PercentBar language={maxWantLanguage.language} percentage={maxWantLanguage.level} color={"red"}/></p>}
+            {maxCanLanguage && <div style={{margin:"15px 0px 15px 0px"}}><PercentBar language={maxCanLanguage.language} percentage={maxCanLanguage.level} color={"blue"}/></div>}
+            {maxWantLanguage && <div style={{margin:"15px 0px 15px 0px"}}><PercentBar language={maxWantLanguage.language} percentage={maxWantLanguage.level} color={"red"}/></div>}
                 
             {/* 취미 */}
             <div style={{ marginTop: "30px" }}>

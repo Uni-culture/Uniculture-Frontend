@@ -23,10 +23,9 @@ export default function Friend() {
     const [showFilter, setShowFilter] = useState(false); 
 
     //pagination
-    const [pageCount, setPageCount] = useState(1);
-    const [resultPage, setResultPage] = useState(1);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [currentFriends, setCurrentFriends] = useState([]);  
+    const [pageCount, setPageCount] = useState(0); //전체 페이지 수
+    const [resultPage, setResultPage] = useState(0); //검색결과 전체 페이지 수
+    const [currentPage, setCurrentPage] = useState(0); //현재 페이지
 
     //친구 신청 모달창
     const [showRequests, setShowRequests] = useState(false); 
@@ -40,20 +39,20 @@ export default function Friend() {
     };
 
     // 친구 목록 불러오기
-    const fetchFriendList = async () => {
+    const fetchFriendList = async (page) => {
         try {
             console.log("친구 목록 불러오기");
             const token = getToken();
 
-            const response = await axios.get('/api/auth/friend/detail', {
+            const response = await axios.get(`/api/auth/friend/detail?page=${page}&size=3`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
             
             if(response.status === 200){
-                setFriendList(response.data);
-                setCurrentFriends(response.data.slice(0, 3));
+                setFriendList(response.data.content);
+                setPageCount(Math.ceil( response.data.totalElements / 3));
             }
             else if(response.status === 400){
                 console.log("친구 목록 불러오기 클라이언트 오류");
@@ -76,23 +75,16 @@ export default function Friend() {
     };
 
     useEffect(() => {
-        fetchFriendList();
+        fetchFriendList(0);
     }, []);
 
     useEffect(() => {
-        setPageCount(Math.ceil( friendList.length / 3));
-    }, [friendList]);
+        fetchFriendList(currentPage);
+    }, [currentPage]);
 
     // 페이지 변경 시 해당 상태를 업데이트하는 함수
     const changePage = (event) => {
-        const page = Number(event.target.outerText);
-        const newIndexOfLast= page * 3;
-        const newIndexOfFirst = newIndexOfLast - 3;
-
-        setCurrentPage(page); //현재 페이지
-
-        if(searchInput !== null && searchResult !== null) setCurrentFriends(searchResult.slice(newIndexOfFirst, newIndexOfLast));
-        else if (friendList !== null) setCurrentFriends(friendList.slice(newIndexOfFirst, newIndexOfLast)); //현재 보여지는 친구 목록
+        setCurrentPage(event.target.outerText - 1); //현재 페이지
     }
     
     //내 친구/추천 친구 선택
@@ -101,7 +93,7 @@ export default function Friend() {
             case 'myFriends':
                 return (
                     <div style={{display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "50px", marginTop:"30px"}}>
-                        {friendList && currentFriends.map((friend) => (
+                        {friendList && friendList.map((friend) => (
                             <FriendCard key={friend.id} userInfo={friend} deleteFriend={deleteFriend}/>
                         ))}
                     </div>
@@ -131,7 +123,7 @@ export default function Friend() {
             
             if(response.status === 200){
                 console.log("친구 삭제 : " + friendInfo.nickname);
-                setFriendList(friendList.filter(request => request.id !== friendInfo.id)); //친구 목록에서 삭제
+                fetchFriendList(currentPage); //현재 페이지 친구 목록 다시 불러오기
             }
             else if(response.status === 400){
                 console.log("클라이언트 오류");
@@ -243,7 +235,7 @@ export default function Friend() {
             if(response.status === 200){
                 console.log(userInfo.nickname + "님의 친구 요청을 수락했습니다.");
                 setReceivedRequests(receivedRequests.filter(request => request.id !== userInfo.id)); //받은 친구 신청 목록에서 삭제
-                setFriendList([...friendList, userInfo]); //친구 목록에 추가
+                fetchFriendList(currentPage); //현재 페이지 친구 목록 다시 불러오기
             }
             else if(response.status === 400){
                 console.log("클라이언트 오류");
@@ -319,8 +311,8 @@ export default function Friend() {
     const searchFriend = (value) => {
         if(value === '') { //검색X인 경우
             setSearchResult(null);
-            setCurrentPage(1); //페이지 1로 설정
-            setCurrentFriends(friendList.slice(0, 3)); //currentPage 친구 목록
+            setCurrentPage(0); //페이지 1로 설정
+            fetchFriendList(0); //현재 페이지 친구 목록 다시 불러오기
         }
         else{ //검색O인 경우
             const filteredFriends = friendList.filter(friend => {
@@ -328,9 +320,8 @@ export default function Friend() {
             });
 
             setResultPage(Math.ceil( filteredFriends.length / 3)); //검색 결과 전체 페이지 수
-            setSearchResult(filteredFriends); // 검색 결과 업데이트
-            setCurrentPage(1); // 페이지를 1로 설정
-            setCurrentFriends(filteredFriends.slice(0, 3)); // 검색 결과의 첫 페이지의 친구 목록 설정
+            // setSearchResult(filteredFriends); // 검색 결과 업데이트
+            setCurrentPage(0); // 페이지를 1로 설정
         }
     };
 
@@ -342,13 +333,13 @@ export default function Friend() {
                         <ul className="nav">
                             <li 
                                 className="nav-item"
-                                style={{ fontWeight: activeTab === 'myFriends' ? 'bold' : 'normal', marginRight: "20px"}}
+                                style={{ width:"50px", fontWeight: activeTab === 'myFriends' ? 'bold' : 'normal', marginRight: "20px"}}
                                 onClick={() => setActiveTab('myFriends')}>
                                 내 친구
                             </li>
                             <li 
                                 className="nav-item"
-                                style={{ fontWeight: activeTab === 'recommended' ? 'bold' : 'normal' }}
+                                style={{ width:"70px", fontWeight: activeTab === 'recommended' ? 'bold' : 'normal' }}
                                 onClick={() => {setActiveTab('recommended'); setSearchResult(null); setSearchInput(null)}}>
                                 추천 친구
                             </li>
@@ -382,10 +373,10 @@ export default function Friend() {
 
             {/* 검색X인 경우 */}
             <div style={{float:"left", textAlign:"center"}}>
-                {searchResult === null && currentFriends && renderTabContent()}
-                {activeTab === 'myFriends' && searchResult === null && currentFriends && (
+                {searchResult === null && renderTabContent()}
+                {activeTab === 'myFriends' && searchResult === null && (
                     <div style={{display: "flex", justifyContent: "center", marginTop: "50px"}}>
-                        <Pagination page={currentPage} count={pageCount}  defaultPage={1} onChange={changePage} showFirstButton showLastButton />
+                        <Pagination page={currentPage + 1} count={pageCount}  defaultPage={1} onChange={changePage} showFirstButton showLastButton />
                     </div>
                 )}
             </div>
@@ -397,7 +388,7 @@ export default function Friend() {
             {activeTab === 'myFriends' && searchResult && searchResult.length !== 0 && (
                 <div style={{float:"left", textAlign:"center"}}>
                     <div style={{display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "50px", marginTop:"30px"}}>
-                        {currentFriends.map((friend) => (
+                        {searchResult.map((friend) => (
                             <FriendCard key={friend.id} userInfo={friend} deleteFriend={deleteFriend} />
                         ))}
                     </div>
