@@ -13,10 +13,11 @@ import ProfileInfo from './pages/Profile/ProfileInfo';
 import ProfileDelete from './pages/Profile/ProfileDelete';
 import Friend from './pages/Friend/Friend';
 import AddBoard from "./pages/AddBoard/AddBoard";
-import TotalBoardList from "./pages/BoardList/TotalBoardList";
 import Board from "./pages/Board/Board";
+import EditBoard from "./pages/EditBoard/EditBoard";
 
 function App() {
+
   return (
       <>
         <BrowserRouter>
@@ -33,6 +34,7 @@ function App() {
             <Route path="/chat" element={<Chat />} />
             <Route path="/add-board" element={<AddBoard/>} />
             <Route path="/board/:board_id" element={<Board/>} />
+            <Route path="/:board_id" element={<EditBoard/>} />
           </Routes>
         </BrowserRouter>
       </>

@@ -1,12 +1,15 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams, useLocation} from "react-router-dom";
 import moment from "moment";
 import Header from "../../components/Header/Header";
 import "./board.css";
 import {HeartOutlined, HeartFilled} from '@ant-design/icons';
+import {IoArrowBack} from "react-icons/io5";
+import Swal from "sweetalert2";
 
 const Board = () => {
+    const location = useLocation();
     const {board_id} = useParams();
     const [board, setBoard] = useState({});
     const [isLoaded, setIsLoaded] = useState(false);
@@ -99,9 +102,31 @@ const Board = () => {
         }
     }, [board.isLike]); // board.isLike가 변경될 때 liked 상태를 업데이트
 
+    // IoArrowBack 클릭 시 이전 경로로 이동
+    const goBackToPreviousPath = () => {
+        const previousPath = location.state?.from || "/"; // 이전 경로가 없으면 기본 경로는 "/"
+        navigate(previousPath, {}); // 이전 페이지로 이동
+    };
+
+    const boardDelete = () => {
+        Swal.fire({
+            title: "<span style='font-size: 20px;'>정말 삭제하시겠습니까?</span>",
+            showCancelButton: true,
+            confirmButtonText: "예",
+            cancelButtonText: "아니오",
+            confirmButtonColor: "#8BC765"
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                Swal.fire("게시물이 삭제되었습니다.", "", "success");
+            }
+        });
+    };
+
     return (
         <div className="board-layout">
             <Header/>
+            <IoArrowBack style={{ fontSize: '25px', marginTop: '20px', marginLeft: '20px'}} onClick={goBackToPreviousPath}/>
             {isLoaded && (
                 <div className="board-wrapper">
                     <div className="board-title">{board.title}</div>
@@ -131,10 +156,12 @@ const Board = () => {
                     {
                         board.isMine && // 자신의 게시물이면 활성화
                         <div className="edit-delete-button">
-                            <button className="delete-button" onClick={() => {setShow(true)}}>
+                            <button className="delete-button" onClick={boardDelete}>
                                 삭제
                             </button>
-                            <button onClick={() => {navigate(`/edit-board/${board_id}`)}}>
+                            <button onClick={() => {
+                                navigate(`/${board_id}`, {state : {from : location.pathname}});
+                            }}>
                                 수정
                             </button>
                         </div>

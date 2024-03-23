@@ -11,6 +11,8 @@ import HelpBoardList from "../BoardList/HelpBoardList";
 
 
 const Home = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
     const [isLogin, setIsLogin] = useState(false);
     const [activeTab, setActiveTab] = useState('total'); //컴포넌트 선택
 
@@ -75,8 +77,10 @@ const Home = () => {
                     </span>
                     <span>
                         {isLogin ? (
-                            <button className="write-button">
-                                <Link to="/add-board" className="write-link">글쓰기</Link>
+                            <button className="write-button" onClick={() => {
+                                navigate("/add-board", {state : {from : location.pathname}});
+                            }}>
+                                글쓰기
                             </button>
                         ) : (
                             <></>
