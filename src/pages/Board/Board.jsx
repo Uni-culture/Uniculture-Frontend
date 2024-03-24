@@ -17,8 +17,6 @@ const Board = () => {
     const [isLoaded, setIsLoaded] = useState(false);
     const navigate = useNavigate();
     const [liked, setLiked] = useState(false); // 좋아요 상태 관리
-    // modal이 보이는 여부 상태(아직 사용x)
-    const [show, setShow] = useState(false);
 
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
@@ -59,7 +57,6 @@ const Board = () => {
         getBoard();
     }, [])
 
-
     // 번역 기능
     async function translate(content) {
         try {
@@ -80,13 +77,11 @@ const Board = () => {
         } catch (e) {
             console.log(e);
         }
-
     }
-
 
     const handleLike = async () => {
         if (!token) {
-            console.log("로그인이 필요합니다");
+            alert("로그인이 필요합니다");
             return;
         }
 
@@ -218,7 +213,7 @@ const Board = () => {
                                 ) : (
                                 <button className="translate-button" onClick={()=>{translate(content)}}> 번역 </button>
                                 )}
-                            <button className="delete-button" onClick={() => {setShow(true)}}> 삭제 </button>
+                            <button className="delete-button" onClick={boardDelete}> 삭제 </button>
                             <button onClick={() => {navigate(`/${board_id}`, {state : {from : location.pathname}});}}> 수정 </button>
                         </div>
                     }

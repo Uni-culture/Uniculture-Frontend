@@ -6,7 +6,7 @@ import {useSearchParams} from "react-router-dom";
 import "./boardList.scss";
 import moment from "moment";
 
-const DailyBoardList = (nickname) => {
+const DailyBoardList = () => {
     const [pageCount, setPageCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
     const [boardList, setBoardList] = useState([]);
