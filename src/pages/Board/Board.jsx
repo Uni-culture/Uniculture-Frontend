@@ -110,15 +110,45 @@ const Board = () => {
 
     const boardDelete = () => {
         Swal.fire({
-            title: "<span style='font-size: 20px;'>정말 삭제하시겠습니까?</span>",
+            title: "<span style='font-size: 17px;'>정말 삭제하시겠습니까?</span>",
             showCancelButton: true,
             confirmButtonText: "예",
             cancelButtonText: "아니오",
-            confirmButtonColor: "#8BC765"
+            confirmButtonColor: "#8BC765",
+            customClass: {
+                popup: 'custom-popup',
+                confirmButton: 'custom-confirm-button',
+                cancelButton: 'custom-cancel-button'
+            }
         }).then((result) => {
             if (result.isConfirmed) {
-
-                Swal.fire("게시물이 삭제되었습니다.", "", "success");
+                axios.delete(`/api/auth/post/${board_id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}` // 헤더에 토큰 추가
+                    }
+                })
+                    .then(() => {
+                        Swal.fire({
+                            title: "<span style='font-size: 17px;'>게시물이 삭제되었습니다.</span>",
+                            icon: "success",
+                            confirmButtonColor: "#8BC765",
+                            customClass: {
+                                popup: 'custom-ok-popup',
+                                confirmButton: 'custom-ok-button',
+                                title: 'custom-title'
+                            }
+                        });
+                        navigate("/", {});
+                    })
+                    .catch((error) => {
+                        if(error.response.status === 401) {
+                            console.log("401 오류");
+                        }
+                        else {
+                            console.log("서버 오류 입니다.");
+                            alert(error.response.data);
+                        }
+                    });
             }
         });
     };
