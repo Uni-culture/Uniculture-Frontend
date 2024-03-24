@@ -47,9 +47,6 @@ const DailyBoardList = (nickname) => {
         }
     };
 
-    useEffect(() => {
-        fetchBoardData(0);
-    }, [])
 
     useEffect(() => {
         fetchBoardData(currentPage);

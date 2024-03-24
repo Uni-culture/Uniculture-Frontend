@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import {useNavigate, useParams, useLocation} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import moment from "moment";
 import Header from "../../components/Header/Header";
 import "./board.css";
@@ -12,6 +12,8 @@ const Board = () => {
     const location = useLocation();
     const {board_id} = useParams();
     const [board, setBoard] = useState({});
+    const [content, setContent] = useState(null);
+    const [isTranslated, setIsTranslated] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const navigate = useNavigate();
     const [liked, setLiked] = useState(false); // 좋아요 상태 관리
@@ -40,6 +42,7 @@ const Board = () => {
                     const boardData = response.data;
                     console.log(`data : `, boardData);
                     setBoard(boardData);
+                    setContent(boardData.content);
                     setIsLoaded(true);
                     console.log("200 성공~~~~");
                 }
@@ -55,6 +58,30 @@ const Board = () => {
         };
         getBoard();
     }, [])
+
+
+    // 번역 기능
+    async function translate(content) {
+        try {
+            const token = getToken();
+            const response = await axios.post('/api/auth/translate', {
+                text : content,
+                target_lang : "KO"
+            },{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }// 헤더에 토큰 추가
+                });
+            if (response.status === 200) {
+                console.log(response);
+                setIsTranslated(true);
+                setContent(response.data.text);
+            }
+        } catch (e) {
+            console.log(e);
+        }
+
+    }
 
 
     const handleLike = async () => {
@@ -148,7 +175,7 @@ const Board = () => {
                             {/*<img src={`/api/image/view/${board_id}`}/>*/}
                         </div>
                         <div className="board-title-content">
-                            <div className="board-content">{board.content}</div>
+                            <div className="board-content">{content}</div>
                         </div>
                     </div>
                     <div className="board-footer"></div>
@@ -156,14 +183,13 @@ const Board = () => {
                     {
                         board.isMine && // 자신의 게시물이면 활성화
                         <div className="edit-delete-button">
-                            <button className="delete-button" onClick={boardDelete}>
-                                삭제
-                            </button>
-                            <button onClick={() => {
-                                navigate(`/${board_id}`, {state : {from : location.pathname}});
-                            }}>
-                                수정
-                            </button>
+                            {isTranslated ? (
+                                <button className="translate-button" onClick={()=>{setContent(board.content); setIsTranslated(false);}}> 되돌리기 </button>
+                                ) : (
+                                <button className="translate-button" onClick={()=>{translate(content)}}> 번역 </button>
+                                )}
+                            <button className="delete-button" onClick={() => {setShow(true)}}> 삭제 </button>
+                            <button onClick={() => {navigate(`/${board_id}`, {state : {from : location.pathname}});}}> 수정 </button>
                         </div>
                     }
                 </div>

@@ -8,6 +8,7 @@ import {Card} from "../../components/Card/Card";
 import TotalBoardList from "../BoardList/TotalBoardList";
 import DailyBoardList from "../BoardList/DailyBoardList";
 import HelpBoardList from "../BoardList/HelpBoardList";
+import FriendBoardList from "../BoardList/FriendBoardList";
 
 
 const Home = () => {
@@ -46,6 +47,12 @@ const Home = () => {
                         <HelpBoardList />
                     </div>
                 );
+            case 'friend':
+                return (
+                    <div>
+                        <FriendBoardList/>
+                    </div>
+                )
             default:
                 return null;
         }
@@ -71,7 +78,8 @@ const Home = () => {
                                         onClick={() => setActiveTab('help')}>도움</button>
                             </li>
                             <li className="nav-item">
-                                <button className="nav-link" style={{color: "black"}}>친구</button>
+                                <button className="nav-link" style={{color: "black"}}
+                                        onClick={() => setActiveTab('friend')}>친구</button>
                             </li>
                         </ul>
                     </span>
