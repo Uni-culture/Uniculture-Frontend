@@ -194,6 +194,7 @@ const Board = () => {
                             )}
                         </div>
                         <div className="board-likeCount">{board.likeCount}</div>
+                        <div className="board-postType">{board.postType}</div>
                     </div>
                     <hr/>
                     <div className="board-body">

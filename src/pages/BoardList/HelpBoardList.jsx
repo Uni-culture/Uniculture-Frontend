@@ -2,7 +2,6 @@ import {Pagination} from "@mui/material";
 import {Card} from "../../components/Card/Card";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {useSearchParams} from "react-router-dom";
 import "./boardList.scss";
 import moment from "moment";
 
@@ -54,7 +53,6 @@ const HelpBoardList = () => {
     const changePage = (value) => {
         setCurrentPage(value);
     }
-
 
     return (
         <div className="boardList-wrapper">

@@ -29,8 +29,8 @@ const AddBoard = () => {
     };
 
     const canSubmit = useCallback(() => {
-        return content !== "" && title !== "";
-    }, [title, content]);
+        return content !== "" && title !== "" && postType !== "";
+    }, [title, content, postType]); // 제목, 내용이 비어있지 않다면 true를 반환
 
     const handleSubmit = async () => {
         console.log('handleSubmit start');
@@ -67,11 +67,9 @@ const AddBoard = () => {
 
     const dailyButtonClick = () => {
         setPostType("DAILY");
-        alert("일상이 선택되었습니다.");
     };
     const helpButtonClick = () => {
         setPostType("HELP");
-        alert("도움이 선택되었습니다.");
     };
 
     // IoArrowBack 클릭 시 이전 경로로 이동
@@ -105,6 +103,14 @@ const AddBoard = () => {
                     >
                         사진과 내용을 모두 입력하세요
                     </button>
+                )}
+            </div>
+            <div className="postType-layout">
+                {postType && (
+                    <div>
+                        <span className="postType">{postType}</span>
+                        <span>를 선택하였습니다.</span>
+                    </div>
                 )}
             </div>
             <div className="addBoard-body">

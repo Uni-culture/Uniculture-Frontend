@@ -39,6 +39,17 @@
       font-size: 1.1rem;
     }
   }
+  .postType-layout {
+    display: flex;
+    justify-content: center;
+  }
+
+  .postType {
+    border-radius: 15px;
+    background-color: #c8dca0;
+    padding: 3px 13px;
+  }
+
   .addBoard-body {
     display: flex;
     margin: 20px 0;
