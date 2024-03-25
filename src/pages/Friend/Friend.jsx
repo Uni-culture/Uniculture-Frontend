@@ -10,7 +10,6 @@ import { Badge, Input, Select} from "antd";
 import { AiOutlineBell } from "react-icons/ai";
 import Pagination from '@mui/material/Pagination';
 import { GrCheckmark, GrPowerReset, GrClose } from "react-icons/gr";
-import AgeFilter from './components/AgeFilter';
 
 export default function Friend() {
     const navigate = useNavigate();
@@ -29,7 +28,9 @@ export default function Friend() {
     const [selectGender, setSelectGender] = useState("GENDER"); //선택 성별
     const [selectMina, setSelectMina] = useState(0); //선택 최소나이
     const [selectMaxa, setSelectMaxa] = useState(100); //선택 최대나이
-
+    const [selectCL, setSelectCL] = useState("Can Language"); //선택 사용언어
+    const [selectWL, setSelectWL] = useState("Want Language"); //선택 학습언어
+    const [selectHb, setSelectHb] = useState("Hobby"); //선택 취미
 
     //pagination
     const [pageCount, setPageCount] = useState(0); //전체 페이지 수
@@ -327,21 +328,14 @@ export default function Friend() {
     };
 
     //Gender 선택
-    const handleGenderFilter = (value) => {
-        console.log(`selected Gender : ${value}`);
-        setSelectGender(value);
-    }
-
-    //Min Age 선택
-    const handleMinaFilter = (value) => {
-        console.log(`selected min age: ${value}`);
-        if(value) setSelectMina(parseInt(value));
-    }
-
-    //Max Age 선택
-    const handleMaxaFilter = (value) => {
-        console.log(`selected max age: ${value}`);
-        if(value) setSelectMaxa(parseInt(value));
+    const handleSelect = (value, select) => {
+        console.log(`selected : ${value}`);
+        if(select === "gender") setSelectGender(value);
+        else if(select === "mina") setSelectMina(value);
+        else if(select === "maxa") setSelectMaxa(value);
+        else if(select === "cl") setSelectCL(value);
+        else if(select === "wl") setSelectWL(value);
+        else if(select === "hobby") setSelectHb(value);
     }
 
     //친구 필터링
@@ -353,6 +347,11 @@ export default function Friend() {
             let Query= ''; 
             if (filterContent.ge ) Query += `ge=${filterContent.ge}&`;
             if (filterContent.mina && filterContent.maxa ) Query += `mina=${filterContent.mina}&maxa=${filterContent.maxa}&`;
+            if (filterContent.cl ) Query += `cl=${filterContent.cl}&`;
+            if (filterContent.wl ) Query += `wl=${filterContent.wl}&`;
+            if (filterContent.hb ) Query += `hb=${filterContent.hb}&`;
+
+            console.log(Query);
 
             const response = await axios.get(`/api/auth/friend/search?${Query}page=${page}&size=3`, {
                 headers: {
@@ -382,10 +381,13 @@ export default function Friend() {
         setCurrentPage(0);
         
         if (selectGender !== "GENDER") setFilterContent({ ge: selectGender });
-        if (selectMina !==0 || selectMaxa !== 100 ) {
+        if (selectMina !=='0' || selectMaxa !== '100' ) {
             setFilterContent({mina : selectMina});
             setFilterContent(prevFilterContent => ({...prevFilterContent, maxa : selectMaxa}));
         }
+        if (selectCL !== "Can Language") setFilterContent({ cl: selectCL });
+        if (selectWL !== "Want Language") setFilterContent({ wl: selectWL });
+        if (selectHb !== "Hobby") setFilterContent({ hb: selectHb });
     }
 
     //필터내용 바뀌면 실행
@@ -399,6 +401,8 @@ export default function Friend() {
         setSelectGender("GENDER");
         setSelectMina(0);
         setSelectMaxa(100);
+        setSelectCL("Can Language");
+        setSelectWL("Want Language");
     }
 
     //필터 없애기
@@ -463,17 +467,53 @@ export default function Friend() {
                         defaultValue="GENDER"
                         value={selectGender} 
                         style={{ width: 120 }} 
-                        onChange={handleGenderFilter}
+                        onChange={(value) => handleSelect(value, "gender")}
                     >
                         <Option value="GENDER" disabled>Gender</Option>
                         <Option value="MAN">Man</Option>
                         <Option value="WOMAN">Woman</Option>
                     </Select>
 
-                    <input placeholder={selectMina} value={selectMina} onChange={(e) => handleMinaFilter(e.target.value)}/>
-                    <input placeholder={selectMaxa} value={selectMaxa} onChange={(e) => handleMaxaFilter(e.target.value)}/>
+                    <input style={{width: "100px"}} placeholder={selectMina} value={selectMina} onChange={(e) => handleSelect(e.target.value, "mina")}/>
+                    <input style={{width: "100px"}} placeholder={selectMaxa} value={selectMaxa} onChange={(e) => handleSelect(e.target.value, "maxa")}/>
 
-                    {/* <AgeFilter/> */}
+                    <Select
+                        defaultValue="cl"
+                        value={selectCL} 
+                        style={{ width: 150 }} 
+                        onChange={(value) => handleSelect(value, "cl")}
+                    >
+                        <Option value="cl" disabled>Can Language</Option>
+                        <Option value="한국어">한국어</Option>
+                        <Option value="일본어">일본어</Option>
+                        <Option value="중국어">중국어</Option>
+                    </Select>
+
+                    <Select
+                        defaultValue="wl"
+                        value={selectWL} 
+                        style={{ width: 150 }} 
+                        onChange={(value) => handleSelect(value, "wl")}
+                    >
+                        <Option value="wl" disabled>Want Language</Option>
+                        <Option value="한국어">한국어</Option>
+                        <Option value="일본어">일본어</Option>
+                        <Option value="중국어">중국어</Option>
+                    </Select>
+
+                    <Select
+                        defaultValue="hb"
+                        value={selectHb} 
+                        style={{ width: 150 }} 
+                        onChange={(value) => handleSelect(value, "hobby")}
+                    >
+                        <Option value="hb" disabled>Hobby</Option>
+                        <Option value="요리">요리</Option>
+                        <Option value="산책">산책</Option>
+                        <Option value="쇼핑">쇼핑</Option>
+                        <Option value="여행">여행</Option>
+                        <Option value="드라이브">드라이브</Option>
+                    </Select>
 
                     <div style={{marginLeft: "10px"}} onClick={() => {handleFilter()}}><GrCheckmark /></div>
                     <div style={{marginLeft: "10px"}} onClick={()=> {resetFilter();}}><GrPowerReset /></div>
