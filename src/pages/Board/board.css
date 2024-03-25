@@ -92,3 +92,9 @@
 .custom-title {
     padding-top: 1px !important;
 }
+
+.board-likeCount {
+    margin-left: 5px;
+    font-weight: normal;
+    font-size: 15px;
+}

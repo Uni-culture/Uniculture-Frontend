@@ -23,39 +23,39 @@ const Board = () => {
     };
     const token = getToken();
 
-    useEffect(() => {
-        console.log(`게시글 아이디: ${board_id}`);
-        const getBoard = async () => {
-            console.log('getBoard start');
-            try {
-                const response = await axios.get(`/api/post/${board_id}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}` // 헤더에 토큰 추가
-                    }
-                });
-                console.log('서버 응답: ', response);
-                console.log('response.status: ', response.status);
+    const getBoard = async () => {
+        console.log('getBoard start');
+        try {
+            const response = await axios.get(`/api/post/${board_id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}` // 헤더에 토큰 추가
+                }
+            });
+            console.log('서버 응답: ', response);
+            console.log('response.status: ', response.status);
 
-                if (response.status === 200) {
-                    const boardData = response.data;
-                    console.log(`data : `, boardData);
-                    setBoard(boardData);
-                    setContent(boardData.content);
-                    setIsLoaded(true);
-                    console.log("200 성공~~~~");
-                }
-            } catch (error) { // 실패 시
-                if(error.response.status === 401) {
-                    console.log("401 오류");
-                }
-                else {
-                    console.log("서버 오류 입니다.");
-                    alert(error.response.data);
-                }
+            if (response.status === 200) {
+                const boardData = response.data;
+                console.log(`data : `, boardData);
+                setBoard(boardData);
+                setContent(boardData.content);
+                setIsLoaded(true);
+                console.log("200 성공~~~~");
             }
-        };
+        } catch (error) { // 실패 시
+            if(error.response.status === 401) {
+                console.log("401 오류");
+            }
+            else {
+                console.log("서버 오류 입니다.");
+                alert(error.response.data);
+            }
+        }
+    };
+
+    useEffect(() => {
         getBoard();
-    }, [])
+    }, [liked])
 
     // 번역 기능
     async function translate(content) {
@@ -193,6 +193,7 @@ const Board = () => {
                                 <HeartOutlined onClick={handleLike} />
                             )}
                         </div>
+                        <div className="board-likeCount">{board.likeCount}</div>
                     </div>
                     <hr/>
                     <div className="board-body">
