@@ -9,14 +9,14 @@ const PercentBar = ({ language, percentage, color}) => {
     }, [percentage]);
 
     useEffect(()=>{
-        if(color == "red") setRgb("rgb(255, 0, 0");
-        else if(color == "blue") setRgb("rgb(13, 110, 253)");
+        if(color === "red") setRgb("rgb(255, 0, 0");
+        else if(color === "blue") setRgb("rgb(13, 110, 253)");
     }, [color])
 
     return (
         <>
             <div className="d-flex align-items-center">
-                {language && (<label style={{width: "50px", marginRight: "10px"}}>{language}</label>)}
+                {language && (<label style={{textAlign: "left", width: "50px", marginRight: "10px"}}>{language}</label>)}
                 <div>
                     <div className="progress" style={{ width: '150px'}}>
                         <div

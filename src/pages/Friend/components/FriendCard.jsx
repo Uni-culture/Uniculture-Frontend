@@ -4,6 +4,7 @@ import PercentBar from '../../../components/PercentBar/PercentBar';
 import Swal from 'sweetalert2';
 import { Card } from "antd";
 import { SlBubbles, SlClose } from "react-icons/sl";
+import { GiMale, GiFemale } from "react-icons/gi";
 
 export default function FriendCard({userInfo, deleteFriend}) {
     const navigate = useNavigate();
@@ -50,36 +51,49 @@ export default function FriendCard({userInfo, deleteFriend}) {
     return (
         <Card 
             title={
-                <div style={{ display: 'flex', alignItems:"center"}}>
-                    {/* 프로필 사진 */}
-                    <div style={{marginRight:"10px"}} onClick={handleProfile}>
-                        <img
-                            src={userInfo?.profileImage ? userInfo.profileImage : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
-                            alt="profile"
-                            style={{width:"40px", borderRadius: "50%"}}
-                        />
+                <div style={{ display: 'flex', alignItems:"center", justifyContent: "space-between"}}>
+                    <div style={{ display: 'flex', alignItems:"center"}}>
+                        {/* 프로필 사진 */}
+                        <div style={{marginRight:"10px"}} onClick={handleProfile}>
+                            <img
+                                src={userInfo?.profileImage ? userInfo.profileImage : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                                alt="profile"
+                                style={{width:"40px", borderRadius: "50%"}}
+                            />
+                        </div>
+
+                        {/* 닉네임 */}
+                        <div onClick={handleProfile}>{userInfo.nickname}</div>
+
+                        {/* 성별, 나이 */}
+                        <div style={{fontWeight:"normal", display:"flex", marginLeft:"10px"}}>
+                            {userInfo?.gender === "MAN" ? (
+                                    <GiMale color='blue' size={20} />
+                            ):(
+                                <GiFemale color='red' size={20}/>
+                            )}
+                            <div style={{fontSize:"13px", marginLeft:"3px"}}>{userInfo.age}</div>
+                        </div>
                     </div>
 
-                    {/* 닉네임 */}
-                    <div onClick={handleProfile}>{userInfo.nickname}</div>
-
-                    {/* 채팅 보내기 */}
-                    <div style={{marginLeft: "15px"}}><SlBubbles size={20}/></div>
+                    <div style={{ display: 'flex', alignItems:"center"}}>
+                        {/* 채팅 보내기 */}
+                        <div style={{marginRight: "15px"}}><SlBubbles size={20}/></div>
+                        {/* 친구 삭제 */}
+                        <div onClick={handleDeleteFriend}><SlClose size={20}/></div>
+                    </div>
                 </div>
             } 
         >
-                {/* 친구 삭제 */}
-                <div style={{ position: "absolute", top: "15px", right: "20px"}} onClick={handleDeleteFriend}><SlClose size={20}/></div>
+            {/* 소개 */}
+            <div style={{textAlign: "left"}}>{userInfo?.introduce}</div>
 
-                {/* 성별, 나이 */}
-                <p>{userInfo.age} {userInfo.gender} </p>
-
-                {/* 사용언어, 학습언어 */}
-                {maxCanLanguage && <p><PercentBar language={maxCanLanguage.language} percentage={maxCanLanguage.level} color={"blue"}/></p>}
-                {maxWantLanguage && <p><PercentBar language={maxWantLanguage.language} percentage={maxWantLanguage.level} color={"red"}/></p>}
+            {/* 사용언어, 학습언어 */}
+            {maxCanLanguage && <div style={{margin:"15px 0px 15px 0px"}}><PercentBar language={maxCanLanguage.language} percentage={maxCanLanguage.level} color={"blue"}/></div>}
+            {maxWantLanguage && <div style={{margin:"15px 0px 15px 0px"}}><PercentBar language={maxWantLanguage.language} percentage={maxWantLanguage.level} color={"red"}/></div>}
                 
-                {/* 취미 */}
-                <div style={{ marginTop: "30px" }}>
+            {/* 취미 */}
+            <div style={{ marginTop: "30px" }}>
                 {/* 취미 더보기 true/false */}
                 {showAllHobbies ? ( 
                     //취미 더 보기
@@ -91,11 +105,9 @@ export default function FriendCard({userInfo, deleteFriend}) {
                                 </span>
                             ))}
                         </div>
-                        {userInfo.hobbies && userInfo.hobbies.length > 3 && (
-                            <div onClick={()=> setShowAllHobbies(false)} style={{ cursor: "pointer", marginTop: "10px", color: "blue" }}>
-                                - 간략하게
-                            </div>
-                        )}
+                        <div onClick={()=> setShowAllHobbies(false)} style={{ cursor: "pointer", marginTop: "10px", color: "blue" }}>
+                            - 간략하게
+                        </div>
                     </div>
                 ) : (
                     //취미 간략하게 보기(3개)

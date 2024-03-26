@@ -6,8 +6,10 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import FriendCard from './components/FriendCard';
 import FriendList from '../Profile/components/FriendList';
-import { Badge, Input, Pagination} from "antd";
+import { Badge, Input, Select} from "antd";
 import { AiOutlineBell } from "react-icons/ai";
+import Pagination from '@mui/material/Pagination';
+import { GrCheckmark, GrPowerReset, GrClose } from "react-icons/gr";
 
 export default function Friend() {
     const navigate = useNavigate();
@@ -15,15 +17,24 @@ export default function Friend() {
     const [friendList, setFriendList] = useState([]); //친구 목록
 
     //검색
-    const [searchInput, setSearchInput] = useState(''); // 검색창 값
-    const [searchResult, setSearchResult] = useState(null); // 검색 결과
+    const [searchInput, setSearchInput] = useState(null); // 검색창 값
 
     //필터
-    const [showFilter, setShowFilter] = useState(false); 
+    const { Option } = Select;
+    const [showFilter, setShowFilter] = useState(false); //필터 div 보이기
+    const [filterContent, setFilterContent] = useState(null); //필터 성별
+    
+    //select
+    const [selectGender, setSelectGender] = useState("ge"); //선택 성별
+    const [selectMina, setSelectMina] = useState('0'); //선택 최소나이
+    const [selectMaxa, setSelectMaxa] = useState('100'); //선택 최대나이
+    const [selectCL, setSelectCL] = useState("cl"); //선택 사용언어
+    const [selectWL, setSelectWL] = useState("wl"); //선택 학습언어
+    const [selectHb, setSelectHb] = useState("hb"); //선택 취미
 
     //pagination
-    const [currentPage, setCurrentPage] = useState(1);
-    const [currentFriends, setCurrentFriends] = useState([]);  
+    const [pageCount, setPageCount] = useState(0); //전체 페이지 수
+    const [currentPage, setCurrentPage] = useState(0); //현재 페이지
 
     //친구 신청 모달창
     const [showRequests, setShowRequests] = useState(false); 
@@ -36,21 +47,23 @@ export default function Friend() {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
     };
 
-    // 친구 목록 불러오기
-    const fetchFriendList = async () => {
+    // 친구 목록 불러오기, 검색
+    const fetchFriendList = async (page) => {
         try {
             console.log("친구 목록 불러오기");
             const token = getToken();
 
-            const response = await axios.get('/api/auth/friend/detail', {
+            let Query= searchInput ? `name=${searchInput}&` : '';
+
+            const response = await axios.get(`/api/auth/friend/detail?${Query}page=${page}&size=3`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
             
             if(response.status === 200){
-                setFriendList(response.data);
-                setCurrentFriends(response.data.slice(0, 3));
+                setFriendList(response.data.content);
+                setPageCount(response.data.totalPages);
             }
             else if(response.status === 400){
                 console.log("친구 목록 불러오기 클라이언트 오류");
@@ -73,18 +86,24 @@ export default function Friend() {
     };
 
     useEffect(() => {
-        fetchFriendList();
+        fetchFriendList(0);
     }, []);
 
-    // 페이지 변경 시 해당 상태를 업데이트하는 함수
-    const changePage = (page) => {
-        const newIndexOfLast= page * 3;
-        const newIndexOfFirst = newIndexOfLast - 3;
+    //검색 내용 바뀌면 실행
+    useEffect(() => {
+        if(searchInput !== null){
+            setCurrentPage(0);
+            fetchFriendList(0);
+        }
+    }, [searchInput]);
 
+    // 페이지 변경 시 해당 상태를 업데이트하는 함수
+    const changePage = (event) => {
+        const page = event.target.outerText - 1;
         setCurrentPage(page); //현재 페이지
 
-        if(searchInput !== null && searchResult !== null) setCurrentFriends(searchResult.slice(newIndexOfFirst, newIndexOfLast));
-        else if (friendList !== null) setCurrentFriends(friendList.slice(newIndexOfFirst, newIndexOfLast)); //현재 보여지는 친구 목록
+        if(filterContent) fetchFriendFilter(page);
+        else fetchFriendList(page);
     }
     
     //내 친구/추천 친구 선택
@@ -93,7 +112,7 @@ export default function Friend() {
             case 'myFriends':
                 return (
                     <div style={{display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "50px", marginTop:"30px"}}>
-                        {friendList && currentFriends.map((friend) => (
+                        {friendList && friendList.map((friend) => (
                             <FriendCard key={friend.id} userInfo={friend} deleteFriend={deleteFriend}/>
                         ))}
                     </div>
@@ -123,7 +142,8 @@ export default function Friend() {
             
             if(response.status === 200){
                 console.log("친구 삭제 : " + friendInfo.nickname);
-                setFriendList(friendList.filter(request => request.id !== friendInfo.id)); //친구 목록에서 삭제
+                setCurrentPage(0);
+                fetchFriendList(0);
             }
             else if(response.status === 400){
                 console.log("클라이언트 오류");
@@ -235,7 +255,7 @@ export default function Friend() {
             if(response.status === 200){
                 console.log(userInfo.nickname + "님의 친구 요청을 수락했습니다.");
                 setReceivedRequests(receivedRequests.filter(request => request.id !== userInfo.id)); //받은 친구 신청 목록에서 삭제
-                setFriendList([...friendList, userInfo]); //친구 목록에 추가
+                fetchFriendList(currentPage); //현재 페이지 친구 목록 다시 불러오기
             }
             else if(response.status === 400){
                 console.log("클라이언트 오류");
@@ -307,23 +327,95 @@ export default function Friend() {
         }
     };
 
-    // 검색 기능을 수행하는 함수
-    const searchFriend = (value) => {
-        if(value === '') { //검색X인 경우
-            setSearchResult(null);
-            setCurrentPage(1); //페이지 1로 설정
-            setCurrentFriends(friendList.slice(0, 3)); //currentPage 친구 목록
-        }
-        else{ //검색O인 경우
-            const filteredFriends = friendList.filter(friend => {
-                return friend.nickname.toLowerCase().includes(value?.toLowerCase());
-            });
+    //Gender 선택
+    const handleSelect = (value, select) => {
+        console.log(`selected : ${value}`);
+        if(select === "gender") setSelectGender(value);
+        else if(select === "mina") setSelectMina(value);
+        else if(select === "maxa") setSelectMaxa(value);
+        else if(select === "cl") setSelectCL(value);
+        else if(select === "wl") setSelectWL(value);
+        else if(select === "hobby") setSelectHb(value);
+    }
 
-            setSearchResult(filteredFriends); // 검색 결과 업데이트
-            setCurrentPage(1); // 페이지를 1로 설정
-            setCurrentFriends(filteredFriends.slice(0, 3)); // 검색 결과의 첫 페이지의 친구 목록 설정
+    //친구 필터링
+    const fetchFriendFilter = async (page) => {
+        try {
+            console.log("친구 필터링");
+            const token = getToken();
+
+            let Query= ''; 
+            if (filterContent.ge ) Query += `ge=${filterContent.ge}&`;
+            if (filterContent.mina && filterContent.maxa ) Query += `mina=${filterContent.mina}&maxa=${filterContent.maxa}&`;
+            if (filterContent.cl ) Query += `cl=${filterContent.cl}&`;
+            if (filterContent.wl ) Query += `wl=${filterContent.wl}&`;
+            if (filterContent.hb ) Query += `hb=${filterContent.hb}&`;
+
+            console.log(Query);
+
+            const response = await axios.get(`/api/auth/friend/search?${Query}page=${page}&size=3`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            
+            if(response.status === 200){
+                console.log("성공");
+                setFriendList(response.data.content);
+                setPageCount(response.data.totalPages);
+            }
+            else if(response.status === 400){
+                console.log("친구 필터링 클라이언트 오류");
+            }
+            else if(response.status === 500){
+                console.log("친구 필터링 서버 오류");
+            }
+            
+        } catch (error) {
+            console.log("친구 필터링 오류 :" + error);
         }
     };
+
+    //filterContent 수정
+    const handleFilter = () => {
+        setCurrentPage(0);
+        
+        if (selectGender !== "ge") setFilterContent({ ge: selectGender });
+        if (selectMina !=='0' && selectMaxa !== '100' ) {
+            setFilterContent({mina : selectMina});
+            setFilterContent(prevFilterContent => ({...prevFilterContent, maxa : selectMaxa}));
+        }
+        if (selectCL !== "cl") setFilterContent({ cl: selectCL });
+        if (selectWL !== "wl") setFilterContent({ wl: selectWL });
+        if (selectHb !== "hb") setFilterContent({ hb: selectHb });
+
+        console.log(filterContent);
+    }
+
+    //필터내용 바뀌면 실행
+    useEffect(() => {
+        if(filterContent) fetchFriendFilter(0);
+        console.log(filterContent);
+    }, [filterContent]);
+
+    //필터 재설정
+    const resetFilter = () => {
+        setSelectGender("ge");
+        setSelectMina('0');
+        setSelectMaxa('100');
+        setSelectCL("cl");
+        setSelectWL("wl");
+        setSelectHb("hb");
+    }
+
+    //필터 없애기
+    const resetFriend = () => {
+        resetFilter();
+        setShowFilter(false);
+        setFilterContent('');
+        setCurrentPage(0);
+        fetchFriendList(0);
+    }
 
     return (
         <Layout>
@@ -333,14 +425,14 @@ export default function Friend() {
                         <ul className="nav">
                             <li 
                                 className="nav-item"
-                                style={{ fontWeight: activeTab === 'myFriends' ? 'bold' : 'normal', marginRight: "20px"}}
+                                style={{ width:"50px", fontWeight: activeTab === 'myFriends' ? 'bold' : 'normal', marginRight: "20px"}}
                                 onClick={() => setActiveTab('myFriends')}>
                                 내 친구
                             </li>
                             <li 
                                 className="nav-item"
-                                style={{ fontWeight: activeTab === 'recommended' ? 'bold' : 'normal' }}
-                                onClick={() => {setActiveTab('recommended'); setSearchResult(null); setSearchInput(null)}}>
+                                style={{ width:"70px", fontWeight: activeTab === 'recommended' ? 'bold' : 'normal' }}
+                                onClick={() => {setActiveTab('recommended'); setSearchInput(''); setShowFilter(false)}}>
                                 추천 친구
                             </li>
                         </ul>
@@ -352,12 +444,12 @@ export default function Friend() {
                                 placeholder="Search for friends"
                                 prefix={<TbSearch style={{ color: 'rgba(0,0,0,.25)' }} />}
                                 style={{width: 300}}
-                                onChange={(e) => searchFriend(e.target.value)}
+                                onChange={(e) => setSearchInput(e.target.value)}
                             />
                         </div>
                     )}
 
-                    <div style={{fontSize: "25px", marginLeft: "20px", paddingBottom: "5px"}} onClick={()=>{setShowFilter(true)}}><TbAdjustmentsHorizontal /></div>
+                    <div style={{fontSize: "25px", marginLeft: "20px", paddingBottom: "5px"}} onClick={()=>{setShowFilter(!showFilter); resetFilter();}}><TbAdjustmentsHorizontal /></div>
                 
                 </div>
 
@@ -371,31 +463,76 @@ export default function Friend() {
                 </div>
             </div>
 
-            {/* 검색X인 경우 */}
-            {searchResult === null && currentFriends && renderTabContent()}
-            {activeTab === 'myFriends' && searchResult === null && currentFriends && (
-                <div style={{textAlign: "center", marginTop: "50px"}}>
-                    <Pagination current={currentPage} total={friendList.length} defaultPageSize={3} onChange={(value) => changePage(value)}/>
+            {/* 친구 필터 */}
+            {showFilter && (
+                <div style={{display:"flex", marginTop:"10px"}}>
+                    <Select
+                        defaultValue="ge"
+                        value={selectGender} 
+                        style={{ width: 120 }} 
+                        onChange={(value) => handleSelect(value, "gender")}
+                    >
+                        <Option value="ge" disabled>Gender</Option>
+                        <Option value="MAN">Man</Option>
+                        <Option value="WOMAN">Woman</Option>
+                    </Select>
+
+                    <input style={{width: "100px"}} placeholder={selectMina} value={selectMina} onChange={(e) => handleSelect(e.target.value, "mina")}/>
+                    <input style={{width: "100px"}} placeholder={selectMaxa} value={selectMaxa} onChange={(e) => handleSelect(e.target.value, "maxa")}/>
+
+                    <Select
+                        defaultValue="cl"
+                        value={selectCL} 
+                        style={{ width: 150 }} 
+                        onChange={(value) => handleSelect(value, "cl")}
+                    >
+                        <Option value="cl" disabled>Can Language</Option>
+                        <Option value="한국어">한국어</Option>
+                        <Option value="일본어">일본어</Option>
+                        <Option value="중국어">중국어</Option>
+                    </Select>
+
+                    <Select
+                        defaultValue="wl"
+                        value={selectWL} 
+                        style={{ width: 150 }} 
+                        onChange={(value) => handleSelect(value, "wl")}
+                    >
+                        <Option value="wl" disabled>Want Language</Option>
+                        <Option value="한국어">한국어</Option>
+                        <Option value="일본어">일본어</Option>
+                        <Option value="중국어">중국어</Option>
+                    </Select>
+
+                    <Select
+                        defaultValue="hb"
+                        value={selectHb} 
+                        style={{ width: 150 }} 
+                        onChange={(value) => handleSelect(value, "hobby")}
+                    >
+                        <Option value="hb" disabled>Hobby</Option>
+                        <Option value="요리">요리</Option>
+                        <Option value="산책">산책</Option>
+                        <Option value="쇼핑">쇼핑</Option>
+                        <Option value="여행">여행</Option>
+                        <Option value="드라이브">드라이브</Option>
+                    </Select>
+
+                    <div style={{marginLeft: "10px"}} onClick={() => {handleFilter()}}><GrCheckmark /></div>
+                    <div style={{marginLeft: "10px"}} onClick={()=> {resetFilter();}}><GrPowerReset /></div>
+                    <div style={{marginLeft: "10px"}} onClick={()=> {resetFriend();}}><GrClose/></div>
                 </div>
             )}
 
-            {/* 검색O + 검색 결과가 없을 때 표시될 내용 */}
-            {activeTab === 'myFriends' && searchResult && searchResult.length === 0 && <div style={{marginTop: "30px"}}>검색 결과가 없습니다.</div>}
-            
-            {/* 검색O + 검색 결과가 있을 때 표시될 내용 */}
-            {activeTab === 'myFriends' && searchResult && searchResult.length !== 0 && 
-                <div style={{display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "50px", marginTop:"30px"}}>
-                    {currentFriends.map((friend) => (
-                        <FriendCard key={friend.id} userInfo={friend} deleteFriend={deleteFriend} />
-                    ))}
-                </div>
-            }
-            { activeTab === 'myFriends' && searchResult && searchResult.length !== 0 &&(
-                <div style={{textAlign: "center", marginTop: "50px"}}>
-                    <Pagination current={currentPage} total={searchResult.length} defaultPageSize={3} onChange={(value) => changePage(value)}/>
-                </div>
-            )}
-            
+            <div style={{float:"left", textAlign:"center"}}>
+                {renderTabContent()}
+                {activeTab === 'myFriends' && (
+                    <div style={{display: "flex", justifyContent: "center", marginTop: "50px"}}>
+                        <Pagination page={currentPage + 1} count={pageCount}  defaultPage={1} onChange={changePage} showFirstButton showLastButton />
+                    </div>
+                )}
+            </div>
+
             {/* 친구 신청 모달창 */}
             {showRequests && (
                 <div className="modal fade show" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
@@ -428,6 +565,7 @@ export default function Friend() {
                     </div>
                 </div>
             )}
+
         </Layout>
     )
 }
