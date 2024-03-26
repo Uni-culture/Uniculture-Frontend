@@ -7,6 +7,7 @@ import "./board.css";
 import {HeartOutlined, HeartFilled} from '@ant-design/icons';
 import {IoArrowBack} from "react-icons/io5";
 import Swal from "sweetalert2";
+import Comments from "../../components/Comments/Comments"
 
 const Board = () => {
     const location = useLocation();
@@ -203,22 +204,23 @@ const Board = () => {
                         </div>
                         <div className="board-title-content">
                             <div className="board-content">{content}</div>
+                            {board.isMine && // 자신의 게시물이면 활성화
+                                <div className="edit-delete-button">
+                                    {isTranslated ? (
+                                        <button className="translate-button" onClick={()=>{setContent(board.content); setIsTranslated(false);}}> 되돌리기 </button>
+                                    ) : (
+                                        <button className="translate-button" onClick={()=>{translate(content)}}> 번역 </button>
+                                    )}
+                                    <button className="delete-button" onClick={boardDelete}> 삭제 </button>
+                                    <button onClick={() => {navigate(`/${board_id}`, {state : {from : location.pathname}});}}> 수정 </button>
+                                </div>
+                            }
                         </div>
                     </div>
-                    <div className="board-footer"></div>
 
-                    {
-                        board.isMine && // 자신의 게시물이면 활성화
-                        <div className="edit-delete-button">
-                            {isTranslated ? (
-                                <button className="translate-button" onClick={()=>{setContent(board.content); setIsTranslated(false);}}> 되돌리기 </button>
-                                ) : (
-                                <button className="translate-button" onClick={()=>{translate(content)}}> 번역 </button>
-                                )}
-                            <button className="delete-button" onClick={boardDelete}> 삭제 </button>
-                            <button onClick={() => {navigate(`/${board_id}`, {state : {from : location.pathname}});}}> 수정 </button>
-                        </div>
-                    }
+                    <div className="board-footer">
+                        <Comments board_id={board_id}/>
+                    </div>
                 </div>
             )}
         </div>

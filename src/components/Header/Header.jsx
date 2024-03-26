@@ -99,6 +99,7 @@ const Header = () => {
     };
 
     const handleNavigation = (to) => {
+        console.log("handleNavigation :", isLogin);
         if(isLogin) {
             navigate(to);
         }

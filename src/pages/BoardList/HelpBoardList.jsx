@@ -14,7 +14,7 @@ const HelpBoardList = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
     };
 
-    const fetchBoardData = async (page) => {
+    const fetchHelpBoardData = async (page) => {
         console.log('fetchBoardData start');
         try {
             const token = getToken(); // 토큰 가져오기
@@ -47,7 +47,7 @@ const HelpBoardList = () => {
     };
 
     useEffect(() => {
-        fetchBoardData(currentPage);
+        fetchHelpBoardData(currentPage);
     }, [currentPage])
 
     const changePage = (value) => {

@@ -15,7 +15,7 @@ const DailyBoardList = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
     };
 
-    const fetchBoardData = async (page) => {
+    const fetchDailyBoardData = async (page) => {
         console.log('fetchBoardData start');
         try {
             const token = getToken(); // 토큰 가져오기
@@ -47,9 +47,8 @@ const DailyBoardList = () => {
         }
     };
 
-
     useEffect(() => {
-        fetchBoardData(currentPage);
+        fetchDailyBoardData(currentPage);
     }, [currentPage])
 
     const changePage = (value) => {
