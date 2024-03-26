@@ -25,12 +25,12 @@ export default function Friend() {
     const [filterContent, setFilterContent] = useState(null); //필터 성별
     
     //select
-    const [selectGender, setSelectGender] = useState("GENDER"); //선택 성별
-    const [selectMina, setSelectMina] = useState(0); //선택 최소나이
-    const [selectMaxa, setSelectMaxa] = useState(100); //선택 최대나이
-    const [selectCL, setSelectCL] = useState("Can Language"); //선택 사용언어
-    const [selectWL, setSelectWL] = useState("Want Language"); //선택 학습언어
-    const [selectHb, setSelectHb] = useState("Hobby"); //선택 취미
+    const [selectGender, setSelectGender] = useState("ge"); //선택 성별
+    const [selectMina, setSelectMina] = useState('0'); //선택 최소나이
+    const [selectMaxa, setSelectMaxa] = useState('100'); //선택 최대나이
+    const [selectCL, setSelectCL] = useState("cl"); //선택 사용언어
+    const [selectWL, setSelectWL] = useState("wl"); //선택 학습언어
+    const [selectHb, setSelectHb] = useState("hb"); //선택 취미
 
     //pagination
     const [pageCount, setPageCount] = useState(0); //전체 페이지 수
@@ -380,14 +380,16 @@ export default function Friend() {
     const handleFilter = () => {
         setCurrentPage(0);
         
-        if (selectGender !== "GENDER") setFilterContent({ ge: selectGender });
-        if (selectMina !=='0' || selectMaxa !== '100' ) {
+        if (selectGender !== "ge") setFilterContent({ ge: selectGender });
+        if (selectMina !=='0' && selectMaxa !== '100' ) {
             setFilterContent({mina : selectMina});
             setFilterContent(prevFilterContent => ({...prevFilterContent, maxa : selectMaxa}));
         }
-        if (selectCL !== "Can Language") setFilterContent({ cl: selectCL });
-        if (selectWL !== "Want Language") setFilterContent({ wl: selectWL });
-        if (selectHb !== "Hobby") setFilterContent({ hb: selectHb });
+        if (selectCL !== "cl") setFilterContent({ cl: selectCL });
+        if (selectWL !== "wl") setFilterContent({ wl: selectWL });
+        if (selectHb !== "hb") setFilterContent({ hb: selectHb });
+
+        console.log(filterContent);
     }
 
     //필터내용 바뀌면 실행
@@ -398,11 +400,12 @@ export default function Friend() {
 
     //필터 재설정
     const resetFilter = () => {
-        setSelectGender("GENDER");
-        setSelectMina(0);
-        setSelectMaxa(100);
-        setSelectCL("Can Language");
-        setSelectWL("Want Language");
+        setSelectGender("ge");
+        setSelectMina('0');
+        setSelectMaxa('100');
+        setSelectCL("cl");
+        setSelectWL("wl");
+        setSelectHb("hb");
     }
 
     //필터 없애기
@@ -464,12 +467,12 @@ export default function Friend() {
             {showFilter && (
                 <div style={{display:"flex", marginTop:"10px"}}>
                     <Select
-                        defaultValue="GENDER"
+                        defaultValue="ge"
                         value={selectGender} 
                         style={{ width: 120 }} 
                         onChange={(value) => handleSelect(value, "gender")}
                     >
-                        <Option value="GENDER" disabled>Gender</Option>
+                        <Option value="ge" disabled>Gender</Option>
                         <Option value="MAN">Man</Option>
                         <Option value="WOMAN">Woman</Option>
                     </Select>
