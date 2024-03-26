@@ -327,77 +327,73 @@ export default function MyProfile({myInformation}) {
 
     return (
         <Layout>
-            <div className={styles.profile}>
-
-                {/* 프로필 사진 */}
-                <div className={styles.left}>
-                    <div className={styles.imageWrapper}>
-                        <img
-                            src={myInfo?.profileImage ? myInfo.profileImage : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
-                            alt="profile"
-                            className={styles.image}
-                        />
-                    </div>
+            {/* 프로필 사진 */}
+            <div className={styles.left}>
+                <div className={styles.imageWrapper}>
+                    <img
+                        src={myInfo?.profileImage ? myInfo.profileImage : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                        alt="profile"
+                        className={styles.image}
+                    />
                 </div>
+            </div>
 
-                <div className={styles.right}>
+            <div className={styles.right}>
 
-                    {/* 닉네임 */}
-                    <div className={styles.name}>{myInfo?.nickname}</div>
+                {/* 닉네임 */}
+                <div className={styles.name}>{myInfo?.nickname}</div>
 
-                    {/* 정보 수정 */}
-                    <div className={styles.edit}>
-                        <Link to="/accounts/edit">
-                            <IoIosSettings size={20} color="gray" />
-                        </Link>
-                    </div>
+                {/* 정보 수정 */}
+                <div className={styles.edit}>
+                    <Link to="/accounts/edit">
+                        <IoIosSettings size={20} color="gray" />
+                    </Link>
+                </div>
                     
-                    {/* 소개 */}
-                    {myInfo?.introduce && <div className={styles.intro}>{myInfo.introduce}</div>}
+                {/* 소개 */}
+                {myInfo?.introduce && <div className={styles.intro}>{myInfo.introduce}</div>}
 
-                    {/* 게시글, 친구 */}
-                    <div>
-                        <div className={styles.post}>게시글</div>
-                        <div className={styles.postNum}>{myInfo?.postnum}</div>
-                        {/* 친구, 친구수중 아무거나 클릭하더라도 setShowFriend state 를 변경시켜서 모달창을띄움(useEffect 에 showfriend 가 걸려있기때문에 리렌더링) */}
-                        <div className={styles.friend} onClick={()=> {setShowFriend(true)}}>친구</div>
-                        <div className={styles.friendNum} onClick={()=> {setShowFriend(true)}}>{friendNum}</div>
-                        <Badge count={myInfo?.receiverequestnum} size="small" overflowCount={10}>
-                            <AiOutlineBell size={20} onClick={() => {
-                                setShowFriend(true);
-                                setActiveTab('receivedRequests');
-                            }}/>
-                        </Badge>
-                    </div>
-
-                    {/* 언어 */}
-                    {(maxCanLanguage || maxWantLanguage) &&
-                        <div style={{ display: "flex", marginTop:"20px"}}>
-                            {maxCanLanguage && <div><PercentBar language={maxCanLanguage.language} percentage={maxCanLanguage.value} color={"blue"} /></div>}
-                            {maxCanLanguage && maxWantLanguage && <div style={{ marginLeft : "20px", marginRight : "20px" }}><FaExchangeAlt /></div>}
-                            {maxWantLanguage && <div><PercentBar language={maxWantLanguage.language} percentage={maxWantLanguage.value} color={"red"} /></div>}
-                            <span
-                                style={{marginLeft: "10px"}}
-                                onClick={()=> setShowAllLanguage(true)}
-                                onMouseEnter={()=> setOnMouseSpan(true)}
-                                onMouseLeave={()=> setOnMouseSpan(false)}
-                            >
-                                {onMouseSpan ? <PiPlusCircleFill size={20}/> : <PiPlusCircleBold size={20}/>}
-                            </span>
-                        </div>
-                    }
-
-                    {/* 취미 */}
-                    {myInfo.hobbies && 
-                        <div style={{ display: "flex", marginTop:"20px"}}>
-                            {myInfo.hobbies && myInfo.hobbies.map((hobby, index) => (
-                                <div key={index} style={{ borderRadius:"15px", backgroundColor:"#C6CAC3", padding:"2px 15px", marginRight: "10px" }}>
-                                    #{hobby}
-                                </div>
-                            ))}
-                        </div>
-                    }
+                {/* 게시글, 친구 */}
+                <div>
+                    <div className={styles.post}>게시글</div>
+                    <div className={styles.postNum}>{myInfo?.postnum}</div>
+                    {/* 친구, 친구수중 아무거나 클릭하더라도 setShowFriend state 를 변경시켜서 모달창을띄움(useEffect 에 showfriend 가 걸려있기때문에 리렌더링) */}
+                    <div className={styles.friend} onClick={()=> {setShowFriend(true)}}>친구</div>
+                    <div className={styles.friendNum} onClick={()=> {setShowFriend(true)}}>{friendNum}</div>
+                    <Badge count={myInfo?.receiverequestnum} size="small" overflowCount={10}>
+                        <AiOutlineBell size={20} onClick={() => {
+                            setShowFriend(true);
+                            setActiveTab('receivedRequests');
+                        }}/>
+                    </Badge>
                 </div>
+
+                {/* 언어 */}
+                {(maxCanLanguage || maxWantLanguage) &&
+                    <div style={{ display: "flex", marginTop:"20px"}}>
+                        {maxCanLanguage && <div><PercentBar language={maxCanLanguage.language} percentage={maxCanLanguage.value} color={"blue"} /></div>}
+                        {maxCanLanguage && maxWantLanguage && <div style={{ marginLeft : "20px", marginRight : "20px" }}><FaExchangeAlt /></div>}
+                        {maxWantLanguage && <div><PercentBar language={maxWantLanguage.language} percentage={maxWantLanguage.value} color={"red"} /></div>}
+                        <span
+                            style={{marginLeft: "10px"}}
+                            onClick={()=> setShowAllLanguage(true)}
+                            onMouseEnter={()=> setOnMouseSpan(true)}                                onMouseLeave={()=> setOnMouseSpan(false)}
+                        >
+                            {onMouseSpan ? <PiPlusCircleFill size={20}/> : <PiPlusCircleBold size={20}/>}
+                        </span>
+                    </div>
+                }
+
+                {/* 취미 */}
+                {myInfo.hobbies && 
+                    <div style={{ display: "flex", marginTop:"20px"}}>
+                        {myInfo.hobbies && myInfo.hobbies.map((hobby, index) => (
+                            <div key={index} style={{ borderRadius:"15px", backgroundColor:"#C6CAC3", padding:"2px 15px", marginRight: "10px" }}>
+                                #{hobby}
+                            </div>
+                        ))}
+                    </div>
+                }
             </div>
             <div>
                 <MyBoardList />
