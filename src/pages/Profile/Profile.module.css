@@ -3,7 +3,7 @@
     margin-right: 100px;
     border-radius: 50%;
     width: 200px;
-    height: 300px;
+    height: 275px;
     display: table-cell;
     vertical-align: middle;
     text-align:center;
@@ -33,7 +33,7 @@
 }
 
 .right{
-    height: 400px;
+    height: 275px;
 }
 
 .name{
@@ -74,4 +74,9 @@
 .friendRequest{
     display: inline-block;
     padding-right: 0px;
+}
+
+.boardStyle {
+    min-height: 100vh;
+    /*background-color: antiquewhite;*/
 }

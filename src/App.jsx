@@ -14,12 +14,13 @@ import ProfileDelete from './pages/Profile/ProfileDelete';
 import Friend from './pages/Friend/Friend';
 import { Study } from './pages/Study/Study';
 import AddBoard from "./pages/AddBoard/AddBoard";
-import BoardList from "./pages/BoardList/BoardList";
 import Board from "./pages/Board/Board";
 import { Post } from './pages/Study/Post';
 import { PostView } from './pages/Study/PostView';
+import EditBoard from "./pages/EditBoard/EditBoard";
 
 function App() {
+
   return (
       <>
         <BrowserRouter>
@@ -38,8 +39,8 @@ function App() {
             <Route path='/post/new' element={<Post />}/>
             <Route path='/post' element={<PostView />} />
             <Route path="/add-board" element={<AddBoard/>} />
-            <Route path="/board-list" element={<BoardList/>} />
             <Route path="/board/:board_id" element={<Board/>} />
+            <Route path="/:board_id" element={<EditBoard/>} />
           </Routes>
         </BrowserRouter>
       </>

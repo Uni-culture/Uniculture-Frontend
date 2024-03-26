@@ -1,0 +1,14 @@
+.custom-logout-popup {
+    width: 310px !important;
+    height: 160px !important;
+}
+
+.custom-logout-button {
+    width: 65px !important;
+    height: 35px !important;
+    font-size: 13px !important;
+}
+
+.custom-logout-title {
+    margin-top: 10px !important;
+}

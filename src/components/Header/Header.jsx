@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import logoImg from "../../assets/logo.png";
 import axios from "axios";
 import "../PageLayout/PageLayout.css"
 import Swal from "sweetalert2";
+import "./Header.css";
 
 const Header = () => {
     const navigate = useNavigate(); // 다른 component 로 이동할 때 사용
@@ -22,8 +23,13 @@ const Header = () => {
     const removeToken = () => {
         localStorage.removeItem('accessToken'); // 로컬 스토리지에서 토큰 가져옴
         Swal.fire({
-            title: "<span style='font-size: 20px;'>로그아웃 되었습니다.</span>",
-            confirmButtonColor: "#8BC765"
+            title: "<span style='font-size: 18px;'>로그아웃 되었습니다.</span>",
+            confirmButtonColor: "#8BC765",
+            customClass: {
+                popup: 'custom-logout-popup',
+                confirmButton: 'custom-logout-button',
+                title: 'custom-logout-title'
+            }
         }).then((result) => {
             if (result.isConfirmed) {
                 window.location.reload(); // 페이지 새로고침
@@ -48,6 +54,7 @@ const Header = () => {
             }
         } catch (error) {
             if(error.response.status === 401) {
+                localStorage.removeItem('accessToken');
                 console.log("401 오류");
             }
             // else console.error('Login Error:', error);
@@ -66,13 +73,8 @@ const Header = () => {
         } else {
             return '';
         }
-    };
 
-    /*const NavItem = ({ to, text, activePage }) => (
-        <li className={`nav-item ${activePage(to)}`}>
-            <Link to={isLogin ? to : '/sign-in'} className={`nav-link ${activePage(to)}`}>{text}</Link>
-        </li>
-    );*/
+    };
 
     const handleSignUp = () => {
         navigate("/sign-up", { state: { from: location.pathname } }); // 현재 경로를 저장하고 회원가입 페이지로 이동
@@ -92,12 +94,23 @@ const Header = () => {
     };
 
     const handleNavigation = (to) => {
+        console.log("handleNavigation :", isLogin);
         if(isLogin) {
-            navigate(to);
+            if (location.pathname === to) {
+                window.location.reload();
+            } else{
+                navigate(to);
+            }
+
         }
         else {
-            LoginWarning();
-            navigate("/sign-in", {state: {from: location.pathname}}); // 현재 경로를 저장하고 로그인 페이지로 이동
+            if(to==='/') window.location.reload();
+            // else if(to==='/study') navigate(to);
+            else{
+                LoginWarning();
+                navigate("/sign-in", {state: {from: location.pathname}}); // 현재 경로를 저장하고 로그인 페이지로 이동
+        
+            }    
         }
     };
 
@@ -105,10 +118,10 @@ const Header = () => {
             <nav className={`navbar navbar-expand-lg`} style={{ backgroundColor: '#C8DCA0' }}>
                 <div className="container-fluid" style={{paddingLeft: "80px", paddingRight: "70px"}}>
                     <div className="d-flex align-items-center">
-                        <Link to="/" className={`navbar-brand`} aria-current="page" style={{ fontFamily: "SuezOne"}}>
+                        <div className={`navbar-brand ${activePage("/")}`} style={{ fontFamily: "SuezOne", cursor: "pointer"}} onClick={() => handleNavigation("/")}>
                             <img src={logoImg} alt="Logo" width="30" height="24" className="d-inline-block align-text-top"/>
                             UniCulture
-                        </Link>
+                        </div>
                     </div>
 
                     {isLogin ? (
@@ -141,13 +154,11 @@ const Header = () => {
 
                     <div className={`collapse navbar-collapse ${isNavOpen ? 'show' : ''}`}>
                         <ul className="navbar-nav">
-                            <li className="nav-item">
-                                <Link to="/?page=0" className={`nav-link ${activePage("/")}`}>홈</Link>
+                            <li className={`nav-item ${activePage("/")}`}>
+                                <button className={`btn nav-link ${activePage("/")}`} onClick={() => handleNavigation("/")}>홈</button>
                             </li>
-
                             <li className={`nav-item ${activePage("/friend")}`}>
                                 <button className={`btn nav-link ${activePage("/friend")}`} onClick={() => handleNavigation("/friend")}>친구</button>
-
                             </li>
                             <li className="nav-item">
                                 <button className={`btn nav-link ${activePage("/study")}`} onClick={() => handleNavigation("/study")}>스터디</button>

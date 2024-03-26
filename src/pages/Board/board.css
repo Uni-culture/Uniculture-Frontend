@@ -11,20 +11,29 @@
 .board-wrapper {
     /*background-color: #8BC765;*/
     min-height: 100vh;
-    margin-left: 80px;
-    margin-right: 80px;
+    margin-left: 130px;
+    margin-right: 200px;
     position: relative;
 
     .board-header {
-        justify-content: space-between;
+        /*justify-content: space-between;*/
         align-items: baseline;
         display: flex;
         margin-top: 30px;
-        .board-header-username{
-            font-size: 1.0rem;
+        font-weight: 600;
+        .board-header-username {
+            font-size: 1.2rem;
         }
-        .board-header-date{
-            font-size: 1.0rem;
+        .board-header-dot {
+            margin-left: 10px;
+            color: gray;
+            font-size: 0.9rem;
+        }
+        .board-header-date {
+            font-weight: lighter;
+            margin-left: 10px;
+            font-size: 0.9rem;
+            color: gray;
             vertical-align: baseline;
         }
     }
@@ -34,10 +43,71 @@
         position: absolute;
         right: 0;
     }
+
+    .board-footer {
+        position: absolute;
+        width: 100%; /*부모 요소의 전체 너비를 차지*/
+    }
 }
 
 .delete-button {
     margin-right: 1rem;
 }
 
+.translate-button {
+    margin-right: 1rem;
+}
 
+.like {
+    transition: transform 300ms ease;
+}
+.like:hover {
+    transform: scale(1.1);
+}
+
+.custom-popup {
+    width: 300px !important;
+    height: 150px !important;
+}
+
+.custom-confirm-button {
+    width: 65px !important;
+    height: 30px !important;
+    font-size: 12px !important;
+    margin-right: 50px;
+}
+
+.custom-cancel-button {
+    width: 65px !important;
+    height: 30px !important;
+    font-size: 12px !important;
+}
+
+.custom-ok-popup {
+    width: 300px !important;
+    height: 275px !important;
+}
+
+.custom-ok-button {
+    width: 65px !important;
+    height: 38px !important;
+    font-size: 14px !important;
+}
+
+.custom-title {
+    padding-top: 1px !important;
+}
+
+.board-likeCount {
+    margin-left: 5px;
+    font-weight: normal;
+    font-size: 15px;
+}
+
+.board-postType {
+    font-weight: normal;
+    margin-left: 30px;
+    border-radius: 15px;
+    background-color: #c8dca0;
+    padding: 2px 15px;
+}
