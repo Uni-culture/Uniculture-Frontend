@@ -105,6 +105,7 @@ const Header = () => {
         }
         else {
             if(to==='/') window.location.reload();
+            // else if(to==='/study') navigate(to);
             else{
                 LoginWarning();
                 navigate("/sign-in", {state: {from: location.pathname}}); // 현재 경로를 저장하고 로그인 페이지로 이동

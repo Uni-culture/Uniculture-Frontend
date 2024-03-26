@@ -9,8 +9,8 @@ const PercentBar = ({ language, percentage, color}) => {
     }, [percentage]);
 
     useEffect(()=>{
-        if(color == "red") setRgb("rgb(255, 0, 0");
-        else if(color == "blue") setRgb("rgb(13, 110, 253)");
+        if(color === "red") setRgb("rgb(255, 0, 0");
+        else if(color === "blue") setRgb("rgb(13, 110, 253)");
     }, [color])
 
     return (
