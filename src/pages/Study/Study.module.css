@@ -1,6 +1,5 @@
 .background{
   margin-top: 40px;
-  
 }
 .menu{
   display: flex;
@@ -8,12 +7,12 @@
   margin-bottom: 20px;
 }
 
-.menubtn{
+.statusbtn{
   background-color: transparent;
   border: none;
 }
 
-.menubtn_selected{
+.statusbtn_selected{
   background-color: transparent;
   border: none;
   border-bottom: 2px solid green;
@@ -46,4 +45,79 @@
 .studyCards{
   display: flex;
   flex-wrap: wrap;
+}
+
+.study_container_header{
+  max-width: 700px;
+}
+
+.click_post{
+  text-decoration: none;
+  color: inherit;
+}
+
+.question{
+  display: flex;
+  padding: 18px 0;
+}
+
+
+.study_list{
+  list-style: none;
+  padding: 0;
+}
+
+.question_info{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.study_container{
+  margin-bottom: 20px;
+  border-bottom: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.question_title{
+  display: flex;
+}
+
+/* 본문 내용 */
+.question_body {
+  font-size: 16px; /* 폰트 크기 */
+  color: #666; /* 글씨 색상 */
+  margin-bottom: 15px; /* 마진 */
+  overflow: hidden; /* 넘치는 내용 숨김 */
+  text-overflow: ellipsis; /* 말줄임표로 표시 */
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* 최대 3줄까지만 표시 */
+  -webkit-box-orient: vertical;
+}
+
+/* 정보 푸터 */
+.question_info_footer {
+  display: flex; /* 플렉스 박스 모델 사용 */
+  justify-content: space-between; /* 양쪽 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+}
+
+.question_info_detail, .question_info_data {
+  display: flex;
+  align-items: center;
+}
+
+.question_info_data dl {
+  display: flex;
+  margin: 0;
+}
+
+.question_info_data dd {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  margin-right: 12px;
 }
