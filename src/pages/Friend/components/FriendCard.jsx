@@ -89,8 +89,8 @@ export default function FriendCard({userInfo, deleteFriend}) {
             <div style={{textAlign: "left"}}>{userInfo?.introduce}</div>
 
             {/* 사용언어, 학습언어 */}
-            {maxCanLanguage && <div style={{margin:"15px 0px 15px 0px"}}><PercentBar language={maxCanLanguage.language} percentage={maxCanLanguage.level} color={"blue"}/></div>}
-            {maxWantLanguage && <div style={{margin:"15px 0px 15px 0px"}}><PercentBar language={maxWantLanguage.language} percentage={maxWantLanguage.level} color={"red"}/></div>}
+            {maxCanLanguage && <div style={{margin:"15px 0px 15px 0px"}}><PercentBar language={maxCanLanguage.language} level={maxCanLanguage.level} color={"blue"}/></div>}
+            {maxWantLanguage && <div style={{margin:"15px 0px 15px 0px"}}><PercentBar language={maxWantLanguage.language} level={maxWantLanguage.level} color={"red"}/></div>}
                 
             {/* 취미 */}
             <div style={{ marginTop: "30px" }}>

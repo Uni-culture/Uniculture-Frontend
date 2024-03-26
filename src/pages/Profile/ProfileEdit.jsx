@@ -1,11 +1,11 @@
 import Layout from "../../components/Layout";
-import PercentBar from "../../components/PercentBar/editPercentBar";
 import Sidebar from "../../components/ProfileSidebar/Sidebar";
 import axios from 'axios';
 import { useState, useEffect, useRef } from 'react';
 import AddLanuageModal from "./Modal/AddLanuageModal";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import PercentBar from "../../components/PercentBar/PercentBar";
 
 const ProfileEdit = () => {
     const [userInfo, setUserInfo] = useState(null);
@@ -130,13 +130,15 @@ const ProfileEdit = () => {
     };
 
     // userInfo.myLanguages 업데이트
-    const handleMyLanguages = (language, percent) => {
-        // 언어와 퍼센트 값을 사용하여 userInfo 업데이트
+    const handleMyLanguages = (language, level) => {
+
+        console.log(language + level);
+        // userInfo 업데이트
         setUserInfo(prevUserInfo => ({
             ...prevUserInfo,
             myLanguages: {
                 ...prevUserInfo.myLanguages,
-                [language]: percent
+                [language]: level
             }
         }));
     };
@@ -153,13 +155,13 @@ const ProfileEdit = () => {
     };
 
     // userInfo.wantLanguage 업데이트
-    const handleWantLanguage = (language, percent) => {
+    const handleWantLanguage = (language, level) => {
         // 언어와 퍼센트 값을 사용하여 userInfo 업데이트
         setUserInfo(prevUserInfo => ({
             ...prevUserInfo,
             wantLanguage: {
                 ...prevUserInfo.wantLanguage,
-                [language]: percent
+                [language]: level
             }
         }));
     };
@@ -264,11 +266,11 @@ const ProfileEdit = () => {
                         </div>
 
                         <div className="mb-5 row">
-                            {Object.entries(userInfo?.myLanguages || {}).map(([language, percentage]) => (
+                            {Object.entries(userInfo?.myLanguages || {}).map(([language, level]) => (
                                 <div key={language} className="mb-2 row">
                                     <label className="col-sm-2"/>
                                     <div className="col-sm-8">
-                                        <PercentBar language={language} percentage={percentage} onChange={handleMyLanguages} onDelete={deleteMyLanguage}/>
+                                        <PercentBar language={language} level={level} onDelete={deleteMyLanguage} color={"blue"}/>
                                     </div>
                                 </div>
                             ))}
@@ -284,11 +286,11 @@ const ProfileEdit = () => {
                         </div>
 
                         <div className="mb-5 row">
-                            {Object.entries(userInfo?.wantLanguage || {}).map(([language, percentage]) => (
+                            {Object.entries(userInfo?.wantLanguage || {}).map(([language, level]) => (
                                 <div key={language} className="mb-2 row">
                                     <label className="col-sm-2"/>
                                     <div className="col-sm-8">
-                                        <PercentBar language={language} percentage={percentage} onChange={handleWantLanguage} onDelete={deleteWantLanguage}/>
+                                        <PercentBar language={language} level={level} onDelete={deleteWantLanguage} color={"red"}/>
                                     </div>
                                 </div>
                             ))}

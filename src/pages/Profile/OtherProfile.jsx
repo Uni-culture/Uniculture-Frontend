@@ -6,7 +6,6 @@ import { FaExchangeAlt } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { PiPlusCircleBold, PiPlusCircleFill } from "react-icons/pi";
-import LanguageList from './components/LanguageList';
 import Swal from 'sweetalert2';
 import MyBoardList from "./MyBoardList";
 import OtherBoardList from "./OtherBoardList";
@@ -35,14 +34,14 @@ export default function OtherProfile({otherInformation}) {
 
     useEffect(() => {
         // 사용 언어 배열로 변환하여 업데이트한 후 능숙도가 높은 순으로 정렬
-        const canLanguagesArray = Object.entries(otherInfo.canlanguages).map(([language, value]) => ({ language, value }));
+        const canLanguagesArray = Object.entries(otherInfo.canlanguages).map(([language, level]) => ({ language, level }));
         setCanLanguages(canLanguagesArray);
-        setCanLanguages(prevCanLanguages => [...prevCanLanguages].sort((a, b) => b.value - a.value));
+        setCanLanguages(prevCanLanguages => [...prevCanLanguages].sort((a, b) => b.level - a.level));
 
         // 학습 언어 배열로 변환하여 업데이트한 후 능숙도가 높은 순으로 정렬
-        const wantLanguagesArray = Object.entries(otherInfo.wantlanguages).map(([language, value]) => ({ language, value }));
+        const wantLanguagesArray = Object.entries(otherInfo.wantlanguages).map(([language, level]) => ({ language, level }));
         setWantLanguages(wantLanguagesArray);
-        setWantLanguages(prevWantLanguages => [...prevWantLanguages].sort((a, b) => b.value - a.value));
+        setWantLanguages(prevWantLanguages => [...prevWantLanguages].sort((a, b) => b.level - a.level));
 
         setFriendStatus(otherInfo.friendstatus);
     }, [otherInfo]);
@@ -67,7 +66,9 @@ export default function OtherProfile({otherInformation}) {
                 return (
                     <div>
                         {canLanguages && canLanguages.map((language, index) => (
-                            <LanguageList key={index} language={language.language} value={language.value} color={"blue"}/>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E0E0E0', padding: '10px' }}>
+                                <PercentBar key={index} language={language.language} level={language.level} color={"blue"}/>
+                            </div>
                         ))}
                     </div>
                 );
@@ -75,7 +76,9 @@ export default function OtherProfile({otherInformation}) {
                 return (
                     <div>
                         {wantLanguages && wantLanguages.map((language, index) => (
-                            <LanguageList key={index} language={language.language} value={language.value} color={"red"}/>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E0E0E0', padding: '10px' }}>
+                                <PercentBar key={index} language={language.language} level={language.level} color={"red"}/>
+                            </div>
                         ))}
                     </div>
                 );
@@ -338,9 +341,9 @@ export default function OtherProfile({otherInformation}) {
                     {/* 언어 */}
                     {(maxCanLanguage || maxWantLanguage) &&
                         <div style={{ display: "flex", marginTop:"20px"}}>
-                            {maxCanLanguage && <div><PercentBar language={maxCanLanguage.language} percentage={maxCanLanguage.value} color={"blue"}/></div>}
+                            {maxCanLanguage && <div><PercentBar language={maxCanLanguage.language} level={maxCanLanguage.level} color={"blue"}/></div>}
                             {maxCanLanguage && maxWantLanguage && <div style={{ marginLeft : "20px", marginRight : "20px" }}><FaExchangeAlt /></div>}
-                            {maxWantLanguage && <div><PercentBar language={maxWantLanguage.language} percentage={maxWantLanguage.value} color={"red"}/></div>}
+                            {maxWantLanguage && <div><PercentBar language={maxWantLanguage.language} level={maxWantLanguage.level} color={"red"}/></div>}
                             <span
                                 style={{marginLeft: "10px"}}
                                 onClick={()=> setShowAllLanguage(true)}

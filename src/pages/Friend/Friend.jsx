@@ -63,6 +63,7 @@ export default function Friend() {
             
             if(response.status === 200){
                 setFriendList(response.data.content);
+                console.log(response.data.content);
                 setPageCount(response.data.totalPages);
             }
             else if(response.status === 400){
@@ -111,11 +112,21 @@ export default function Friend() {
         switch (activeTab) {
             case 'myFriends':
                 return (
-                    <div style={{display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "50px", marginTop:"30px"}}>
-                        {friendList && friendList.map((friend) => (
-                            <FriendCard key={friend.id} userInfo={friend} deleteFriend={deleteFriend}/>
-                        ))}
+                    <div style={{marginTop: "30px"}}>
+                        {friendList.length > 0 ? (
+                            <div style={{display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "50px"}}>
+                                {friendList.map((friend) => (
+                                    <FriendCard key={friend.id} userInfo={friend} deleteFriend={deleteFriend}/>
+                                ))}
+                            </div>
+                        ) : (
+                            <div>
+                                친구를 추가해주세요.
+                            </div>
+                        )}
+                        
                     </div>
+                    
                 );
             case 'recommended':
                 return (
@@ -353,7 +364,7 @@ export default function Friend() {
 
             console.log(Query);
 
-            const response = await axios.get(`/api/auth/friend/search?${Query}page=${page}&size=3`, {
+            const response = await axios.get(`F?${Query}page=${page}&size=3`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -526,7 +537,7 @@ export default function Friend() {
 
             <div style={{float:"left", textAlign:"center"}}>
                 {renderTabContent()}
-                {activeTab === 'myFriends' && (
+                {friendList.length > 0 && activeTab === 'myFriends' && (
                     <div style={{display: "flex", justifyContent: "center", marginTop: "50px"}}>
                         <Pagination page={currentPage + 1} count={pageCount}  defaultPage={1} onChange={changePage} showFirstButton showLastButton />
                     </div>
