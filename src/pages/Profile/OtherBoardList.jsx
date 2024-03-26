@@ -6,11 +6,11 @@ import {useSearchParams} from "react-router-dom";
 import "../BoardList/boardList.scss";
 import moment from "moment";
 
-const MyBoardList = () => {
+const OtherBoardList = ({memberId}) => {
     const [pageCount, setPageCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
     const [boardList, setBoardList] = useState([]);
-    const [searchParams, setSearchParams] = useSearchParams();
+    // const [searchParams, setSearchParams] = useSearchParams();
 
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
@@ -21,7 +21,7 @@ const MyBoardList = () => {
         try {
             const token = getToken(); // 토큰 가져오기
             // const page_number = searchParams.get("page");
-            const response = await axios.get(`/api/auth/post?page=${page}&size=8`, {
+            const response = await axios.get(`/api/post/member/${memberId}?page=${page}&size=8`, {
                 headers: {
                     Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                 }
@@ -84,4 +84,4 @@ const MyBoardList = () => {
         </div>
     )
 }
-export default MyBoardList;
+export default OtherBoardList;

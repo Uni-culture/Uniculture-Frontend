@@ -4,6 +4,7 @@ import logoImg from "../../assets/logo.png";
 import axios from "axios";
 import "../PageLayout/PageLayout.css"
 import Swal from "sweetalert2";
+import "./Header.css";
 
 const Header = () => {
     const navigate = useNavigate(); // 다른 component 로 이동할 때 사용
@@ -22,8 +23,13 @@ const Header = () => {
     const removeToken = () => {
         localStorage.removeItem('accessToken'); // 로컬 스토리지에서 토큰 가져옴
         Swal.fire({
-            title: "<span style='font-size: 20px;'>로그아웃 되었습니다.</span>",
-            confirmButtonColor: "#8BC765"
+            title: "<span style='font-size: 18px;'>로그아웃 되었습니다.</span>",
+            confirmButtonColor: "#8BC765",
+            customClass: {
+                popup: 'custom-logout-popup',
+                confirmButton: 'custom-logout-button',
+                title: 'custom-logout-title'
+            }
         }).then((result) => {
             if (result.isConfirmed) {
                 window.location.reload(); // 페이지 새로고침
@@ -48,6 +54,7 @@ const Header = () => {
             }
         } catch (error) {
             if(error.response.status === 401) {
+                localStorage.removeItem('accessToken');
                 console.log("401 오류");
             }
             // else console.error('Login Error:', error);
@@ -69,12 +76,6 @@ const Header = () => {
 
     };
 
-    /*const NavItem = ({ to, text, activePage }) => (
-        <li className={`nav-item ${activePage(to)}`}>
-            <Link to={isLogin ? to : '/sign-in'} className={`nav-link ${activePage(to)}`}>{text}</Link>
-        </li>
-    );*/
-
     const handleSignUp = () => {
         navigate("/sign-up", { state: { from: location.pathname } }); // 현재 경로를 저장하고 회원가입 페이지로 이동
     };
@@ -93,6 +94,7 @@ const Header = () => {
     };
 
     const handleNavigation = (to) => {
+        console.log("handleNavigation :", isLogin);
         if(isLogin) {
             if (location.pathname === to) {
                 window.location.reload();

@@ -5,11 +5,17 @@ import {Link, useLocation, useNavigate} from "react-router-dom";
 import './Home.css';
 import Swal from "sweetalert2";
 import {Card} from "../../components/Card/Card";
-import BoardList from "../BoardList/BoardList";
+import TotalBoardList from "../BoardList/TotalBoardList";
+import DailyBoardList from "../BoardList/DailyBoardList";
+import HelpBoardList from "../BoardList/HelpBoardList";
+import FriendBoardList from "../BoardList/FriendBoardList";
 
 
 const Home = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
     const [isLogin, setIsLogin] = useState(false);
+    const [activeTab, setActiveTab] = useState('total'); //컴포넌트 선택
 
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 로컬 스토리지에서 토큰 가져옴
@@ -20,6 +26,38 @@ const Home = () => {
         setIsLogin(!!token); // 토큰이 존재하면 true, 없으면 false로 설정
     }, []);
 
+    // 전체/일상/도움 선택
+    const renderTabContent = () => {
+        switch (activeTab) {
+            case 'total':
+                return (
+                    <div>
+                        <TotalBoardList />
+                    </div>
+                );
+            case 'daily':
+                return (
+                    <div>
+                        <DailyBoardList />
+                    </div>
+                );
+            case 'help':
+                return (
+                    <div>
+                        <HelpBoardList />
+                    </div>
+                );
+            case 'friend':
+                return (
+                    <div>
+                        <FriendBoardList/>
+                    </div>
+                )
+            default:
+                return null;
+        }
+    };
+
     return (
         <div className="home-layout">
             <Header />
@@ -28,23 +66,29 @@ const Home = () => {
                     <span>
                         <ul className="nav nav-underline nav-tab">
                             <li className="nav-item">
-                                <Link className="nav-link" aria-current="page" to="#" style={{color: "black"}}>전체</Link>
+                                <button className="nav-link" style={{color: "black"}}
+                                        onClick={() => setActiveTab('total')}>전체</button>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="#" style={{color: "black"}}>일상</Link>
+                                <button className="nav-link" style={{color: "black"}}
+                                        onClick={() => setActiveTab('daily')}>일상</button>
                             </li>
                             <li className="nav-item">
-                                <Link class="nav-link" to="#" style={{color: "black"}}>도움</Link>
+                                <button className="nav-link" style={{color: "black"}}
+                                        onClick={() => setActiveTab('help')}>도움</button>
                             </li>
                             <li className="nav-item">
-                                <Link class="nav-link" to="#" style={{color: "black"}}>친구</Link>
+                                <button className="nav-link" style={{color: "black"}}
+                                        onClick={() => setActiveTab('friend')}>친구</button>
                             </li>
                         </ul>
                     </span>
                     <span>
                         {isLogin ? (
-                            <button className="write-button">
-                                <Link to="/add-board" className="write-link">글쓰기</Link>
+                            <button className="write-button" onClick={() => {
+                                navigate("/add-board", {state : {from : location.pathname}});
+                            }}>
+                                글쓰기
                             </button>
                         ) : (
                             <></>
@@ -53,7 +97,7 @@ const Home = () => {
                 </div>
             </div>
             <div className="home-content-layout">
-                <BoardList />
+                {renderTabContent()}
             </div>
         </div>
     );
