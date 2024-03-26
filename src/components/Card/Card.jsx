@@ -1,11 +1,11 @@
 import "./card.scss";
 import {useNavigate} from "react-router-dom";
 
-export const Card = ({board_id, title, content, username, date}) => {
+export const Card = ({board_id, title, content, username, date, style}) => {
     const navigate = useNavigate();
 
     return (
-        <div className="card-wrapper" onClick={() => {
+        <div className="card-wrapper" style={style} onClick={() => {
             navigate(`/board/${board_id}`)
         }}>
             <div className="card-body-img">

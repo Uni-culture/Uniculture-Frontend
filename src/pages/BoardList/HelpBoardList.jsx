@@ -2,26 +2,24 @@ import {Pagination} from "@mui/material";
 import {Card} from "../../components/Card/Card";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {useSearchParams} from "react-router-dom";
-import "../BoardList/boardList.scss";
+import "./boardList.scss";
 import moment from "moment";
 
-const MyBoardList = () => {
+const HelpBoardList = () => {
     const [pageCount, setPageCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
     const [boardList, setBoardList] = useState([]);
-    const [searchParams, setSearchParams] = useSearchParams();
 
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
     };
 
-    const fetchBoardData = async (page) => {
+    const fetchHelpBoardData = async (page) => {
         console.log('fetchBoardData start');
         try {
             const token = getToken(); // 토큰 가져오기
             // const page_number = searchParams.get("page");
-            const response = await axios.get(`/api/auth/post?page=${page}&size=8`, {
+            const response = await axios.get(`/api/post/help?page=${page}&size=8`, {
                 headers: {
                     Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                 }
@@ -49,39 +47,33 @@ const MyBoardList = () => {
     };
 
     useEffect(() => {
-        fetchBoardData(0);
-    }, [])
-
-    useEffect(() => {
-        fetchBoardData(currentPage);
+        fetchHelpBoardData(currentPage);
     }, [currentPage])
 
     const changePage = (value) => {
         setCurrentPage(value);
     }
 
-
     return (
         <div className="boardList-wrapper">
             <div className="boardList-body">
                 {boardList.map(post => (
                     <Card key={post.postId} board_id={post.postId} title={post.title} content={post.content} username={post.writerName}
-                          date={moment(post.createDate).add(9, "hour").format('YYYY-MM-DD')} style={{margin: '5px'}}></Card>
+                          date={moment(post.createDate).add(9, "hour").format('YYYY-MM-DD')}></Card>
                 ))}
             </div>
             <div className="boardList-footer">
                 <Pagination
-                    variant="outlined" color="primary" page={currentPage+1}
+                    page={currentPage+1}
                     count={pageCount} size="large"
                     onChange={(e, value) => {
-                        // window.location.href = `/?page=${value-1}`;
+                         // window.location.href = `/?page=${value-1}`;
                         changePage(value-1);
                     }}
-
                     showFirstButton showLastButton
                 />
             </div>
         </div>
     )
 }
-export default MyBoardList;
+export default HelpBoardList;
