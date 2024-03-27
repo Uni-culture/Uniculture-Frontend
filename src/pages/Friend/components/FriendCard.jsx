@@ -20,12 +20,12 @@ export default function FriendCard({userInfo, deleteFriend}) {
     useEffect(() => {
         // 사용 언어 배열로 변환하여 업데이트한 후 능숙도가 높은 언어 구하기
         const canLanguagesArray = Object.entries(userInfo.canLanguages).map(([language, level]) => ({ language, level }));
-        const sortedCanLanguagesArray = [...canLanguagesArray].sort((a, b) => b.value - a.level);
+        const sortedCanLanguagesArray = [...canLanguagesArray].sort((a, b) => b.level - a.level);
         setMaxCanLanguage(sortedCanLanguagesArray[0]);
 
         // 학습 언어 배열로 변환하여 업데이트한 후 능숙도가 가장 높은 언어 구하기
         const wantLanguagesArray = Object.entries(userInfo.wantLanguages).map(([language, level]) => ({ language, level }));
-        const sortedWantLanguagesArray = [...wantLanguagesArray].sort((a, b) => b.value - a.level);
+        const sortedWantLanguagesArray = [...wantLanguagesArray].sort((a, b) => b.level - a.level);
         setMaxWantLanguage(sortedWantLanguagesArray[0]);
     }, [userInfo]);
 

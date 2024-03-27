@@ -9,7 +9,8 @@ import FriendList from '../Profile/components/FriendList';
 import { Badge, Input, Select} from "antd";
 import { AiOutlineBell } from "react-icons/ai";
 import Pagination from '@mui/material/Pagination';
-import { GrCheckmark, GrPowerReset, GrClose } from "react-icons/gr";
+import { GrClose } from "react-icons/gr";
+import RecommendedFriendCard from './components/RecommendedFriendCard';
 
 export default function Friend() {
     const navigate = useNavigate();
@@ -22,7 +23,6 @@ export default function Friend() {
     //필터
     const { Option } = Select;
     const [showFilter, setShowFilter] = useState(false); //필터 div 보이기
-    const [filterContent, setFilterContent] = useState(null); //필터 성별
     
     //select
     const [selectGender, setSelectGender] = useState("ge"); //선택 성별
@@ -63,7 +63,6 @@ export default function Friend() {
             
             if(response.status === 200){
                 setFriendList(response.data.content);
-                console.log(response.data.content);
                 setPageCount(response.data.totalPages);
             }
             else if(response.status === 400){
@@ -103,8 +102,8 @@ export default function Friend() {
         const page = event.target.outerText - 1;
         setCurrentPage(page); //현재 페이지
 
-        if(filterContent) fetchFriendFilter(page);
-        else fetchFriendList(page);
+        if(selectGender === 'ge' && selectMina ==='0' && selectMaxa === '100' && selectCL === "cl" && selectWL === "wl" && selectHb === "hb") fetchFriendList(page);
+        else fetchFriendFilter(page);
     }
     
     //내 친구/추천 친구 선택
@@ -124,13 +123,25 @@ export default function Friend() {
                                 친구를 추가해주세요.
                             </div>
                         )}
-                        
                     </div>
                     
                 );
             case 'recommended':
                 return (
-                    <div style={{marginTop:"30px"}}>추천 친구</div>
+                    // <div style={{marginTop:"30px"}}>추천 친구</div>
+                    <div style={{marginTop: "30px"}}>
+                    {friendList.length > 0 ? (
+                        <div style={{display: "grid", gridTemplateColumns: "repeat(1, 1fr)", gap: "50px"}}>
+                            {friendList.map((friend) => (
+                                <RecommendedFriendCard key={friend.id} userInfo={friend} />
+                            ))}
+                        </div>
+                    ) : (
+                        <div>
+                            친구를 추가해주세요.
+                        </div>
+                    )}
+                </div>
                 );
             default:
                 return null;
@@ -340,7 +351,6 @@ export default function Friend() {
 
     //Gender 선택
     const handleSelect = (value, select) => {
-        console.log(`selected : ${value}`);
         if(select === "gender") setSelectGender(value);
         else if(select === "mina") setSelectMina(value);
         else if(select === "maxa") setSelectMaxa(value);
@@ -356,20 +366,18 @@ export default function Friend() {
             const token = getToken();
 
             let Query= ''; 
-            if (filterContent.ge ) Query += `ge=${filterContent.ge}&`;
-            if (filterContent.mina && filterContent.maxa ) Query += `mina=${filterContent.mina}&maxa=${filterContent.maxa}&`;
-            if (filterContent.cl ) Query += `cl=${filterContent.cl}&`;
-            if (filterContent.wl ) Query += `wl=${filterContent.wl}&`;
-            if (filterContent.hb ) Query += `hb=${filterContent.hb}&`;
+            if (selectGender !== 'ge') Query += `ge=${selectGender}&`;
+            if (selectMina !=='0' || selectMaxa !== '100' ) Query += `mina=${selectMina}&maxa=${selectMaxa}&`;
+            if (selectCL !== "cl") Query += `cl=${selectCL}&`;
+            if (selectWL !== "wl") Query += `wl=${selectWL}&`;
+            if (selectHb !== "hb") Query += `hb=${selectHb}&`;
 
-            console.log(Query);
-
-            const response = await axios.get(`F?${Query}page=${page}&size=3`, {
+            const response = await axios.get(`/api/auth/friend/search?${Query}page=${page}&size=3`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-            
+                
             if(response.status === 200){
                 console.log("성공");
                 setFriendList(response.data.content);
@@ -381,49 +389,27 @@ export default function Friend() {
             else if(response.status === 500){
                 console.log("친구 필터링 서버 오류");
             }
-            
         } catch (error) {
             console.log("친구 필터링 오류 :" + error);
         }
     };
 
-    //filterContent 수정
-    const handleFilter = () => {
-        setCurrentPage(0);
-        
-        if (selectGender !== "ge") setFilterContent({ ge: selectGender });
-        if (selectMina !=='0' && selectMaxa !== '100' ) {
-            setFilterContent({mina : selectMina});
-            setFilterContent(prevFilterContent => ({...prevFilterContent, maxa : selectMaxa}));
-        }
-        if (selectCL !== "cl") setFilterContent({ cl: selectCL });
-        if (selectWL !== "wl") setFilterContent({ wl: selectWL });
-        if (selectHb !== "hb") setFilterContent({ hb: selectHb });
-
-        console.log(filterContent);
-    }
-
     //필터내용 바뀌면 실행
     useEffect(() => {
-        if(filterContent) fetchFriendFilter(0);
-        console.log(filterContent);
-    }, [filterContent]);
+        setCurrentPage(0);
+        if(selectGender !== 'ge' || selectMina !=='0' || selectMaxa !== '100' || selectCL !== "cl" || selectWL !== "wl" || selectHb !== "hb") fetchFriendFilter(0);
+    }, [selectGender, selectMina, selectMaxa, selectCL, selectWL, selectHb]);
 
-    //필터 재설정
-    const resetFilter = () => {
+    //필터 없애기
+    const resetFriend = () => {
         setSelectGender("ge");
         setSelectMina('0');
         setSelectMaxa('100');
         setSelectCL("cl");
         setSelectWL("wl");
         setSelectHb("hb");
-    }
 
-    //필터 없애기
-    const resetFriend = () => {
-        resetFilter();
         setShowFilter(false);
-        setFilterContent('');
         setCurrentPage(0);
         fetchFriendList(0);
     }
@@ -460,7 +446,7 @@ export default function Friend() {
                         </div>
                     )}
 
-                    <div style={{fontSize: "25px", marginLeft: "20px", paddingBottom: "5px"}} onClick={()=>{setShowFilter(!showFilter); resetFilter();}}><TbAdjustmentsHorizontal /></div>
+                    <div style={{fontSize: "25px", marginLeft: "20px", paddingBottom: "5px"}} onClick={()=>{setShowFilter(!showFilter); }}><TbAdjustmentsHorizontal /></div>
                 
                 </div>
 
@@ -529,8 +515,6 @@ export default function Friend() {
                         <Option value="드라이브">드라이브</Option>
                     </Select>
 
-                    <div style={{marginLeft: "10px"}} onClick={() => {handleFilter()}}><GrCheckmark /></div>
-                    <div style={{marginLeft: "10px"}} onClick={()=> {resetFilter();}}><GrPowerReset /></div>
                     <div style={{marginLeft: "10px"}} onClick={()=> {resetFriend();}}><GrClose/></div>
                 </div>
             )}
