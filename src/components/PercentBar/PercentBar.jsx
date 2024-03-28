@@ -21,7 +21,7 @@ const PercentBar = ({ language, level, color, onDelete}) => {
 
     return (
         <>
-            <div className="d-flex align-items-center">
+            <div className="d-flex align-items-center" style={{display: "flex"}}>
                 {language && (<label style={{textAlign: "left", width: "50px", marginRight: "10px"}}>{language}</label>)}
                 <div style={{ position: 'relative' }}>
                     <div className="progress" style={{ width: '150px'}}>
@@ -32,13 +32,16 @@ const PercentBar = ({ language, level, color, onDelete}) => {
                             aria-valuenow={percentage}
                             aria-valuemin="0"
                             aria-valuemax="100"
-                        />
-                        <div style={{ position: 'absolute', top: 0, left: '25%', height: '100%', borderLeft: '1px solid #FFFFFF' }} />
-                        <div style={{ position: 'absolute', top: 0, left: '50%', height: '100%', borderLeft: '1px solid #FFFFFF' }} />
-                        <div style={{ position: 'absolute', top: 0, left: '75%', height: '100%', borderLeft: '1px solid #FFFFFF' }} />
+                        
+                        >
+                        <div style={{ position: 'absolute', top: 0, left: '20%', height: '100%', borderLeft: '1px solid #FFFFFF' }} />
+                        <div style={{ position: 'absolute', top: 0, left: '40%', height: '100%', borderLeft: '1px solid #FFFFFF' }} />
+                        <div style={{ position: 'absolute', top: 0, left: '60%', height: '100%', borderLeft: '1px solid #FFFFFF' }} />
+                        <div style={{ position: 'absolute', top: 0, left: '80%', height: '100%', borderLeft: '1px solid #FFFFFF' }} />
+                        </div>
                     </div>
-                    {onDelete && (<span onClick={handleDelete}><RiDeleteBinLine/></span>)}
                 </div>
+                {onDelete && (<div  style={{marginLeft: "15px"}} onClick={handleDelete}><RiDeleteBinLine/></div>)}
             </div>     
         </>
     );

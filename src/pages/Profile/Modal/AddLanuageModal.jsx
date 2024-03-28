@@ -45,10 +45,10 @@ export default function AddLanuageModal({handleModal, addLanguage}) {
                             <select className="form-select" defaultValue="level" value={level} onChange={handleLevelChange} aria-label="Default select example" style={{marginTop:"30px", marginBottom:"20px"}}>
                                 <option value='level' disabled>능숙도를 선택하세요.</option>
                                 <option value="100">최상</option>
-                                <option value="75">상</option>
-                                <option value="50">중</option>
-                                <option value="25">하</option>
-                                <option value="5">최하</option>
+                                <option value="80">상</option>
+                                <option value="60">중</option>
+                                <option value="40">하</option>
+                                <option value="20">최하</option>
                             </select>
                         </div>
                     </div>
