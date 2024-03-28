@@ -86,7 +86,7 @@ const SignUp = () => {
             console.log('response.status: ', response.status);
             if(response.status === 200) {
                 alert("회원가입이 완료되었습니다!");
-                navigate("/", {});
+                navigate("/setup", {});
             }
             else {
                 alert("회원가입에 실패하였습니다.");
@@ -278,15 +278,16 @@ const SignUp = () => {
         }
     };
 
+    const testClick = () => {
+        navigate("/setup", {state : {from : location.pathname}});
+    }
+
     return (
         <div style={{ backgroundColor: '#FBFBF3', minHeight: '100vh' }}>
             <IoArrowBack style={{ fontSize: '25px', marginTop: '20px', marginLeft: '20px'}} onClick={goBackToPreviousPath}/>
             <div className="auth-layout">
-                {/*<div className="title">회원가입</div>*/}
                 <div className="title"><Link to={"/"} style={{ color: "#04B404", textDecoration: "none"}}>UniCulture</Link></div>
-                <div className="sub-title">나의 성장을 돕는 언어교류 플랫폼
-                    {/*<span style={{color: '#8BC765'}}> UniCulture</span>*/}
-                </div>
+                <div className="sub-title">나의 성장을 돕는 언어교류 플랫폼</div>
 
                 <div className="inputTitle">이메일</div>
                 <div className="inputWrap">
@@ -401,7 +402,7 @@ const SignUp = () => {
                     )}
                 </div>
                 <button disabled={notAllow} className="authButton" onClick={handleInputClick}>가입하기</button>
-
+                <button onClick={testClick}>test</button>
             </div>
         </div>
     )

@@ -15,6 +15,7 @@ import Friend from './pages/Friend/Friend';
 import AddBoard from "./pages/AddBoard/AddBoard";
 import Board from "./pages/Board/Board";
 import EditBoard from "./pages/EditBoard/EditBoard";
+import SignUpOption from "./pages/Auth/SignUpOption";
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
             <Route path="/add-board" element={<AddBoard/>} />
             <Route path="/board/:board_id" element={<Board/>} />
             <Route path="/:board_id" element={<EditBoard/>} />
+            <Route path="/setup" element={<SignUpOption/>} />
           </Routes>
         </BrowserRouter>
       </>

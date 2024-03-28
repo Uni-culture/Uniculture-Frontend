@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import PercentBar from '../../../components/PercentBar/editPercentBar'
 
 export default function AddLanuageModal({handleModal, addLanguage}) {
-    const [language, setLanguage] = useState(null);
+    const [language, setLanguage] = useState("");
     const [percentage, setPercentage] = useState(50);
 
     const handleLanguageChange = (e) => {
@@ -34,8 +34,8 @@ export default function AddLanuageModal({handleModal, addLanguage}) {
                     <div className="modal-body" style={{marginTop:"20px"}}>
                         추가할 언어와 해당 언어의 능숙도를 선택하세요.
                         <div style={{textAlign:"center", marginTop:"20px"}}>
-                            <select class="form-select" onChange={handleLanguageChange} aria-label="Default select example" style={{marginTop:"30px", marginBottom:"20px"}}>
-                                <option selected disabled>언어를 선택하세요.</option>
+                            <select className="form-select" onChange={handleLanguageChange} aria-label="Default select example" style={{marginTop:"30px", marginBottom:"20px"}} defaultValue="">
+                                <option value="" disabled>언어를 선택하세요.</option>
                                 <option value="한국어">한국어</option>
                                 <option value="중국어">중국어</option>
                                 <option value="일본어">일본어</option>
