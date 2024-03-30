@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react"
 import {useLocation, useNavigate} from "react-router-dom";
 import "./Auth.css";
 import AddLanuageModal from "../Profile/Modal/AddLanuageModal";
-import PercentBar from "../../components/PercentBar/editPercentBar";
+import PercentBar from "../../components/PercentBar/PercentBar";
 
 const SignUpOption = () => {
     const navigate = useNavigate(); // 다른 component 로 이동할 때 사용
@@ -116,11 +116,11 @@ const SignUpOption = () => {
     };
 
     // 사용 언어 추가 함수
-    const handleMyLanguages = (language, percent) => {
+    const handleMyLanguages = (language, level) => {
         // 언어와 퍼센트 값을 사용하여 usedLanguages 업데이트
         setUsedLanguages(prev => ({
             ...prev,
-            [language]: percent
+            [language]: level
         }));
     };
 
@@ -132,10 +132,10 @@ const SignUpOption = () => {
     };
 
     // 학습 언어 추가 함수
-    const handleWantLanguages = (language, percent) => {
+    const handleWantLanguages = (language, level) => {
         setLearningLanguages(prev => ({
             ...prev,
-            [language]: percent
+            [language]: level
         }));
     };
 
@@ -234,9 +234,9 @@ const SignUpOption = () => {
                 </div>
                 {isModalOpened1&&<AddLanuageModal handleModal={()=>{setIsModalOpened1(false)}} addLanguage={handleMyLanguages}/>}
                 <div>
-                    {Object.entries(usedLanguages).map(([language, percentage]) => (
+                    {Object.entries(usedLanguages).map(([language, level]) => (
                         <div key={language}>
-                            <PercentBar language={language} percentage={percentage} onChange={handleMyLanguages} onDelete={deleteMyLanguage}/>
+                            <PercentBar language={language} level={level} onDelete={deleteMyLanguage} color={"blue"}/>
                         </div>
                     ))}
                 </div>
@@ -258,9 +258,9 @@ const SignUpOption = () => {
                 </div>
                 {isModalOpened2&&<AddLanuageModal handleModal={()=>{setIsModalOpened2(false)}} addLanguage={handleWantLanguages}/>}
                 <div>
-                    {Object.entries(learningLanguages).map(([language, percentage]) => (
+                    {Object.entries(learningLanguages).map(([language, level]) => (
                         <div key={language}>
-                            <PercentBar language={language} percentage={percentage} onChange={handleWantLanguages} onDelete={deleteWantLanguage}/>
+                            <PercentBar language={language} level={level} onDelete={deleteWantLanguage} color={"red"}/>
                         </div>
                     ))}
                 </div>
