@@ -22,7 +22,6 @@ const SignUp = () => {
     const [nickNameValid, setNickNameValid] = useState(false);
     const [notAllow, setNotAllow] = useState(true);
     const [gender, setGender] = useState('');
-    const [nationality, setNationality] = useState(null);
 
     const [isYearOptionExisted, setIsYearOptionExisted] = useState(false);
     const [isMonthOptionExisted, setIsMonthOptionExisted] = useState(false);
@@ -45,7 +44,6 @@ const SignUp = () => {
         setSelectedMonth(null);
         setSelectedDay(null);
         setAge(null);
-        setNationality(null);
 
         // 생년월일 select 박스 초기화
         const yearSelect = document.getElementById('birth-year');
@@ -72,7 +70,6 @@ const SignUp = () => {
             month: selectedMonth,
             day: selectedDay,
             age: age,
-            nationality: nationality
         };
         console.log('req_data: ', request_data);
         try{
@@ -85,8 +82,7 @@ const SignUp = () => {
             console.log('서버 응답: ', response);
             console.log('response.status: ', response.status);
             if(response.status === 200) {
-                alert("회원가입이 완료되었습니다!");
-                navigate("/setup", {});
+                navigate("/setup", { state: { id: response.data.id} });
             }
             else {
                 alert("회원가입에 실패하였습니다.");
@@ -230,13 +226,8 @@ const SignUp = () => {
         setSelectedDay(parseInt(e.target.value));
     };
 
-    // 국적 상태 설정
-    const handleNationalityChange = (e) => {
-        setNationality(e.target.value);
-    };
-
     useEffect(() => {
-        if(emailValid && pwValid && nickNameValid && gender && selectedYear && selectedMonth && selectedDay && nationality) {
+        if(emailValid && pwValid && nickNameValid && gender && selectedYear && selectedMonth && selectedDay) {
             setNotAllow(false); // 버튼 비활성화 해제
             return;
         }
@@ -256,7 +247,7 @@ const SignUp = () => {
             }
             setAge(age);
         }
-    }, [emailValid, pwValid, nickNameValid, gender, selectedYear, selectedMonth, selectedDay, nationality]); // 이메일, 비밀번호 등 state 값이 변경될 때마다 useEffect 실행
+    }, [emailValid, pwValid, nickNameValid, gender, selectedYear, selectedMonth, selectedDay]); // 이메일, 비밀번호 등 state 값이 변경될 때마다 useEffect 실행
 
     // 비밀번호 토글 함수
     const toggleShowPassword = () => {
@@ -382,14 +373,6 @@ const SignUp = () => {
                     선택한 생년월일: {selectedYear && selectedMonth && selectedDay ? `${selectedYear}년 ${selectedMonth}월 ${selectedDay}일` : '생년월일을 선택해주세요'}
                 </div>
                 <div><div> 나이: {age}세</div></div>*/}
-
-                <div className="inputTitle">국적</div>
-                <select className="box" id="birth-year" onChange={handleNationalityChange}>
-                    <option disabled selected>국적</option>
-                    <option value="Korea">Republic of Korea</option>
-                    <option value="China">People's Republic of China</option>
-                    <option value="Japan">Japan</option>
-                </select>
 
                 <div className="inputTitle">닉네임</div>
                 <div className="inputWrap" style={{padding: '10px'}}>

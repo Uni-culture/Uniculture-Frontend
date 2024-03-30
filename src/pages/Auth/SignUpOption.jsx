@@ -1,13 +1,15 @@
 import {IoArrowBack} from "react-icons/io5";
 import React, {useEffect, useState} from "react"
-import {useLocation, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import "./Auth.css";
 import AddLanuageModal from "../Profile/Modal/AddLanuageModal";
 import PercentBar from "../../components/PercentBar/PercentBar";
+import axios from "axios";
 
 const SignUpOption = () => {
     const navigate = useNavigate(); // 다른 component 로 이동할 때 사용
     const location = useLocation();
+    const {id} = location.state || {}; // 방금 회원가입한 회원의 id
     // 선택된 태그들을 저장할 상태
     const [selectedPurTags, setSelectedPurTags] = useState([]);
     const [finalPurpose, setFinalPurpose] = useState(""); // 최종적으로 선택된 주 목적 태그를 저장하는 상태변수
@@ -24,6 +26,10 @@ const SignUpOption = () => {
     const [usedLanguages, setUsedLanguages] = useState({});
     const [learningLanguages, setLearningLanguages] = useState({});
 
+    const getToken = () => {
+        return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
+    };
+    const token = getToken();
 
     // IoArrowBack 클릭 시 이전 경로로 이동
     const goBackToPreviousPath = () => {
@@ -146,6 +152,39 @@ const SignUpOption = () => {
         setLearningLanguages(updatedWantLanguages);
     };
 
+    const handleComplete = async () => {
+        try {
+            const response = await axios.patch(`/api/member/editProfile`, {
+                id: id,
+                purpose: selectedPurTags, // 가입 목적 태그
+                mainPurpose: finalPurpose, // 주 목적 태그
+                country: nationality, // 국적
+                myHobbyList: selectedIntTags, // 관심사 태그
+                canLanguages: usedLanguages, // 할 수 있는 언어
+                wantLanguage: learningLanguages // 배우고 싶은 언어
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+            });
+            console.log('서버 응답: ', response);
+            console.log('response.status: ', response.status);
+            // 등록 성공
+            if (response.status === 200) {
+                alert("성공적으로 저장되었습니다.");
+                navigate("/"); // 성공 후 이전 페이지로 이동
+            }
+        } catch (error) { // 실패 시
+            if(error.response.status === 401) {
+                console.log("401 오류");
+            }
+            else {
+                console.log("서버 오류 입니다.");
+                alert(error.response.data);
+            }
+        }
+    };
+
     useEffect(() => {
         if (selectedPurTags.length === 1) {
             setFinalPurpose(selectedPurTags[0]);
@@ -153,22 +192,27 @@ const SignUpOption = () => {
             // 여러 태그가 선택되었거나, 태그가 전혀 선택되지 않은 경우
             setFinalPurpose('');
         }
-    }, [selectedPurTags]);
 
+        // 페이지 경로(location.pathname)가 변경될 때 마다 스크롤을 맨 위로 올림
+        window.scrollTo(0, 0);
+    }, [selectedPurTags, location.pathname]);
 
-    const testtt = () => {
+    /*const testtt = () => {
         console.log("가입 목적: ", selectedPurTags);
         console.log("최종 가입 목적: ", finalPurpose);
         console.log("관심사: ", selectedIntTags);
         console.log("사용 언어: ", usedLanguages);
         console.log("학습 언어: ", learningLanguages);
-    };
+        console.log("회원의 id: ", id);
+        console.log("국적: ", nationality);
+    };*/
 
     return (
         <div style={{ backgroundColor: '#FBFBF3', minHeight: '100vh' }}>
             <IoArrowBack style={{ fontSize: '25px', marginTop: '20px', marginLeft: '20px'}} onClick={goBackToPreviousPath}/>
             <div className="auth-layout">
-                <div className="setup-title">꼭 맞는 친구 추천을 위해 <br />추가정보를 선택해주세요</div>
+                <div className="setup-title1">회원가입이 완료되었습니다!</div>
+                <div className="setup-title2">한 단계만 더 완료하면 <br/>꼭 맞는 친구 추천을 받을 수 있어요😊</div>
                 <div className="setup-subTitle">가입 목적 (최소 1개)</div>
                 <div className="tagWrap">
                     {purposeTag.map((tag) => (
@@ -275,12 +319,14 @@ const SignUpOption = () => {
                 </div>
 
                 <button className="authButton"
-                        disabled={!isButtonEnabled}>
+                        disabled={!isButtonEnabled}
+                        onClick={handleComplete}>
                     선택 완료
                 </button>
-
-                <button onClick={testtt}>test</button>
-
+                <div className="next-time-wrapper">
+                    <Link to={"/"} className="next-time">다음에 할래요😅</Link>
+                </div>
+                {/*<button onClick={testtt}>test</button>*/}
             </div>
         </div>
     )
