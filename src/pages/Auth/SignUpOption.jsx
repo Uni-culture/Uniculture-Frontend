@@ -10,7 +10,7 @@ const SignUpOption = () => {
     const location = useLocation();
     // 선택된 태그들을 저장할 상태
     const [selectedPurTags, setSelectedPurTags] = useState([]);
-    const [finalPurpose, setFinalPurpose] = useState(''); // 최종적으로 선택된 주 목적 태그를 저장하는 상태변수
+    const [finalPurpose, setFinalPurpose] = useState(""); // 최종적으로 선택된 주 목적 태그를 저장하는 상태변수
     const [selectedIntTags, setSelectedIntTags] = useState([]);
     // 관심사 태그 선택 개수가 10개를 초과하는지 확인하는 상태
     const [isOverSelectedIntTags, setIsOverSelectedIntTags] = useState(false);
@@ -36,10 +36,10 @@ const SignUpOption = () => {
         selectedPurTags.length >= 1 &&
         selectedIntTags.length >= 3 &&
         selectedIntTags.length <= 10 &&
+        finalPurpose !== "" &&
         nationality !== "" &&
         Object.keys(usedLanguages).length > 0 && // 사용 언어가 선택되었는지 확인
         Object.keys(learningLanguages).length > 0; // 학습 언어가 선택되었는지 확인
-
 
     const purposeTag = [
         "언어 교류",
@@ -145,6 +145,15 @@ const SignUpOption = () => {
         delete updatedWantLanguages[language];
         setLearningLanguages(updatedWantLanguages);
     };
+
+    useEffect(() => {
+        if (selectedPurTags.length === 1) {
+            setFinalPurpose(selectedPurTags[0]);
+        } else {
+            // 여러 태그가 선택되었거나, 태그가 전혀 선택되지 않은 경우
+            setFinalPurpose('');
+        }
+    }, [selectedPurTags]);
 
 
     const testtt = () => {
