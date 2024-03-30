@@ -28,7 +28,7 @@ export default function RecommendedFriendCard({userInfo}) {
     }, [userInfo]);
 
     return (
-        <Card style={{justifyContent: "space-between"}}>
+        <Card style={{display: "block", justifyContent: "space-between", marginBottom: "50px"}}>
             {/* 왼쪽 */}
             <div style={{float: "left", width:"30%", alignItems: "center", justifyContent:"center"}} onClick={handleProfile}>
                 {/* 프로필 사진 */}

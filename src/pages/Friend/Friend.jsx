@@ -113,9 +113,11 @@ export default function Friend() {
                 return (
                     <div style={{marginTop: "30px"}}>
                         {friendList.length > 0 ? (
-                            <div style={{display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "50px"}}>
+                            <div style={{ display: "flex", flexWrap: "wrap", gap: "30px" }}>
                                 {friendList.map((friend) => (
-                                    <FriendCard key={friend.id} userInfo={friend} deleteFriend={deleteFriend}/>
+                                    <div key={friend.id} style={{ flexBasis: "300px", minWidth: "400px", marginBottom: "20px" }}>
+                                        <FriendCard key={friend.id} userInfo={friend} deleteFriend={deleteFriend} cl={selectCL} wl={selectWL} hb={selectHb}/>
+                                    </div>
                                 ))}
                             </div>
                         ) : (
@@ -124,24 +126,23 @@ export default function Friend() {
                             </div>
                         )}
                     </div>
-                    
                 );
             case 'recommended':
                 return (
                     // <div style={{marginTop:"30px"}}>추천 친구</div>
                     <div style={{marginTop: "30px"}}>
-                    {friendList.length > 0 ? (
-                        <div style={{display: "grid", gridTemplateColumns: "repeat(1, 1fr)", gap: "50px"}}>
-                            {friendList.map((friend) => (
-                                <RecommendedFriendCard key={friend.id} userInfo={friend} />
-                            ))}
-                        </div>
-                    ) : (
-                        <div>
-                            친구를 추가해주세요.
-                        </div>
-                    )}
-                </div>
+                        {friendList.length > 0 ? (
+                            <div>
+                                {friendList.map((friend) => (
+                                    <RecommendedFriendCard key={friend.id} userInfo={friend}/>
+                                ))}
+                            </div>
+                        ) : (
+                            <div>
+                                친구를 추가해주세요.
+                            </div>
+                        )}
+                    </div>
                 );
             default:
                 return null;
@@ -519,14 +520,12 @@ export default function Friend() {
                 </div>
             )}
 
-            <div style={{float:"left", textAlign:"center"}}>
-                {renderTabContent()}
-                {friendList.length > 0 && activeTab === 'myFriends' && (
-                    <div style={{display: "flex", justifyContent: "center", marginTop: "50px"}}>
-                        <Pagination page={currentPage + 1} count={pageCount}  defaultPage={1} onChange={changePage} showFirstButton showLastButton />
-                    </div>
-                )}
-            </div>
+            {renderTabContent()}
+            {friendList.length > 0 && activeTab === 'myFriends' && (
+                <div style={{display: "flex", justifyContent: "center", marginTop: "30px", width: "100%" }}>
+                    <Pagination page={currentPage + 1} count={pageCount}  defaultPage={1} onChange={changePage} showFirstButton showLastButton />
+                </div>
+            )}
 
             {/* 친구 신청 모달창 */}
             {showRequests && (
