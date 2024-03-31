@@ -26,11 +26,6 @@ const SignUpOption = () => {
     const [usedLanguages, setUsedLanguages] = useState({});
     const [learningLanguages, setLearningLanguages] = useState({});
 
-    const getToken = () => {
-        return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
-    };
-    const token = getToken();
-
     // IoArrowBack 클릭 시 이전 경로로 이동
     const goBackToPreviousPath = () => {
         const previousPath = location.state?.from || "/"; // 이전 경로가 없으면 기본 경로는 "/"
@@ -47,13 +42,13 @@ const SignUpOption = () => {
         Object.keys(usedLanguages).length > 0 && // 사용 언어가 선택되었는지 확인
         Object.keys(learningLanguages).length > 0; // 학습 언어가 선택되었는지 확인
 
-    const purposeTag = [
+    const purposeTag = [ // 가입 목적 태그
         "언어 교류",
         "친목",
         "문화 교류"
     ];
 
-    const interestTag = [
+    const interestTag = [ // 관심사 태그
         "요리",
         "여행",
         "영화",
@@ -162,10 +157,6 @@ const SignUpOption = () => {
                 myHobbyList: selectedIntTags, // 관심사 태그
                 canLanguages: usedLanguages, // 할 수 있는 언어
                 wantLanguage: learningLanguages // 배우고 싶은 언어
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                },
             });
             console.log('서버 응답: ', response);
             console.log('response.status: ', response.status);
