@@ -11,7 +11,6 @@ export default function AddLanuageModal({handleModal, addLanguage}) {
     const handleLevelChange = (event) => {
         setLevel(parseInt(event.target.value));
     };
-
     const handleAddLanguage = () => {
         if (language !== 'language' && level !== 'level') {
             addLanguage(language, level);
@@ -24,7 +23,6 @@ export default function AddLanuageModal({handleModal, addLanguage}) {
             alert("언어 혹은 능숙도를 선택해주세요.");
         }
     };
-
     return (
         <div className="modal fade show" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
             <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -41,7 +39,7 @@ export default function AddLanuageModal({handleModal, addLanguage}) {
                                 <option value="중국어">중국어</option>
                                 <option value="일본어">일본어</option>
                             </select>
-                            
+
                             <select className="form-select" defaultValue="level" value={level} onChange={handleLevelChange} aria-label="Default select example" style={{marginTop:"30px", marginBottom:"20px"}}>
                                 <option value='level' disabled>능숙도를 선택하세요.</option>
                                 <option value="100">최상</option>
@@ -57,7 +55,7 @@ export default function AddLanuageModal({handleModal, addLanguage}) {
                         <button type="button" className="btn btn-primary" onClick={handleAddLanguage}>추가</button>
                     </div>
                 </div>
-            </div>                    
+            </div>
         </div>
     )
 }

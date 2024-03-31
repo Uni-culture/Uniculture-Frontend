@@ -32,19 +32,19 @@ const PercentBar = ({ language, level, color, onDelete}) => {
                             aria-valuenow={percentage}
                             aria-valuemin="0"
                             aria-valuemax="100"
-                        
                         >
                         <div style={{ position: 'absolute', top: 0, left: '20%', height: '100%', borderLeft: '1px solid #FFFFFF' }} />
                         <div style={{ position: 'absolute', top: 0, left: '40%', height: '100%', borderLeft: '1px solid #FFFFFF' }} />
                         <div style={{ position: 'absolute', top: 0, left: '60%', height: '100%', borderLeft: '1px solid #FFFFFF' }} />
                         <div style={{ position: 'absolute', top: 0, left: '80%', height: '100%', borderLeft: '1px solid #FFFFFF' }} />
+
                         </div>
                     </div>
                 </div>
                 {onDelete && (<div  style={{marginLeft: "15px"}} onClick={handleDelete}><RiDeleteBinLine/></div>)}
             </div>     
+
         </>
     );
 };
-
 export default PercentBar;
