@@ -1,39 +1,44 @@
 import React, { useEffect, useState } from 'react';
-
-const PercentBar = ({ language, percentage, color}) => {
-    const [percent, setPercent] = useState(percentage);
-    const [rgb, setRgb] = useState('');
-    // prop에서 percentage 값이 변경될 때마다 내부의 percent 상태를 업데이트합니다.
-    useEffect(() => {
-        setPercent(percentage);
-    }, [percentage]);
-
+import { RiDeleteBinLine } from "react-icons/ri";
+const PercentBar = ({ language, level, color, onDelete}) => {
+    const [percentage, setPercentage] = useState();
+    const [bg, setBg] = useState();
     useEffect(()=>{
-        if(color === "red") setRgb("rgb(255, 0, 0");
-        else if(color === "blue") setRgb("rgb(13, 110, 253)");
-    }, [color])
+        setBg(color);
+    },[color]);
+    useEffect(()=>{
+        setPercentage(level);
+    },[level])
+    // 삭제 버튼을 클릭할 때 언어를 삭제
+    const handleDelete = () => {
+        onDelete(language);
+    };
 
     return (
         <>
-            <div className="d-flex align-items-center">
+            <div className="d-flex align-items-center" style={{display: "flex"}}>
                 {language && (<label style={{textAlign: "left", width: "50px", marginRight: "10px"}}>{language}</label>)}
-                <div>
+                <div style={{ position: 'relative' }}>
                     <div className="progress" style={{ width: '150px'}}>
                         <div
-                        className="progress-bar"
-                        role="progressbar"
-                        style={{ width: `${percent}%`, backgroundColor: rgb}}
-                        aria-valuenow={percent}
-                        aria-valuemin="0"
-                        aria-valuemax="100"
+                            className={ bg==="red" ? "progress-bar bg-danger" : "progress-bar"}
+                            role="progressbar"
+                            style={{ width: `${percentage}%` }}
+                            aria-valuenow={percentage}
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+
                         >
-                        {`${percent}%`}
+                            <div style={{ position: 'absolute', top: 0, left: '20%', height: '100%', borderLeft: '1px solid #FFFFFF' }} />
+                            <div style={{ position: 'absolute', top: 0, left: '40%', height: '100%', borderLeft: '1px solid #FFFFFF' }} />
+                            <div style={{ position: 'absolute', top: 0, left: '60%', height: '100%', borderLeft: '1px solid #FFFFFF' }} />
+                            <div style={{ position: 'absolute', top: 0, left: '80%', height: '100%', borderLeft: '1px solid #FFFFFF' }} />
                         </div>
                     </div>
                 </div>
-            </div>     
+                {onDelete && (<div  style={{marginLeft: "15px"}} onClick={handleDelete}><RiDeleteBinLine/></div>)}
+            </div>
         </>
     );
 };
-
 export default PercentBar;
