@@ -68,19 +68,19 @@ const Home = () => {
                     <span>
                         <ul className="nav nav-underline nav-tab">
                             <li className="nav-item">
-                                <button className="nav-link" style={{color: "black"}}
+                                <button className={`nav-link ${activeTab === 'total' ? 'active' : ''}`} style={{color: "black"}}
                                         onClick={() => setActiveTab('total')}>전체</button>
                             </li>
                             <li className="nav-item">
-                                <button className="nav-link" style={{color: "black"}}
+                                <button className={`nav-link ${activeTab === 'daily' ? 'active' : ''}`} style={{color: "black"}}
                                         onClick={() => setActiveTab('daily')}>일상</button>
                             </li>
                             <li className="nav-item">
-                                <button className="nav-link" style={{color: "black"}}
+                                <button className={`nav-link ${activeTab === 'help' ? 'active' : ''}`} style={{color: "black"}}
                                         onClick={() => setActiveTab('help')}>도움</button>
                             </li>
                             <li className="nav-item">
-                                <button className="nav-link" style={{color: "black"}}
+                                <button className={`nav-link ${activeTab === 'friend' ? 'active' : ''}`} style={{color: "black"}}
                                         onClick={() => setActiveTab('friend')}>친구</button>
                             </li>
                         </ul>
