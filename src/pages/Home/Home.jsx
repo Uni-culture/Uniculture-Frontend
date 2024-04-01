@@ -1,14 +1,12 @@
 import Header from "../../components/Header/Header";
 import React, {useEffect, useState} from "react"
-import axios from 'axios';
-import {Link, useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import './Home.css';
-import Swal from "sweetalert2";
-import {Card} from "../../components/Card/Card";
 import TotalBoardList from "../BoardList/TotalBoardList";
 import DailyBoardList from "../BoardList/DailyBoardList";
 import HelpBoardList from "../BoardList/HelpBoardList";
 import FriendBoardList from "../BoardList/FriendBoardList";
+import { IoSearch } from "react-icons/io5";
 
 
 const Home = () => {
@@ -58,6 +56,10 @@ const Home = () => {
         }
     };
 
+    const navigateToSearch = () => {
+        navigate("/search", { state: { from: location.pathname } });
+    };
+
     return (
         <div className="home-layout">
             <Header />
@@ -84,6 +86,7 @@ const Home = () => {
                         </ul>
                     </span>
                     <span>
+                        <IoSearch className="search-icon" onClick={navigateToSearch}/>
                         {isLogin ? (
                             <button className="write-button" onClick={() => {
                                 navigate("/add-board", {state : {from : location.pathname}});

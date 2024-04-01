@@ -186,7 +186,7 @@ const Board = () => {
                     <div className="board-header">
                         <div className="board-header-username">{board.writerName}</div>
                         <div className="board-header-dot">·</div>
-                        <div className="board-header-date">{moment(board.createDate).add(9,"hour").format('YYYY-MM-DD')}</div>
+                        <div className="board-header-date">{moment(board.createDate).add(9,"hour").format('YYYY년 MM월 DD일')}</div>
                         <div className="like" style={{marginLeft: "30px"}}>
                             {liked ? (
                                 <HeartFilled style={{color: 'red'}} onClick={handleLike} />
