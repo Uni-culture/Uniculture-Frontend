@@ -20,6 +20,7 @@ import { PostView } from './pages/Study/PostView';
 import EditBoard from "./pages/EditBoard/EditBoard";
 import "react-quill/dist/quill.snow.css"
 import SignUpOption from "./pages/Auth/SignUpOption";
+import Search from "./pages/Search/Search";
 
 function App() {
 
@@ -44,6 +45,7 @@ function App() {
             <Route path="/board/:board_id" element={<Board/>} />
             <Route path="/:board_id" element={<EditBoard/>} />
             <Route path="/setup" element={<SignUpOption/>} />
+            <Route path="/search" element={<Search/>} />
           </Routes>
         </BrowserRouter>
       </>

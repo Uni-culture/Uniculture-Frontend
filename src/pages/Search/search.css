@@ -1,0 +1,29 @@
+.search-layout {
+    width: 100%;
+    max-width: 550px;
+    margin: 0 auto;
+}
+
+.searchWrap {
+    margin-top: 3.0rem;
+    position: relative;
+    margin-bottom: 1.3rem;
+}
+
+.input-icon {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    font-size: 20px; /* 아이콘 크기 */
+}
+
+.search-bar {
+    width: 100%;
+    height: 45px;
+    padding-left: 43px;
+}
+
+.total-elements {
+    margin-bottom: 1.3rem;
+}
