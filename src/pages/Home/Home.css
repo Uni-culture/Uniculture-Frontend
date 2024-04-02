@@ -37,3 +37,8 @@
 .write-button:active {
     background-color: #c8dca0;
 }
+
+.search-icon {
+    margin-right: 1.3rem;
+    font-size: 1.3rem;
+}
