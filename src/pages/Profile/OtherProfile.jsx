@@ -394,7 +394,7 @@ export default function OtherProfile({otherInformation}) {
                         className="nav-item"
                         style={{ fontWeight: activeTab3 === 'boardList' ? 'bold' : 'normal', backgroundColor: activeTab3 === 'boardList' ? '#B7DAA1' : '', marginRight: "20px", padding: "5px 15px", borderRadius: 25}}
                         onClick={() => setActiveTab3('boardList')}>
-                        게시글
+                        게시물
                     </li>
                     <li 
                         className="nav-item"

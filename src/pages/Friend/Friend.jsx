@@ -16,6 +16,7 @@ export default function Friend() {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('myFriends'); //컴포넌트 선택
     const [friendList, setFriendList] = useState([]); //친구 목록
+    const [recommendFriendList, setRecommendFriendList] = useState([]); //추천 친구 목록
 
     //검색
     const [searchInput, setSearchInput] = useState(null); // 검색창 값
@@ -35,6 +36,7 @@ export default function Friend() {
     //pagination
     const [pageCount, setPageCount] = useState(0); //전체 페이지 수
     const [currentPage, setCurrentPage] = useState(0); //현재 페이지
+    const [pageCount2, setPageCount2] = useState(0); //추천 친구 전체 페이지 수
 
     //친구 신청 모달창
     const [showRequests, setShowRequests] = useState(false); 
@@ -98,7 +100,8 @@ export default function Friend() {
             });
             
             if(response.status === 200){
-                setFriendList(response.data);
+                setRecommendFriendList(response.data);
+                setPageCount2(Math.ceil(response.data.length / 4)); //전체 페이지 수 
                 console.log("추천 친구 : " + JSON.stringify(response.data));
             }
             else if(response.status === 400){
@@ -172,20 +175,25 @@ export default function Friend() {
             case 'recommend':
                 return (
                     <div style={{marginTop:"30px"}}>
-                    {friendList.length > 0 ? (
-                        <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "40px" }}>
-                            {friendList.map((friend) => (
-                                <div key={friend.id} style={{ flexBasis: "550px", minWidth: "550px", marginBottom: "20px" }}>
-                                    <RecommendedFriendCard key={friend.id} userInfo={friend} sendFriendRequest={sendFriendRequest}/>
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <div>
-                            <p>아쉽게도, 현재 시스템에서 추천할 친구를 찾지 못했습니다.</p>
-                            <p>사용자의 활동이나 관심사를 더 많이 입력해주시면 보다 정확한 추천을 제공할 수 있습니다.</p>
-                        </div>
-                    )}
+                        {recommendFriendList.length > 0 ? (
+                            <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "40px" }}>
+                                {recommendFriendList.map((friend) => (
+                                    <div key={friend.id} style={{ flexBasis: "550px", minWidth: "550px", marginBottom: "20px" }}>
+                                        <RecommendedFriendCard key={friend.id} userInfo={friend} sendFriendRequest={sendFriendRequest}/>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div>
+                                <p>아쉽게도, 현재 시스템에서 추천할 친구를 찾지 못했습니다.</p>
+                                <p>사용자의 활동이나 관심사를 더 많이 입력해주시면 보다 정확한 추천을 제공할 수 있습니다.</p>
+                            </div>
+                        )}
+                        {/* {friendList.length > 0 && (
+                            <div style={{display: "flex", justifyContent: "center", marginTop: "30px", width: "100%" }}>
+                                <Pagination page={currentPage + 1} count={pageCount}  defaultPage={1} onChange={changePage} showFirstButton showLastButton />
+                            </div>
+                        )} */}
                     </div>
                 );
             default:
