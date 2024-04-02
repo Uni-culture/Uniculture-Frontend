@@ -8,6 +8,13 @@ import { useNavigate } from 'react-router-dom';
 export const Study = () => {
   const navigate = useNavigate();
   const [status, setstatus] = useState('전체');
+
+  const getToken = () => {
+    return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
+  };
+  const token = getToken();
+
+
   const data = [
     {
       "id":"123",
@@ -108,10 +115,15 @@ export const Study = () => {
               <option value="comment">댓글많은순</option>
               <option value="recommend">좋아요순</option>
             </select>
-            <button onClick={() => navigate('/post/new')}>
-            <FaPencilAlt />
-            글쓰기
-            </button>
+  
+              {/* <button onClick={() => navigate("/post/new", {state: {type: "study"}})}> */}
+              <button onClick={() => navigate("/post/new?type=study")}>
+              <FaPencilAlt />
+              글쓰기
+              </button>
+
+              
+            
           </div>
           <ul className={styles.study_list}>
             {

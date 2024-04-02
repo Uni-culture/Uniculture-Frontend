@@ -18,6 +18,7 @@ import Board from "./pages/Board/Board";
 import { Post } from './pages/Study/Post';
 import { PostView } from './pages/Study/PostView';
 import EditBoard from "./pages/EditBoard/EditBoard";
+import "react-quill/dist/quill.snow.css"
 
 function App() {
 

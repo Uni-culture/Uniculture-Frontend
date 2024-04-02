@@ -46,14 +46,37 @@
 }
 
 
+.category_box{
+  display: flex;
+  border: 1px solid rgb(184, 184, 184);
+}
 
 .category{
-  margin: 10px 0;
+  margin: 0;
+  border: none;
+}
+
+.category_wrapper{
+  padding : 10px 12px 5px 12px;
+}
+
+.category_btn{
+  border: none;
+  background: none;
 }
 
 .tags{
   margin: 10px 0;
 }
+
+.tag_box{
+  border: 1px solid gray;
+}
+
+.tagInput{
+  border: none;
+}
+
 
 .btns{
   display: flex;
