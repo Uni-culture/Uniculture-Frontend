@@ -2,10 +2,15 @@ import React, { useEffect, useMemo, useRef, useState } from 'react'
 import styles from './Post.module.css'
 import { useLocation, useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
-
-import { style } from '@mui/system';
+import "react-quill/dist/quill.snow.css"
 import { BsThreeDots, BsHash } from "react-icons/bs";
 import axios from 'axios';
+
+import { Radio, Select, Space } from 'antd';
+const options = [];
+const handleChange = (value) => {
+  console.log(`Selected: ${value}`);
+};
 
 
 export const Post = () => {
@@ -145,6 +150,14 @@ export const Post = () => {
             <div className={styles.category_box}>
               <div className={styles.category_wrapper}>
                 <input type="text" name="category" id="category" onChange={onChange} value={category} className={styles.category} />
+                <Select          
+                defaultValue="a1"
+                onChange={handleChange}
+                style={{
+                  width: 200,
+                }}
+                options={options}
+              />
               </div>
               <button className={styles.category_btn}><BsThreeDots /></button>
             </div>

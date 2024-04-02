@@ -2,7 +2,8 @@ import React from 'react'
 import Layout from '../../components/Layout'
 import styles from './PostView.module.css'
 import DOMPurify from 'dompurify'
-import { Comments } from './Comments'
+import { CommentList } from './CommentList'
+import ReactQuill from 'react-quill'
 
 export const PostView = () => {
   const data = 
@@ -67,7 +68,7 @@ export const PostView = () => {
             </div>
           </div> */}
           <div className={styles.comment_content}>
-            <Comments />
+            <CommentList />
           </div>
         </div>
       </section>

@@ -1,9 +1,9 @@
 import React, { useMemo, useState } from 'react'
-import styles from './Comment.module.css'
+import styles from './CommentList.module.css'
 import ReactQuill from 'react-quill';
 import { Comment } from './components/Comment';
 
-export const Comments = () => {
+export const CommentList = () => {
   
   const [content,setContent] = useState();
 
