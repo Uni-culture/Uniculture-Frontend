@@ -1,14 +1,12 @@
 import Header from "../../components/Header/Header";
 import React, {useEffect, useState} from "react"
-import axios from 'axios';
-import {Link, useLocation, useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import './Home.css';
-import Swal from "sweetalert2";
-import {Card} from "../../components/Card/Card";
 import TotalBoardList from "../BoardList/TotalBoardList";
 import DailyBoardList from "../BoardList/DailyBoardList";
 import HelpBoardList from "../BoardList/HelpBoardList";
 import FriendBoardList from "../BoardList/FriendBoardList";
+import { IoSearch } from "react-icons/io5";
 
 
 const Home = () => {
@@ -58,6 +56,10 @@ const Home = () => {
         }
     };
 
+    const navigateToSearch = () => {
+        navigate("/search", { state: { from: location.pathname } });
+    };
+
     return (
         <div className="home-layout">
             <Header />
@@ -66,24 +68,25 @@ const Home = () => {
                     <span>
                         <ul className="nav nav-underline nav-tab">
                             <li className="nav-item">
-                                <button className="nav-link" style={{color: "black"}}
+                                <button className={`nav-link ${activeTab === 'total' ? 'active' : ''}`} style={{color: "black"}}
                                         onClick={() => setActiveTab('total')}>전체</button>
                             </li>
                             <li className="nav-item">
-                                <button className="nav-link" style={{color: "black"}}
+                                <button className={`nav-link ${activeTab === 'daily' ? 'active' : ''}`} style={{color: "black"}}
                                         onClick={() => setActiveTab('daily')}>일상</button>
                             </li>
                             <li className="nav-item">
-                                <button className="nav-link" style={{color: "black"}}
+                                <button className={`nav-link ${activeTab === 'help' ? 'active' : ''}`} style={{color: "black"}}
                                         onClick={() => setActiveTab('help')}>도움</button>
                             </li>
                             <li className="nav-item">
-                                <button className="nav-link" style={{color: "black"}}
+                                <button className={`nav-link ${activeTab === 'friend' ? 'active' : ''}`} style={{color: "black"}}
                                         onClick={() => setActiveTab('friend')}>친구</button>
                             </li>
                         </ul>
                     </span>
                     <span>
+                        <IoSearch className="search-icon" onClick={navigateToSearch}/>
                         {isLogin ? (
                             <button className="write-button" onClick={() => {
                                 navigate("/add-board", {state : {from : location.pathname}});

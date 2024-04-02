@@ -16,6 +16,7 @@ import AddBoard from "./pages/AddBoard/AddBoard";
 import Board from "./pages/Board/Board";
 import EditBoard from "./pages/EditBoard/EditBoard";
 import SignUpOption from "./pages/Auth/SignUpOption";
+import Search from "./pages/Search/Search";
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
             <Route path="/board/:board_id" element={<Board/>} />
             <Route path="/:board_id" element={<EditBoard/>} />
             <Route path="/setup" element={<SignUpOption/>} />
+            <Route path="/search" element={<Search/>} />
           </Routes>
         </BrowserRouter>
       </>

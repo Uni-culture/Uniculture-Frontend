@@ -30,6 +30,7 @@ const TotalBoardList = () => {
             console.log('response.status: ', response.status);
             // 게시물 등록 성공
             if (response.status === 200) {
+                console.log(response.data);
                 console.log(response.data.content);
                 setBoardList(response.data.content);
                 console.log(`totalElements : ${response.data.totalElements}`);
@@ -62,7 +63,7 @@ const TotalBoardList = () => {
             <div className="boardList-body">
                 {boardList.map(post => (
                     <Card key={post.postId} board_id={post.postId} title={post.title} content={post.content} username={post.writerName}
-                          date={moment(post.createDate).add(9, "hour").format('YYYY-MM-DD')}></Card>
+                          date={moment(post.createDate).add(9, "hour").format('YYYY년 MM월 DD일')} likeCount={post.likeCount}></Card>
                 ))}
             </div>
             <div className="boardList-footer">
