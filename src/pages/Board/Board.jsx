@@ -179,7 +179,7 @@ const Board = () => {
     return (
         <div className="board-layout">
             <Header/>
-            <IoArrowBack style={{ fontSize: '25px', marginTop: '20px', marginLeft: '20px'}} onClick={goBackToPreviousPath}/>
+            <IoArrowBack style={{ fontSize: '25px', marginTop: '20px', marginLeft: '20px'}} onClick={()=>navigate(-1)}/>
             {isLoaded && (
                 <div className="board-wrapper">
                     <div className="board-title">{board.title}</div>

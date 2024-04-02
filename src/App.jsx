@@ -19,6 +19,7 @@ import { Post } from './pages/Study/Post';
 import { PostView } from './pages/Study/PostView';
 import EditBoard from "./pages/EditBoard/EditBoard";
 import "react-quill/dist/quill.snow.css"
+import SignUpOption from "./pages/Auth/SignUpOption";
 
 function App() {
 
@@ -42,6 +43,7 @@ function App() {
             <Route path="/add-board" element={<AddBoard/>} />
             <Route path="/board/:board_id" element={<Board/>} />
             <Route path="/:board_id" element={<EditBoard/>} />
+            <Route path="/setup" element={<SignUpOption/>} />
           </Routes>
         </BrowserRouter>
       </>

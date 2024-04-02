@@ -2,9 +2,9 @@ import Header from "./Header/Header";
 
 const Layout = (props) => {
     return (
-        <div style={{ backgroundColor: '#FBFBF3'}}>
+        <div style={{ backgroundColor: '#FBFBF3',  minHeight: '100vh'}}>
             <Header />
-            <div style={{ minHeight: '100vh', padding: "50px 100px 100px" }}>
+            <div style={{padding: "50px 100px 100px" }}>
                 {props.children}
             </div>
         </div>

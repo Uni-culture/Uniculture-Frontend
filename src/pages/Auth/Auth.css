@@ -84,14 +84,14 @@
 .authButton {
     width: 100%;
     border: none;
-    margin-top: 20px;
+    margin-top: 63px;
     border-radius: 7px;
     height: 55px;
     font-size: 18px;
     font-weight: 545;
     color: white;
     background-color: #8BC765;
-    margin-bottom: 70px;
+    margin-bottom: 25px;
 }
 
 .authButton:hover {
@@ -227,8 +227,8 @@
 
 
 select.box {
-    width: 100%;
-    height: 50px;
+    width: 95%;
+    height: 45px;
     box-sizing: border-box;
     margin-left: 5px;
     padding: 5px 0 5px 10px;
@@ -236,7 +236,8 @@ select.box {
     border: 1px solid #d9d6d6;
     color: #383838;
     background-color: #ffffff;
-    font-family: 'Montserrat', 'Pretendard', sans-serif;
+    font-size: 0.9rem;
+    /*font-family: 'Montserrat', 'Pretendard', sans-serif;*/
 }
 
 select.box:focus-within {
@@ -244,9 +245,10 @@ select.box:focus-within {
 }
 
 option {
-    font-size: 16px;
+    font-size: 0.9rem;
     color: #383838;
 }
+
 
 .info .box#domain-list option {
     font-size: 14px;
@@ -278,4 +280,152 @@ option {
 .info#info__birth select::-webkit-scrollbar-track {
     background-color: #ebe9e9;
     border-radius: 6px;
+}
+
+.setup-title1 {
+    margin-top: 2rem;
+    font-weight: bold;
+    color: #008000;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.setup-title2 {
+    font-weight: bold;
+    color: #008000;
+    font-size: 1.3rem;
+    margin-bottom: 2.7rem;
+}
+
+.tagWrap {
+    margin-bottom: 3rem;
+}
+
+.purpose-tag {
+    margin-left: 3px;
+    border-style: none;
+    border-radius: 9px;
+    background-color: #e9ecef;
+    padding: 7px 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #495057;
+    margin-bottom: 0.3rem;
+}
+
+.purpose-tag:hover {
+    margin-left: 3px;
+    border-style: none;
+    border-radius: 9px;
+    background-color: #8BC765;
+    padding: 7px 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: white;
+}
+
+.selectedPurTag {
+    margin-left: 3px;
+    border-style: none;
+    border-radius: 9px;
+    background-color: #8BC765;
+    padding: 7px 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: white;
+}
+
+.interest-tag {
+    margin-left: 3px;
+    border-style: none;
+    border-radius: 9px;
+    background-color: #e9ecef;
+    padding: 7px 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #495057;
+    margin-bottom: 0.3rem;
+}
+
+.interest-tag:hover {
+    margin-left: 3px;
+    border-style: none;
+    border-radius: 9px;
+    background-color: #408fff;
+    padding: 7px 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: white;
+}
+
+.selectedIntTag {
+    margin-left: 3px;
+    border-style: none;
+    border-radius: 9px;
+    background-color: #408fff;
+    padding: 7px 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: white;
+}
+
+.interest-tag-warning {
+    color: red;
+    margin-top: 7px;
+    font-size: 0.7rem;
+}
+
+.setup-subTitle-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    margin-top: 3.0rem;
+}
+
+.setup-subTitle {
+    color: #a0a0a0;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-right: 13px;
+    margin-bottom: 0.7rem;
+}
+
+.add-language-container {
+    width: 100%;
+}
+
+.add-language, .after-select {
+    border-style: none;
+    border-radius: 25px;
+    background-color: #E2E2E2;
+    padding: 8px 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #495057;
+    display: block;
+}
+
+.after-select {
+    padding: 7px 15px;
+    font-size: 0.7rem;
+    margin-bottom: 0.9rem;
+}
+
+.add-language {
+    margin-top: 0.2rem;
+    margin-bottom: 0.6rem;
+}
+
+.next-time-wrapper {
+    display: flex;
+    justify-content: center; /* 가로축 중앙 정렬 */
+    width: 100%; /*부모 요소인 .auth-layout의 전체 너비 채우기*/
+    padding-bottom: 6.5rem;
+}
+
+.next-time {
+    cursor: pointer;
+    text-decoration: underline;
+    color: #0080ff;
+    font-size: 0.9rem;
 }
