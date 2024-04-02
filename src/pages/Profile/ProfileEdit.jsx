@@ -39,21 +39,14 @@ const ProfileEdit = () => {
                 console.log('서버에러');
             }
         } catch (error) {
-            Swal.fire({
-                title: "로그인 해주세요.",
-                text: "로그인 창으로 이동합니다.",
-                icon: "warning",
-                confirmButtonColor: "#dc3545",
-                confirmButtonText: "확인"
-            }).then(() => {
-                navigate("/sign-in");
-            });
+            navigate("/");
         }
     };
 
     useEffect(() => {
         fetchUserInfo();
     }, [])
+
     //회원정보 수정
     const changeInfo = async () => {
         console.log('changeInfo');

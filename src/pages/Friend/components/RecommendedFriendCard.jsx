@@ -74,73 +74,58 @@ export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
     return (
         <Card>
             <div style={{ display: 'flex', alignItems:"center", justifyContent: "space-between"}}>
-            <div style={{ display: 'flex', alignItems:"center"}}>
-                {/* 프로필 사진 */}
-                <div style={{marginRight:"10px"}} onClick={handleProfile}>
-                    <img
-                        src={userInfo?.profileImage ? userInfo.profileImage : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
-                        alt="profile"
-                        style={{width:"40px", borderRadius: "50%"}}
-                    />
-                </div>
-
-                {/* 닉네임 */}
-                <div onClick={handleProfile} style={{fontWeight : "bold", fontSize: "15px"}}>{userInfo.nickname}</div>
-
-                {/* 성별, 나이 */}
-                <div style={{fontWeight:"normal", display:"flex", marginLeft:"10px"}}>
-                    {userInfo?.gender === "MAN" ? (
-                            <GiMale color='blue' size={20} />
-                    ):(
-                        <GiFemale color='red' size={20}/>
-                    )}
-                    <div style={{fontSize:"13px", marginLeft:"3px"}}>{userInfo.age}</div>
-                </div>
-
-                <button
-                    type="button"
-                    style={{
-                        width: "100px",
-                        height: "25px",
-                        marginLeft: "15px",
-                        borderRadius:"25px",
-                        backgroundColor:"#B7DAA1",
-                        border:"0px"
-                    }}
-                    onClick={handleSendFriendRequest}
-                >
-                    친구 신청
-                </button>
-
-                <button
-                    type="button"
-                    style={{
-                        width: "100px",
-                        height: "25px",
-                        marginLeft: "15px",
-                        borderRadius:"25px",
-                        backgroundColor:"#B7DAA1",
-                        border:"0px"
-                    }}
-                >
-                    채팅 보내기
-                </button>
-            </div>
-
-            <div style={{ display: 'flex', alignItems:"center"}}>
-                {/* {(canLanguage || wantLanguage) &&
-                    <div
-                    style={{marginLeft: "15px"}}
-                    onClick={()=> setShowAllLanguage(true)}
-                    onMouseEnter={()=> setOnMouseSpan(true)}                                
-                    onMouseLeave={()=> setOnMouseSpan(false)}
-                    >
-                        {onMouseSpan ? <BsPlusCircleFill size={20}/> : <BsPlusCircle size={20}/>}
+                <div style={{ display: 'flex', alignItems:"center"}}>
+                    {/* 프로필 사진 */}
+                    <div style={{marginRight:"10px"}} onClick={handleProfile}>
+                        <img
+                            src={userInfo?.profileImage ? userInfo.profileImage : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                            alt="profile"
+                            style={{width:"40px", borderRadius: "50%"}}
+                        />
                     </div>
-                }     */}
-                {/* 채팅 보내기 */}
-                {/* <div style={{marginLeft: "15px"}}><SlBubbles size={20}/></div> */}
-            </div>
+
+                    {/* 닉네임 */}
+                    <div onClick={handleProfile} style={{fontWeight : "bold", fontSize: "15px"}}>{userInfo.nickname}</div>
+
+                    {/* 성별, 나이 */}
+                    <div style={{fontWeight:"normal", display:"flex", marginLeft:"10px"}}>
+                        {userInfo?.gender === "MAN" ? (
+                                <GiMale color='blue' size={20} />
+                        ):(
+                            <GiFemale color='red' size={20}/>
+                        )}
+                        <div style={{fontSize:"13px", marginLeft:"3px"}}>{userInfo.age}</div>
+                    </div>
+
+                    <button
+                        type="button"
+                        style={{
+                            width: "100px",
+                            height: "25px",
+                            marginLeft: "15px",
+                            borderRadius:"25px",
+                            backgroundColor:"#B7DAA1",
+                            border:"0px"
+                        }}
+                        onClick={handleSendFriendRequest}
+                    >
+                        친구 신청
+                    </button>
+
+                    <button
+                        type="button"
+                        style={{
+                            width: "100px",
+                            height: "25px",
+                            marginLeft: "15px",
+                            borderRadius:"25px",
+                            backgroundColor:"#B7DAA1",
+                            border:"0px"
+                        }}
+                    >
+                        채팅 보내기
+                    </button>
+                </div>
             </div>
          
             {/* 소개 */}
@@ -169,27 +154,43 @@ export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
                 {showAllHobbies ? ( 
                     //취미 더 보기
                     <div>
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 100px)", gap: "15px" }}>
-                            {userInfo.hobbies && userInfo.hobbies.map((hobby, index) => (
-                                <span key={index} style={{ borderRadius: "15px", backgroundColor: "#C6CAC3", padding: "2px 15px" }}>
-                                    # {hobby}
-                                </span>
-                            ))}
-                        </div>
+                        {userInfo.hobbies && userInfo.hobbies.map((hobby, index) => (
+                            <div
+                                key={index} 
+                                style={{ 
+                                    display: "inline-block",
+                                    borderRadius: "9px", 
+                                    backgroundColor: "#C6CAC3", 
+                                    padding: "5px 10px",
+                                    marginRight: "3px",
+                                    marginBottom: "5px"
+                                }}
+                            >
+                                # {hobby}
+                            </div>
+                        ))}
                         <div onClick={()=> setShowAllHobbies(false)} style={{ cursor: "pointer", marginTop: "10px", color: "blue" }}>
                             - 간략하게
                         </div>
                     </div>
                 ) : (
-                    //취미 간략하게 보기(4개)
+                    //취미 간략하게 보기(5개)
                     <div>
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 100px)", gap: "15px" }}>
-                            {userInfo.hobbies && userInfo.hobbies.slice(0, 4).map((hobby, index) => (
-                                    <span key={index} style={{ borderRadius: "15px", backgroundColor: "#C6CAC3", padding: "2px 15px" }}>
-                                        # {hobby}
-                                    </span>
-                            ))}
-                        </div>
+                        {userInfo.hobbies && userInfo.hobbies.slice(0, 5).map((hobby, index) => (
+                            <div
+                                key={index} 
+                                style={{ 
+                                    display: "inline-block",
+                                    borderRadius: "9px", 
+                                    backgroundColor: "#C6CAC3", 
+                                    padding: "5px 10px",
+                                    marginRight: "3px",
+                                    marginBottom: "5px"
+                                }}
+                            >
+                                # {hobby}
+                            </div>
+                        ))}
                         {userInfo.hobbies && userInfo.hobbies.length > 4 && (
                             <div onClick={()=> setShowAllHobbies(true)} style={{ cursor: "pointer", marginTop: "10px", color: "blue" }}>
                                 + 더 보기

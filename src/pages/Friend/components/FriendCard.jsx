@@ -118,7 +118,7 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb}) {
                         </div>
 
                         {/* 닉네임 */}
-                        <div onClick={handleProfile}>{userInfo.nickname}</div>
+                        <div style={{minWidth: "80px", whiteSpace: "pre-wrap"}} onClick={handleProfile}>{userInfo.nickname}</div>
 
                         {/* 성별, 나이 */}
                         <div style={{fontWeight:"normal", display:"flex", marginLeft:"10px"}}>
@@ -170,7 +170,7 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb}) {
                                     display: "inline-block",
                                     borderRadius: "9px", 
                                     backgroundColor: hb === hobby ? "#C8DCA0" : "#C6CAC3", 
-                                    padding: "7px 12px",
+                                    padding: "5px 10px",
                                     marginRight: "3px",
                                     marginBottom: "5px"
                                 }}
@@ -192,7 +192,7 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb}) {
                                     display: "inline-block",
                                     borderRadius: "9px", 
                                     backgroundColor: hb === hobby ? "#C8DCA0" : "#C6CAC3", 
-                                    padding: "7px 12px",
+                                    padding: "5px 10px",
                                     marginRight: "3px",
                                     marginBottom: "5px"
                                 }}
@@ -200,7 +200,7 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb}) {
                                 # {hobby}
                             </div>
                         ))}
-                        {userInfo.hobbies && userInfo.hobbies.length > 3 && (
+                        {userInfo.hobbies && userInfo.hobbies.length > 4 && (
                             <div onClick={()=> setShowAllHobbies(true)} style={{ cursor: "pointer", marginTop: "10px", color: "blue" }}>
                                 + 더 보기
                             </div>
