@@ -89,7 +89,8 @@ const Home = () => {
                         <IoSearch className="search-icon" onClick={navigateToSearch}/>
                         {isLogin ? (
                             <button className="write-button" onClick={() => {
-                                navigate("/add-board", {state : {from : location.pathname}});
+                                // navigate("/add-board", {state : {from : location.pathname}});
+                                navigate("/post/new?type=post")
                             }}>
                                 글쓰기
                             </button>
