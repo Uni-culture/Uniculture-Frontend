@@ -34,6 +34,8 @@ export default function MyProfile({myInformation}) {
     const [canLanguages, setCanLanguages] = useState([]); //사용 언어 능숙도가 높은 순
     const [wantLanguages, setWantLanguages] = useState([]); //학습 언어 능숙도가 높은 순
 
+    const [activeTab3, setActiveTab3] = useState('boardList'); //게시글, 스터디 보기
+
     useEffect(() => {
         setMyInfo(myInformation); // myInformation을 props로 받아서 업데이트
     }, [myInformation]);
@@ -329,6 +331,26 @@ export default function MyProfile({myInformation}) {
         }
     };
 
+    // 게시물, 스터디
+    const renderTabContent3 = () => {
+        switch (activeTab3) {
+            case 'boardList':
+                return (
+                    <div className={styles.boardStyle}>
+                        <MyBoardList />
+                    </div>
+                );
+            case 'studyList':
+                return (
+                    <div style={{marginTop: "30px"}}>
+                        <p>스터디</p>
+                    </div>
+                );
+            default:
+                return ;
+        }
+    };
+
     return (
         <Layout>
             {/* 프로필 사진 */}
@@ -400,9 +422,27 @@ export default function MyProfile({myInformation}) {
                     </div>
                 }
             </div>
-            <div className={styles.boardStyle}>
-                <MyBoardList />
+
+            <div>
+                <ul className="nav">
+                    <li 
+                        className="nav-item"
+                        style={{ fontWeight: activeTab3 === 'boardList' ? 'bold' : 'normal', backgroundColor: activeTab3 === 'boardList' ? '#B7DAA1' : '', marginRight: "20px", padding: "5px 15px", borderRadius: 25}}
+                        onClick={() => setActiveTab3('boardList')}>
+                        게시글
+                    </li>
+                    <li 
+                        className="nav-item"
+                        style={{ fontWeight: activeTab3 === 'studyList' ? 'bold' : 'normal',  backgroundColor: activeTab3 === 'studyList' ? '#B7DAA1' : '', marginRight: "20px", padding: "5px 15px", borderRadius: 25}}
+                        onClick={() => {setActiveTab3('studyList');}}>
+                        스터디
+                    </li>
+                </ul>
             </div>
+
+            
+            {renderTabContent3()}
+
 
 
 

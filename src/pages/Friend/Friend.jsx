@@ -85,9 +85,47 @@ export default function Friend() {
         }
     };
 
+    // 추천 친구 목록 불러오기
+    const fetchRecommendFriend = async () => {
+        try {
+            console.log("친구 목록 불러오기");
+            const token = getToken();
+
+            const response = await axios.get(`/api/auth/friend/recommend`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            
+            if(response.status === 200){
+                setFriendList(response.data);
+                console.log("추천 친구 : " + JSON.stringify(response.data));
+            }
+            else if(response.status === 400){
+                console.log("친구 목록 불러오기 클라이언트 오류");
+            }
+            else if(response.status === 500){
+                console.log("친구 목록 불러오기 서버 오류");
+            }
+            
+        } catch (error) {
+            Swal.fire({
+                title: "로그인 해주세요.",
+                text: "로그인 창으로 이동합니다.",
+                icon: "warning",
+                confirmButtonColor: "#dc3545",
+                confirmButtonText: "확인"
+            }).then(() => {
+                navigate("/sign-in");
+            });
+        }
+    };
+
+    //검색 내용 바뀌면 실행
     useEffect(() => {
-        fetchFriendList(0);
-    }, []);
+        if(activeTab==='myFriends') fetchFriendList(0);
+        else fetchRecommendFriend(0);
+    }, [activeTab]);
 
     //검색 내용 바뀌면 실행
     useEffect(() => {
@@ -113,41 +151,75 @@ export default function Friend() {
                 return (
                     <div style={{marginTop: "30px"}}>
                         {friendList.length > 0 ? (
-                            <div style={{ display: "flex", flexWrap: "wrap", gap: "30px" }}>
+                            <div style={{ display: "flex", flexWrap: "wrap", gap: "30px", justifyContent: "center" }}>
                                 {friendList.map((friend) => (
-                                    <div key={friend.id} style={{ flexBasis: "300px", minWidth: "400px", marginBottom: "20px" }}>
+                                    <div key={friend.id} style={{ flexBasis: "400px", minWidth: "400px", marginBottom: "20px" }}>
                                         <FriendCard key={friend.id} userInfo={friend} deleteFriend={deleteFriend} cl={selectCL} wl={selectWL} hb={selectHb}/>
                                     </div>
                                 ))}
                             </div>
                         ) : (
                             <div>
-                                친구를 추가해주세요.
+                                {selectGender === 'ge' && selectMina ==='0' && selectMaxa === '100' && selectCL === "cl" && selectWL === "wl" && selectHb === "hb" ? (
+                                    <p>친구를 추가해주세요.</p>
+                                ) : (
+                                    <p>죄송합니다, 해당 조건에 맞는 결과가 없습니다.</p>
+                                )}
                             </div>
                         )}
                     </div>
                 );
-            case 'recommended':
+            case 'recommend':
                 return (
-                    // <div style={{marginTop:"30px"}}>추천 친구</div>
-                    <div style={{marginTop: "30px"}}>
-                        {friendList.length > 0 ? (
-                            <div>
-                                {friendList.map((friend) => (
-                                    <RecommendedFriendCard key={friend.id} userInfo={friend}/>
-                                ))}
-                            </div>
-                        ) : (
-                            <div>
-                                친구를 추가해주세요.
-                            </div>
-                        )}
+                    <div style={{marginTop:"30px"}}>
+                    {friendList.length > 0 ? (
+                        <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "40px" }}>
+                            {friendList.map((friend) => (
+                                <div key={friend.id} style={{ flexBasis: "550px", minWidth: "550px", marginBottom: "20px" }}>
+                                    <RecommendedFriendCard key={friend.id} userInfo={friend} sendFriendRequest={sendFriendRequest}/>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div>
+                            <p>아쉽게도, 현재 시스템에서 추천할 친구를 찾지 못했습니다.</p>
+                            <p>사용자의 활동이나 관심사를 더 많이 입력해주시면 보다 정확한 추천을 제공할 수 있습니다.</p>
+                        </div>
+                    )}
                     </div>
                 );
             default:
                 return null;
         }
     };
+
+    //친구 신청
+    const sendFriendRequest = async (userInfo) => {
+        try {
+            const token = getToken(); // 토큰 가져오기
+
+            const response = await axios.post('/api/auth/friend', {
+                targetId: userInfo.id
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}` // 헤더에 토큰 추가
+                }
+            });
+
+            if(response.status === 200){
+                alert("친구 신청 성공");
+                console.log(userInfo.nickname + "님에게 친구 신청");
+            }
+            else if(response.status === 400){
+                console.log("친구 신청 클라이언트 에러");
+            }
+            else if(response.status === 500){
+                console.log("친구 신청 서버 에러");
+            }
+        } catch (error) {
+            console.error('친구 걸기 오류 발생:', error);
+        }
+    }
 
     // 친구 삭제
     const  deleteFriend = async (friendInfo) => {
@@ -429,8 +501,8 @@ export default function Friend() {
                             </li>
                             <li 
                                 className="nav-item"
-                                style={{ width:"70px", fontWeight: activeTab === 'recommended' ? 'bold' : 'normal' }}
-                                onClick={() => {setActiveTab('recommended'); setSearchInput(''); setShowFilter(false)}}>
+                                style={{ width:"70px", fontWeight: activeTab === 'recommend' ? 'bold' : 'normal' }}
+                                onClick={() => {setActiveTab('recommend'); setSearchInput(''); setShowFilter(false)}}>
                                 추천 친구
                             </li>
                         </ul>
@@ -441,13 +513,13 @@ export default function Friend() {
                             <Input
                                 placeholder="Search for friends"
                                 prefix={<TbSearch style={{ color: 'rgba(0,0,0,.25)' }} />}
-                                style={{width: 300}}
+                                style={{width: 300, minWidth: 100}}
                                 onChange={(e) => setSearchInput(e.target.value)}
                             />
                         </div>
                     )}
 
-                    <div style={{fontSize: "25px", marginLeft: "20px", paddingBottom: "5px"}} onClick={()=>{setShowFilter(!showFilter); }}><TbAdjustmentsHorizontal /></div>
+                    { activeTab==='myFriends' && <div style={{fontSize: "25px", marginLeft: "20px", paddingBottom: "5px"}} onClick={()=>{setShowFilter(!showFilter); }}><TbAdjustmentsHorizontal /></div>}
                 
                 </div>
 
@@ -520,7 +592,7 @@ export default function Friend() {
                 </div>
             )}
 
-            {renderTabContent()}
+            <div style={{alignItems:"center"}}>{renderTabContent()}</div>
             {friendList.length > 0 && activeTab === 'myFriends' && (
                 <div style={{display: "flex", justifyContent: "center", marginTop: "30px", width: "100%" }}>
                     <Pagination page={currentPage + 1} count={pageCount}  defaultPage={1} onChange={changePage} showFirstButton showLastButton />

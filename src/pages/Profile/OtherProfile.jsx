@@ -27,6 +27,8 @@ export default function OtherProfile({otherInformation}) {
     const [canLanguages, setCanLanguages] = useState([]); //사용 언어 능숙도가 높은 순
     const [wantLanguages, setWantLanguages] = useState([]); //학습 언어 능숙도가 높은 순
 
+    const [activeTab3, setActiveTab3] = useState('boardList'); //게시글, 스터디 보기
+
     // 로그인 후 저장된 토큰 가져오는 함수
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
@@ -296,6 +298,25 @@ export default function OtherProfile({otherInformation}) {
         }
     }
 
+    // 게시물, 스터디
+    const renderTabContent3 = () => {
+        switch (activeTab3) {
+            case 'boardList':
+                return (
+                    <div>
+                        <OtherBoardList memberId={otherInfo.id} />
+                    </div>
+                );
+            case 'studyList':
+                return (
+                    <div style={{marginTop: "30px"}}>
+                        <p>스터디</p>
+                    </div>
+                );
+            default:
+                return ;
+        }
+    };
 
     return (
         <Layout>
@@ -309,23 +330,22 @@ export default function OtherProfile({otherInformation}) {
                             className={styles.image}
                         />
                     </div>
+                </div>
+
+                <div className={styles.right}>
 
                     <div style={{display:"flex"}}>
+
+                        {/* 닉네임 */}
+                        <div className={styles.name}>{otherInfo?.nickname}</div>
+                        
                         {/* 친구 걸기/채팅 보내기 */}
-
                         {friendButton()}
-
                         <button
                             className={styles.buttonStyle}
                             onClick={sendMessage}
                         >채팅 보내기</button>
                     </div>
-                </div>
-
-                <div className={styles.right}>
-
-                    {/* 닉네임 */}
-                    <div className={styles.name}>{otherInfo?.nickname}</div>
 
                     {/* 소개 */}
                     {otherInfo?.introduce && <div className={styles.intro}>{otherInfo.introduce}</div>}
@@ -365,45 +385,60 @@ export default function OtherProfile({otherInformation}) {
                             ))}
                         </div>
                     }
-
-                    {/* 전체 사용, 학습 언어 보기 모달창 */}
-                    {showAllLanguage && (
-                        <div className="modal fade show" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
-                            <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                <div className="modal-content" style={{height:"450px"}}>
-                                    <ul className="nav nav-tabs">
-                                        <li className="nav-item">
-                                            <button
-                                                className={`nav-link ${activeTab === 'can' ? 'active' : ''}`}
-                                                style={{ width:"150px", backgroundColor: activeTab === 'can' ? '#B7DAA1' : 'white', color: "black"}}
-                                                onClick={() => setActiveTab('can')}
-                                            >사용 언어</button>
-                                        </li>
-                                        <li className="nav-item">
-                                            <button
-                                                className={`nav-link ${activeTab === 'want' ? 'active' : ''}`}
-                                                style={{ width:"150px", backgroundColor: activeTab === 'want' ? '#B7DAA1' : 'white', color: "black"}}
-                                                onClick={() => setActiveTab('want')}
-                                            >학습 언어</button>
-                                        </li>
-                                    </ul>
-
-                                    <div className="modal-body">
-                                        {renderTabContent()}
-                                    </div>
-                                    <div className="modal-footer">
-                                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => {setShowAllLanguage(false); setActiveTab('can')}}>닫기</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
                 </div>
             </div>
+
             <div>
-                <OtherBoardList memberId={otherInfo.id} />
+                <ul className="nav">
+                    <li 
+                        className="nav-item"
+                        style={{ fontWeight: activeTab3 === 'boardList' ? 'bold' : 'normal', backgroundColor: activeTab3 === 'boardList' ? '#B7DAA1' : '', marginRight: "20px", padding: "5px 15px", borderRadius: 25}}
+                        onClick={() => setActiveTab3('boardList')}>
+                        게시글
+                    </li>
+                    <li 
+                        className="nav-item"
+                        style={{ fontWeight: activeTab3 === 'studyList' ? 'bold' : 'normal',  backgroundColor: activeTab3 === 'studyList' ? '#B7DAA1' : '', marginRight: "20px", padding: "5px 15px", borderRadius: 25}}
+                        onClick={() => {setActiveTab3('studyList');}}>
+                        스터디
+                    </li>
+                </ul>
             </div>
+
+            {renderTabContent3()}
+
+            {/* 전체 사용, 학습 언어 보기 모달창 */}
+            {showAllLanguage && (
+                <div className="modal fade show" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
+                    <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                        <div className="modal-content" style={{height:"450px"}}>
+                            <ul className="nav nav-tabs">
+                                <li className="nav-item">
+                                    <button
+                                        className={`nav-link ${activeTab === 'can' ? 'active' : ''}`}
+                                        style={{ width:"150px", backgroundColor: activeTab === 'can' ? '#B7DAA1' : 'white', color: "black"}}
+                                        onClick={() => setActiveTab('can')}
+                                    >사용 언어</button>
+                                </li>
+                                <li className="nav-item">
+                                    <button
+                                        className={`nav-link ${activeTab === 'want' ? 'active' : ''}`}
+                                        style={{ width:"150px", backgroundColor: activeTab === 'want' ? '#B7DAA1' : 'white', color: "black"}}
+                                        onClick={() => setActiveTab('want')}
+                                    >학습 언어</button>
+                                </li>
+                            </ul>
+
+                            <div className="modal-body">
+                                {renderTabContent()}
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => {setShowAllLanguage(false); setActiveTab('can')}}>닫기</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </Layout>
     );
 };

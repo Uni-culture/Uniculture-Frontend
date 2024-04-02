@@ -9,9 +9,9 @@ import { BsPlusCircle, BsPlusCircleFill } from "react-icons/bs";
 
 export default function FriendCard({userInfo, deleteFriend, cl, wl, hb}) {
     const navigate = useNavigate();
-    const [CanLanguage, setCanLanguage] = useState(); // Card에 보이는 cl
+    const [canLanguage, setCanLanguage] = useState(); // Card에 보이는 cl
     const [CLList, setCLList] = useState(); // 사용 언어 능숙도 높은순
-    const [WantLanguage, setWantLanguage] = useState(); // Card에 보이는 wl
+    const [wantLanguage, setWantLanguage] = useState(); // Card에 보이는 wl
     const [WLList, setWLList] = useState(); // 학습 언어 능숙도 높은순
 
     const [showAllHobbies, setShowAllHobbies] = useState(false); // 모든 취미 표시 여부 상태
@@ -132,9 +132,9 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb}) {
                     </div>
 
                     <div style={{ display: 'flex', alignItems:"center"}}>
-                        {(CanLanguage || WantLanguage) &&
+                        {(canLanguage || wantLanguage) &&
                             <div
-                            style={{marginRight: "15px"}}
+                            style={{marginLeft: "15px"}}
                             onClick={()=> setShowAllLanguage(true)}
                             onMouseEnter={()=> setOnMouseSpan(true)}                                
                             onMouseLeave={()=> setOnMouseSpan(false)}
@@ -143,22 +143,22 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb}) {
                             </div>
                         }    
                         {/* 채팅 보내기 */}
-                        <div style={{marginRight: "15px"}}><SlBubbles size={20}/></div>
+                        <div style={{marginLeft: "15px"}}><SlBubbles size={20}/></div>
                         {/* 친구 삭제 */}
-                        <div onClick={handleDeleteFriend}><SlClose size={20}/></div>
+                        {deleteFriend && <div style={{marginLeft: "15px"}} onClick={handleDeleteFriend}><SlClose size={20}/></div>}
                     </div>
                 </div>
-            } 
-        >
+            }
+        >   
             {/* 소개 */}
-            <div style={{textAlign: "left"}}>{userInfo?.introduce}</div>
+            {userInfo?.introduce && <div style={{textAlign: "left", marginBottom: "15px"}}>{userInfo?.introduce}</div>}
 
             {/* 사용언어, 학습언어 */}
-            {CanLanguage && <div style={{margin:"15px 0px 15px 0px"}}><PercentBar language={CanLanguage.language} level={CanLanguage.level} color={"blue"}/></div>}
-            {WantLanguage && <div style={{margin:"15px 0px 15px 0px"}}><PercentBar language={WantLanguage.language} level={WantLanguage.level} color={"red"}/></div>}
+            {canLanguage && <div style={{marginBottom: "15px"}}><PercentBar language={canLanguage.language} level={canLanguage.level} color={"blue"}/></div>}
+            {wantLanguage && <div style={{marginBottom: "15px"}}><PercentBar language={wantLanguage.language} level={wantLanguage.level} color={"red"}/></div>}
 
             {/* 취미 */}
-            <div style={{ marginTop: "30px" }}>
+            <div style={{ marginTop: "30px"}}>
                 {/* 취미 더보기 true/false */}
                 {showAllHobbies ? ( 
                     //취미 더 보기
