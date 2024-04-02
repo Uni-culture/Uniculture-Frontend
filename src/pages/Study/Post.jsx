@@ -7,7 +7,7 @@ import { BsThreeDots, BsHash } from "react-icons/bs";
 import axios from 'axios';
 
 import { Radio, Select, Space } from 'antd';
-const options = [];
+const options = [{value: 'DAILY', label: 'DAILY'}, {value: 'HELP', label: 'HELP'}];
 const handleChange = (value) => {
   console.log(`Selected: ${value}`);
 };
@@ -147,27 +147,36 @@ export const Post = () => {
         <div className={styles.right}>
           <div className={styles.category}>
             <label htmlFor="category"><span>카테고리 설정</span></label>
-            <div className={styles.category_box}>
-              <div className={styles.category_wrapper}>
-                <input type="text" name="category" id="category" onChange={onChange} value={category} className={styles.category} />
-                <Select          
-                defaultValue="a1"
+            <Select          
+                defaultValue="일상"
                 onChange={handleChange}
                 style={{
                   width: 200,
                 }}
                 options={options}
               />
+            {/* <div className={styles.category_box}>
+              <div className={styles.category_wrapper}>
+                <input type="text" name="category" id="category" onChange={onChange} value={category} className={styles.category} />
+                
               </div>
               <button className={styles.category_btn}><BsThreeDots /></button>
-            </div>
+            </div> */}
           </div>
           <div className={styles.tags}>
             <label htmlFor="tags"><span>태그 설정 (최대 ? 개)</span></label>
-            <div className={styles.tag_box}>
+            <Select
+              mode="tags"              
+              placeholder="Please select"
+              onChange={handleChange}
+              style={{
+                width: '100%',
+              }}
+            />
+            {/* <div className={styles.tag_box}>
               <BsHash />
               <input type="text" name="tags" id="tags" value={tags} onChange={onChange} className={styles.tagInput}/>
-            </div>
+            </div> */}
           </div>
           <div className={styles.btns}>
             <button type='button' onClick={() => navigate(-1)} className={styles.btn}>취소</button>
