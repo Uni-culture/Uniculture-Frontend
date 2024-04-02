@@ -6,6 +6,7 @@ import "react-quill/dist/quill.snow.css"
 import { BsThreeDots, BsHash } from "react-icons/bs";
 import axios from 'axios';
 import { Radio, Select, Space } from 'antd';
+import Layout from '../../components/Layout';
 
 export const Post = () => {
   const location = useLocation();
@@ -18,21 +19,8 @@ export const Post = () => {
   };
   const token = getToken();
 
-  const options = [{value: 'DAILY', label: 'DAILY'}, {value: 'HELP', label: 'HELP'}];
-  const handleCategoryChange = (value) => {
-    console.log(`Selected: ${value}`);
-    setInputs({
-      ...inputs,
-      [category]: value,
-    })  };
-
-    const handleTagChange = (value) => {
-      console.log(`Selected: ${value}`);
-      setInputs({
-        ...inputs,
-        [tags]: value,
-      })  
-    };
+  const postOptions = [{value: 'DAILY', label: '일상'}, {value: 'HELP', label: '도움'}];
+  const studyOptions = [{value: '자격증', label:'자격증'},{value: '언어교류', label:'언어교류'}]
 
   const [preset, setPreset] = useState('post');
 
@@ -58,6 +46,21 @@ export const Post = () => {
     }
   },[type])
 
+  const handleCategoryChange = (value) => {
+    console.log(`Selected: ${value}`);
+    setInputs(inputs => ({
+      ...inputs,
+      category: value,
+    }))
+  };
+
+    const handleTagChange = (value) => {
+      console.log(`Selected: ${value}`);
+      setInputs(inputs => ({
+        ...inputs,
+        tags: value,
+      }))  
+    };
 
   const  modules = useMemo(() =>{
     return {
@@ -116,6 +119,7 @@ export const Post = () => {
   }
 
   return (
+    <Layout>
     <div className={styles.root}>
       <div className={styles.post_name}>
         <h2>{preset} 작성</h2>
@@ -158,12 +162,12 @@ export const Post = () => {
           <div className={styles.category}>
             <label htmlFor="category"><span>카테고리 설정</span></label>
             <Select          
-                defaultValue="DAILY"
+                defaultValue={type==="post" ? 'DAILY':'스터디'}
                 onChange={handleCategoryChange}
                 style={{
                   width: 200,
                 }}
-                options={options}
+                options={type==="post" ? postOptions : studyOptions}
               />
             {/* <div className={styles.category_box}>
               <div className={styles.category_wrapper}>
@@ -174,7 +178,7 @@ export const Post = () => {
             </div> */}
           </div>
           <div className={styles.tags}>
-            <label htmlFor="tags"><span>태그 설정 (최대 ? 개)</span></label>
+            <label htmlFor="tags"><span>태그 설정 (최대 5 개)</span></label>
             <Select
               mode="tags"              
               placeholder="Please select"
@@ -196,5 +200,6 @@ export const Post = () => {
       </div>
       </form>
     </div>
+    </Layout>
   )
 }

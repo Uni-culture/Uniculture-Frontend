@@ -14,7 +14,7 @@ export const Card = ({board_id, title, content, username, date, likeCount, style
             </div>
             <div className="card-body-text">
                 <div className="card-body-text-title">{title}</div>
-                <div className="card-body-text-content">{content}</div>
+                <div className="card-body-text-content">{content.replace(/(<([^>]+)>)/gi, '')}</div>
                 <div className="card-body-text-bottom">
                     <span>{date}</span>
                     <span> · 0개의 댓글</span>
