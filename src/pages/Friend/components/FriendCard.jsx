@@ -5,12 +5,19 @@ import Swal from 'sweetalert2';
 import { Card } from "antd";
 import { SlBubbles, SlClose } from "react-icons/sl";
 import { GiMale, GiFemale } from "react-icons/gi";
+import { BsPlusCircle, BsPlusCircleFill } from "react-icons/bs";
 
-export default function FriendCard({userInfo, deleteFriend}) {
+export default function FriendCard({userInfo, deleteFriend, cl, wl, hb}) {
     const navigate = useNavigate();
-    const [maxCanLanguage, setMaxCanLanguage] = useState(); // 능숙도가 가장 높은 사용 언어
-    const [maxWantLanguage, setMaxWantLanguage] = useState(); // 능숙도가 가장 높은 학습 언어
+    const [canLanguage, setCanLanguage] = useState(); // Card에 보이는 cl
+    const [CLList, setCLList] = useState(); // 사용 언어 능숙도 높은순
+    const [wantLanguage, setWantLanguage] = useState(); // Card에 보이는 wl
+    const [WLList, setWLList] = useState(); // 학습 언어 능숙도 높은순
+
     const [showAllHobbies, setShowAllHobbies] = useState(false); // 모든 취미 표시 여부 상태
+    const [onMouseSpan, setOnMouseSpan] = useState(false);
+    const [showAllLanguage, setShowAllLanguage] = useState(false);
+    const [activeTab2, setActiveTab2] = useState('can');
 
     //친구 프로필로 이동
     const handleProfile = () => {
@@ -20,14 +27,62 @@ export default function FriendCard({userInfo, deleteFriend}) {
     useEffect(() => {
         // 사용 언어 배열로 변환하여 업데이트한 후 능숙도가 높은 언어 구하기
         const canLanguagesArray = Object.entries(userInfo.canLanguages).map(([language, level]) => ({ language, level }));
-        const sortedCanLanguagesArray = [...canLanguagesArray].sort((a, b) => b.value - a.level);
-        setMaxCanLanguage(sortedCanLanguagesArray[0]);
+        const sortedCanLanguagesArray = [...canLanguagesArray].sort((a, b) => b.level - a.level);
+        setCLList(sortedCanLanguagesArray);
+
+        //cl 값이 있으면 cl이 Card에 보이도록 설정
+        if (sortedCanLanguagesArray.some(lang => lang.language === cl)) {
+            const languageInfo = sortedCanLanguagesArray.find(lang => lang.language === cl);
+            setCanLanguage(languageInfo);
+        }
+        else setCanLanguage(sortedCanLanguagesArray[0]);
 
         // 학습 언어 배열로 변환하여 업데이트한 후 능숙도가 가장 높은 언어 구하기
         const wantLanguagesArray = Object.entries(userInfo.wantLanguages).map(([language, level]) => ({ language, level }));
-        const sortedWantLanguagesArray = [...wantLanguagesArray].sort((a, b) => b.value - a.level);
-        setMaxWantLanguage(sortedWantLanguagesArray[0]);
-    }, [userInfo]);
+        const sortedWantLanguagesArray = [...wantLanguagesArray].sort((a, b) => b.level - a.level);
+        setWLList(sortedWantLanguagesArray);
+        
+        //wl 값이 있으면 wl이 Card에 보이도록 설정
+        if (sortedWantLanguagesArray.some(lang => lang.language === wl)) {
+            const languageInfo = sortedWantLanguagesArray.find(lang => lang.language === wl);
+            setWantLanguage(languageInfo);
+        }
+        else setWantLanguage(sortedWantLanguagesArray[0]);
+
+       // 취미 중에서 hb와 동일한 항목을 맨 앞으로 이동
+        if (hb && userInfo.hobbies && userInfo.hobbies.includes(hb)) {
+            const updatedHobbies = [hb, ...userInfo.hobbies.filter(hobby => hobby !== hb)];
+            userInfo.hobbies = updatedHobbies;
+        }
+    }, [userInfo, cl, wl, hb]);
+
+    // 언어 모달창 : 선택된 탭에 따라 해당 목록을 표시하는 함수
+    const renderTabContent2 = () => {
+        switch (activeTab2) {
+            case 'can':
+                return (
+                    <div>
+                        {CLList && CLList.map((language, index) => (
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E0E0E0', padding: '10px' }}>
+                                <PercentBar key={index} language={language.language} level={language.level} color={"blue"}/>
+                            </div>
+                        ))}
+                    </div>
+                );
+            case 'want':
+                return (
+                    <div>
+                        {WLList && WLList.map((language, index) => (
+                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E0E0E0', padding: '10px' }}>
+                                <PercentBar key={index} language={language.language} level={language.level} color={"red"}/>
+                            </div>
+                        ))}
+                    </div>
+                );
+            default:
+                return ;
+        }
+    };
 
     //친구 삭제
     const handleDeleteFriend = () => {
@@ -77,30 +132,40 @@ export default function FriendCard({userInfo, deleteFriend}) {
                     </div>
 
                     <div style={{ display: 'flex', alignItems:"center"}}>
+                        {(canLanguage || wantLanguage) &&
+                            <div
+                            style={{marginLeft: "15px"}}
+                            onClick={()=> setShowAllLanguage(true)}
+                            onMouseEnter={()=> setOnMouseSpan(true)}                                
+                            onMouseLeave={()=> setOnMouseSpan(false)}
+                            >
+                                {onMouseSpan ? <BsPlusCircleFill size={20}/> : <BsPlusCircle size={20}/>}
+                            </div>
+                        }    
                         {/* 채팅 보내기 */}
-                        <div style={{marginRight: "15px"}}><SlBubbles size={20}/></div>
+                        <div style={{marginLeft: "15px"}}><SlBubbles size={20}/></div>
                         {/* 친구 삭제 */}
-                        <div onClick={handleDeleteFriend}><SlClose size={20}/></div>
+                        {deleteFriend && <div style={{marginLeft: "15px"}} onClick={handleDeleteFriend}><SlClose size={20}/></div>}
                     </div>
                 </div>
-            } 
-        >
+            }
+        >   
             {/* 소개 */}
-            <div style={{textAlign: "left"}}>{userInfo?.introduce}</div>
+            {userInfo?.introduce && <div style={{textAlign: "left", marginBottom: "15px"}}>{userInfo?.introduce}</div>}
 
             {/* 사용언어, 학습언어 */}
-            {maxCanLanguage && <div style={{margin:"15px 0px 15px 0px"}}><PercentBar language={maxCanLanguage.language} percentage={maxCanLanguage.level} color={"blue"}/></div>}
-            {maxWantLanguage && <div style={{margin:"15px 0px 15px 0px"}}><PercentBar language={maxWantLanguage.language} percentage={maxWantLanguage.level} color={"red"}/></div>}
-                
+            {canLanguage && <div style={{marginBottom: "15px"}}><PercentBar language={canLanguage.language} level={canLanguage.level} color={"blue"}/></div>}
+            {wantLanguage && <div style={{marginBottom: "15px"}}><PercentBar language={wantLanguage.language} level={wantLanguage.level} color={"red"}/></div>}
+
             {/* 취미 */}
-            <div style={{ marginTop: "30px" }}>
+            <div style={{ marginTop: "30px"}}>
                 {/* 취미 더보기 true/false */}
                 {showAllHobbies ? ( 
                     //취미 더 보기
                     <div>
                         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 100px)", gap: "15px" }}>
                             {userInfo.hobbies && userInfo.hobbies.map((hobby, index) => (
-                                <span key={index} style={{ borderRadius: "15px", backgroundColor: "#C6CAC3", padding: "2px 15px" }}>
+                                <span key={index} style={{ borderRadius: "15px", backgroundColor: hb === hobby ? "#C8DCA0" : "#C6CAC3", padding: "2px 15px" }}>
                                     # {hobby}
                                 </span>
                             ))}
@@ -114,7 +179,7 @@ export default function FriendCard({userInfo, deleteFriend}) {
                     <div>
                         <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 100px)", gap: "15px" }}>
                             {userInfo.hobbies && userInfo.hobbies.slice(0, 3).map((hobby, index) => (
-                                    <span key={index} style={{ borderRadius: "15px", backgroundColor: "#C6CAC3", padding: "2px 15px" }}>
+                                    <span key={index} style={{ borderRadius: "15px", backgroundColor: hb === hobby ? "#C8DCA0" : "#C6CAC3", padding: "2px 15px" }}>
                                         # {hobby}
                                     </span>
                             ))}
@@ -127,6 +192,39 @@ export default function FriendCard({userInfo, deleteFriend}) {
                     </div>
                 )}
             </div>
+
+            {/* 전체 사용, 학습 언어 보기 모달창 */}
+            {showAllLanguage && (
+                <div className="modal fade show" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
+                    <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                        <div className="modal-content" style={{height:"450px"}}>
+                                <ul className="nav nav-tabs">
+                                    <li className="nav-item">
+                                        <button 
+                                            className={`nav-link ${activeTab2 === 'can' ? 'active' : ''}`} 
+                                            style={{ width:"150px", backgroundColor: activeTab2 === 'can' ? '#B7DAA1' : 'white', color: "black"}}
+                                            onClick={() => setActiveTab2('can')}
+                                        >사용 언어</button>
+                                    </li>
+                                    <li className="nav-item">
+                                        <button 
+                                            className={`nav-link ${activeTab2 === 'want' ? 'active' : ''}`} 
+                                            style={{ width:"150px", backgroundColor: activeTab2 === 'want' ? '#B7DAA1' : 'white', color: "black"}}
+                                            onClick={() => setActiveTab2('want')}
+                                        >학습 언어</button>
+                                    </li>
+                                </ul>
+
+                            <div className="modal-body">
+                                {renderTabContent2()}
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => {setShowAllLanguage(false); setActiveTab2('can')}}>닫기</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </Card>
     );
 }
