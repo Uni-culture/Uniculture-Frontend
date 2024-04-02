@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
+
 export default function AddLanuageModal({handleModal, addLanguage}) {
     const [language, setLanguage] = useState('language');
     const [level, setLevel] = useState('level');
+
     const handleLanguageChange = (event) => {
         setLanguage(event.target.value);
     };
+
     const handleLevelChange = (event) => {
         setLevel(parseInt(event.target.value));
     };

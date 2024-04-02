@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { RiDeleteBinLine } from "react-icons/ri";
+
 const PercentBar = ({ language, level, color, onDelete}) => {
     const [percentage, setPercentage] = useState();
     const [bg, setBg] = useState();
+
     useEffect(()=>{
         setBg(color);
     },[color]);
+
+
     useEffect(()=>{
         setPercentage(level);
     },[level])
+
     // 삭제 버튼을 클릭할 때 언어를 삭제
     const handleDelete = () => {
         onDelete(language);
@@ -27,17 +32,18 @@ const PercentBar = ({ language, level, color, onDelete}) => {
                             aria-valuenow={percentage}
                             aria-valuemin="0"
                             aria-valuemax="100"
-
                         >
-                            <div style={{ position: 'absolute', top: 0, left: '20%', height: '100%', borderLeft: '1px solid #FFFFFF' }} />
-                            <div style={{ position: 'absolute', top: 0, left: '40%', height: '100%', borderLeft: '1px solid #FFFFFF' }} />
-                            <div style={{ position: 'absolute', top: 0, left: '60%', height: '100%', borderLeft: '1px solid #FFFFFF' }} />
-                            <div style={{ position: 'absolute', top: 0, left: '80%', height: '100%', borderLeft: '1px solid #FFFFFF' }} />
+                        <div style={{ position: 'absolute', top: 0, left: '20%', height: '100%', borderLeft: '1px solid #FFFFFF' }} />
+                        <div style={{ position: 'absolute', top: 0, left: '40%', height: '100%', borderLeft: '1px solid #FFFFFF' }} />
+                        <div style={{ position: 'absolute', top: 0, left: '60%', height: '100%', borderLeft: '1px solid #FFFFFF' }} />
+                        <div style={{ position: 'absolute', top: 0, left: '80%', height: '100%', borderLeft: '1px solid #FFFFFF' }} />
+
                         </div>
                     </div>
                 </div>
                 {onDelete && (<div  style={{marginLeft: "15px"}} onClick={handleDelete}><RiDeleteBinLine/></div>)}
-            </div>
+            </div>     
+
         </>
     );
 };
