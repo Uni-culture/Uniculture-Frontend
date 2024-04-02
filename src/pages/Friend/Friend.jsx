@@ -57,7 +57,7 @@ export default function Friend() {
 
             let Query= searchInput ? `name=${searchInput}&` : '';
 
-            const response = await axios.get(`/api/auth/friend/detail?${Query}page=${page}&size=3`, {
+            const response = await axios.get(`/api/auth/friend/detail?${Query}page=${page}&size=6`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -453,7 +453,7 @@ export default function Friend() {
             if (selectWL !== "wl") Query += `wl=${selectWL}&`;
             if (selectHb !== "hb") Query += `hb=${selectHb}&`;
 
-            const response = await axios.get(`/api/auth/friend/search?${Query}page=${page}&size=3`, {
+            const response = await axios.get(`/api/auth/friend/search?${Query}page=${page}&size=6`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

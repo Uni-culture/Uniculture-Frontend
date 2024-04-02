@@ -412,15 +412,24 @@ export default function MyProfile({myInformation}) {
                 }
 
                 {/* 취미 */}
-                {myInfo.hobbies && 
-                    <div style={{ display: "flex", marginTop:"20px"}}>
-                        {myInfo.hobbies && myInfo.hobbies.map((hobby, index) => (
-                            <div key={index} style={{ borderRadius:"15px", backgroundColor:"#C6CAC3", padding:"2px 15px", marginRight: "10px" }}>
-                                #{hobby}
-                            </div>
-                        ))}
-                    </div>
-                }
+                <div style={{marginTop: "20px"}}>
+                    {myInfo.hobbies && myInfo.hobbies.map((hobby, index) => (
+                        <div
+                            key={index} 
+                            style={{ 
+                                display: "inline-block",
+                                borderRadius: "9px", 
+                                backgroundColor: "#C6CAC3", 
+                                padding: "7px 12px",
+                                marginRight: "3px",
+                                marginBottom: "5px"
+                            }}
+                        >
+                            # {hobby}
+                        </div>
+                    ))}
+                </div>
+                
             </div>
 
             <div>

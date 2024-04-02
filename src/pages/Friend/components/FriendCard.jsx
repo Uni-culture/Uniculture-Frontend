@@ -163,27 +163,43 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb}) {
                 {showAllHobbies ? ( 
                     //취미 더 보기
                     <div>
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 100px)", gap: "15px" }}>
-                            {userInfo.hobbies && userInfo.hobbies.map((hobby, index) => (
-                                <span key={index} style={{ borderRadius: "15px", backgroundColor: hb === hobby ? "#C8DCA0" : "#C6CAC3", padding: "2px 15px" }}>
-                                    # {hobby}
-                                </span>
-                            ))}
-                        </div>
+                        {userInfo.hobbies && userInfo.hobbies.map((hobby, index) => (
+                            <div
+                                key={index} 
+                                style={{ 
+                                    display: "inline-block",
+                                    borderRadius: "9px", 
+                                    backgroundColor: hb === hobby ? "#C8DCA0" : "#C6CAC3", 
+                                    padding: "7px 12px",
+                                    marginRight: "3px",
+                                    marginBottom: "5px"
+                                }}
+                            >
+                                # {hobby}
+                            </div>
+                        ))}
                         <div onClick={()=> setShowAllHobbies(false)} style={{ cursor: "pointer", marginTop: "10px", color: "blue" }}>
                             - 간략하게
                         </div>
                     </div>
                 ) : (
-                    //취미 간략하게 보기(3개)
+                    //취미 간략하게 보기(4개)
                     <div>
-                        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 100px)", gap: "15px" }}>
-                            {userInfo.hobbies && userInfo.hobbies.slice(0, 3).map((hobby, index) => (
-                                    <span key={index} style={{ borderRadius: "15px", backgroundColor: hb === hobby ? "#C8DCA0" : "#C6CAC3", padding: "2px 15px" }}>
-                                        # {hobby}
-                                    </span>
-                            ))}
-                        </div>
+                        {userInfo.hobbies && userInfo.hobbies.slice(0, 4).map((hobby, index) => (
+                            <div
+                                key={index} 
+                                style={{ 
+                                    display: "inline-block",
+                                    borderRadius: "9px", 
+                                    backgroundColor: hb === hobby ? "#C8DCA0" : "#C6CAC3", 
+                                    padding: "7px 12px",
+                                    marginRight: "3px",
+                                    marginBottom: "5px"
+                                }}
+                            >
+                                # {hobby}
+                            </div>
+                        ))}
                         {userInfo.hobbies && userInfo.hobbies.length > 3 && (
                             <div onClick={()=> setShowAllHobbies(true)} style={{ cursor: "pointer", marginTop: "10px", color: "blue" }}>
                                 + 더 보기
