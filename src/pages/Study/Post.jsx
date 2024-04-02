@@ -5,13 +5,7 @@ import ReactQuill from 'react-quill';
 import "react-quill/dist/quill.snow.css"
 import { BsThreeDots, BsHash } from "react-icons/bs";
 import axios from 'axios';
-
 import { Radio, Select, Space } from 'antd';
-const options = [{value: 'DAILY', label: 'DAILY'}, {value: 'HELP', label: 'HELP'}];
-const handleChange = (value) => {
-  console.log(`Selected: ${value}`);
-};
-
 
 export const Post = () => {
   const location = useLocation();
@@ -23,6 +17,22 @@ export const Post = () => {
     return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
   };
   const token = getToken();
+
+  const options = [{value: 'DAILY', label: 'DAILY'}, {value: 'HELP', label: 'HELP'}];
+  const handleCategoryChange = (value) => {
+    console.log(`Selected: ${value}`);
+    setInputs({
+      ...inputs,
+      [category]: value,
+    })  };
+
+    const handleTagChange = (value) => {
+      console.log(`Selected: ${value}`);
+      setInputs({
+        ...inputs,
+        [tags]: value,
+      })  
+    };
 
   const [preset, setPreset] = useState('post');
 
@@ -148,8 +158,8 @@ export const Post = () => {
           <div className={styles.category}>
             <label htmlFor="category"><span>카테고리 설정</span></label>
             <Select          
-                defaultValue="일상"
-                onChange={handleChange}
+                defaultValue="DAILY"
+                onChange={handleCategoryChange}
                 style={{
                   width: 200,
                 }}
@@ -168,7 +178,7 @@ export const Post = () => {
             <Select
               mode="tags"              
               placeholder="Please select"
-              onChange={handleChange}
+              onChange={handleTagChange}
               style={{
                 width: '100%',
               }}
