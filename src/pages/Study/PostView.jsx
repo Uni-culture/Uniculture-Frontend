@@ -3,7 +3,6 @@ import Layout from '../../components/Layout'
 import styles from './PostView.module.css'
 import DOMPurify from 'dompurify'
 import { CommentList } from './CommentList'
-import ReactQuill from 'react-quill'
 
 export const PostView = () => {
   const data = 
