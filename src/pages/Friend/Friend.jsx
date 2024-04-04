@@ -10,7 +10,7 @@ import { Badge, Input, Select} from "antd";
 import { AiOutlineBell } from "react-icons/ai";
 import Pagination from '@mui/material/Pagination';
 import { GrClose } from "react-icons/gr";
-import RecommendedFriendCard from './components/RecommendedFriendCard';
+import RecommendFriendCard from './components/RecommendFriendCard';
 
 export default function Friend() {
     const navigate = useNavigate();
@@ -171,7 +171,7 @@ export default function Friend() {
                             <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "40px" }}>
                                 {recommendFriendList.map((friend) => (
                                     <div key={friend.id} style={{ flexBasis: "550px", minWidth: "550px", marginBottom: "20px" }}>
-                                        <RecommendedFriendCard key={friend.id} userInfo={friend} sendFriendRequest={sendFriendRequest}/>
+                                        <RecommendFriendCard key={friend.id} userInfo={friend} sendFriendRequest={sendFriendRequest}/>
                                     </div>
                                 ))}
                             </div>
