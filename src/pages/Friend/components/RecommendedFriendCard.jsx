@@ -130,26 +130,45 @@ export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
             {/* 소개 */}
             {userInfo?.introduce && <div style={{textAlign: "left", marginBottom: "15px"}}>{userInfo?.introduce}</div>}
 
-            {/* 사용언어, 학습언어 */}
-            <div style={{display:"flex", marginTop: "15px"}}>
-                {canLanguage && <div style={{marginBottom: "15px"}}><PercentBar language={canLanguage.language} level={canLanguage.level} color={"blue"}/></div>}
-                {canLanguage && wantLanguage && <div style={{ marginLeft : "20px", marginRight : "20px" }}><FaExchangeAlt /></div>}
-                {wantLanguage && <div style={{marginBottom: "15px"}}><PercentBar language={wantLanguage.language} level={wantLanguage.level} color={"red"}/></div>}
-            </div>
-
             {/* 취미 */}
             <div style={{ marginTop: "15px"}}>
                 {/* 취미 더보기 true/false */}
                 {showAllInfo ? ( 
-                    //취미 더 보기
                     <div>
+                        {/* 언어 */}
+                        <div style={{display: "flex", marginTop: "15px"}}>
+                            {CLList && 
+                                <div style={{marginBottom: "15px"}}>
+                                    {CLList.map((language, index) => (
+                                        <div style={{ padding: '8px' }}>
+                                            <PercentBar key={index} language={language.language} level={language.level} color={"blue"}/>
+                                        </div>
+                                    ))}
+                                </div>
+                            }
+
+                            {CLList && WLList && <div style={{ marginLeft : "10px", marginRight : "10px" , padding: "8px 0px"}}><FaExchangeAlt /></div>}
+
+                            {WLList && 
+                                <div style={{marginBottom: "15px"}}>
+                                    {WLList.map((language, index) => (
+                                        <div style={{ padding: '8px' }}>
+                                            <PercentBar key={index} language={language.language} level={language.level} color={"red"}/>
+                                        </div>
+                                    ))}
+                                </div>
+                            }
+
+                        </div>
+
+                        {/* 관심사 */}
                         {userInfo.hobbies && userInfo.hobbies.map((hobby, index) => (
                             <div
                                 key={index} 
                                 style={{ 
                                     display: "inline-block",
                                     borderRadius: "9px", 
-                                    backgroundColor: "#C6CAC3", 
+                                    backgroundColor: "#e9ecef", 
                                     padding: "5px 10px",
                                     marginRight: "3px",
                                     marginBottom: "5px"
@@ -158,15 +177,20 @@ export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
                                 # {hobby}
                             </div>
                         ))}
-                        <div onClick={()=> setShowAllInfo(false)} style={{ cursor: "pointer", marginTop: "10px", color: "blue" }}>
+
+                        <div onClick={()=> setShowAllInfo(false)} style={{ cursor: "pointer", marginTop: "10px", padding: "0px 8px", color: "blue" }}>
                             - 간략하게
                         </div>
                     </div>
                 ) : (
+                    // 간략하게 보기
                     <div>
                         {/* 사용언어, 학습언어 */}
-                        {canLanguage && <div style={{marginBottom: "15px"}}><PercentBar language={canLanguage.language} level={canLanguage.level} color={"blue"}/></div>}
-                        {wantLanguage && <div style={{marginBottom: "15px"}}><PercentBar language={wantLanguage.language} level={wantLanguage.level} color={"red"}/></div>}
+                        <div style={{display:"flex", marginTop: "15px"}}>
+                            {canLanguage && <div style={{marginBottom: "15px", padding: "8px"}}><PercentBar language={canLanguage.language} level={canLanguage.level} color={"blue"}/></div>}
+                            {canLanguage && wantLanguage && <div style={{ marginLeft : "10px", marginRight : "10px" , padding: "8px 0px"}}><FaExchangeAlt /></div>}
+                            {wantLanguage && <div style={{marginBottom: "15px", padding: "8px"}}><PercentBar language={wantLanguage.language} level={wantLanguage.level} color={"red"}/></div>}
+                        </div>
 
                         {/* 취미 간략하게 보기(5개) */}
                         {userInfo.hobbies && userInfo.hobbies.slice(0, 5).map((hobby, index) => (
@@ -184,8 +208,9 @@ export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
                                 # {hobby}
                             </div>
                         ))}
-                        {userInfo.hobbies && userInfo.hobbies.length > 5 && (
-                            <div onClick={()=> setShowAllInfo(true)} style={{ cursor: "pointer", marginTop: "10px", color: "blue" }}>
+
+                        {( (CLList && CLList.length > 1) || (WLList && WLList.length > 1) || userInfo.hobbies.length > 5 ) && (
+                            <div onClick={()=> setShowAllInfo(true)} style={{ cursor: "pointer", marginTop: "10px", padding: "0px 8px", color: "blue" }}>
                                 + 더 보기
                             </div>
                         )}

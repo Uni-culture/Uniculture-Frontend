@@ -148,7 +148,7 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb}) {
 
                 {/* 더보기 true/false */}
                 {showAllInfo ? ( 
-                    //취미 더 보기
+                    //더 보기
                     <div>
                         {CLList && 
                             <div style={{marginBottom: "15px"}}>
@@ -198,9 +198,8 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb}) {
                         </div>
                     </div>
                 ) : (
-                    //취미 간략하게 보기(4개)
+                    //간략하게 보기
                     <div>
-
                         {/* 사용언어, 학습언어 */}
                         {canLanguage && <div style={{marginBottom: "15px"}}><PercentBar language={canLanguage.language} level={canLanguage.level} color={"blue"}/></div>}
                         {wantLanguage && <div style={{marginBottom: "15px"}}><PercentBar language={wantLanguage.language} level={wantLanguage.level} color={"red"}/></div>}
@@ -220,7 +219,7 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb}) {
                                 # {hobby}
                             </div>
                         ))}
-                        {userInfo.hobbies && userInfo.hobbies.length > 4 && (
+                        {( (CLList && CLList.length > 1) || (WLList && WLList.length > 1) || userInfo.hobbies.length > 4 )&& (
                             <div onClick={()=> setShowAllInfo(true)} style={{ cursor: "pointer", marginTop: "10px", color: "blue" }}>
                                 + 더 보기
                             </div>
