@@ -5,7 +5,6 @@ import Swal from 'sweetalert2';
 import { Card } from "antd";
 import { SlBubbles, SlClose } from "react-icons/sl";
 import { GiMale, GiFemale } from "react-icons/gi";
-import { BsPlusCircle, BsPlusCircleFill } from "react-icons/bs";
 
 export default function FriendCard({userInfo, deleteFriend, cl, wl, hb}) {
     const navigate = useNavigate();
@@ -14,8 +13,7 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb}) {
     const [wantLanguage, setWantLanguage] = useState(); // Card에 보이는 wl
     const [WLList, setWLList] = useState(); // 학습 언어 능숙도 높은순
 
-    const [showAllHobbies, setShowAllHobbies] = useState(false); // 모든 취미 표시 여부 상태
-    const [onMouseSpan, setOnMouseSpan] = useState(false);
+    const [showAllInfo, setShowAllInfo] = useState(false); // 모든 정보 보기 여부
     const [showAllLanguage, setShowAllLanguage] = useState(false);
     const [activeTab2, setActiveTab2] = useState('can');
 
@@ -132,16 +130,6 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb}) {
                     </div>
 
                     <div style={{ display: 'flex', alignItems:"center"}}>
-                        {(canLanguage || wantLanguage) &&
-                            <div
-                            style={{marginLeft: "15px"}}
-                            onClick={()=> setShowAllLanguage(true)}
-                            onMouseEnter={()=> setOnMouseSpan(true)}                                
-                            onMouseLeave={()=> setOnMouseSpan(false)}
-                            >
-                                {onMouseSpan ? <BsPlusCircleFill size={20}/> : <BsPlusCircle size={20}/>}
-                            </div>
-                        }    
                         {/* 채팅 보내기 */}
                         <div style={{marginLeft: "15px"}}><SlBubbles size={20}/></div>
                         {/* 친구 삭제 */}
@@ -150,58 +138,90 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb}) {
                 </div>
             }
         >   
-            {/* 소개 */}
-            {userInfo?.introduce && <div style={{textAlign: "left", marginBottom: "15px"}}>{userInfo?.introduce}</div>}
+            <div>
+                {/* 소개 */}
+                {userInfo?.introduce && 
+                    <div style={{textAlign: "left", marginBottom: "15px"}}>
+                        {userInfo?.introduce}
+                    </div>
+                }
 
-            {/* 사용언어, 학습언어 */}
-            {canLanguage && <div style={{marginBottom: "15px"}}><PercentBar language={canLanguage.language} level={canLanguage.level} color={"blue"}/></div>}
-            {wantLanguage && <div style={{marginBottom: "15px"}}><PercentBar language={wantLanguage.language} level={wantLanguage.level} color={"red"}/></div>}
-
-            {/* 취미 */}
-            <div style={{ marginTop: "30px"}}>
-                {/* 취미 더보기 true/false */}
-                {showAllHobbies ? ( 
+                {/* 더보기 true/false */}
+                {showAllInfo ? ( 
                     //취미 더 보기
                     <div>
-                        {userInfo.hobbies && userInfo.hobbies.map((hobby, index) => (
-                            <div
-                                key={index} 
-                                style={{ 
-                                    display: "inline-block",
-                                    borderRadius: "9px", 
-                                    backgroundColor: hb === hobby ? "#C8DCA0" : "#C6CAC3", 
-                                    padding: "5px 10px",
-                                    marginRight: "3px",
-                                    marginBottom: "5px"
-                                }}
-                            >
-                                # {hobby}
+                        {CLList && 
+                            <div style={{marginBottom: "15px"}}>
+                                <div style={{fontWeight: "bold"}}>🌎 사용 언어</div>
+                                {CLList && CLList.map((language, index) => (
+                                    <div style={{ padding: '8px' }}>
+                                        <PercentBar key={index} language={language.language} level={language.level} color={"blue"}/>
+                                    </div>
+                                ))}
                             </div>
-                        ))}
-                        <div onClick={()=> setShowAllHobbies(false)} style={{ cursor: "pointer", marginTop: "10px", color: "blue" }}>
+                        }
+                        
+                        {WLList && 
+                            <div style={{marginBottom: "15px"}}>
+                                <div style={{fontWeight: "bold"}}>🌎 학습 언어</div>
+                                {WLList.map((language, index) => (
+                                    <div style={{ padding: '8px' }}>
+                                        <PercentBar key={index} language={language.language} level={language.level} color={"red"}/>
+                                    </div>
+                                ))}
+                            </div>
+                        }
+
+                        {userInfo.hobbies && 
+                            <div style={{marginBottom: "20px"}}>
+                                <div style={{fontWeight: "bold", marginBottom: "5px"}}>❤️ 관심사</div>
+                                {userInfo.hobbies.map((hobby, index) => (
+                                    <div
+                                        key={index} 
+                                        style={{ 
+                                            display: "inline-block",
+                                            borderRadius: "9px", 
+                                            backgroundColor: hb === hobby ? "#C8DCA0" : "#e9ecef", 
+                                            padding: "5px 10px",
+                                            marginRight: "3px",
+                                            marginTop: "5px"
+                                        }}
+                                    >
+                                        # {hobby}
+                                    </div>
+                                ))}
+                            </div>
+                        }
+
+                        <div onClick={()=> setShowAllInfo(false)} style={{ cursor: "pointer", marginTop: "10px", color: "blue" }}>
                             - 간략하게
                         </div>
                     </div>
                 ) : (
                     //취미 간략하게 보기(4개)
                     <div>
+
+                        {/* 사용언어, 학습언어 */}
+                        {canLanguage && <div style={{marginBottom: "15px"}}><PercentBar language={canLanguage.language} level={canLanguage.level} color={"blue"}/></div>}
+                        {wantLanguage && <div style={{marginBottom: "15px"}}><PercentBar language={wantLanguage.language} level={wantLanguage.level} color={"red"}/></div>}
+
                         {userInfo.hobbies && userInfo.hobbies.slice(0, 4).map((hobby, index) => (
                             <div
                                 key={index} 
                                 style={{ 
                                     display: "inline-block",
                                     borderRadius: "9px", 
-                                    backgroundColor: hb === hobby ? "#C8DCA0" : "#C6CAC3", 
+                                    backgroundColor: hb === hobby ? "#C8DCA0" : "#e9ecef", 
                                     padding: "5px 10px",
                                     marginRight: "3px",
-                                    marginBottom: "5px"
+                                    marginTop: "5px"
                                 }}
                             >
                                 # {hobby}
                             </div>
                         ))}
                         {userInfo.hobbies && userInfo.hobbies.length > 4 && (
-                            <div onClick={()=> setShowAllHobbies(true)} style={{ cursor: "pointer", marginTop: "10px", color: "blue" }}>
+                            <div onClick={()=> setShowAllInfo(true)} style={{ cursor: "pointer", marginTop: "10px", color: "blue" }}>
                                 + 더 보기
                             </div>
                         )}

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Card } from "antd";
 import { useNavigate } from 'react-router-dom';
 import PercentBar from '../../../components/PercentBar/PercentBar';
-import { SlBubbles } from "react-icons/sl";
 import { GiMale, GiFemale } from "react-icons/gi";
 import { BsPlusCircle, BsPlusCircleFill } from "react-icons/bs";
 import { FaExchangeAlt } from "react-icons/fa";
@@ -14,7 +13,7 @@ export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
     const [wantLanguage, setWantLanguage] = useState(); // Card에 보이는 wl
     const [WLList, setWLList] = useState(); // 학습 언어 능숙도 높은순
 
-    const [showAllHobbies, setShowAllHobbies] = useState(false); // 모든 취미 표시 여부 상태
+    const [showAllInfo, setShowAllInfo] = useState(false); // 모든 취미 표시 여부 상태
     const [onMouseSpan, setOnMouseSpan] = useState(false);
     const [showAllLanguage, setShowAllLanguage] = useState(false);
     const [activeTab2, setActiveTab2] = useState('can');
@@ -136,22 +135,12 @@ export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
                 {canLanguage && <div style={{marginBottom: "15px"}}><PercentBar language={canLanguage.language} level={canLanguage.level} color={"blue"}/></div>}
                 {canLanguage && wantLanguage && <div style={{ marginLeft : "20px", marginRight : "20px" }}><FaExchangeAlt /></div>}
                 {wantLanguage && <div style={{marginBottom: "15px"}}><PercentBar language={wantLanguage.language} level={wantLanguage.level} color={"red"}/></div>}
-                {(canLanguage || wantLanguage) &&
-                    <div
-                    style={{marginLeft: "15px"}}
-                    onClick={()=> setShowAllLanguage(true)}
-                    onMouseEnter={()=> setOnMouseSpan(true)}                                
-                    onMouseLeave={()=> setOnMouseSpan(false)}
-                    >
-                        {onMouseSpan ? <BsPlusCircleFill size={20}/> : <BsPlusCircle size={20}/>}
-                    </div>
-                }  
             </div>
 
             {/* 취미 */}
             <div style={{ marginTop: "15px"}}>
                 {/* 취미 더보기 true/false */}
-                {showAllHobbies ? ( 
+                {showAllInfo ? ( 
                     //취미 더 보기
                     <div>
                         {userInfo.hobbies && userInfo.hobbies.map((hobby, index) => (
@@ -169,20 +158,24 @@ export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
                                 # {hobby}
                             </div>
                         ))}
-                        <div onClick={()=> setShowAllHobbies(false)} style={{ cursor: "pointer", marginTop: "10px", color: "blue" }}>
+                        <div onClick={()=> setShowAllInfo(false)} style={{ cursor: "pointer", marginTop: "10px", color: "blue" }}>
                             - 간략하게
                         </div>
                     </div>
                 ) : (
-                    //취미 간략하게 보기(5개)
                     <div>
+                        {/* 사용언어, 학습언어 */}
+                        {canLanguage && <div style={{marginBottom: "15px"}}><PercentBar language={canLanguage.language} level={canLanguage.level} color={"blue"}/></div>}
+                        {wantLanguage && <div style={{marginBottom: "15px"}}><PercentBar language={wantLanguage.language} level={wantLanguage.level} color={"red"}/></div>}
+
+                        {/* 취미 간략하게 보기(5개) */}
                         {userInfo.hobbies && userInfo.hobbies.slice(0, 5).map((hobby, index) => (
                             <div
                                 key={index} 
                                 style={{ 
                                     display: "inline-block",
                                     borderRadius: "9px", 
-                                    backgroundColor: "#C6CAC3", 
+                                    backgroundColor: "#e9ecef", 
                                     padding: "5px 10px",
                                     marginRight: "3px",
                                     marginBottom: "5px"
@@ -191,8 +184,8 @@ export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
                                 # {hobby}
                             </div>
                         ))}
-                        {userInfo.hobbies && userInfo.hobbies.length > 4 && (
-                            <div onClick={()=> setShowAllHobbies(true)} style={{ cursor: "pointer", marginTop: "10px", color: "blue" }}>
+                        {userInfo.hobbies && userInfo.hobbies.length > 5 && (
+                            <div onClick={()=> setShowAllInfo(true)} style={{ cursor: "pointer", marginTop: "10px", color: "blue" }}>
                                 + 더 보기
                             </div>
                         )}

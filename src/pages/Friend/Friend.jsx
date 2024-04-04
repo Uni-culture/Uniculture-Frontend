@@ -148,7 +148,7 @@ export default function Friend() {
                         {friendList.length > 0 ? (
                             <div style={{ display: "flex", flexWrap: "wrap", gap: "30px", justifyContent: "center" }}>
                                 {friendList.map((friend) => (
-                                    <div key={friend.id} style={{ flexBasis: "400px", minWidth: "400px", marginBottom: "20px" }}>
+                                    <div key={friend.id} style={{ flexBasis: "350px", minWidth: "350px", marginBottom: "20px" }}>
                                         <FriendCard key={friend.id} userInfo={friend} deleteFriend={deleteFriend} cl={selectCL} wl={selectWL} hb={selectHb}/>
                                     </div>
                                 ))}
