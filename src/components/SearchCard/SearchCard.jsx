@@ -18,7 +18,7 @@ export const SearchCard = ({board_id, title, content, username, date, likeCount,
             </div>
             <div className="search-card-body-text">
                 <div className="search-card-body-text-title">{title}</div>
-                <div className="search-card-body-text-content">{content}</div>
+                <div className="search-card-body-text-content">{content.replace(/(<([^>]+)>)/gi, '')}</div>
                 <div className="search-card-body-text-bottom">
                     <span>{date}</span>
                     <span> · 0개의 댓글</span>
