@@ -12,6 +12,7 @@ import { IoIosSettings } from "react-icons/io";
 import { FaExchangeAlt } from "react-icons/fa";
 import MyBoardList from "./MyBoardList";
 import TotalBoardList from "../BoardList/TotalBoardList";
+import ShowAllLanguage from './Modal/ShowAllLanguage';
 
 export default function MyProfile({myInformation}) {
     const [myInfo, setMyInfo] = useState(myInformation); // 매개변수로 받은것을 가지고 다시 상태유지
@@ -30,7 +31,6 @@ export default function MyProfile({myInformation}) {
     //언어 모달창
     const [onMouseSpan, setOnMouseSpan] = useState(false);
     const [showAllLanguage, setShowAllLanguage] = useState(false);
-    const [activeTab2, setActiveTab2] = useState('can');
     const [canLanguages, setCanLanguages] = useState([]); //사용 언어 능숙도가 높은 순
     const [wantLanguages, setWantLanguages] = useState([]); //학습 언어 능숙도가 높은 순
 
@@ -303,34 +303,6 @@ export default function MyProfile({myInformation}) {
     }, [wantLanguages]);
 
 
-    // 언어 모달창 : 선택된 탭에 따라 해당 목록을 표시하는 함수
-    const renderTabContent2 = () => {
-        switch (activeTab2) {
-            case 'can':
-                return (
-                    <div>
-                        {canLanguages && canLanguages.map((language, index) => (
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E0E0E0', padding: '10px' }}>
-                                <PercentBar key={index} language={language.language} level={language.level} color={"blue"}/>
-                            </div>
-                        ))}
-                    </div>
-                );
-            case 'want':
-                return (
-                    <div>
-                        {wantLanguages && wantLanguages.map((language, index) => (
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E0E0E0', padding: '10px' }}>
-                                <PercentBar key={index} language={language.language} level={language.level} color={"red"}/>
-                            </div>
-                        ))}
-                    </div>
-                );
-            default:
-                return ;
-        }
-    };
-
     // 게시물, 스터디
     const renderTabContent3 = () => {
         switch (activeTab3) {
@@ -365,13 +337,12 @@ export default function MyProfile({myInformation}) {
             </div>
 
             <div className={styles.right}>
-
                 {/* 닉네임 */}
                 <div className={styles.name}>{myInfo?.nickname}</div>
 
                 {/* 정보 수정 */}
                 <div className={styles.edit}>
-                    <Link to="/accounts/edit">
+                    <Link to="/account/edit">
                         <IoIosSettings size={20} color="gray" />
                     </Link>
                 </div>
@@ -419,37 +390,36 @@ export default function MyProfile({myInformation}) {
                             style={{ 
                                 display: "inline-block",
                                 borderRadius: "9px", 
-                                backgroundColor: "#C6CAC3", 
-                                padding: "7px 12px",
+                                backgroundColor: "#e9ecef", 
+                                padding: "5px 10px",
                                 marginRight: "3px",
-                                marginBottom: "5px"
+                                marginTop: "5px"
                             }}
                         >
                             # {hobby}
                         </div>
                     ))}
                 </div>
-                
             </div>
 
-            <div>
+            <div style={{padding: "20px 0px"}}>
                 <ul className="nav">
                     <li 
                         className="nav-item"
-                        style={{ fontWeight: activeTab3 === 'boardList' ? 'bold' : 'normal', backgroundColor: activeTab3 === 'boardList' ? '#B7DAA1' : '', marginRight: "20px", padding: "5px 15px", borderRadius: 25}}
+                        style={{ fontWeight: activeTab3 === 'boardList' ? 'bold' : 'normal', backgroundColor: activeTab3 === 'boardList' ? '#B7DAA1' : '', marginRight: "20px", padding: "5px 15px", borderRadius: 11}}
                         onClick={() => setActiveTab3('boardList')}>
                         게시물
                     </li>
                     <li 
                         className="nav-item"
-                        style={{ fontWeight: activeTab3 === 'studyList' ? 'bold' : 'normal',  backgroundColor: activeTab3 === 'studyList' ? '#B7DAA1' : '', marginRight: "20px", padding: "5px 15px", borderRadius: 25}}
+                        style={{ fontWeight: activeTab3 === 'studyList' ? 'bold' : 'normal',  backgroundColor: activeTab3 === 'studyList' ? '#B7DAA1' : '', marginRight: "20px", padding: "5px 15px", borderRadius: 11}}
                         onClick={() => {setActiveTab3('studyList');}}>
                         스터디
                     </li>
                 </ul>
+           
+                {renderTabContent3()}
             </div>
-            
-            {renderTabContent3()}
 
             {/* 친구리스트 모달창 */}
             {showFriend && (
@@ -493,35 +463,7 @@ export default function MyProfile({myInformation}) {
 
             {/* 전체 사용, 학습 언어 보기 모달창 */}
             {showAllLanguage && (
-                <div className="modal fade show" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
-                    <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                        <div className="modal-content" style={{height:"450px"}}>
-                                <ul className="nav nav-tabs">
-                                    <li className="nav-item">
-                                        <button 
-                                            className={`nav-link ${activeTab2 === 'can' ? 'active' : ''}`} 
-                                            style={{ width:"150px", backgroundColor: activeTab2 === 'can' ? '#B7DAA1' : 'white', color: "black"}}
-                                            onClick={() => setActiveTab2('can')}
-                                        >사용 언어</button>
-                                    </li>
-                                    <li className="nav-item">
-                                        <button 
-                                            className={`nav-link ${activeTab2 === 'want' ? 'active' : ''}`} 
-                                            style={{ width:"150px", backgroundColor: activeTab2 === 'want' ? '#B7DAA1' : 'white', color: "black"}}
-                                            onClick={() => setActiveTab2('want')}
-                                        >학습 언어</button>
-                                    </li>
-                                </ul>
-
-                            <div className="modal-body">
-                                {renderTabContent2()}
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => {setShowAllLanguage(false); setActiveTab2('can')}}>닫기</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <ShowAllLanguage  canLanguages={canLanguages} wantLanguages={wantLanguages} showAllLanguage={()=>setShowAllLanguage(false)}/>
             )}
 
         </Layout>

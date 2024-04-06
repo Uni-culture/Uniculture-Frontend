@@ -5,12 +5,18 @@ import { useState, useEffect, useRef } from 'react';
 import AddLanuageModal from "./Modal/AddLanuageModal";
 import { useNavigate } from "react-router-dom";
 import PercentBar from "../../components/PercentBar/PercentBar";
+import Swal from "sweetalert2";
 
 const ProfileEdit = () => {
     const [userInfo, setUserInfo] = useState(null);
+    const navigate = useNavigate();
+
+    // 프로필 사진
     const [profileImg, setProfileImg] = useState(null);
     const selectFile = useRef(null);
-    const navigate = useNavigate();
+
+    // 소개
+    let [inputCount, setInputCount] = useState(0);
 
     const [isModalOpened1, setIsModalOpened1] = useState(false); //사용 언어 추가 모달창
     const [isModalOpened2, setIsModalOpened2] = useState(false); //학습 언어 추가 모달창
@@ -56,6 +62,7 @@ const ProfileEdit = () => {
         "자원봉사",
         "사회공헌"
     ];
+    const [isOverSelectedIntTags, setIsOverSelectedIntTags] = useState(false);
 
     // 로그인 후 저장된 토큰 가져오는 함수
     const getToken = () => {
@@ -64,7 +71,7 @@ const ProfileEdit = () => {
 
     // 서버에 정보를 요청하는 함수
     const fetchUserInfo = async () => {
-        console.log('myPage');
+        console.log('profileEdit');
         try {
             const token = getToken(); // 토큰 가져오기
             const response = await axios.get('/api/auth/member/editProfile', {
@@ -74,6 +81,7 @@ const ProfileEdit = () => {
             });
             if(response.status === 200) {
                 setUserInfo(response.data); // 서버에서 받은 사용자 정보 반환
+                if(response.data.introduce) setInputCount(response.data.introduce.length);
             }
             else if(response.status === 400) {
                 console.log('클라이언트 에러(입력 형식 불량)');
@@ -83,6 +91,7 @@ const ProfileEdit = () => {
             }
         } catch (error) {
             navigate("/");
+            console.log(error);
         }
     };
 
@@ -93,44 +102,58 @@ const ProfileEdit = () => {
     //회원정보 수정
     const changeInfo = async () => {
         console.log('changeInfo');
-        try {
-            const token = getToken(); // 토큰 가져오기
-            const response = await axios.patch(
-                '/api/auth/member/editProfile',
-                {
-                    introduce: userInfo.introduce,
-                    myHobbyList : userInfo.myHobbyList,
-                    myLanguages : userInfo.myLanguages,
-                    wantLanguage : userInfo.wantLanguage
-                },
-                {
-                    headers: {
-                        'Content-Type': 'application/json', // JSON 형식임을 명시
-                        'Authorization': `Bearer ${token}` // 헤더에 토큰 추가
+        if(isOverSelectedIntTags===true) {
+            Swal.fire({
+                title: "프로필 편집 오류!",
+                text: "관심사를 10개 이하로 선택해주세요.",
+                icon: "warning",
+                confirmButtonColor: "#dc3545",
+                confirmButtonText: "확인"
+            }).then(() => {
+                return;
+            });
+        }
+        else{
+            try {
+                const token = getToken(); // 토큰 가져오기
+                const response = await axios.patch(
+                    '/api/auth/member/editProfile',
+                    {
+                        introduce: userInfo.introduce,
+                        myHobbyList : userInfo.myHobbyList,
+                        myLanguages : userInfo.myLanguages,
+                        wantLanguage : userInfo.wantLanguage
+                    },
+                    {
+                        headers: {
+                            'Content-Type': 'application/json', // JSON 형식임을 명시
+                            'Authorization': `Bearer ${token}` // 헤더에 토큰 추가
+                        }
                     }
+                );
+                alert(JSON.stringify(userInfo));
+                console.log('서버 응답: ', response);
+                console.log('response.status: ', response.status);
+                if (response.status === 200) {
+                    alert("수정 완료");
+                    window.location.reload();
                 }
-            );
-            alert(JSON.stringify(userInfo));
-            console.log('서버 응답: ', response);
-            console.log('response.status: ', response.status);
-            if (response.status === 200) {
-                alert("수정 완료");
-                window.location.reload();
+                else if (response.status === 400) {
+                    console.error("클라이언트에러");
+                }
+                else {
+                    console.error("서버에러");
+                }
+            } catch (error) { // 네트워크 오류 등 예외 처리
+                console.error(error);
             }
-            else if (response.status === 400) {
-                console.error("클라이언트에러");
-            }
-            else {
-                console.error("서버에러");
-            }
-        } catch (error) { // 네트워크 오류 등 예외 처리
-            console.error(error);
         }
     };
 
     //소개 변경
     const changeIntroduce = (e) => {
         setUserInfo({...userInfo, introduce : e.target.value});
+        setInputCount(e.target.value.length);
     };
 
     // 프로필 사진 변경
@@ -155,8 +178,10 @@ const ProfileEdit = () => {
             updatedHobbies = updatedHobbies.filter(item => item !== hobby);
         } else {
             // 선택된 취미가 포함되어 있지 않은 경우 :  해당 취미를 추가
-            updatedHobbies = [...updatedHobbies, hobby];
+            if(updatedHobbies.length <= 10) updatedHobbies = [...updatedHobbies, hobby];
         }
+        // 선택된 관심사 태그 개수가 10개를 초과하는지 확인
+        setIsOverSelectedIntTags(updatedHobbies.length > 10); // 10개를 넘으면 true
         // userInfo를 업데이트
         setUserInfo({ ...userInfo, myHobbyList: updatedHobbies });
     };
@@ -257,12 +282,17 @@ const ProfileEdit = () => {
                         <div className="mb-5 row">
                             <label className="col-sm-2 col-form-label" style={{minWidth: "100px"}}>소개</label>
                             <div className="col-sm-8">
-                                <input
+                                <textarea
                                     className="form-control"
                                     placeholder="소개 입력"
                                     value={userInfo?.introduce || ''}
                                     onChange={changeIntroduce}
+                                    maxLength="100" 
                                 />
+                                <div style={{float:"right", marginTop: "10px", marginRight: "5px"}}>
+                                    <span>{inputCount}</span>
+                                    <span>/100 자</span>
+                                </div>
                             </div>
                         </div>
 
@@ -279,6 +309,11 @@ const ProfileEdit = () => {
                                         {tag}
                                     </button>
                                 ))}
+                                {isOverSelectedIntTags && (
+                                    <div className="interest-tag-warning">
+                                        10개 이하로 선택해주세요.
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className="mb-2 row">

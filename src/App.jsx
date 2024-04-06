@@ -30,9 +30,9 @@ function App() {
             <Route path="/friend" element={<Friend />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/profile/:nickname" element={<Profile />} />
-            <Route path="/accounts/edit" element={<ProfileEdit />} />
-            <Route path="/accounts/personal-info" element={<ProfileInfo />} />
-            <Route path="/accounts/delete" element={<ProfileDelete />} />
+            <Route path="/account/edit" element={<ProfileEdit />} />
+            <Route path="/account/personal-info" element={<ProfileInfo />} />
+            <Route path="/account/delete" element={<ProfileDelete />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/add-board" element={<AddBoard/>} />
             <Route path="/board/:board_id" element={<Board/>} />
