@@ -3,7 +3,7 @@ import axios from "axios";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 import moment from "moment";
 import Header from "../../components/Header/Header";
-import "./board.css";
+import "./board.scss";
 import {HeartOutlined, HeartFilled} from '@ant-design/icons';
 import {IoArrowBack} from "react-icons/io5";
 import Swal from "sweetalert2";
@@ -61,8 +61,13 @@ const Board = () => {
 
     // 번역 기능
     async function translate(content) {
+        if (!token) {
+            LoginWarning();
+            navigate("/sign-in", {state: {from: location.pathname}}); // 현재 경로를 저장하고 로그인 페이지로 이동
+            return;
+        }
+
         try {
-            const token = getToken();
             const response = await axios.post('/api/auth/translate', {
                 text : content,
                 target_lang : "KO"
@@ -83,7 +88,8 @@ const Board = () => {
 
     const handleLike = async () => {
         if (!token) {
-            alert("로그인이 필요합니다");
+            LoginWarning();
+            navigate("/sign-in", {state: {from: location.pathname}}); // 현재 경로를 저장하고 로그인 페이지로 이동
             return;
         }
 
@@ -125,12 +131,6 @@ const Board = () => {
             setLiked(board.isLike);
         }
     }, [board.isLike]); // board.isLike가 변경될 때 liked 상태를 업데이트
-
-    // IoArrowBack 클릭 시 이전 경로로 이동
-    const goBackToPreviousPath = () => {
-        const previousPath = location.state?.from || "/"; // 이전 경로가 없으면 기본 경로는 "/"
-        navigate(previousPath, {}); // 이전 페이지로 이동
-    };
 
     const boardDelete = () => {
         Swal.fire({
@@ -177,6 +177,15 @@ const Board = () => {
         });
     };
 
+    const LoginWarning = () => {
+        Swal.fire({
+            icon: "warning",
+            title: "<div style='font-size: 21px; margin-bottom: 10px;'>로그인 후 이용해 주세요.</div>",
+            confirmButtonColor: "#8BC765",
+            confirmButtonText: "확인",
+        });
+    };
+
     const SafeHtml = ({html}) =>{
         const safeHtml = DOMPurify.sanitize(html);
         return <div dangerouslySetInnerHTML={{ __html: safeHtml}} />;
@@ -190,38 +199,49 @@ const Board = () => {
                 <div className="board-wrapper">
                     <div className="board-title">{board.title}</div>
                     <div className="board-header">
-                        <div className="board-header-username">{board.writerName}</div>
-                        <div className="board-header-dot">·</div>
-                        <div className="board-header-date">{moment(board.createDate).add(9,"hour").format('YYYY년 MM월 DD일')}</div>
-                        <div className="like" style={{marginLeft: "30px"}}>
-                            {liked ? (
-                                <HeartFilled style={{color: 'red'}} onClick={handleLike} />
-                            ) : (
-                                <HeartOutlined onClick={handleLike} />
-                            )}
+                        <div className="header-container">
+                            <div className="left-container">
+                                <div className="board-header-username">{board.writerName}</div>
+                                <div className="board-header-dot">·</div>
+                                <div className="board-header-date">{moment(board.createDate).add(9,"hour").format('YYYY년 MM월 DD일')}</div>
+                                <div className="like" style={{marginLeft: "30px"}}>
+                                    {liked ? (
+                                        <HeartFilled style={{color: 'red'}} onClick={handleLike} />
+                                    ) : (
+                                        <HeartOutlined onClick={handleLike} />
+                                    )}
+                                </div>
+                                <div className="board-likeCount">{board.likeCount}</div>
+                            </div>
+                            <div className="board-postType">{board.postType}</div>
                         </div>
-                        <div className="board-likeCount">{board.likeCount}</div>
-                        <div className="board-postType">{board.postType}</div>
+                        <div className="hashtag-wrapper">
+                            {board.tags.map((tag, index) => (
+                                <span key={index} className="hashtag"># {tag}</span>
+                            ))}
+                        </div>
                     </div>
-                    <hr/>
+
                     <div className="board-body">
                         <div className="board-image">
                             {/*<img src={`/api/image/view/${board_id}`}/>*/}
                         </div>
-                        <div className="board-title-content">
-                            <div className="board-content">
-                                <SafeHtml html={content} />
-                            </div>
+                        <div className="board-content">
+                            <SafeHtml html={content} />
+                        </div>
+                        <div className="board-buttons-wrap">
+                            <span className="translation-buttons">
+                                {isTranslated ? (
+                                    <button className="board-buttons" onClick={()=>{setContent(board.content); setIsTranslated(false);}}> 되돌리기 </button>
+                                ) : (
+                                    <button className="board-buttons" onClick={()=>{translate(content)}}> 번역 </button>
+                                )}
+                            </span>
                             {board.isMine && // 자신의 게시물이면 활성화
-                                <div className="edit-delete-button">
-                                    {isTranslated ? (
-                                        <button className="translate-button" onClick={()=>{setContent(board.content); setIsTranslated(false);}}> 되돌리기 </button>
-                                    ) : (
-                                        <button className="translate-button" onClick={()=>{translate(content)}}> 번역 </button>
-                                    )}
-                                    <button className="delete-button" onClick={boardDelete}> 삭제 </button>
-                                    <button onClick={() => {navigate(`/${board_id}`, {state : {from : location.pathname}});}}> 수정 </button>
-                                </div>
+                                <span className="edit-delete-button">
+                                    <button className="board-buttons" onClick={boardDelete}> 삭제 </button>
+                                    <button className="board-buttons" onClick={() => {navigate(`/${board_id}`, {state : {from : location.pathname}});}}> 수정 </button>
+                                </span>
                             }
                         </div>
                     </div>
