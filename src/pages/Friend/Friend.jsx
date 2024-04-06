@@ -125,8 +125,14 @@ export default function Friend() {
     //검색 내용 바뀌면 실행
     useEffect(() => {
         if(searchInput !== null){
-            setCurrentPage(0);
-            fetchFriendList(0);
+            const timerId = setTimeout(() => {
+                setCurrentPage(0);
+                fetchFriendList(0);
+            }, 1000);
+    
+            return () => {
+                clearTimeout(timerId);
+            };
         }
     }, [searchInput]);
 
