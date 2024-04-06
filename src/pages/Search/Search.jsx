@@ -3,6 +3,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import "../Search/search.css";
 import { IoSearch, IoArrowBack } from "react-icons/io5";
+import { HiOutlineHashtag } from "react-icons/hi";
+import { IoIosClose } from "react-icons/io";
+import { GrPowerReset } from "react-icons/gr";
 import axios from "axios";
 import { SearchCard } from "../../components/SearchCard/SearchCard";
 import moment from "moment";
@@ -12,6 +15,8 @@ const Search = () => {
     const location = useLocation();
     const [search, setSearch] = useState(""); // 사용자 입력 검색어
     const [debouncedSearch, setDebouncedSearch] = useState(""); // API 호출에 사용될 검색어
+    const [tag, setTag] = useState(""); // 사용자 입력 태그
+    const [tags, setTags] = useState([]); // 입력된 태그들을 저장할 배열
     const [boardList, setBoardList] = useState([]);
     const [totalElements, setTotalElenets] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
@@ -23,6 +28,32 @@ const Search = () => {
     // 사용자 입력 처리
     const handleSearchChange = (e) => {
         setSearch(e.target.value);
+    };
+
+    // 사용자 태그 처리
+    const handleTagChange = (e) => {
+        const noSpaces = e.target.value.replace(/\s+/g, '');
+        setTag(noSpaces);
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // 엔터키 기본 동작 방지
+            const trimmedTag = tag.trim();
+
+            if (trimmedTag !== "" && !tags.includes(trimmedTag)) {
+                setTags([...tags, trimmedTag]); // 태그 배열에 현재 태그 추가
+            }
+            setTag(""); // 입력 필드 초기화
+        } else if (e.key === 'Backspace' && tag === "") {
+            // 아무것도 입력하지 않은 상태에서 backspace를 누를 경우 가장 최근에 추가된 태그 삭제
+            const newTags = tags.slice(0, tags.length - 1);
+            setTags(newTags);
+        }
+    };
+
+    const removeTag = (indexToRemove) => {
+        setTags(tags.filter((_, index) => index !== indexToRemove));
     };
 
     // IoArrowBack 클릭 시 이전 경로로 이동
@@ -104,9 +135,28 @@ const Search = () => {
             <Header />
             <IoArrowBack style={{ fontSize: '25px', marginTop: '20px', marginLeft: '20px'}} onClick={goBackToPreviousPath}/>
             <div className="search-layout">
-                <div className="searchWrap">
-                    <IoSearch className="input-icon" />
-                    <input className="search-bar" type="text" value={search} onChange={handleSearchChange} placeholder="검색어를 입력하세요"/>
+                <div className="search-container">
+                    <div className="searchWrap">
+                        <IoSearch className="input-icon" />
+                        <input className="search-input" type="text" value={search} onChange={handleSearchChange} placeholder="검색어를 입력하세요"/>
+                    </div>
+                    <button className="search-button">검색</button>
+                </div>
+
+                <div className="tag-container">
+                    <div className="tag-search-wrap">
+                        <HiOutlineHashtag className="tag-icon"/>
+                        <div className="tags-display">
+                            {tags.map((tag, index) => (
+                                <span key={index} className="tag-item">
+                                    {tag}
+                                    <IoIosClose className="remove-tag-icon" onClick={() => removeTag(index)} />
+                                </span>
+                            ))}
+                        </div>
+                        <input className="tag-input" type="text" value={tag} onChange={handleTagChange} onKeyDown={handleKeyDown} placeholder="태그로 검색해보세요!"/>
+                    </div>
+                    <button className="reset-button"><GrPowerReset className="reset-icon"/>초기화</button>
                 </div>
                 <div className="total-elements">총 <b>{totalElements}개</b>의 포스트를 찾았습니다.</div>
 
