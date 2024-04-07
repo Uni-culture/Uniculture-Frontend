@@ -29,6 +29,10 @@
             .board-header-username {
                 font-size: 1.2rem;
             }
+            .board-header-username:hover {
+                text-decoration: underline;
+                cursor: pointer;
+            }
             .board-header-dot {
                 margin-left: 10px;
                 color: gray;

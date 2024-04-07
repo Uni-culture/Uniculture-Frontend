@@ -5,14 +5,17 @@ import { IoMdHeart } from "react-icons/io";
 export const Card = ({board_id, title, content, username, date, likeCount, style}) => {
     const navigate = useNavigate();
 
+    //해당 게시물의 프로필로 이동
+    const handleProfile = () => {
+        navigate(`/profile/${username}`);
+    }
+
     return (
-        <div className="card-wrapper" style={style} onClick={() => {
-            navigate(`/board/${board_id}`)
-        }}>
+        <div className="card-wrapper" style={style}>
             <div className="card-body-img">
-                <img src={"default_image.jpg"} alt="Card Image" />
+                <img src={"default_image.jpg"} alt="Card Image" onClick={() => {navigate(`/board/${board_id}`)}}/>
             </div>
-            <div className="card-body-text">
+            <div className="card-body-text" onClick={() => {navigate(`/board/${board_id}`)}}>
                 <div className="card-body-text-title">{title}</div>
                 <div className="card-body-text-content">{content.replace(/(<([^>]+)>)/gi, '')}</div>
                 <div className="card-body-text-bottom">
@@ -22,7 +25,7 @@ export const Card = ({board_id, title, content, username, date, likeCount, style
             </div>
 
             <div className="card-footer">
-                <div className="username">
+                <div className="username" onClick={handleProfile}>
                     <img src={"default_profile_image.jpg"} alt="User Image" />by {username}
                 </div>
                 <div className="likeCount">

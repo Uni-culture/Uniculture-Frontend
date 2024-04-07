@@ -191,6 +191,11 @@ const Board = () => {
         return <div dangerouslySetInnerHTML={{ __html: safeHtml}} />;
     }
 
+    //해당 게시물의 프로필로 이동
+    const handleProfile = () => {
+        navigate(`/profile/${board.writerName}`);
+    }
+
     return (
         <div className="board-layout">
             <Header/>
@@ -201,7 +206,7 @@ const Board = () => {
                     <div className="board-header">
                         <div className="header-container">
                             <div className="left-container">
-                                <div className="board-header-username">{board.writerName}</div>
+                                <div className="board-header-username" onClick={handleProfile}>{board.writerName}</div>
                                 <div className="board-header-dot">·</div>
                                 <div className="board-header-date">{moment(board.createDate).add(9,"hour").format('YYYY년 MM월 DD일')}</div>
                                 <div className="like" style={{marginLeft: "30px"}}>
