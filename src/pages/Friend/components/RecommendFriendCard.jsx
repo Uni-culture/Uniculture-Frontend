@@ -14,7 +14,6 @@ export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
     const [WLList, setWLList] = useState(); // 학습 언어 능숙도 높은순
 
     const [showAllInfo, setShowAllInfo] = useState(false); // 모든 취미 표시 여부 상태
-    const [onMouseSpan, setOnMouseSpan] = useState(false);
     const [showAllLanguage, setShowAllLanguage] = useState(false);
     const [activeTab2, setActiveTab2] = useState('can');
 
@@ -130,9 +129,8 @@ export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
             {/* 소개 */}
             {userInfo?.introduce && <div style={{textAlign: "left", marginBottom: "15px"}}>{userInfo?.introduce}</div>}
 
-            {/* 취미 */}
+            {/* 더보기 true/false */}
             <div style={{ marginTop: "15px"}}>
-                {/* 취미 더보기 true/false */}
                 {showAllInfo ? ( 
                     <div>
                         {/* 언어 */}
@@ -168,13 +166,13 @@ export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
                                 style={{ 
                                     display: "inline-block",
                                     borderRadius: "9px", 
-                                    backgroundColor: "#e9ecef", 
+                                    backgroundColor: hobby.same == 1 ? "#C8DCA0" : "#e9ecef",
                                     padding: "5px 10px",
                                     marginRight: "3px",
                                     marginBottom: "5px"
                                 }}
                             >
-                                # {hobby}
+                                # {hobby.hobby}
                             </div>
                         ))}
 
@@ -199,13 +197,13 @@ export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
                                 style={{ 
                                     display: "inline-block",
                                     borderRadius: "9px", 
-                                    backgroundColor: "#e9ecef", 
+                                    backgroundColor: hobby.same == 1 ? "#C8DCA0" : "#e9ecef",
                                     padding: "5px 10px",
                                     marginRight: "3px",
                                     marginBottom: "5px"
                                 }}
                             >
-                                # {hobby}
+                                # {hobby.hobby}
                             </div>
                         ))}
 

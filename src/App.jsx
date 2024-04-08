@@ -17,6 +17,7 @@ import Board from "./pages/Board/Board";
 import EditBoard from "./pages/EditBoard/EditBoard";
 import SignUpOption from "./pages/Auth/SignUpOption";
 import Search from "./pages/Search/Search";
+import Translate from './pages/Translate/Translate';
 
 function App() {
 
@@ -39,6 +40,7 @@ function App() {
             <Route path="/:board_id" element={<EditBoard/>} />
             <Route path="/setup" element={<SignUpOption/>} />
             <Route path="/search" element={<Search/>} />
+            <Route path="/translate" element={<Translate/>} />
           </Routes>
         </BrowserRouter>
       </>

@@ -17,6 +17,47 @@ export default function Friend() {
     const [activeTab, setActiveTab] = useState('myFriends'); //컴포넌트 선택
     const [friendList, setFriendList] = useState([]); //친구 목록
     const [recommendFriendList, setRecommendFriendList] = useState([]); //추천 친구 목록
+    const interestTag = [ // 관심사 태그
+        "요리",
+        "여행",
+        "영화",
+        "드라마",
+        "애니메이션",
+        "유튜브",
+        "넷플릭스",
+        "웹툰",
+        "게임",
+        "음악",
+        "미술",
+        "공예",
+        "독서",
+        "축구",
+        "야구",
+        "농구",
+        "테니스",
+        "배드민턴",
+        "볼링",
+        "탁구",
+        "서핑",
+        "스노우보드",
+        "헬스",
+        "명상",
+        "요가",
+        "필라테스",
+        "과학",
+        "패션",
+        "메이크업",
+        "헤어",
+        "사진",
+        "자연",
+        "탐험",
+        "캠핑",
+        "등산",
+        "재태크",
+        "k-pop",
+        "자원봉사",
+        "사회공헌"
+    ];
 
     //검색
     const [searchInput, setSearchInput] = useState(null); // 검색창 값
@@ -587,11 +628,9 @@ export default function Friend() {
                         onChange={(value) => handleSelect(value, "hobby")}
                     >
                         <Option value="hb" disabled>Hobby</Option>
-                        <Option value="요리">요리</Option>
-                        <Option value="산책">산책</Option>
-                        <Option value="쇼핑">쇼핑</Option>
-                        <Option value="여행">여행</Option>
-                        <Option value="드라이브">드라이브</Option>
+                        {interestTag.map((hobby)=>(
+                            <Option value={hobby}>{hobby}</Option>
+                        ))}
                     </Select>
 
                     <div style={{marginLeft: "10px"}} onClick={()=> {resetFriend();}}><GrClose/></div>
