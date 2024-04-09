@@ -543,7 +543,7 @@ export default function Friend() {
                             <li 
                                 className="nav-item"
                                 style={{ width:"50px", fontWeight: activeTab === 'myFriends' ? 'bold' : 'normal', marginRight: "20px"}}
-                                onClick={() => setActiveTab('myFriends')}>
+                                onClick={() => {setActiveTab('myFriends'); resetFriend();}}>
                                 내 친구
                             </li>
                             <li 
