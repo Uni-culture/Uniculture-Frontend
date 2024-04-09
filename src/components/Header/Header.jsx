@@ -48,7 +48,7 @@ const Header = () => {
                         Authorization: `Bearer ${token}`
                     }
                 });
-               if(response.status === 200){
+                if(response.status === 200){
                     setIsLogin(true);
                 }
             }
@@ -115,8 +115,8 @@ const Header = () => {
             else{
                 LoginWarning();
                 navigate("/sign-in", {state: {from: location.pathname}}); // 현재 경로를 저장하고 로그인 페이지로 이동
-
-            }
+        
+            }    
         }
     };
 

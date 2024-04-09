@@ -1,21 +1,21 @@
 @media all and (min-width: 1024px) {
   .search-card-wrapper {
-    width: 550px;
-    height: 560px;
+    width: 600px;
+    height: 600px;
   }
 }
 
 @media all and (max-width: 1024px) {
   .search-card-wrapper {
-    width: 550px;
-    height: 560px;
+    width: 600px;
+    height: 600px;
   }
 }
 
 @media all and (max-width: 768px) {
   .search-card-wrapper {
-    width: 550px;
-    height: 560px;
+    width: 600px;
+    height: 600px;
   }
 }
 
@@ -85,11 +85,25 @@
       line-height: 1.5em;
       height: 4.5em;
       font-size: 0.9rem;
+      margin-top: 10px;
+    }
+
+    .search-card-hashtag-wrap {
+      margin-top: 32px;
+
+      .search-card-hashtag {
+        font-weight: 400;
+        margin-right: 10px;
+        border-radius: 15px;
+        background-color: #F2F2F2;
+        padding: 5px 15px;
+        color: #35B62C;
+      }
     }
 
     .search-card-body-text-bottom {
       font-size: 0.8rem;
-      margin-top: 4.0rem;
+      margin-top: 1.4rem;
       color: gray;
     }
   }

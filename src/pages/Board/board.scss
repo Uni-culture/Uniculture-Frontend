@@ -1,0 +1,155 @@
+.board-layout {
+    background-color: #FBFBF3;
+}
+
+.board-title {
+    margin-top: 50px;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.board-wrapper {
+    /*background-color: #8BC765;*/
+    min-height: 100vh;
+    margin-left: 130px;
+    margin-right: 200px;
+    position: relative;
+
+    .board-header {
+        //display: flex;
+        //justify-content: space-between; /* 양 끝 정렬 */
+        align-items: baseline;
+        margin-top: 30px;
+        font-weight: 600;
+
+        .header-container {
+            display: flex;
+            justify-content: space-between; /* 양 끝 정렬 */
+
+            .board-header-username {
+                font-size: 1.2rem;
+            }
+            .board-header-username:hover {
+                text-decoration: underline;
+                cursor: pointer;
+            }
+            .board-header-dot {
+                margin-left: 10px;
+                color: gray;
+                font-size: 0.9rem;
+            }
+            .board-header-date {
+                font-weight: lighter;
+                margin-left: 10px;
+                font-size: 0.9rem;
+                color: gray;
+                vertical-align: baseline;
+            }
+            .board-likeCount {
+                margin-left: 5px;
+                font-weight: normal;
+                font-size: 15px;
+            }
+
+            .board-postType {
+                font-weight: bold;
+                margin-left: 30px;
+                border-radius: 25px;
+                border: 2px solid #8BC765;
+                background-color: #FBFBF3;
+                padding: 3px 15px;
+                color: #8BC765;
+            }
+        }
+
+        .hashtag-wrapper {
+            margin-top: 20px;
+            margin-bottom: 32px;
+
+            .hashtag {
+                font-weight: 400;
+                margin-right: 10px;
+                border-radius: 15px;
+                background-color: #F2F2F2;
+                padding: 5px 15px;
+                color: #35B62C;
+            }
+        }
+    }
+
+    .board-body {
+
+        .board-buttons-wrap {
+            display: flex;
+            justify-content: flex-end; /* 내부 요소들을 오른쪽으로 정렬 */
+            margin-top: 50px;
+            margin-bottom: 20px;
+
+            .board-buttons {
+                font-weight: 400;
+                margin-left: 10px;
+                border: none;
+                border-radius: 5px;
+                background-color: #C8DCA0;
+                padding: 5px 15px;
+                color: black;
+            }
+
+            .edit-delete-button {
+                //margin-top: 100px;
+                //position: absolute;
+                //right: 0;
+            }
+        }
+    }
+
+    .board-footer {
+        position: absolute;
+        width: 100%; /*부모 요소의 전체 너비를 차지*/
+    }
+}
+
+.left-container {
+    display: flex;
+    align-items: baseline;
+}
+
+.like {
+    transition: transform 300ms ease;
+}
+.like:hover {
+    transform: scale(1.1);
+}
+
+.custom-popup {
+    width: 300px !important;
+    height: 150px !important;
+}
+
+.custom-confirm-button {
+    width: 65px !important;
+    height: 30px !important;
+    font-size: 12px !important;
+    margin-right: 50px;
+}
+
+.custom-cancel-button {
+    width: 65px !important;
+    height: 30px !important;
+    font-size: 12px !important;
+}
+
+.custom-ok-popup {
+    width: 300px !important;
+    height: 275px !important;
+}
+
+.custom-ok-button {
+    width: 65px !important;
+    height: 38px !important;
+    font-size: 14px !important;
+}
+
+.custom-title {
+    padding-top: 1px !important;
+}
