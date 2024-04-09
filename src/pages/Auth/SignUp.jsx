@@ -233,6 +233,11 @@ const SignUp = () => {
         }
         setNotAllow(true); // 기본적인 상황: 비활성화
 
+
+    }, [emailValid, pwValid, nickNameValid, gender, selectedYear, selectedMonth, selectedDay]); // 이메일, 비밀번호 등 state 값이 변경될 때마다 useEffect 실행
+
+    //나이 계산
+    useEffect(()=> {
         if (selectedYear && selectedMonth && selectedDay) {
             const currentDate = new Date(); // 현재 날짜 가져오기
             const birthDate = new Date(selectedYear, selectedMonth - 1, selectedDay); // 선택한 생년월일로 날짜 설정
@@ -247,7 +252,7 @@ const SignUp = () => {
             }
             setAge(age);
         }
-    }, [emailValid, pwValid, nickNameValid, gender, selectedYear, selectedMonth, selectedDay]); // 이메일, 비밀번호 등 state 값이 변경될 때마다 useEffect 실행
+    },[selectedYear, selectedMonth, selectedDay])
 
     // 비밀번호 토글 함수
     const toggleShowPassword = () => {
