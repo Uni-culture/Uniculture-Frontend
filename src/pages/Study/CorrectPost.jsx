@@ -54,7 +54,7 @@ export const CorrectPost = () => {
                 console.log(`data : `, boardData);
                 setInputs({
                   title: boardData.title, 
-                  tags: boardData.tag, 
+                  tags: boardData.tags, 
                   category: boardData.postType
                 })
                 setContent(boardData.content);
@@ -134,7 +134,7 @@ export const CorrectPost = () => {
       contents: content,
       posttype: category,
       postCategory: 'NORMAL',
-      tag: tags},{
+      tags: tags},{
       headers:{
         Authorization: `Bearer ${token}`
       }
