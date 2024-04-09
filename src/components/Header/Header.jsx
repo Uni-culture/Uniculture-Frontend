@@ -169,8 +169,8 @@ const Header = () => {
                             <li className="nav-item">
                                 <button className={`btn nav-link ${activePage("/study")}`} onClick={() => handleNavigation("/study")}>스터디</button>
                             </li>
-                            <li className="nav-item">
-                                <button className={`btn nav-link ${activePage("/chatting")}`} onClick={() => handleNavigation("/chatting")}>채팅</button>
+                            <li className={`nav-item ${activePage("/chat")}`}>
+                                <button className={`btn nav-link ${activePage("/chat")}`} onClick={() => handleNavigation("/chat")}>채팅</button>
                             </li>
                             <li className={`nav-item ${activePage(`/profile`)}`}>
                                 <button className={`btn nav-link ${activePage("/profile")}`} onClick={() => handleNavigation(`/profile`)}>프로필</button>

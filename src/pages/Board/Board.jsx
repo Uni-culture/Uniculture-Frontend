@@ -8,6 +8,7 @@ import {HeartOutlined, HeartFilled} from '@ant-design/icons';
 import {IoArrowBack} from "react-icons/io5";
 import Swal from "sweetalert2";
 import Comments from "../../components/Comments/Comments"
+import DOMPurify from "dompurify";
 
 const Board = () => {
     const location = useLocation();
@@ -176,6 +177,11 @@ const Board = () => {
         });
     };
 
+    const SafeHtml = ({html}) =>{
+        const safeHtml = DOMPurify.sanitize(html);
+        return <div dangerouslySetInnerHTML={{ __html: safeHtml}} />;
+    }
+
     return (
         <div className="board-layout">
             <Header/>
@@ -203,7 +209,9 @@ const Board = () => {
                             {/*<img src={`/api/image/view/${board_id}`}/>*/}
                         </div>
                         <div className="board-title-content">
-                            <div className="board-content">{content}</div>
+                            <div className="board-content">
+                                <SafeHtml html={content} />
+                            </div>
                             {board.isMine && // 자신의 게시물이면 활성화
                                 <div className="edit-delete-button">
                                     {isTranslated ? (
@@ -212,7 +220,7 @@ const Board = () => {
                                         <button className="translate-button" onClick={()=>{translate(content)}}> 번역 </button>
                                     )}
                                     <button className="delete-button" onClick={boardDelete}> 삭제 </button>
-                                    <button onClick={() => {navigate(`/${board_id}`, {state : {from : location.pathname}});}}> 수정 </button>
+                                    <button onClick={() => {navigate(`/${board_id}?type=post`, {state : {from : location.pathname}});}}> 수정 </button>
                                 </div>
                             }
                         </div>
