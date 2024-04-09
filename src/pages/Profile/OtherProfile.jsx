@@ -9,6 +9,7 @@ import { PiPlusCircleBold, PiPlusCircleFill } from "react-icons/pi";
 import Swal from 'sweetalert2';
 import MyBoardList from "./MyBoardList";
 import OtherBoardList from "./OtherBoardList";
+import ShowAllLanguage from './Modal/ShowAllLanguage';
 
 
 export default function OtherProfile({otherInformation}) {
@@ -23,7 +24,6 @@ export default function OtherProfile({otherInformation}) {
     //언어 모달창
     const [onMouseSpan, setOnMouseSpan] = useState(false);
     const [showAllLanguage, setShowAllLanguage] = useState(false);
-    const [activeTab, setActiveTab] = useState('can');
     const [canLanguages, setCanLanguages] = useState([]); //사용 언어 능숙도가 높은 순
     const [wantLanguages, setWantLanguages] = useState([]); //학습 언어 능숙도가 높은 순
 
@@ -60,34 +60,6 @@ export default function OtherProfile({otherInformation}) {
     useEffect(()=>{
         friendButton();
     },[friendStatus])
-
-    // 언어 모달창 : 선택된 탭에 따라 해당 목록을 표시하는 함수
-    const renderTabContent = () => {
-        switch (activeTab) {
-            case 'can':
-                return (
-                    <div>
-                        {canLanguages && canLanguages.map((language, index) => (
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E0E0E0', padding: '10px' }}>
-                                <PercentBar key={index} language={language.language} level={language.level} color={"blue"}/>
-                            </div>
-                        ))}
-                    </div>
-                );
-            case 'want':
-                return (
-                    <div>
-                        {wantLanguages && wantLanguages.map((language, index) => (
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E0E0E0', padding: '10px' }}>
-                                <PercentBar key={index} language={language.language} level={language.level} color={"red"}/>
-                            </div>
-                        ))}
-                    </div>
-                );
-            default:
-                return ;
-        }
-    };
 
     // 주의점 1번(친구삭제), 4번(친구수락)시 상대의 친구수가 변해야됨 ==> 리렌더링 필요
     const friendButton = () => {
@@ -303,7 +275,7 @@ export default function OtherProfile({otherInformation}) {
         switch (activeTab3) {
             case 'boardList':
                 return (
-                    <div>
+                    <div className={styles.boardStyle}>
                         <OtherBoardList memberId={otherInfo.id} />
                     </div>
                 );
@@ -320,124 +292,98 @@ export default function OtherProfile({otherInformation}) {
 
     return (
         <Layout>
-            <div className={styles.profile}>
-                {/* 프로필 사진 */}
-                <div className={styles.left}>
-                    <div className={styles.imageWrapper}>
-                        <img
-                            src={otherInfo?.profileImage ? otherInfo.profileImage : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
-                            alt="profile"
-                            className={styles.image}
-                        />
-                    </div>
-                </div>
-
-                <div className={styles.right}>
-
-                    <div style={{display:"flex"}}>
-
-                        {/* 닉네임 */}
-                        <div className={styles.name}>{otherInfo?.nickname}</div>
-                        
-                        {/* 친구 걸기/채팅 보내기 */}
-                        {friendButton()}
-                        <button
-                            className={styles.buttonStyle}
-                            onClick={sendMessage}
-                        >채팅 보내기</button>
-                    </div>
-
-                    {/* 소개 */}
-                    {otherInfo?.introduce && <div className={styles.intro}>{otherInfo.introduce}</div>}
-
-                    {/* 게시글, 친구 */}
-                    <div>
-                        <div className={styles.post}>게시글</div>
-                        <div className={styles.postNum}>{otherInfo?.postnum}</div>
-                        <div className={styles.friend}>친구</div>
-                        <div className={styles.friendNum}>{friendNum}</div>
-                    </div>
-
-                    {/* 언어 */}
-                    {(maxCanLanguage || maxWantLanguage) &&
-                        <div style={{ display: "flex", marginTop:"20px"}}>
-                            {maxCanLanguage && <div><PercentBar language={maxCanLanguage.language} level={maxCanLanguage.level} color={"blue"}/></div>}
-                            {maxCanLanguage && maxWantLanguage && <div style={{ marginLeft : "20px", marginRight : "20px" }}><FaExchangeAlt /></div>}
-                            {maxWantLanguage && <div><PercentBar language={maxWantLanguage.language} level={maxWantLanguage.level} color={"red"}/></div>}
-                            <span
-                                style={{marginLeft: "10px"}}
-                                onClick={()=> setShowAllLanguage(true)}
-                                onMouseEnter={()=> setOnMouseSpan(true)}
-                                onMouseLeave={()=> setOnMouseSpan(false)}
-                            >
-                                {onMouseSpan ? <PiPlusCircleFill size={20}/> : <PiPlusCircleBold size={20}/>}
-                            </span>
-                        </div>
-                    }
-
-                    {/* 취미 */}
-                    {otherInfo?.hobbies &&
-                        <div style={{ display: "flex", marginTop:"20px"}}>
-                            {otherInfo.hobbies && otherInfo.hobbies.map((hobby, index) => (
-                                <div key={index} style={{ borderRadius:"15px", backgroundColor:"#C6CAC3", padding:"2px 15px", marginRight: "10px" }}>
-                                    #{hobby}
-                                </div>
-                            ))}
-                        </div>
-                    }
+            {/* 프로필 사진 */}
+            <div className={styles.left}>
+                <div className={styles.imageWrapper}>
+                    <img
+                        src={otherInfo?.profileImage ? otherInfo.profileImage : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                        alt="profile"
+                        className={styles.image}
+                    />
                 </div>
             </div>
 
-            <div>
+            <div className={styles.right}>
+                {/* 닉네임 */}
+                <div className={styles.name}>{otherInfo?.nickname}</div>
+                
+                {/* 친구 걸기/채팅 보내기 */}
+                {friendButton()}
+                <button
+                    className={styles.buttonStyle}
+                    onClick={sendMessage}
+                >채팅 보내기</button>
+
+                {/* 소개 */}
+                {otherInfo?.introduce && <div className={styles.intro}>{otherInfo.introduce}</div>}
+
+                {/* 게시글, 친구 */}
+                <div>
+                    <div className={styles.post}>게시글</div>
+                    <div className={styles.postNum}>{otherInfo?.postnum}</div>
+                    <div className={styles.friend}>친구</div>
+                    <div className={styles.friendNum}>{friendNum}</div>
+                </div>
+
+                {/* 언어 */}
+                {(maxCanLanguage || maxWantLanguage) &&
+                    <div style={{ display: "flex", marginTop:"20px"}}>
+                        {maxCanLanguage && <div><PercentBar language={maxCanLanguage.language} level={maxCanLanguage.level} color={"blue"}/></div>}
+                        {maxCanLanguage && maxWantLanguage && <div style={{ marginLeft : "20px", marginRight : "20px" }}><FaExchangeAlt /></div>}
+                        {maxWantLanguage && <div><PercentBar language={maxWantLanguage.language} level={maxWantLanguage.level} color={"red"}/></div>}
+                        <span
+                            style={{marginLeft: "10px"}}
+                            onClick={()=> setShowAllLanguage(true)}
+                            onMouseEnter={()=> setOnMouseSpan(true)}
+                            onMouseLeave={()=> setOnMouseSpan(false)}
+                        >
+                            {onMouseSpan ? <PiPlusCircleFill size={20}/> : <PiPlusCircleBold size={20}/>}
+                        </span>
+                    </div>
+                }
+
+                {/* 취미 */}
+                <div style={{marginTop: "20px"}}>
+                    {otherInfo.hobbies && otherInfo.hobbies.map((hobby, index) => (
+                        <div
+                            key={index} 
+                            style={{ 
+                                display: "inline-block",
+                                borderRadius: "9px", 
+                                backgroundColor: "#e9ecef", 
+                                padding: "5px 10px",
+                                marginRight: "3px",
+                                marginTop: "5px"
+                            }}
+                        >
+                            # {hobby}
+                        </div>
+                    ))}
+                </div>
+            </div>
+
+            <div style={{marginTop: "30px"}}>
                 <ul className="nav">
                     <li 
                         className="nav-item"
-                        style={{ fontWeight: activeTab3 === 'boardList' ? 'bold' : 'normal', backgroundColor: activeTab3 === 'boardList' ? '#B7DAA1' : '', marginRight: "20px", padding: "5px 15px", borderRadius: 25}}
+                        style={{ fontWeight: activeTab3 === 'boardList' ? 'bold' : 'normal', backgroundColor: activeTab3 === 'boardList' ? '#B7DAA1' : '', marginRight: "20px", padding: "5px 15px", borderRadius: 11}}
                         onClick={() => setActiveTab3('boardList')}>
                         게시물
                     </li>
                     <li 
                         className="nav-item"
-                        style={{ fontWeight: activeTab3 === 'studyList' ? 'bold' : 'normal',  backgroundColor: activeTab3 === 'studyList' ? '#B7DAA1' : '', marginRight: "20px", padding: "5px 15px", borderRadius: 25}}
+                        style={{ fontWeight: activeTab3 === 'studyList' ? 'bold' : 'normal',  backgroundColor: activeTab3 === 'studyList' ? '#B7DAA1' : '', marginRight: "20px", padding: "5px 15px", borderRadius: 11}}
                         onClick={() => {setActiveTab3('studyList');}}>
                         스터디
                     </li>
                 </ul>
-            </div>
 
-            {renderTabContent3()}
+                {renderTabContent3()}
+            </div>
 
             {/* 전체 사용, 학습 언어 보기 모달창 */}
             {showAllLanguage && (
-                <div className="modal fade show" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
-                    <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                        <div className="modal-content" style={{height:"450px"}}>
-                            <ul className="nav nav-tabs">
-                                <li className="nav-item">
-                                    <button
-                                        className={`nav-link ${activeTab === 'can' ? 'active' : ''}`}
-                                        style={{ width:"150px", backgroundColor: activeTab === 'can' ? '#B7DAA1' : 'white', color: "black"}}
-                                        onClick={() => setActiveTab('can')}
-                                    >사용 언어</button>
-                                </li>
-                                <li className="nav-item">
-                                    <button
-                                        className={`nav-link ${activeTab === 'want' ? 'active' : ''}`}
-                                        style={{ width:"150px", backgroundColor: activeTab === 'want' ? '#B7DAA1' : 'white', color: "black"}}
-                                        onClick={() => setActiveTab('want')}
-                                    >학습 언어</button>
-                                </li>
-                            </ul>
-
-                            <div className="modal-body">
-                                {renderTabContent()}
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => {setShowAllLanguage(false); setActiveTab('can')}}>닫기</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <ShowAllLanguage  canLanguages={canLanguages} wantLanguages={wantLanguages} showAllLanguage={()=>setShowAllLanguage(false)}/>
             )}
         </Layout>
     );

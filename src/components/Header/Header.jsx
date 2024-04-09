@@ -104,13 +104,19 @@ const Header = () => {
 
         }
         else {
-            if(to==='/') window.location.reload();
-            // else if(to==='/study') navigate(to);
+            if(to==='/') { // to가 이동할 경로
+                if (location.pathname === to) { // 현재 경로와 to가 같을 때
+                    window.location.reload();
+                } else{ // 현재 주소가 /가 아닐 때
+                    navigate(to);
+                }
+            }
+            else if(to==='/translate') navigate(to); // 로그인x 번역페이지 이동
             else{
                 LoginWarning();
                 navigate("/sign-in", {state: {from: location.pathname}}); // 현재 경로를 저장하고 로그인 페이지로 이동
-        
-            }    
+
+            }
         }
     };
 
@@ -168,6 +174,9 @@ const Header = () => {
                             </li>
                             <li className={`nav-item ${activePage(`/profile`)}`}>
                                 <button className={`btn nav-link ${activePage("/profile")}`} onClick={() => handleNavigation(`/profile`)}>프로필</button>
+                            </li>
+                            <li className={`nav-item ${activePage(`/translate`)}`}>
+                                <button className={`btn nav-link ${activePage("/translate")}`} onClick={() => handleNavigation(`/translate`)}>번역</button>
                             </li>
                         </ul>
                     </div>
