@@ -589,7 +589,7 @@ export default function Friend() {
                         style={{ width: 120 }} 
                         onChange={(value) => handleSelect(value, "gender")}
                     >
-                        <Option value="ge" disabled>Gender</Option>
+                        <Option value="ge" >Gender</Option>
                         <Option value="MAN">Man</Option>
                         <Option value="WOMAN">Woman</Option>
                     </Select>
@@ -603,7 +603,7 @@ export default function Friend() {
                         style={{ width: 150 }} 
                         onChange={(value) => handleSelect(value, "cl")}
                     >
-                        <Option value="cl" disabled>Can Language</Option>
+                        <Option value="cl" >Can Language</Option>
                         <Option value="한국어">한국어</Option>
                         <Option value="일본어">일본어</Option>
                         <Option value="중국어">중국어</Option>
@@ -615,7 +615,7 @@ export default function Friend() {
                         style={{ width: 150 }} 
                         onChange={(value) => handleSelect(value, "wl")}
                     >
-                        <Option value="wl" disabled>Want Language</Option>
+                        <Option value="wl" >Want Language</Option>
                         <Option value="한국어">한국어</Option>
                         <Option value="일본어">일본어</Option>
                         <Option value="중국어">중국어</Option>
@@ -627,7 +627,7 @@ export default function Friend() {
                         style={{ width: 150 }} 
                         onChange={(value) => handleSelect(value, "hobby")}
                     >
-                        <Option value="hb" disabled>Hobby</Option>
+                        <Option value="hb" >Hobby</Option>
                         {interestTag.map((hobby)=>(
                             <Option value={hobby}>{hobby}</Option>
                         ))}
