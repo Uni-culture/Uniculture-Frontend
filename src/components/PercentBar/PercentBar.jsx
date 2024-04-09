@@ -22,7 +22,7 @@ const PercentBar = ({ language, level, color, onDelete}) => {
     return (
         <>
             <div className="d-flex align-items-center" style={{display: "flex"}}>
-                {language && (<label style={{textAlign: "left", width: "50px", marginRight: "10px"}}>{language}</label>)}
+                {language && (<label style={{textAlign: "left", minWidth: "50px", marginRight: "10px"}}>{language}</label>)}
                 <div style={{ position: 'relative' }}>
                     <div className="progress" style={{ width: '150px'}}>
                         <div

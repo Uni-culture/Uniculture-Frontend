@@ -111,74 +111,77 @@ const Header = () => {
                     navigate(to);
                 }
             }
-            // else if(to==='/study') navigate(to);
+            else if(to==='/translate') navigate(to); // 로그인x 번역페이지 이동
             else{
                 LoginWarning();
                 navigate("/sign-in", {state: {from: location.pathname}}); // 현재 경로를 저장하고 로그인 페이지로 이동
-
-            }
+        
+            }    
         }
     };
 
     return (
-        <nav className={`navbar navbar-expand-lg`} style={{ backgroundColor: '#C8DCA0' }}>
-            <div className="container-fluid" style={{paddingLeft: "80px", paddingRight: "70px"}}>
-                <div className="d-flex align-items-center">
-                    <div className={`navbar-brand ${activePage("/")}`} style={{ fontFamily: "SuezOne", cursor: "pointer"}} onClick={() => handleNavigation("/")}>
-                        <img src={logoImg} alt="Logo" width="30" height="24" className="d-inline-block align-text-top"/>
-                        UniCulture
+            <nav className={`navbar navbar-expand-lg`} style={{ backgroundColor: '#C8DCA0' }}>
+                <div className="container-fluid" style={{paddingLeft: "80px", paddingRight: "70px"}}>
+                    <div className="d-flex align-items-center">
+                        <div className={`navbar-brand ${activePage("/")}`} style={{ fontFamily: "SuezOne", cursor: "pointer"}} onClick={() => handleNavigation("/")}>
+                            <img src={logoImg} alt="Logo" width="30" height="24" className="d-inline-block align-text-top"/>
+                            UniCulture
+                        </div>
+                    </div>
+
+                    {isLogin ? (
+                        <button className={`btn nav-link ms-auto order-lg-last`} onClick={removeToken} style={{ backgroundColor: "#B3C693", padding: "5px 15px", marginRight: "10px"}}>
+                            로그아웃
+                        </button>
+                    ) : (
+                        <>
+                            <div className={`ms-auto order-lg-last`}>
+                                <button className={`btn nav-link`} style={{ backgroundColor: "#B3C693", padding: "5px 15px", marginRight: "10px" }} onClick={handleSignIn}>
+                                    로그인
+                                </button>
+                            </div>
+                            <div className={`order-lg-last`}>
+                                <button className={`btn nav-link`} style={{ backgroundColor: "#B3C693", padding: "5px 15px", marginRight: "10px" }} onClick={handleSignUp}>
+                                    회원가입
+                                </button>
+                            </div>
+                        </>
+                    )}
+
+                    <button
+                        className="navbar-toggler"
+                        type="button"
+                        onClick={handleToggle}
+                        aria-expanded={isNavOpen ? 'true' : 'false'}
+                    >
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div className={`collapse navbar-collapse ${isNavOpen ? 'show' : ''}`}>
+                        <ul className="navbar-nav">
+                            <li className={`nav-item ${activePage("/")}`}>
+                                <button className={`btn nav-link ${activePage("/")}`} onClick={() => handleNavigation("/")}>홈</button>
+                            </li>
+                            <li className={`nav-item ${activePage("/friend")}`}>
+                                <button className={`btn nav-link ${activePage("/friend")}`} onClick={() => handleNavigation("/friend")}>친구</button>
+                            </li>
+                            <li className="nav-item">
+                                <button className={`btn nav-link ${activePage("/study")}`} onClick={() => handleNavigation("/study")}>스터디</button>
+                            </li>
+                            <li className={`nav-item ${activePage("/chat")}`}>
+                                <button className={`btn nav-link ${activePage("/chat")}`} onClick={() => handleNavigation("/chat")}>채팅</button>
+                            </li>
+                            <li className={`nav-item ${activePage(`/profile`)}`}>
+                                <button className={`btn nav-link ${activePage("/profile")}`} onClick={() => handleNavigation(`/profile`)}>프로필</button>
+                            </li>
+                            <li className={`nav-item ${activePage(`/translate`)}`}>
+                                <button className={`btn nav-link ${activePage("/translate")}`} onClick={() => handleNavigation(`/translate`)}>번역</button>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-
-                {isLogin ? (
-                    <button className={`btn nav-link ms-auto order-lg-last`} onClick={removeToken} style={{ backgroundColor: "#B3C693", padding: "5px 15px", marginRight: "10px"}}>
-                        로그아웃
-                    </button>
-                ) : (
-                    <>
-                        <div className={`ms-auto order-lg-last`}>
-                            <button className={`btn nav-link`} style={{ backgroundColor: "#B3C693", padding: "5px 15px", marginRight: "10px" }} onClick={handleSignIn}>
-                                로그인
-                            </button>
-                        </div>
-                        <div className={`order-lg-last`}>
-                            <button className={`btn nav-link`} style={{ backgroundColor: "#B3C693", padding: "5px 15px", marginRight: "10px" }} onClick={handleSignUp}>
-                                회원가입
-                            </button>
-                        </div>
-                    </>
-                )}
-
-                <button
-                    className="navbar-toggler"
-                    type="button"
-                    onClick={handleToggle}
-                    aria-expanded={isNavOpen ? 'true' : 'false'}
-                >
-                    <span className="navbar-toggler-icon"></span>
-                </button>
-
-                <div className={`collapse navbar-collapse ${isNavOpen ? 'show' : ''}`}>
-                    <ul className="navbar-nav">
-                        <li className={`nav-item ${activePage("/")}`}>
-                            <button className={`btn nav-link ${activePage("/")}`} onClick={() => handleNavigation("/")}>홈</button>
-                        </li>
-                        <li className={`nav-item ${activePage("/friend")}`}>
-                            <button className={`btn nav-link ${activePage("/friend")}`} onClick={() => handleNavigation("/friend")}>친구</button>
-                        </li>
-                        <li className="nav-item">
-                            <button className={`btn nav-link ${activePage("/study")}`} onClick={() => handleNavigation("/study")}>스터디</button>
-                        </li>
-                        <li className="nav-item">
-                            <button className={`btn nav-link ${activePage("/chatting")}`} onClick={() => handleNavigation("/chatting")}>채팅</button>
-                        </li>
-                        <li className={`nav-item ${activePage(`/profile`)}`}>
-                            <button className={`btn nav-link ${activePage("/profile")}`} onClick={() => handleNavigation(`/profile`)}>프로필</button>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
+            </nav>
 
     );
 };

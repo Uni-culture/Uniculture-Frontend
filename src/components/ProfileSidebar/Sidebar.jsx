@@ -24,9 +24,9 @@ const Sidebar = () => {
             <span className="fs-4" onClick={goBack}>←</span>
             <hr />
             <ul className="nav nav-pills flex-column mb-auto">
-                <NavItem to="/accounts/edit" text="프로필 편집" />
-                <NavItem to="/accounts/personal-info" text="개인정보" />
-                <NavItem to="/accounts/delete" text="계정 탈퇴" />
+                <NavItem to="/account/edit" text="프로필 편집" />
+                <NavItem to="/account/personal-info" text="개인정보" />
+                <NavItem to="/account/delete" text="계정 탈퇴" />
             </ul>
         </div>
     );

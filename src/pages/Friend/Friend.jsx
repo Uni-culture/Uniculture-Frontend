@@ -10,13 +10,54 @@ import { Badge, Input, Select} from "antd";
 import { AiOutlineBell } from "react-icons/ai";
 import Pagination from '@mui/material/Pagination';
 import { GrClose } from "react-icons/gr";
-import RecommendedFriendCard from './components/RecommendedFriendCard';
+import RecommendFriendCard from './components/RecommendFriendCard';
 
 export default function Friend() {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('myFriends'); //컴포넌트 선택
     const [friendList, setFriendList] = useState([]); //친구 목록
     const [recommendFriendList, setRecommendFriendList] = useState([]); //추천 친구 목록
+    const interestTag = [ // 관심사 태그
+        "요리",
+        "여행",
+        "영화",
+        "드라마",
+        "애니메이션",
+        "유튜브",
+        "넷플릭스",
+        "웹툰",
+        "게임",
+        "음악",
+        "미술",
+        "공예",
+        "독서",
+        "축구",
+        "야구",
+        "농구",
+        "테니스",
+        "배드민턴",
+        "볼링",
+        "탁구",
+        "서핑",
+        "스노우보드",
+        "헬스",
+        "명상",
+        "요가",
+        "필라테스",
+        "과학",
+        "패션",
+        "메이크업",
+        "헤어",
+        "사진",
+        "자연",
+        "탐험",
+        "캠핑",
+        "등산",
+        "재태크",
+        "k-pop",
+        "자원봉사",
+        "사회공헌"
+    ];
 
     //검색
     const [searchInput, setSearchInput] = useState(null); // 검색창 값
@@ -57,7 +98,7 @@ export default function Friend() {
 
             let Query= searchInput ? `name=${searchInput}&` : '';
 
-            const response = await axios.get(`/api/auth/friend/detail?${Query}page=${page}&size=3`, {
+            const response = await axios.get(`/api/auth/friend/detail?${Query}page=${page}&size=6`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -75,15 +116,7 @@ export default function Friend() {
             }
             
         } catch (error) {
-            Swal.fire({
-                title: "로그인 해주세요.",
-                text: "로그인 창으로 이동합니다.",
-                icon: "warning",
-                confirmButtonColor: "#dc3545",
-                confirmButtonText: "확인"
-            }).then(() => {
-                navigate("/sign-in");
-            });
+            navigate("/");
         }
     };
 
@@ -133,8 +166,14 @@ export default function Friend() {
     //검색 내용 바뀌면 실행
     useEffect(() => {
         if(searchInput !== null){
-            setCurrentPage(0);
-            fetchFriendList(0);
+            const timerId = setTimeout(() => {
+                setCurrentPage(0);
+                fetchFriendList(0);
+            }, 1000);
+    
+            return () => {
+                clearTimeout(timerId);
+            };
         }
     }, [searchInput]);
 
@@ -156,7 +195,7 @@ export default function Friend() {
                         {friendList.length > 0 ? (
                             <div style={{ display: "flex", flexWrap: "wrap", gap: "30px", justifyContent: "center" }}>
                                 {friendList.map((friend) => (
-                                    <div key={friend.id} style={{ flexBasis: "400px", minWidth: "400px", marginBottom: "20px" }}>
+                                    <div key={friend.id} style={{ flexBasis: "350px", minWidth: "350px", marginBottom: "20px" }}>
                                         <FriendCard key={friend.id} userInfo={friend} deleteFriend={deleteFriend} cl={selectCL} wl={selectWL} hb={selectHb}/>
                                     </div>
                                 ))}
@@ -179,7 +218,7 @@ export default function Friend() {
                             <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "40px" }}>
                                 {recommendFriendList.map((friend) => (
                                     <div key={friend.id} style={{ flexBasis: "550px", minWidth: "550px", marginBottom: "20px" }}>
-                                        <RecommendedFriendCard key={friend.id} userInfo={friend} sendFriendRequest={sendFriendRequest}/>
+                                        <RecommendFriendCard key={friend.id} userInfo={friend} sendFriendRequest={sendFriendRequest}/>
                                     </div>
                                 ))}
                             </div>
@@ -453,7 +492,7 @@ export default function Friend() {
             if (selectWL !== "wl") Query += `wl=${selectWL}&`;
             if (selectHb !== "hb") Query += `hb=${selectHb}&`;
 
-            const response = await axios.get(`/api/auth/friend/search?${Query}page=${page}&size=3`, {
+            const response = await axios.get(`/api/auth/friend/search?${Query}page=${page}&size=6`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -504,7 +543,7 @@ export default function Friend() {
                             <li 
                                 className="nav-item"
                                 style={{ width:"50px", fontWeight: activeTab === 'myFriends' ? 'bold' : 'normal', marginRight: "20px"}}
-                                onClick={() => setActiveTab('myFriends')}>
+                                onClick={() => {setActiveTab('myFriends'); resetFriend();}}>
                                 내 친구
                             </li>
                             <li 
@@ -589,11 +628,9 @@ export default function Friend() {
                         onChange={(value) => handleSelect(value, "hobby")}
                     >
                         <Option value="hb" disabled>Hobby</Option>
-                        <Option value="요리">요리</Option>
-                        <Option value="산책">산책</Option>
-                        <Option value="쇼핑">쇼핑</Option>
-                        <Option value="여행">여행</Option>
-                        <Option value="드라이브">드라이브</Option>
+                        {interestTag.map((hobby)=>(
+                            <Option value={hobby}>{hobby}</Option>
+                        ))}
                     </Select>
 
                     <div style={{marginLeft: "10px"}} onClick={()=> {resetFriend();}}><GrClose/></div>
