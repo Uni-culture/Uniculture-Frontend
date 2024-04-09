@@ -220,7 +220,7 @@ const Board = () => {
                                         <button className="translate-button" onClick={()=>{translate(content)}}> 번역 </button>
                                     )}
                                     <button className="delete-button" onClick={boardDelete}> 삭제 </button>
-                                    <button onClick={() => {navigate(`/${board_id}`, {state : {from : location.pathname}});}}> 수정 </button>
+                                    <button onClick={() => {navigate(`/${board_id}?type=post`, {state : {from : location.pathname}});}}> 수정 </button>
                                 </div>
                             }
                         </div>
