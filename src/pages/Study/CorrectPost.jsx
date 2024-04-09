@@ -1,32 +1,33 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import styles from './Post.module.css'
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import "react-quill/dist/quill.snow.css"
 import axios from 'axios';
 import { Select, Button} from 'antd';
 import Layout from '../../components/Layout';
 
-export const Post = () => {
+export const CorrectPost = () => {
   const location = useLocation();
   console.log(location);
+  const {board_id} = useParams();
   const searchParams = new URLSearchParams(location.search);
   const type = searchParams.get('type');
+  //글 종류가 post 인지 study인지 확인하고 저장해야할듯.
+  const [preset, setPreset] = useState('post');
+
+  
+  const postOptions = [{value: 'DAILY', label: '일상'}, {value: 'HELP', label: '도움'}];
+  const studyOptions = [{value: '자격증', label:'자격증'},{value: '언어교류', label:'언어교류'}]
 
   const getToken = () => {
     return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
   };
   const token = getToken();
 
-  const postOptions = [{value: 'DAILY', label: '일상'}, {value: 'HELP', label: '도움'}];
-  const studyOptions = [{value: 'LANGUAGE', label:'언어교류'},{value: 'HOBBY', label:'취미'}]
-
-  const [preset, setPreset] = useState(type);
-
-
   const [inputs, setInputs] = useState({
     title:'',
-    tags:null,
+    tags:[],
     category:'',
   })
   const {title, tags, category} = inputs;
@@ -34,25 +35,44 @@ export const Post = () => {
   const navigate = useNavigate();
   const quillRef = useRef();
 
-  useEffect(()=>{
-    if(type ==='study'){
-      setPreset('study');
-      setContent("<p><strong>[개발 스터디 모집 내용 예시]</strong></p><ul><li>스터디 주제 :</li><li>스터디 목표 :</li><li>예상 스터디 일정(횟수) :</li><li>예상 커리큘럼 간략히 :</li><li>예상 모집인원 :</li><li>스터디 소개와 개설 이유 :</li><li>스터디 관련 주의사항 :</li><li>스터디에 지원할 수 있는 방법을 남겨주세요. (이메일, 카카오 오픈채팅방, 구글폼 등.) :</li></ul><p><br></p>");
-      setInputs(inputs =>({
-        ...inputs,
-        category: studyOptions[0].value,
-      }));
-    }
-    else{
-      setPreset('post');
-      setContent("");
-      setInputs(inputs =>({
-        ...inputs,
-        category: postOptions[0].value,
-      }));
-    }
-    handleTagChange(null);
-  },[type])
+  //post 인지 study인지 확인 후 api 주소 변경 해야함.
+  useEffect(() => {
+    console.log(`Edit 게시글 아이디: ${board_id}`);
+    const getBoard = async () => {
+        console.log('getBoard start');
+        try {
+            const response = await axios.get(`/api/post/${board_id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}` // 헤더에 토큰 추가
+                }
+            });
+            console.log('서버 응답: ', response);
+            console.log('response.status: ', response.status);
+
+            if (response.status === 200) {
+                const boardData = response.data;
+                console.log(`data : `, boardData);
+                setInputs({
+                  title: boardData.title, 
+                  tags: boardData.tag, 
+                  category: boardData.postType
+                })
+                setContent(boardData.content);
+                console.log("200 성공~~~~");
+            }
+        } catch (error) { // 실패 시
+            if(error.response.status === 401) {
+                console.log("401 오류");
+            }
+            else {
+                console.log("서버 오류 입니다.");
+                alert(error.response.data);
+            }
+        }
+    };
+    getBoard();
+
+}, [])
 
   const handleCategoryChange = (value) => {
     console.log(`Selected: ${value}`);
@@ -104,16 +124,16 @@ export const Post = () => {
   }
 
   const handleSubmit = async(e) =>{
-    console.log({ title, tags, content, category });
+    // console.log({ title, tags: tags.split(',').map(tag => tag.trim()), content, category });
     e.preventDefault(); // 폼 제출 시 페이지 리로드 방지
     // console.log({ title, tags: tags.split(',').map(tag => tag.trim()), content, category });
     // 실제 전송 로직 추가 예정
-    // const apiUrl = preset === "study" ? '/api/auth/post/study' : '/api/auth/post';
-    const res = await axios.post('/api/auth/post',{
+    const apiUrl = preset === "post" ? `/api/auth/post/${board_id}` : '/api/auth/post/study' ;
+    const res = await axios.patch(apiUrl,{
       title: title,
       contents: content,
       posttype: category,
-      postCategory: type==='post' ? 'NORMAL' : 'STUDY',
+      postCategory: 'NORMAL',
       tag: tags},{
       headers:{
         Authorization: `Bearer ${token}`
@@ -122,7 +142,7 @@ export const Post = () => {
     console.log('서버 응답:', res);
     console.log('response.status:', res.status);
     if(res.status === 200) {
-      alert("글 작성 완료");
+      alert("글 수정 완료");
       navigate("/",{});
     }
     else {alert("글 작성 실패")}
@@ -138,16 +158,7 @@ export const Post = () => {
     <Layout>
     <div className={styles.root}>
       <div className={styles.post_name}>
-        <h2>{preset} 작성</h2>
-        {/* <div className={styles.example}>스터디 모집 예시를 참고해 작성해주세요. 꼼꼼히 작성하면 멋진 스터디 팀원을 만날 수 있을거예요.</div> */}
-        <div>
-          {/* <button onClick={() => handlePresetChange("post")} className={preset === "post" ? styles.active : ""}>게시글</button>
-          <button onClick={() => handlePresetChange("study")} className={preset === "study" ? styles.active : ""}>스터디</button>   */}
-          <Button onClick={() => navigate("/post/new?type=post")} type={type==="post" ? 'primary' : 'default'}>게시글</Button>
-          <Button onClick={() => navigate("/post/new?type=study")} type={type==="study" ? 'primary' : 'default'} >스터디</Button>
-          {/* <button onClick={() => navigate("/post/new?type=post")} className={preset === "post" ? styles.active : ""}>게시글</button>
-          <button onClick={() => navigate("/post/new?type=study")} className={preset === "study" ? styles.active : ""}>스터디</button>   */}
-        </div>
+        <h2>{preset} 수정</h2>
       </div>
       
       <form action="post" onSubmit={handleSubmit} className={styles.form}>
@@ -192,7 +203,7 @@ export const Post = () => {
             <label htmlFor="tags"><span>태그 설정 (최대 5 개)</span></label>
             <Select
               mode="tags"              
-              placeholder="Please select"
+              placeholder="태그를 작성해주세요"
               value={tags}
               onChange={handleTagChange}
               maxCount={5}
@@ -202,8 +213,8 @@ export const Post = () => {
             />
           </div>
           <div className={styles.btns}>
-            <Button className={styles.btn} onClick={handleCancel}>취소</Button>
-            <Button type="primary" onClick={handleSubmit} className={styles.btn} disabled={!title || !content || content==="<p><br></p>"}>글 작성</Button>
+            <Button className={styles.btn} onClick={()=>navigate(-1)}>취소</Button>
+            <Button type="primary" onClick={handleSubmit} className={styles.btn} disabled={!title || !content || content==="<p><br></p>"}>글 수정</Button>
           </div>
         </div>
       </div>

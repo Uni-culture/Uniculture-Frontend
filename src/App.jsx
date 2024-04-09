@@ -21,6 +21,7 @@ import EditBoard from "./pages/EditBoard/EditBoard";
 import "react-quill/dist/quill.snow.css"
 import SignUpOption from "./pages/Auth/SignUpOption";
 import Search from "./pages/Search/Search";
+import { CorrectPost } from './pages/Study/CorrectPost';
 
 function App() {
 
@@ -43,7 +44,7 @@ function App() {
             <Route path='/post' element={<PostView />} />
             <Route path="/add-board" element={<AddBoard/>} />
             <Route path="/board/:board_id" element={<Board/>} />
-            <Route path="/:board_id" element={<EditBoard/>} />
+            <Route path="/:board_id" element={<CorrectPost/>} />
             <Route path="/setup" element={<SignUpOption/>} />
             <Route path="/search" element={<Search/>} />
           </Routes>
