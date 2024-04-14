@@ -1,10 +1,21 @@
 .background{
   margin-top: 40px;
+  display: flex;
+  justify-content: center;
 }
 .menu{
   display: flex;
   gap: 42px;
   margin-bottom: 20px;
+}
+
+.right_side{
+
+}
+
+.ranking_container{
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
 }
 
 .statusbtn{
@@ -94,7 +105,7 @@
   overflow: hidden; /* 넘치는 내용 숨김 */
   text-overflow: ellipsis; /* 말줄임표로 표시 */
   display: -webkit-box;
-  -webkit-line-clamp: 1; /* 최대 3줄까지만 표시 */
+  -webkit-line-clamp: 1; /* 최대 1줄까지만 표시 */
   -webkit-box-orient: vertical;
 }
 
