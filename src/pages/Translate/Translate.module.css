@@ -4,13 +4,17 @@
     padding-top: 50px;
 }
 
-.textAreaContainer {
+.textareaContainer {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
     margin-right: 20px;
     border-radius: 10px;
     border: 2px solid #e9ecef;
     background-color: #fff;
     padding: 8px;
-    position: relative;
+    height: 400px;
 }
 
 .clicked {
@@ -19,13 +23,12 @@
 
 .textarea{
     resize: none;
-    height: 300px;
+    height: calc(100% - 100px);
     outline: 0px;
     border: 0px;
     padding: 15px 15px;
     position: relative; 
     z-index: 1; 
-
     font-size: 25px;
 }
 
@@ -52,7 +55,6 @@
 
 }
 
-
 .menuItem {
     padding: 5px 15px;
     flex: 1 0 calc(100% / 3);
@@ -62,6 +64,22 @@
     justify-content: center; /* 수평 가운데 정렬 */
     align-items: center; /* 수직 가운데 정렬 */
     margin-bottom: 10px;
+}
+
+.translateBtnDiv{
+    margin-top: auto; /* 위쪽 여백을 자동으로 설정하여 아래에 배치 */
+    position: absolute; /* 절대 위치 설정 */
+    bottom: 20px; 
+    right: 20px;
+    text-align: right;
+}
+
+.translateBtn{
+    width: 100px;
+    height: 35px;
+    border-radius: 9px;
+    background-color: #B7DAA1;
+    border: 0px;
 }
 
 @media (max-width: 800px) {
