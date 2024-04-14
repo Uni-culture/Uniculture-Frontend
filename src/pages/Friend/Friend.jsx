@@ -9,7 +9,7 @@ import FriendList from '../Profile/components/FriendList';
 import { Badge, Input, Select} from "antd";
 import { AiOutlineBell } from "react-icons/ai";
 import Pagination from '@mui/material/Pagination';
-import { GrClose } from "react-icons/gr";
+import { GrClose, GrPowerReset } from "react-icons/gr";
 import RecommendFriendCard from './components/RecommendFriendCard';
 
 export default function Friend() {
@@ -77,7 +77,6 @@ export default function Friend() {
     //pagination
     const [pageCount, setPageCount] = useState(0); //전체 페이지 수
     const [currentPage, setCurrentPage] = useState(0); //현재 페이지
-    const [pageCount2, setPageCount2] = useState(0); //추천 친구 전체 페이지 수
 
     //친구 신청 모달창
     const [showRequests, setShowRequests] = useState(false); 
@@ -134,7 +133,6 @@ export default function Friend() {
             
             if(response.status === 200){
                 setRecommendFriendList(response.data);
-                setPageCount2(Math.ceil(response.data.length / 4)); //전체 페이지 수 
                 console.log("추천 친구 : " + JSON.stringify(response.data));
             }
             else if(response.status === 400){
@@ -492,16 +490,30 @@ export default function Friend() {
             if (selectWL !== "wl") Query += `wl=${selectWL}&`;
             if (selectHb !== "hb") Query += `hb=${selectHb}&`;
 
-            const response = await axios.get(`/api/auth/friend/search?${Query}page=${page}&size=6`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-                
+            let response;
+            if(activeTab==="myFriends"){
+                response = await axios.get(`/api/auth/friend/search?${Query}page=${page}&size=6`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+            }
+            else if(activeTab==="recommend"){
+                response = await axios.get(`/api/auth/friend/search2?${Query}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+            }
+            
             if(response.status === 200){
                 console.log("성공");
-                setFriendList(response.data.content);
-                setPageCount(response.data.totalPages);
+                if(activeTab==="myFriends"){
+                    console.log("myFriends : " + JSON.stringify(response.data.content));
+                    setFriendList(response.data.content);
+                    setPageCount(response.data.totalPages);
+                } 
+                else { setRecommendFriendList(response.data.content); }
             }
             else if(response.status === 400){
                 console.log("친구 필터링 클라이언트 오류");
@@ -517,11 +529,13 @@ export default function Friend() {
     //필터내용 바뀌면 실행
     useEffect(() => {
         setCurrentPage(0);
-        if(selectGender !== 'ge' || selectMina !=='0' || selectMaxa !== '100' || selectCL !== "cl" || selectWL !== "wl" || selectHb !== "hb") fetchFriendFilter(0);
+        // if(selectGender !== 'ge' || selectMina !=='0' || selectMaxa !== '100' || selectCL !== "cl" || selectWL !== "wl" || selectHb !== "hb") {
+        fetchFriendFilter(0);
+        // }
     }, [selectGender, selectMina, selectMaxa, selectCL, selectWL, selectHb]);
 
     //필터 없애기
-    const resetFriend = () => {
+    const resetFriend = (bool) => {
         setSelectGender("ge");
         setSelectMina('0');
         setSelectMaxa('100');
@@ -529,9 +543,11 @@ export default function Friend() {
         setSelectWL("wl");
         setSelectHb("hb");
 
-        setShowFilter(false);
+        if(bool==="false") setShowFilter(false);
+
         setCurrentPage(0);
-        fetchFriendList(0);
+        if(activeTab==="myFriends") fetchFriendList(0);
+        else fetchRecommendFriend(0);
     }
 
     return (
@@ -543,13 +559,13 @@ export default function Friend() {
                             <li 
                                 className="nav-item"
                                 style={{ width:"50px", fontWeight: activeTab === 'myFriends' ? 'bold' : 'normal', marginRight: "20px"}}
-                                onClick={() => {setActiveTab('myFriends'); resetFriend();}}>
+                                onClick={() => {setActiveTab('myFriends'); resetFriend("false");}}>
                                 내 친구
                             </li>
                             <li 
                                 className="nav-item"
                                 style={{ width:"70px", fontWeight: activeTab === 'recommend' ? 'bold' : 'normal' }}
-                                onClick={() => {setActiveTab('recommend'); setSearchInput(''); setShowFilter(false)}}>
+                                onClick={() => {setActiveTab('recommend'); setSearchInput(''); resetFriend("false"); }}>
                                 추천 친구
                             </li>
                         </ul>
@@ -566,7 +582,7 @@ export default function Friend() {
                         </div>
                     )}
 
-                    { activeTab==='myFriends' && <div style={{fontSize: "25px", marginLeft: "20px", paddingBottom: "5px"}} onClick={()=>{setShowFilter(!showFilter); }}><TbAdjustmentsHorizontal /></div>}
+                    <div style={{fontSize: "25px", marginLeft: "20px", paddingBottom: "5px"}} onClick={()=>{setShowFilter(!showFilter); }}><TbAdjustmentsHorizontal /></div>
                 
                 </div>
 
@@ -633,7 +649,8 @@ export default function Friend() {
                         ))}
                     </Select>
 
-                    <div style={{marginLeft: "10px"}} onClick={()=> {resetFriend();}}><GrClose/></div>
+                    <div style={{marginLeft: "10px"}} onClick={()=> {resetFriend();}}><GrPowerReset /></div>
+                    <div style={{marginLeft: "10px"}} onClick={()=> {resetFriend("false");}}><GrClose/></div>
                 </div>
             )}
 

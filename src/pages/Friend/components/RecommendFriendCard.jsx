@@ -127,7 +127,7 @@ export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
             </div>
          
             {/* 소개 */}
-            {userInfo?.introduce && <div style={{textAlign: "left", marginBottom: "15px"}}>{userInfo?.introduce}</div>}
+            {userInfo?.introduce && <div style={{textAlign: "left",  marginTop: "15px", marginBottom: "15px"}}>{userInfo?.introduce}</div>}
 
             {/* 더보기 true/false */}
             <div style={{ marginTop: "15px"}}>
