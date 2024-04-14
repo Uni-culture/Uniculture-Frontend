@@ -4,15 +4,16 @@ import ChatList from "../../components/Chat/ChatList";
 import ChatMain from "../../components/Chat/ChatMain";
 import Swal from "sweetalert2";
 import "../../components/PageLayout/PageLayout.css"
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import style from './Chat.module.css';
 
 const Chat = () => {
     const navigate = useNavigate(); // 페이지 이동을 위한 navigate 함수
+    const [loading, setLoading] = useState(true);
     const [userInfo, setUserInfo] = useState(null);
     const [selectedChatRoom, setSelectedChatRoom] = useState(null);
-
+    const [chatRoomList, setChatRoomList] = useState([]);
     // 로그인 후 저장된 토큰 가져오는 함수
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
@@ -58,8 +59,27 @@ const Chat = () => {
         }
     };
 
+    const loadChatRoomHistory = async () =>{
+        try{
+            const token = getToken(); // 토큰 가져오기
+            const response = await axios.get('/api/auth/room',{
+                headers: {
+                    Authorization: `Bearer ${token}` // 헤더에 토큰 추가
+                }
+            });
+            if(response.status === 200){
+                console.log(response.data);
+                console.log(response.data.content);
+                setChatRoomList(response.data); // 리스트로 들어가게된다
+            }
+        } catch(error){
+            console.log("에러 발생");
+        }
+    };
+
     useEffect(() => {
-        fetchUserInfo();
+        loadChatRoomHistory();
+        setLoading(false);
     }, []);
 
     // 채팅방 선택 핸들러
@@ -68,24 +88,26 @@ const Chat = () => {
         // 필요한 경우 채팅방 상세 페이지로 이동하는 코드 추가
         // 예: navigate(`/chat/rooms/${roomId}`);
     };
-    
+
+    if(loading){
+        return <div>Loading...</div>;
+    }
+
     return (
-        <div style={{backgroundColor: '#FBFBF3', height:'100vh'}}>
-            <Header />
-            <div className={style.page_layout}>
-                <section className={style.box}>
-                    <aside>
-                        <ChatList onSelectedChatRoom={handleSelectChatRoom}/>
-                    </aside>
-                    <div>
-                        {
-                            selectedChatRoom== null ? "야호~": <ChatMain selectedChatRoom={selectedChatRoom}/>
-                        }
-                        
-                    </div>
-                </section>
+        <>
+            <div style={{backgroundColor: '#FBFBF3', height:'100vh'}}>
+                <Header />
+                <ul className="chatRoomList">
+                    {chatRoomList.map((chatRoom) =>(
+                        <div>
+                            <li>
+                                <Link to={`/chat/${chatRoom.id}`}>{chatRoom.id} 번 채팅방</Link>
+                            </li>
+                        </div>
+                    ))}
+                </ul>
             </div>
-        </div>
+        </>
     );
 };
 
