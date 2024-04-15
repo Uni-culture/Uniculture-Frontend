@@ -3,7 +3,6 @@ import { Card } from "antd";
 import { useNavigate } from 'react-router-dom';
 import PercentBar from '../../../components/PercentBar/PercentBar';
 import { GiMale, GiFemale } from "react-icons/gi";
-import { BsPlusCircle, BsPlusCircleFill } from "react-icons/bs";
 import { FaExchangeAlt } from "react-icons/fa";
 
 export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
@@ -144,29 +143,44 @@ export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
             <div style={{ marginTop: "15px"}}>
                 {showAllInfo ? ( 
                     <div>
+                        {/* 소개 */}
+                        {userInfo?.introduce && 
+                            <div style={{textAlign: "left", marginBottom: "15px"}}>
+                                {userInfo?.introduce}
+                            </div>
+                        }
+
                         {/* 언어 */}
-                        <div style={{display: "flex", marginTop: "15px"}}>
-                            {CLList && 
-                                <div style={{marginBottom: "15px"}}>
+                        <div style={{display:"flex", marginBottom: "15px"}}>
+                            {CLList ? (
+                                <div>
                                     {CLList.map((language, index) => (
                                         <div key={index} style={{ padding: '8px' }}>
                                             <PercentBar language={language.language} level={language.level} color={"blue"}/>
                                         </div>
                                     ))}
                                 </div>
-                            }
+                            ) : (
+                                <div style={{color: "#A6A3A3"}}> 사용자가 설정한 사용 언어가 없습니다.</div>
+                            )}
 
-                            {CLList && WLList && <div style={{ marginLeft : "10px", marginRight : "10px" , padding: "8px 0px"}}><FaExchangeAlt /></div>}
+                            {CLList && WLList ? ( 
+                                <div style={{ marginLeft : "10px", marginRight : "10px" , padding: "8px 0px"}}><FaExchangeAlt /></div>
+                            ) : (
+                                <div style={{ marginLeft : "15px", marginRight : "15px", color: "#A6A3A3" }}><FaExchangeAlt /></div>
+                            )}
 
-                            {WLList && 
-                                <div style={{marginBottom: "15px"}}>
+                            {WLList ? (
+                                <div>
                                     {WLList.map((language, index) => (
                                         <div key={index} style={{ padding: '8px' }}>
                                             <PercentBar language={language.language} level={language.level} color={"red"}/>
                                         </div>
                                     ))}
                                 </div>
-                            }
+                            ) : (
+                                <div style={{color: "#A6A3A3"}}> 사용자가 설정한 학습 언어가 없습니다.</div>
+                            )}
 
                         </div>
 
@@ -194,34 +208,63 @@ export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
                 ) : (
                     // 간략하게 보기
                     <div>
+                        {/* 소개 */}
+                        {userInfo?.introduce ? (
+                            <div style={{height: "20px", textAlign: "left", marginBottom: "15px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>
+                                {userInfo?.introduce}
+                            </div>
+                        ) : (
+                            <div style={{height: "20px", textAlign: "left", marginBottom: "15px", color: "#A6A3A3"}}> 사용자가 설정한 소개가 없습니다.</div>
+                        )}
+
                         {/* 사용언어, 학습언어 */}
-                        <div style={{display:"flex", marginTop: "15px"}}>
-                            {canLanguage && <div style={{marginBottom: "15px", padding: "8px"}}><PercentBar language={canLanguage.language} level={canLanguage.level} color={"blue"}/></div>}
-                            {canLanguage && wantLanguage && <div style={{ marginLeft : "10px", marginRight : "10px" , padding: "8px 0px"}}><FaExchangeAlt /></div>}
-                            {wantLanguage && <div style={{marginBottom: "15px", padding: "8px"}}><PercentBar language={wantLanguage.language} level={wantLanguage.level} color={"red"}/></div>}
+                        <div style={{display:"flex", height: "22px", marginBottom: "15px"}}>
+                            {canLanguage ? (
+                                <PercentBar language={canLanguage.language} level={canLanguage.level} color={"blue"}/>
+                            ) : (
+                                <div style={{color: "#A6A3A3"}}> 사용자가 설정한 사용 언어가 없습니다.</div>
+                            )}
+                            {canLanguage && wantLanguage ? ( 
+                                <div style={{ marginLeft : "15px", marginRight : "15px" }}><FaExchangeAlt /></div>
+                            ) : (
+                                <div style={{ marginLeft : "15px", marginRight : "15px", color: "#A6A3A3" }}><FaExchangeAlt /></div>
+                            )}
+                            {wantLanguage ? (
+                                <PercentBar language={wantLanguage.language} level={wantLanguage.level} color={"red"}/>
+                            ) : (
+                                <div style={{color: "#A6A3A3"}}> 사용자가 설정한 학습 언어가 없습니다.</div>
+                            )}
                         </div>
 
                         {/* 취미 간략하게 보기(5개) */}
-                        {sortHobbies(userInfo?.hobbies).slice(0, 5).map((hobby, index) => (
-                            <div
-                                key={`${userInfo.id}_${hobby.hobby}_${index}`} 
-                                style={{ 
-                                    display: "inline-block",
-                                    borderRadius: "9px", 
-                                    backgroundColor: hobby.same == 1 ? "#C8DCA0" : "#e9ecef",
-                                    padding: "5px 10px",
-                                    marginRight: "3px",
-                                    marginBottom: "5px"
-                                }}
-                            >
-                                # {hobby.hobby}
+                        {userInfo?.hobbies.length > 0 ? (
+                            <div style={{marginBottom: "10px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>
+                                {sortHobbies(userInfo?.hobbies).slice(0, 5).map((hobby, index) => (
+                                    <div
+                                        key={`${userInfo.id}_${hobby.hobby}_${index}`} 
+                                        style={{ 
+                                            display: "inline-block",
+                                            height: "30px",
+                                            borderRadius: "9px", 
+                                            backgroundColor: hobby.same == 1 ? "#C8DCA0" : "#e9ecef",
+                                            padding: "5px 10px",
+                                            marginRight: "3px"
+                                        }}
+                                    >
+                                        # {hobby.hobby}
+                                    </div>
+                                ))}
                             </div>
-                        ))}
+                        ) : (
+                            <div style={{height: "30px",marginBottom: "10px", color: "#A6A3A3"}}>친구가 설정한 관심사가 없습니다.</div>
+                        )}
 
-                        {( (CLList && CLList.length > 1) || (WLList && WLList.length > 1) || userInfo.hobbies.length > 5 ) && (
-                            <div onClick={()=> setShowAllInfo(true)} style={{ cursor: "pointer", marginTop: "10px", padding: "0px 8px", color: "blue" }}>
+                        {( (CLList && CLList.length > 1) || (WLList && WLList.length > 1) || userInfo.hobbies.length > 5 ) ? (
+                            <div onClick={()=> setShowAllInfo(true)} style={{ height: "20px",cursor: "pointer", color: "blue" }}>
                                 + 더 보기
                             </div>
+                        ) : (
+                            <div style={{ height: "20px"}}/>
                         )}
                     </div>
                 )}

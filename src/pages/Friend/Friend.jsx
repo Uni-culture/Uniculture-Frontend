@@ -144,15 +144,7 @@ export default function Friend() {
             }
             
         } catch (error) {
-            Swal.fire({
-                title: "로그인 해주세요.",
-                text: "로그인 창으로 이동합니다.",
-                icon: "warning",
-                confirmButtonColor: "#dc3545",
-                confirmButtonText: "확인"
-            }).then(() => {
-                navigate("/sign-in");
-            });
+            console.log(error);
         }
     };
 
