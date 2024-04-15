@@ -82,7 +82,7 @@
         .board-buttons-wrap {
             display: flex;
             justify-content: flex-end; /* 내부 요소들을 오른쪽으로 정렬 */
-            margin-top: 50px;
+            margin-top: 100px;
             margin-bottom: 20px;
 
             .board-buttons {
@@ -104,7 +104,7 @@
     }
 
     .board-footer {
-        position: absolute;
+        //position: absolute;
         width: 100%; /*부모 요소의 전체 너비를 차지*/
     }
 }

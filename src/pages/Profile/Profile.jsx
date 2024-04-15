@@ -51,6 +51,10 @@ const Profile = () => {
                         setOtherInfo(response.data);
                         setMyProfile(false);
                     }
+                    else if(response.status === 202){
+                        setMyInfo(response.data);
+                        setMyProfile(true);
+                    }
                 }
             }
             else { //로그인 X

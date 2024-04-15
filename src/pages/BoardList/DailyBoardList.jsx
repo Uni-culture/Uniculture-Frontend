@@ -20,7 +20,7 @@ const DailyBoardList = () => {
         try {
             const token = getToken(); // 토큰 가져오기
             // const page_number = searchParams.get("page");
-            const response = await axios.get(`/api/post/daily?page=${page}&size=8`, {
+            const response = await axios.get(`/api/post?ca=NORMAL&pt=DAILY&page=${page}&size=8`, {
                 headers: {
                     Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                 }
