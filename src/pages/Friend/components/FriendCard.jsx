@@ -219,7 +219,7 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb}) {
 
                     {/* 관심사 */}
                     {userInfo?.hobbies.length > 0 ? (
-                        <div style={{marginBottom: "10px", whiteSpace: "nowrap", overflow: "hidden"}}>
+                        <div style={{marginBottom: "10px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>
                             {userInfo.hobbies.map((hobby, index) => (
                                 <div
                                     key={index} 
