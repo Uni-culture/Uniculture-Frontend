@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import * as StompJs from "@stomp/stompjs";
 import "./ChatMain.css";
+import axios from "axios";
+import {Link} from "react-router-dom";
 
 const ChatMain = ({selectedChatRoom}) => {
     const [chats, setChats] = useState([]);
@@ -14,24 +16,43 @@ const ChatMain = ({selectedChatRoom}) => {
 
     useEffect(()=>{
         const token = getToken();
+
+        const loadChatHistory = async () => {
+            try {
+                const token = getToken(); // 토큰 가져오기
+                const response = await axios.get(`/api/auth/chat/${selectedChatRoom.id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                if (response.status === 200) {
+                    console.log(response.data);
+                    setChats(response.data);
+                }
+            } catch (error) {
+                console.error("채팅 내역 로드 실패", error);
+            }
+        };
+
+        loadChatHistory();
+
         const clientdata = new StompJs.Client({
-            brokerURL: "ws://localhost:8080/controller/ws-stomp",          //웹소켓 주소.
-            connectHeaders:{
-                Authorization: `Bearer ${token}`
-            },
-            debug: function(str){
+            brokerURL: "ws://localhost:8080/ws",          //웹소켓 주소.
+            debug: function (str) {
                 console.log('STOMP' + str);
             },
             reconnectDelay: 5000,       //자동 재연결 ? 
-            onConnect: (frame) =>{
+            onConnect: (frame) => {
                 console.log('Connected' + frame);
-                setStompClient(clientdata);
-                clientdata.subscribe(`/api/auth/chat/${selectedChatRoom.id}`,(message) =>{
+                clientdata.subscribe(`/sub/chat/room/${selectedChatRoom.id}`, (message) => {
                     //수신 처리
                     const receivedMessage = JSON.parse(message.body);
                     console.log(receivedMessage);
                     setChats(prevChats => [...prevChats, receivedMessage]); // 수신 메시지 추가
-                })
+                });
+            },
+            connectHeaders: {
+                Authorization: getToken(),
             },
             onStompError:(frame)=>{
                 console.error('Broker reported error: ' + frame.headers['message']);
@@ -42,7 +63,7 @@ const ChatMain = ({selectedChatRoom}) => {
         });
         
         clientdata.activate();
-        
+        setStompClient(clientdata);
 
         return ()=>{
             clientdata.deactivate();
@@ -51,17 +72,17 @@ const ChatMain = ({selectedChatRoom}) => {
     
 
 
-    const handleSendChat = (msg) =>{
-        if(stompClient && stompClient.connected && currentChat.trim() !== ""){
+    const handleSendChat = () =>{
+        if(stompClient && stompClient.connected && currentChat){
             const message = {               //메시지 포멧 DTO 참조
                 type: "TALK",
                 roomId: selectedChatRoom.id,
-                message: msg,
-            };        
+                message: currentChat,
+            };
             stompClient.publish({
-                destination: `/api/auth/chat/${selectedChatRoom.id}`,
+                destination: `/pub/chat/${selectedChatRoom.id}`,
                 body: JSON.stringify(message),
-            })
+            });
             setCurrentChat("");
         }
         
@@ -78,7 +99,7 @@ const ChatMain = ({selectedChatRoom}) => {
                     <div className="chat-list">
                         {chats.map(chat =>(
                             <div key={chat.id} className="chat-message" >
-                                {chats.text}
+                                {chat.sender} : {chat.message}
                             </div>
                         ))}
                     </div>

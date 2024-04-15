@@ -21,7 +21,7 @@ const MyBoardList = () => {
         try {
             const token = getToken(); // 토큰 가져오기
             // const page_number = searchParams.get("page");
-            const response = await axios.get(`/api/auth/post?page=${page}&size=8`, {
+            const response = await axios.get(`/api/auth/post?ca=NORMAL&page=${page}&size=8`, {
                 headers: {
                     Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                 }

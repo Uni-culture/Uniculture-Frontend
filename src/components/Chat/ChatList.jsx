@@ -15,13 +15,12 @@ const ChatList = ({onSelectedChatRoom}) => {
 
     // 채팅 목록 조회
     useEffect(() => {
-      const token = getToken(); // 토큰 가져오기
-            if (!token) {
-            // 토큰이 없으면 로그인 페이지로 이동
-            alert("로그인 해주세요.")
-            navigate('/sign-in');
-            return;
-            }
+      const token = getToken();
+      if (!token) {// 토큰이 없으면 로그인 페이지로 이동
+          alert("로그인 해주세요.")
+          navigate('/sign-in');
+          return;
+      }
       const fetchChatRooms = async () => {
         try {
           const response = await axios.get('/api/auth/room', {

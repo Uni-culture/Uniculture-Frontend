@@ -68,7 +68,7 @@ const Chat = () => {
         // 필요한 경우 채팅방 상세 페이지로 이동하는 코드 추가
         // 예: navigate(`/chat/rooms/${roomId}`);
     };
-    
+
     return (
         <div style={{backgroundColor: '#FBFBF3', height:'100vh'}}>
             <Header />
@@ -81,7 +81,7 @@ const Chat = () => {
                         {
                             selectedChatRoom== null ? "야호~": <ChatMain selectedChatRoom={selectedChatRoom}/>
                         }
-                        
+
                     </div>
                 </section>
             </div>
