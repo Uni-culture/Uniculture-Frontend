@@ -252,7 +252,7 @@ const Board = () => {
                     </div>
 
                     <div className="board-footer">
-                        <Comments board_id={board_id}/>
+                        <Comments board_id={board.postId}/>
                     </div>
                 </div>
             )}

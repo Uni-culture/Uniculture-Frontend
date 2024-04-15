@@ -1,4 +1,5 @@
 .comments-wrapper {
+  padding-bottom: 50px;
   .comments-header {
     margin: 1rem 0;
     display: flex;
@@ -20,7 +21,7 @@
   .comments-body {
 
     .comments-comment {
-      margin: 0.5rem 0;
+      padding: 0.5rem 0;
 
       .comment-username-date {
         display: flex;
@@ -45,11 +46,17 @@
       font-weight: 600;
     }
 
+    .hr-style {
+      margin-bottom: 0;
+      padding-bottom: 16px;
+    }
+
   }
   .comments-footer{
     display: flex;
     justify-content: center;
     cursor: pointer;
     align-items: center;
+    padding-bottom: 10px;
   }
 }

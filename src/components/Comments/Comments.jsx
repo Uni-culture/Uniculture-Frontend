@@ -12,49 +12,87 @@ const Comments = ({board_id}) => {
     const navigate = useNavigate();
     const [commentList, setCommentList] = useState([]);
     const [content, setContent] = useState(""); // 입력한 댓글 내용
-    // 현재 페이지, 전체 페이지 갯수
-    const [page, setPage] = useState(0);
-    const [pageCount, setPageCount] = useState(0);
+    const [page, setPage] = useState(0); // 현재 페이지
+    const [pageCount, setPageCount] = useState(0); // 총 페이지 갯수
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 로컬 스토리지에서 토큰 가져옴
     };
     const token = getToken();
 
+    // 댓글 추가하기
+    const submitComment = async () => {
+        console.log('getBoard start');
+        try {
+            const response = await axios.post(`/api/auth/comment?postId=${board_id}`,
+                {
+                    postId: board_id,
+                    content: content
+                }, {
+                headers: {
+                    Authorization: `Bearer ${token}` // 헤더에 토큰 추가
+                }
+            });
+            console.log('서버 응답: ', response);
+            console.log('response.status: ', response.status);
+
+            if (response.status === 200) {
+                const responseData = response.data;
+                console.log(`responseData : `, responseData);
+                alert("댓글 등록 완료");
+                window.location.reload();
+            }
+        } catch (error) { // 실패 시
+            if(error.response.status === 401) {
+                console.log("401 오류");
+            }
+            else {
+                console.log("서버 오류 입니다.");
+                alert(error.response.data);
+            }
+        }
+    };
+
+    const getCommentList = async () => {
+        console.log("board_id: ", board_id);
+        console.log("token: ", token);
+        try {
+            const response = await axios.get(`/api/comment/${board_id}?page=${page}&size=5`, {
+                headers: {
+                    Authorization: `Bearer ${token}` // 헤더에 토큰 추가
+                }
+            });
+            console.log('서버 응답: ', response);
+            console.log('response.status: ', response.status);
+
+            if (response.status === 200) {
+                const commentList = response.data;
+                console.log(`data : `, commentList);
+                console.log("data.totalPages: ", commentList.totalPages);
+                setPageCount(commentList.totalPages);
+                setCommentList(prevCommentList => [...prevCommentList, ...commentList.content]);
+                console.log("200 성공~~~~");
+            }
+        } catch (error) { // 실패 시
+            if (error.response) { // error.response가 존재하는지 확인
+                if (error.response.status === 401) {
+                    console.log("401 오류");
+                } else {
+                    console.log("서버 오류 입니다.");
+                    alert(error.response.data);
+                }
+            } else {
+                // error.response가 존재하지 않는 경우의 처리
+                console.log("응답을 받을 수 없습니다.");
+            }
+        }
+    };
+
+
     // 페이지에 해당하는 댓글 목록은 page 상태가 변경될 때마다 가져옴
     useEffect(() => {
-        /*const getCommentList = async () => {
-            const {data} = await axios.get(`/api/comment/list?board_id=${board_id}&page_number=${page}&page_size=${5}`);
-            return data;
-        }
-        // 기존 commentList에 데이터를 덧붙임
-        getCommentList().then((result) => setCommentList([...commentList, ...result]));*/
-    }, [page])
+        getCommentList();
+    }, [page]);
 
-    // 페이지 카운트는 컴포넌트가 마운트되고 딱 한번만 가져오면됨
-    useEffect(() => {
-        // 댓글 전체 갯수 구하기
-        /*const getTotalBoard = async () => {
-            const {data} = await axios.get(`/api/comment/count?board_id=${board_id}`);
-            return data.total;
-        }
-        // 페이지 카운트 구하기: (전체 comment 갯수) / (한 페이지 갯수) 결과 올림
-        getTotalBoard().then((result) => setPageCount(Math.ceil(result / 5)));*/
-    }, []);
-
-    // 댓글 추가하기
-    const submit = useCallback(async () => {
-        const comment = {
-            board_id: board_id,
-            // DB에 엔터가 먹힌 상태로 들어가므로 제대로 화면에 띄우기 위해 <br>로 치환
-            content: content,
-            // user_id: jwtUtils.getId(token)
-        }
-        // axios interceptor 사용 : 로그인한 사용자만 쓸 수 있다!
-        // await api.post('/api/comment', comment);
-        alert("댓글 등록 완료");
-        window.location.reload();
-    }, [content]);
-    console.log(commentList)
 
     const LoginWarning = () => {
         Swal.fire({
@@ -86,7 +124,7 @@ const Comments = ({board_id}) => {
                     multiline placeholder="댓글을 입력해주세요"
                 />
                 {content !== "" ? (
-                    <button onClick={submit}>등록하기</button>
+                    <button onClick={submitComment}>등록하기</button>
                 ) : (
                     <button disabled={true}>
                         등록하기
@@ -97,16 +135,16 @@ const Comments = ({board_id}) => {
                 {commentList.map((item, index) => (
                     <div key={index} className="comments-comment">
                         <div className="comment-username-date">
-                            <div className="comment-date">{moment(item.created).add(9, "hour").format('YYYY-MM-DD HH:mm:ss')}</div>
+                            <div className="comment-date">{moment(item.createDate).add(9, "hour").format('YYYY-MM-DD HH:mm:ss')}</div>
                         </div>
                         <div className="comment-content">{item.content}</div>
-                        <div className="comment-username">{item.user.username}</div>
-                        <hr/>
+                        <div className="comment-username">{item.commentWriterName}</div>
+                        <hr className="hr-style"/>
                     </div>
                 ))}
             </div>
             {
-                page < pageCount && (
+                page < (pageCount - 1) && (
                     <div className="comments-footer"
                          onClick={() => {
                              setPage(page + 1);
