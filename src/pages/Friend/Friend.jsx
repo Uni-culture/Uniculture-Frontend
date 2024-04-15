@@ -517,7 +517,7 @@ export default function Friend() {
                     setFriendList(response.data.content);
                     setPageCount(response.data.totalPages);
                 } 
-                else { setRecommendFriendList(response.data.content); }
+                else { console.log("전체 친구 필터링 : " + JSON.stringify(response.data.content)); setRecommendFriendList(response.data.content); }
             }
             else if(response.status === 400){
                 console.log("친구 필터링 클라이언트 오류");

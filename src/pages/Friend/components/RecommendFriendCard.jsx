@@ -37,6 +37,17 @@ export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
 
     }, [userInfo]);
 
+    // 취미 배열을 맨 앞에 hobby.same === true 인 항목이 오도록 재정렬하는 함수
+    const sortHobbies = (hobbies) => {
+        const sortedHobbies = [...hobbies];
+        sortedHobbies.sort((a, b) => {
+            if (a.same === true && b.same !== true) return -1; // a가 same === true이고 b가 same !== true인 경우 a를 더 앞에 위치시킵니다.
+            if (a.same !== true && b.same === true) return 1; // b가 same === true이고 a가 same !== true인 경우 b를 더 앞에 위치시킵니다.
+            return 0; // 같은 경우 순서를 유지합니다.
+        });
+        return sortedHobbies;
+    };
+
     // 언어 모달창 : 선택된 탭에 따라 해당 목록을 표시하는 함수
     const renderTabContent2 = () => {
         switch (activeTab2) {
@@ -138,8 +149,8 @@ export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
                             {CLList && 
                                 <div style={{marginBottom: "15px"}}>
                                     {CLList.map((language, index) => (
-                                        <div style={{ padding: '8px' }}>
-                                            <PercentBar key={index} language={language.language} level={language.level} color={"blue"}/>
+                                        <div key={index} style={{ padding: '8px' }}>
+                                            <PercentBar language={language.language} level={language.level} color={"blue"}/>
                                         </div>
                                     ))}
                                 </div>
@@ -150,8 +161,8 @@ export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
                             {WLList && 
                                 <div style={{marginBottom: "15px"}}>
                                     {WLList.map((language, index) => (
-                                        <div style={{ padding: '8px' }}>
-                                            <PercentBar key={index} language={language.language} level={language.level} color={"red"}/>
+                                        <div key={index} style={{ padding: '8px' }}>
+                                            <PercentBar language={language.language} level={language.level} color={"red"}/>
                                         </div>
                                     ))}
                                 </div>
@@ -160,9 +171,9 @@ export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
                         </div>
 
                         {/* 관심사 */}
-                        {userInfo.hobbies && userInfo.hobbies.map((hobby, index) => (
+                        {sortHobbies(userInfo?.hobbies).map((hobby, index) => (
                             <div
-                                key={index} 
+                                key={`hobby_${index}`} 
                                 style={{ 
                                     display: "inline-block",
                                     borderRadius: "9px", 
@@ -191,9 +202,9 @@ export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
                         </div>
 
                         {/* 취미 간략하게 보기(5개) */}
-                        {userInfo.hobbies && userInfo.hobbies.slice(0, 5).map((hobby, index) => (
+                        {sortHobbies(userInfo?.hobbies).slice(0, 5).map((hobby, index) => (
                             <div
-                                key={index} 
+                                key={`${userInfo.id}_${hobby.hobby}_${index}`} 
                                 style={{ 
                                     display: "inline-block",
                                     borderRadius: "9px", 
