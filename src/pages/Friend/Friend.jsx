@@ -61,6 +61,7 @@ export default function Friend() {
 
     //검색
     const [searchInput, setSearchInput] = useState(null); // 검색창 값
+    const [isLoading, setIsLoading] = useState(false); //검색 로딩 상태
 
     //필터
     const { Option } = Select;
@@ -164,10 +165,13 @@ export default function Friend() {
     //검색 내용 바뀌면 실행
     useEffect(() => {
         if(searchInput !== null){
+            setIsLoading(true); // 로딩 상태를 활성화합니다.
             const timerId = setTimeout(() => {
                 setCurrentPage(0);
-                fetchFriendList(0);
-            }, 1000);
+                fetchFriendList(0).then(() => {
+                    setIsLoading(false); // fetchFriendList가 완료되면 로딩 상태를 비활성화합니다.
+                });
+            }, 800);
     
             return () => {
                 clearTimeout(timerId);
@@ -578,7 +582,20 @@ export default function Friend() {
                                 prefix={<TbSearch style={{ color: 'rgba(0,0,0,.25)' }} />}
                                 style={{width: 300, minWidth: 100}}
                                 onChange={(e) => setSearchInput(e.target.value)}
-                            />
+                                suffix={
+                                    // isLoading 상태에 따라 로딩 이미지를 표시합니다.
+                                    isLoading && (
+                                        <img
+                                            src={require('../../assets/Spinner@2x-1.0s-200px-200px.gif')}
+                                            alt="Loading..."
+                                            style={{
+                                                width: '30px', // 이미지의 크기를 조정할 수 있습니다.
+                                                height: '30px', // 이미지의 크기를 조정할 수 있습니다.
+                                            }}
+                                        />
+                                    )
+                                }
+                            /> 
                         </div>
                     )}
 
