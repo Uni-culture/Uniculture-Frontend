@@ -1,0 +1,30 @@
+.container{
+}
+
+.ul{
+  list-style: none;
+  padding: 0;
+  margin:0;
+}
+.header{
+  padding: 10px 12px;
+}
+
+.list{
+  font-size: 14px;
+  list-style: none;
+  padding: 10px 12px;
+  -webkit-line-clamp: 2; /* 최대 1줄까지만 표시 */
+  -webkit-box-orient: vertical;
+}
+
+.list:hover{
+  background-color: antiquewhite;
+  cursor: pointer;
+}
+
+.a{
+  /* font-display: none; */
+  text-decoration: none;
+  color: black;
+} 
