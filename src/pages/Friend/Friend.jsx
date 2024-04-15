@@ -72,7 +72,7 @@ export default function Friend() {
     const [selectMaxa, setSelectMaxa] = useState('100'); //선택 최대나이
     const [selectCL, setSelectCL] = useState("cl"); //선택 사용언어
     const [selectWL, setSelectWL] = useState("wl"); //선택 학습언어
-    const [selectHb, setSelectHb] = useState("hb"); //선택 취미
+    const [selectHb, setSelectHb] = useState("hb"); //선택 관심사
 
     //pagination
     const [pageCount, setPageCount] = useState(0); //전체 페이지 수
@@ -602,7 +602,7 @@ export default function Friend() {
                     <Select
                         defaultValue="ge"
                         value={selectGender} 
-                        style={{ width: 120 }} 
+                        style={{ width: 120, marginRight: "5px" }} 
                         onChange={(value) => handleSelect(value, "gender")}
                     >
                         <Option value="ge" >Gender</Option>
@@ -610,13 +610,23 @@ export default function Friend() {
                         <Option value="WOMAN">Woman</Option>
                     </Select>
 
-                    <input style={{width: "100px"}} placeholder={selectMina} value={selectMina} onChange={(e) => handleSelect(e.target.value, "mina")}/>
-                    <input style={{width: "100px"}} placeholder={selectMaxa} value={selectMaxa} onChange={(e) => handleSelect(e.target.value, "maxa")}/>
+                    <input 
+                        style={{width: "80px", marginRight: "5px", padding: "0 11px", borderRadius: "6px", border: "1px solid #d9d9d9", boxSizing: "border-box", fontSize: "14px"}} 
+                        placeholder={selectMina} 
+                        value={selectMina} 
+                        onChange={(e) => handleSelect(e.target.value, "mina")}
+                    />
+                    <input 
+                        style={{width: "80px", marginRight: "5px", padding: "0 11px", borderRadius: "6px", border: "1px solid #d9d9d9", boxSizing: "border-box", fontSize: "14px"}} 
+                        placeholder={selectMaxa} 
+                        value={selectMaxa} 
+                        onChange={(e) => handleSelect(e.target.value, "maxa")}
+                    />
 
                     <Select
                         defaultValue="cl"
                         value={selectCL} 
-                        style={{ width: 150 }} 
+                        style={{ width: 150, marginRight: "5px" }} 
                         onChange={(value) => handleSelect(value, "cl")}
                     >
                         <Option value="cl" >Can Language</Option>
@@ -628,7 +638,7 @@ export default function Friend() {
                     <Select
                         defaultValue="wl"
                         value={selectWL} 
-                        style={{ width: 150 }} 
+                        style={{ width: 150, marginRight: "5px" }} 
                         onChange={(value) => handleSelect(value, "wl")}
                     >
                         <Option value="wl" >Want Language</Option>
@@ -643,7 +653,7 @@ export default function Friend() {
                         style={{ width: 150 }} 
                         onChange={(value) => handleSelect(value, "hobby")}
                     >
-                        <Option value="hb" >Hobby</Option>
+                        <Option value="hb" >Interest</Option>
                         {interestTag.map((hobby)=>(
                             <Option value={hobby}>{hobby}</Option>
                         ))}
