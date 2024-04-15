@@ -20,6 +20,7 @@ const SignUp = () => {
     const [showPassword2, setShowPassword2] = useState(false); // 비밀번호2를 텍스트 형태로 보여줄지 여부 결정
     const [passwordsMatch, setPasswordsMatch] = useState(true);
     const [nickNameValid, setNickNameValid] = useState(false);
+    const [isTooLong, setIsTooLong] = useState(false); // 닉네임 길이 초과 상태
     const [notAllow, setNotAllow] = useState(true);
     const [gender, setGender] = useState('');
 
@@ -126,37 +127,50 @@ const SignUp = () => {
     // 닉네임 중복 검사
     const handleNickName = async (e) => {
         console.log(`handleNickName: ${nickName}`);
-        try {
-            let response = await axios({
-                method: 'get',
-                url: `/api/sec/check?nickname=${nickName}`,
-                headers: {'Content-Type': 'application/json'},
-            });
-            if (response.status === 200) {
-                console.log(`api 요청 후: ${nickName}`);
-                setNickNameValid(true); // 닉네임이 유효하다는 것을 나타냄
+        console.log("isTooLong: ", isTooLong);
+        if (nickName.length <= 15 && !isTooLong) {
+            try {
+                let response = await axios({
+                    method: 'get',
+                    url: `/api/sec/check?nickname=${nickName}`,
+                    headers: {'Content-Type': 'application/json'},
+                });
+                if (response.status === 200) {
+                    console.log(`api 요청 후: ${nickName}`);
+                    setNickNameValid(true); // 닉네임이 유효하다는 것을 나타냄
+                }
+            } catch (err) { // 서버 오류
+                if(err.response.status === 409) {
+                    console.log("닉네임 중복 오류입니다.");
+                    setNickNameValid(false); // 닉네임이 유효하지 않다는 것을 나타냄
+                    nickNameWarning();
+                }
+                else {
+                    console.log("서버 오류 입니다.");
+                    alert(err.response.data);
+                    resetInput();
+                }
             }
-        } catch (err) { // 서버 오류
-            if(err.response.status === 409) {
-                console.log("닉네임 중복 오류입니다.");
-                setNickNameValid(false); // 닉네임이 유효하지 않다는 것을 나타냄
-                nickNameWarning();
-            }
-            else {
-                console.log("서버 오류 입니다.");
-                alert(err.response.data);
-                resetInput();
-            }
+        } else {
+            setIsTooLong(true); // 길이 초과 메시지 표시
         }
     };
 
     const changeNickName = (e) => {
-        setNickName(e.target.value);
-        console.log(`e.tartget.value: ${e.target.value}`);
+        const inputValue = e.target.value;
+        console.log(`e.target.value: ${inputValue}`);
         console.log(`nickName: ${nickName}`);
 
-        // 사용자가 입력한 닉네임이 변경되면
-        if (e.target.value !== nickName) {
+        // 입력된 닉네임의 길이가 15글자 이하인 경우에만 상태 업데이트
+        if (inputValue.length <= 15) {
+            setNickName(inputValue);
+            setIsTooLong(false); // 길이 초과 메시지 숨김
+        } else {
+            setIsTooLong(true); // 길이 초과 메시지 표시
+        }
+
+        // 닉네임이 변경되었는지 확인
+        if (inputValue !== nickName) {
             setNickNameValid(false);
         }
     };
@@ -385,7 +399,10 @@ const SignUp = () => {
                     <button className='nickNameButton' onClick={handleNickName}>중복확인</button>
                 </div>
                 <div className="nickNameMessageWrap">
-                    {nickNameValid && nickName.length > 0 && (
+                    {isTooLong && (
+                        <div style={{color: 'red'}}>15글자 이하로 입력해주세요.</div>
+                    )}
+                    {nickNameValid && nickName.length > 0 && !isTooLong && (
                         <div>사용 가능한 닉네임입니다.</div>
                     )}
                 </div>
