@@ -138,95 +138,118 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb}) {
                 </div>
             }
         >   
-            <div>
-                {/* 소개 */}
-                {userInfo?.introduce && 
-                    <div style={{textAlign: "left", marginBottom: "15px"}}>
-                        {userInfo?.introduce}
-                    </div>
-                }
-
-                {/* 더보기 true/false */}
-                {showAllInfo ? ( 
-                    //더 보기
-                    <div>
-                        {CLList && 
-                            <div style={{marginBottom: "15px"}}>
-                                <div style={{fontWeight: "bold"}}>🌎 사용 언어</div>
-                                {CLList && CLList.map((language, index) => (
-                                    <div style={{ padding: '8px' }}>
-                                        <PercentBar key={index} language={language.language} level={language.level} color={"blue"}/>
-                                    </div>
-                                ))}
-                            </div>
-                        }
-                        
-                        {WLList && 
-                            <div style={{marginBottom: "15px"}}>
-                                <div style={{fontWeight: "bold"}}>🌎 학습 언어</div>
-                                {WLList.map((language, index) => (
-                                    <div style={{ padding: '8px' }}>
-                                        <PercentBar key={index} language={language.language} level={language.level} color={"red"}/>
-                                    </div>
-                                ))}
-                            </div>
-                        }
-
-                        {userInfo.hobbies && 
-                            <div style={{marginBottom: "20px"}}>
-                                <div style={{fontWeight: "bold", marginBottom: "5px"}}>❤️ 관심사</div>
-                                {userInfo.hobbies.map((hobby, index) => (
-                                    <div
-                                        key={index} 
-                                        style={{ 
-                                            display: "inline-block",
-                                            borderRadius: "9px", 
-                                            backgroundColor: hb === hobby ? "#C8DCA0" : "#e9ecef", 
-                                            padding: "5px 10px",
-                                            marginRight: "3px",
-                                            marginTop: "5px"
-                                        }}
-                                    >
-                                        # {hobby}
-                                    </div>
-                                ))}
-                            </div>
-                        }
-
-                        <div onClick={()=> setShowAllInfo(false)} style={{ cursor: "pointer", marginTop: "10px", color: "blue" }}>
-                            - 간략하게
+            {/* 더보기 true/false */}
+            {showAllInfo ? (
+                <div>
+                    {userInfo?.introduce && 
+                        <div style={{textAlign: "left", marginBottom: "15px"}}>
+                            {userInfo?.introduce}
                         </div>
-                    </div>
-                ) : (
-                    //간략하게 보기
-                    <div>
-                        {/* 사용언어, 학습언어 */}
-                        {canLanguage && <div style={{marginBottom: "15px"}}><PercentBar language={canLanguage.language} level={canLanguage.level} color={"blue"}/></div>}
-                        {wantLanguage && <div style={{marginBottom: "15px"}}><PercentBar language={wantLanguage.language} level={wantLanguage.level} color={"red"}/></div>}
+                    }
 
-                        {userInfo.hobbies && userInfo.hobbies.slice(0, 4).map((hobby, index) => (
-                            <div
-                                key={index} 
-                                style={{ 
-                                    display: "inline-block",
-                                    borderRadius: "9px", 
-                                    backgroundColor: hb === hobby ? "#C8DCA0" : "#e9ecef", 
-                                    padding: "5px 10px",
-                                    marginRight: "3px",
-                                    marginTop: "5px"
-                                }}
-                            >
-                                # {hobby}
-                            </div>
-                        ))}
-                        {( (CLList && CLList.length > 1) || (WLList && WLList.length > 1) || userInfo.hobbies.length > 4 )&& (
-                            <div onClick={()=> setShowAllInfo(true)} style={{ cursor: "pointer", marginTop: "10px", color: "blue" }}>
-                                + 더 보기
-                            </div>
-                        )}
+                    {CLList && 
+                        <div style={{marginBottom: "15px"}}>
+                            <div style={{fontWeight: "bold"}}>🌎 사용 언어</div>
+                            {CLList && CLList.map((language, index) => (
+                                <div style={{ padding: '8px' }}>
+                                    <PercentBar key={index} language={language.language} level={language.level} color={"blue"}/>
+                                </div>
+                            ))}
+                        </div>
+                    }
+                    
+                    {WLList && 
+                        <div style={{marginBottom: "15px"}}>
+                            <div style={{fontWeight: "bold"}}>🌎 학습 언어</div>
+                            {WLList.map((language, index) => (
+                                <div style={{ padding: '8px' }}>
+                                    <PercentBar key={index} language={language.language} level={language.level} color={"red"}/>
+                                </div>
+                            ))}
+                        </div>
+                    }
+
+                    {userInfo.hobbies && 
+                        <div style={{marginBottom: "20px"}}>
+                            <div style={{fontWeight: "bold", marginBottom: "5px"}}>❤️ 관심사</div>
+                            {userInfo.hobbies.map((hobby, index) => (
+                                <div
+                                    key={index} 
+                                    style={{ 
+                                        display: "inline-block",
+                                        borderRadius: "9px", 
+                                        backgroundColor: hb === hobby ? "#C8DCA0" : "#e9ecef", 
+                                        padding: "5px 10px",
+                                        marginRight: "3px",
+                                        marginTop: "5px"
+                                    }}
+                                >
+                                    # {hobby}
+                                </div>
+                            ))}
+                        </div>
+                    }
+
+                    <div onClick={()=> setShowAllInfo(false)} style={{ height: "20px",cursor: "pointer", color: "blue" }}>
+                        - 간략하게
                     </div>
-                )}
-            </div>
+                </div>
+            ) : (
+                //간략하게 보기
+                <div>
+                    {userInfo?.introduce ? (
+                        <div style={{height: "20px", textAlign: "left", marginBottom: "15px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>
+                            {userInfo?.introduce}
+                        </div>
+                    ) : (
+                        <div style={{height: "20px", textAlign: "left", marginBottom: "15px", color: "#A6A3A3"}}>친구가 설정한 소개가 없습니다.</div>
+                    )}
+
+                    {/* 사용언어, 학습언어 */}
+                    {canLanguage ? (
+                        <div style={{height: "22px", marginBottom: "15px"}}><PercentBar language={canLanguage.language} level={canLanguage.level} color={"blue"}/></div>
+                    ) : (
+                        <div style={{height: "22px", marginBottom: "15px", color: "#A6A3A3"}}>친구가 설정한 사용 언어가 없습니다.</div>
+                    )}
+                    {wantLanguage ? (
+                        <div style={{height: "22px", marginBottom: "15px"}}><PercentBar language={wantLanguage.language} level={wantLanguage.level} color={"red"}/></div>
+                    ) : (
+                        <div style={{height: "22px", marginBottom: "15px", color: "#A6A3A3"}}>친구가 설정한 학습 언어가 없습니다.</div>
+                    )}
+
+                    {/* 관심사 */}
+                    {userInfo?.hobbies.length > 0 ? (
+                        <div style={{marginBottom: "10px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>
+                            {userInfo.hobbies.map((hobby, index) => (
+                                <div
+                                    key={index} 
+                                    style={{ 
+                                        display: "inline-block",
+                                        height: "30px",
+                                        borderRadius: "9px", 
+                                        backgroundColor: hb === hobby ? "#C8DCA0" : "#e9ecef", 
+                                        padding: "5px 10px",
+                                        marginRight: "3px",
+                                        // marginTop: "5px",
+                                    }}
+                                >
+                                    # {hobby}
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div style={{height: "30px",marginBottom: "10px", color: "#A6A3A3"}}>친구가 설정한 관심사가 없습니다.</div>
+                    )}
+
+                    {( (CLList && CLList.length > 1) || (WLList && WLList.length > 1) || userInfo.hobbies.length > 4 ) ? (
+                        <div onClick={()=> setShowAllInfo(true)} style={{ height: "20px",cursor: "pointer", color: "blue" }}>
+                            + 더 보기
+                        </div>
+                    ) : (
+                        <div style={{ height: "20px"}}/>
+                    )}
+                </div>
+            )}
 
             {/* 전체 사용, 학습 언어 보기 모달창 */}
             {showAllLanguage && (
