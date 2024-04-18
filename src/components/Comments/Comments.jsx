@@ -134,11 +134,11 @@ const Comments = ({board_id}) => {
             <div className="comments-body">
                 {commentList.map((item, index) => (
                     <div key={index} className="comments-comment">
-                        <div className="comment-username-date">
-                            <div className="comment-date">{moment(item.createDate).add(9, "hour").format('YYYY-MM-DD HH:mm:ss')}</div>
+                        <div className="comment-username-wrap">
+                            <div className="comment-username">{item.commentWriterName}</div>
                         </div>
                         <div className="comment-content">{item.content}</div>
-                        <div className="comment-username">{item.commentWriterName}</div>
+                        <div className="comment-date">{moment(item.createDate).add(9, "hour").format('YYYY-MM-DD HH:mm')}</div>
                         <hr className="hr-style"/>
                     </div>
                 ))}

@@ -1,5 +1,6 @@
 .comments-wrapper {
   padding-bottom: 50px;
+  margin: 0 10px;
   .comments-header {
     margin: 1rem 0;
     display: flex;
@@ -23,12 +24,12 @@
     .comments-comment {
       padding: 0.5rem 0;
 
-      .comment-username-date {
+      .comment-username-wrap {
         display: flex;
         align-items: baseline;
         justify-content: space-between;
-        .comment-date {
-          color: lightgray;
+        .comment-username {
+          font-weight: 600;
         }
       }
 
@@ -39,11 +40,11 @@
         margin: 0.4rem auto;
       }
     }
-    .comment-username {
+    .comment-date {
       display: flex;
       flex-direction: row-reverse;
       align-items: baseline;
-      font-weight: 600;
+      color: lightgray;
     }
 
     .hr-style {
