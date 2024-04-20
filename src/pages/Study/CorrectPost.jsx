@@ -134,7 +134,7 @@ export const CorrectPost = () => {
       contents: content,
       posttype: category,
       postCategory: 'NORMAL',
-      tags: tags},{
+      tag: tags},{
       headers:{
         Authorization: `Bearer ${token}`
       }
