@@ -1,9 +1,8 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import moment from 'moment';
-import {TextField} from "@mui/material";
+import {Pagination, TextField} from "@mui/material";
 import {useLocation, useNavigate} from "react-router-dom";
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import "./comments.scss";
 import Swal from "sweetalert2";
 
@@ -21,7 +20,7 @@ const Comments = ({board_id}) => {
 
     // 댓글 추가하기
     const submitComment = async () => {
-        console.log('getBoard start');
+        console.log('submitComment start');
         try {
             const response = await axios.post(`/api/auth/comment?postId=${board_id}`,
                 {
@@ -38,8 +37,8 @@ const Comments = ({board_id}) => {
             if (response.status === 200) {
                 const responseData = response.data;
                 console.log(`responseData : `, responseData);
-                alert("댓글 등록 완료");
-                window.location.reload();
+                setContent(""); // 댓글 입력창 초기화
+                updateTotalCommentsAndPage(); // 새로운 댓글이 추가되면 총 댓글 수를 업데이트하고, 해당하는 페이지로 로드
             }
         } catch (error) { // 실패 시
             if(error.response.status === 401) {
@@ -52,11 +51,37 @@ const Comments = ({board_id}) => {
         }
     };
 
+    // 새 댓글이 추가된 마지막 페이지로 설정
+    const updateTotalCommentsAndPage = async () => {
+        try {
+            const response = await axios.get(`/api/auth/comment?postId=${board_id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            const totalComments = response.data; // 새로운 총 댓글 수
+            const calculatedPageCount = Math.ceil(totalComments / 5);
+            setPageCount(calculatedPageCount);
+            setPage(calculatedPageCount - 1); // 새 댓글이 추가된 마지막 페이지로 설정
+            getCommentList(); // 변경된 페이지로 댓글 목록 갱신
+        } catch (error) {
+            if(error.response.status === 401) {
+                console.log("401 오류");
+            }
+            else {
+                console.log("서버 오류 입니다.");
+                alert(error.response.data);
+            }
+        }
+    };
+
+
+    // 댓글 조회
     const getCommentList = async () => {
         console.log("board_id: ", board_id);
         console.log("token: ", token);
         try {
-            const response = await axios.get(`/api/comment/${board_id}?page=${page}&size=5`, {
+            const response = await axios.get(`/api/comment?page=${page}&size=5&postId=${board_id}`, {
                 headers: {
                     Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                 }
@@ -67,9 +92,10 @@ const Comments = ({board_id}) => {
             if (response.status === 200) {
                 const commentList = response.data;
                 console.log(`data : `, commentList);
-                console.log("data.totalPages: ", commentList.totalPages);
-                setPageCount(commentList.totalPages);
-                setCommentList(prevCommentList => [...prevCommentList, ...commentList.content]);
+                /*console.log("data.totalPages: ", commentList.totalPages);
+                setPageCount(commentList.totalPages);*/
+                setCommentList(commentList.content);
+                // setCommentList(prevCommentList => [...prevCommentList, ...commentList.content]);
                 console.log("200 성공~~~~");
             }
         } catch (error) { // 실패 시
@@ -87,6 +113,27 @@ const Comments = ({board_id}) => {
         }
     };
 
+    // 페이지 카운트는 컴포넌트가 마운트되고 딱 한번만 가져옴
+    useEffect(() => {
+        // 댓글 전체 갯수 구하기
+        const getTotalBoard = async () => {
+            // return await axios.get(`/api/auth/comment?postId=${board_id}`);
+            return await axios.get(`/api/auth/comment?postId=${board_id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}` // 헤더에 인증 토큰 추가
+                }
+            });
+        }
+        // 페이지 카운트 구하기: (전체 comment 갯수) / (한 페이지 갯수) 결과 올림
+        getTotalBoard().then((response) => {
+            const totalComments = response.data;
+            const calculatedPageCount = Math.ceil(totalComments / 5);
+            setPageCount(calculatedPageCount);
+
+            // 마지막 페이지를 기본 페이지로 설정
+            setPage(calculatedPageCount - 1); // 페이지는 0부터 시작하므로
+        });
+    }, [board_id, token]);
 
     // 페이지에 해당하는 댓글 목록은 page 상태가 변경될 때마다 가져옴
     useEffect(() => {
@@ -111,6 +158,10 @@ const Comments = ({board_id}) => {
         }
     }
 
+    const changePage = (value) => {
+        setPage(value);
+    }
+
     return (
         <div className="comments-wrapper">
             <div className="comments-header">
@@ -121,6 +172,7 @@ const Comments = ({board_id}) => {
                     onChange={(e) => {
                         setContent(e.target.value)
                     }}
+                    value={content}
                     multiline placeholder="댓글을 입력해주세요"
                 />
                 {content !== "" ? (
@@ -143,18 +195,17 @@ const Comments = ({board_id}) => {
                     </div>
                 ))}
             </div>
-            {
-                page < (pageCount - 1) && (
-                    <div className="comments-footer"
-                         onClick={() => {
-                             setPage(page + 1);
-                         }}
-                    >
-                        댓글 더보기
-                        <KeyboardArrowDownIcon/>
-                    </div>
-                )
-            }
+            <div className="comments-footer">
+                <Pagination
+                    page={page+1}
+                    count={pageCount} size="large"
+                    onChange={(e, value) => {
+                        // window.location.href = `/?page=${value-1}`;
+                        changePage(value-1);
+                    }}
+                    showFirstButton showLastButton
+                />
+            </div>
         </div>
     );
 }
