@@ -214,7 +214,7 @@ export default function Friend() {
                             <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "40px" }}>
                                 {recommendFriendList.map((friend) => (
                                     <div key={friend.id} style={{ flexBasis: "550px", minWidth: "550px", marginBottom: "20px" }}>
-                                        <RecommendFriendCard key={friend.id} userInfo={friend} sendFriendRequest={sendFriendRequest}/>
+                                        <RecommendFriendCard key={friend.id} userInfo={friend} sendFriendRequest={sendFriendRequest} hb={selectHb}/>
                                     </div>
                                 ))}
                             </div>
@@ -496,7 +496,7 @@ export default function Friend() {
                     }
                 });
             }
-            else if(activeTab==="recommend"){
+            else {
                 response = await axios.get(`/api/auth/friend/search2?${Query}`, {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -548,8 +548,8 @@ export default function Friend() {
         if(bool==="false") setShowFilter(false);
 
         setCurrentPage(0);
-        // if(activeTab==="myFriends") fetchFriendList(0);
-        // else fetchRecommendFriend(0);
+        if(activeTab==="myFriends") fetchFriendList(0);
+        else fetchRecommendFriend(0);
     }
 
     return (
