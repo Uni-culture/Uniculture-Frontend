@@ -123,7 +123,7 @@ export default function Friend() {
     // 추천 친구 목록 불러오기
     const fetchRecommendFriend = async () => {
         try {
-            console.log("친구 목록 불러오기");
+            console.log("추천 친구 목록 불러오기");
             const token = getToken();
 
             const response = await axios.get(`/api/auth/friend/recommend`, {
@@ -185,9 +185,11 @@ export default function Friend() {
         switch (activeTab) {
             case 'myFriends':
                 return (
-                    <div style={{marginTop: "30px"}}>
+                    // <div style={{marginTop: "30px", display: "flex", justifyContent: "center" }}>
+                    <div style={{display: "flex", justifyContent: "center", marginTop: "30px", width: "100%", paddingLeft: "50px"}}>
                         {friendList.length > 0 ? (
-                            <div style={{ display: "flex", flexWrap: "wrap", gap: "30px", justifyContent: "center" }}>
+                            // <div style={{ display: "flex", flexWrap: "wrap", gap: "30px", justifyContent: "center" }}>
+                            <div style={{ display: "flex", flexWrap: "wrap", gap: "30px"}}>
                                 {friendList.map((friend) => (
                                     <div key={friend.id} style={{ flexBasis: "350px", minWidth: "350px", marginBottom: "20px" }}>
                                         <FriendCard key={friend.id} userInfo={friend} deleteFriend={deleteFriend} cl={selectCL} wl={selectWL} hb={selectHb}/>
@@ -463,7 +465,7 @@ export default function Friend() {
         }
     };
 
-    //Gender 선택
+    //필터 선택
     const handleSelect = (value, select) => {
         if(select === "gender") setSelectGender(value);
         else if(select === "mina") setSelectMina(value);
@@ -524,9 +526,13 @@ export default function Friend() {
 
     //필터내용 바뀌면 실행
     useEffect(() => {
-        setCurrentPage(0);
+        
         // if(selectGender !== 'ge' || selectMina !=='0' || selectMaxa !== '100' || selectCL !== "cl" || selectWL !== "wl" || selectHb !== "hb") {
-        fetchFriendFilter(0);
+        if(showFilter){
+            setCurrentPage(0);
+            fetchFriendFilter(0);
+        }
+        
         // }
     }, [selectGender, selectMina, selectMaxa, selectCL, selectWL, selectHb]);
 
@@ -542,8 +548,8 @@ export default function Friend() {
         if(bool==="false") setShowFilter(false);
 
         setCurrentPage(0);
-        if(activeTab==="myFriends") fetchFriendList(0);
-        else fetchRecommendFriend(0);
+        // if(activeTab==="myFriends") fetchFriendList(0);
+        // else fetchRecommendFriend(0);
     }
 
     return (
@@ -561,7 +567,7 @@ export default function Friend() {
                             <li 
                                 className="nav-item"
                                 style={{ width:"70px", fontWeight: activeTab === 'recommend' ? 'bold' : 'normal' }}
-                                onClick={() => {setActiveTab('recommend'); setSearchInput(''); resetFriend("false"); }}>
+                                onClick={() => {setActiveTab('recommend'); setSearchInput(null); resetFriend("false"); }}>
                                 추천 친구
                             </li>
                         </ul>
@@ -673,7 +679,7 @@ export default function Friend() {
                 </div>
             )}
 
-            <div style={{alignItems:"center"}}>{renderTabContent()}</div>
+            {renderTabContent()}
             {friendList.length > 0 && activeTab === 'myFriends' && (
                 <div style={{display: "flex", justifyContent: "center", marginTop: "30px", width: "100%" }}>
                     <Pagination page={currentPage + 1} count={pageCount}  defaultPage={1} onChange={changePage} showFirstButton showLastButton />
