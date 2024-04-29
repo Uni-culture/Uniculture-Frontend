@@ -245,7 +245,7 @@ const Board = () => {
                             {board.isMine && // 자신의 게시물이면 활성화
                                 <span className="edit-delete-button">
                                     <button className="board-buttons" onClick={boardDelete}> 삭제 </button>
-                                    <button className="board-buttons" onClick={() => {navigate(`/${board_id}`, {state : {from : location.pathname}});}}> 수정 </button>
+                                    <button className="board-buttons" onClick={() => {navigate(`/${board_id}?type=post`, {state : {from : location.pathname}});}}> 수정 </button>
                                 </span>
                             }
                         </div>
