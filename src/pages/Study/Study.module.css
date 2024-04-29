@@ -10,7 +10,13 @@
 }
 
 .right_side{
+  margin-left: 20px;
+}
 
+.pop_tags{
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  margin-bottom: 10px;
 }
 
 .ranking_container{
@@ -59,7 +65,7 @@
 }
 
 .study_container_header{
-  max-width: 700px;
+  width: 800px;
 }
 
 .click_post{
@@ -91,6 +97,11 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.boardList_footer{
+  display: flex;
+  justify-content: center;
 }
 
 .question_title{
