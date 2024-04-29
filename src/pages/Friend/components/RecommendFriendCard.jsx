@@ -5,7 +5,7 @@ import PercentBar from '../../../components/PercentBar/PercentBar';
 import { GiMale, GiFemale } from "react-icons/gi";
 import { FaExchangeAlt } from "react-icons/fa";
 
-export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
+export default function RecommendedFriendCard({userInfo, sendFriendRequest, hb}) {
     const navigate = useNavigate();
     const [canLanguage, setCanLanguage] = useState(); // Card에 보이는 cl
     const [CLList, setCLList] = useState(); // 사용 언어 능숙도 높은순
@@ -33,6 +33,12 @@ export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
         const sortedWantLanguagesArray = [...wantLanguagesArray].sort((a, b) => b.level - a.level);
         setWLList(sortedWantLanguagesArray);
         setWantLanguage(sortedWantLanguagesArray[0]);
+
+        // 취미 중에서 hb와 동일한 항목을 맨 앞으로 이동
+        if (hb && userInfo.hobbies && userInfo.hobbies.includes(hb)) {
+            const updatedHobbies = [hb, ...userInfo.hobbies.filter(hobby => hobby !== hb)];
+            userInfo.hobbies = updatedHobbies;
+        }
 
     }, [userInfo]);
 
@@ -187,17 +193,18 @@ export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
                         {/* 관심사 */}
                         {sortHobbies(userInfo?.hobbies).map((hobby, index) => (
                             <div
-                                key={`hobby_${index}`} 
+                                key={`${userInfo.id}_${hobby}_${index}`} 
                                 style={{ 
                                     display: "inline-block",
+                                    height: "30px",
                                     borderRadius: "9px", 
-                                    backgroundColor: hobby.same == 1 ? "#C8DCA0" : "#e9ecef",
+                                    backgroundColor: (hobby?.same == 1) || (hobby===hb) ? "#C8DCA0" : "#e9ecef",
                                     padding: "5px 10px",
                                     marginRight: "3px",
-                                    marginBottom: "5px"
+                                    marginTop: "5px"
                                 }}
                             >
-                                # {hobby.hobby}
+                                {hobby.hobby ? `# ${hobby.hobby}` : `# ${hobby}`}
                             </div>
                         ))}
 
@@ -241,17 +248,17 @@ export default function RecommendedFriendCard({userInfo, sendFriendRequest}) {
                             <div style={{marginBottom: "10px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>
                                 {sortHobbies(userInfo?.hobbies).slice(0, 5).map((hobby, index) => (
                                     <div
-                                        key={`${userInfo.id}_${hobby.hobby}_${index}`} 
+                                        key={`${userInfo.id}_${hobby}_${index}`} 
                                         style={{ 
                                             display: "inline-block",
                                             height: "30px",
                                             borderRadius: "9px", 
-                                            backgroundColor: hobby.same == 1 ? "#C8DCA0" : "#e9ecef",
+                                            backgroundColor: (hobby?.same == 1) || (hobby===hb) ? "#C8DCA0" : "#e9ecef",
                                             padding: "5px 10px",
                                             marginRight: "3px"
                                         }}
                                     >
-                                        # {hobby.hobby}
+                                        {hobby.hobby ? `# ${hobby.hobby}` : `# ${hobby}`}
                                     </div>
                                 ))}
                             </div>

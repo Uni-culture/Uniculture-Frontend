@@ -19,34 +19,75 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 90vh; /* 전체 화면 높이 */
+    height: 100%; 
     background-color: #f0f0f0;
-    width: auto;
+    width: 100%;
+}
+
+.chat-name {
+    border-bottom: 1px solid #E0E0E0;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .chat-main h3 {
     text-align: center;
     color: #333;
+    margin: 0px;
 }
 
-.chat-list {
-    flex-grow: 1;
-    padding: 20px;
-    overflow-y: auto; /* 채팅이 많아지면 스크롤 가능 */
+.chat-list{
+    flex: 1;
+    padding:  0px 20px 20px 20px;
+    overflow-y: auto;
+}
+
+.chats {
+    padding:  10px;
+    overflow-y: auto;
 }
 
 .chat-message {
-    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-text{
+    position: relative;
+    display: inline-block;
+    font-size: 13px;
     padding: 10px;
+    margin-bottom: 10px;
+    max-width: 70%;
+
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+/* .chat-message { */
+    /* align-self: flex-start; */
+    /* flex-direction: row-reverse; */
+    /* max-width: 65%; */
+
+    /* display: flex; */
+    /* align-items: flex-end; */
+    /* margin-bottom: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); */
+
+    /* position: relative; */
+    /* display: flex;
+    max-width: calc(100% - 70px); */
+/* } */
+
 .chat-input {
     display: flex;
     padding: 20px;
     background-color: #fff;
+    height: 70px;
 }
 
 .chat-input input {
@@ -58,9 +99,11 @@
 }
 
 .chat-input button {
-    padding: 10px 20px;
+    height: 30px;
+    padding: 3px 20px;
     background-color: #007bff;
     color: #fff;
+    font-size: 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
