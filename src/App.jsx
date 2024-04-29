@@ -23,7 +23,6 @@ import SignUpOption from "./pages/Auth/SignUpOption";
 import Search from "./pages/Search/Search";
 import { CorrectPost } from './pages/Study/CorrectPost';
 import Translate from './pages/Translate/Translate';
-import ChatPage from "./pages/Chat/ChatPage";
 
 function App() {
 
@@ -41,7 +40,6 @@ function App() {
             <Route path="/account/personal-info" element={<ProfileInfo />} />
             <Route path="/account/delete" element={<ProfileDelete />} />
             <Route path="/chat" element={<Chat />} />
-            <Route path="/chat/:roomId" element={<ChatPage />} />
             <Route path='/study' element={<Study/>} />
             <Route path='/post/new' element={<Post />}/>
             <Route path='/post' element={<PostView />} />

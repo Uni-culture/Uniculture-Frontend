@@ -138,6 +138,7 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb}) {
                 </div>
             }
         >   
+        
             {/* 더보기 true/false */}
             {showAllInfo ? (
                 <div>

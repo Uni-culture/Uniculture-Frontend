@@ -450,7 +450,7 @@ export default function MyProfile({myInformation}) {
                                     </li>
                                 </ul>
 
-                            <div className="modal-body">
+                            <div className="modal-body" style={{width: "80%"}}>
                                 {renderTabContent()}
                             </div>
                             <div className="modal-footer">
