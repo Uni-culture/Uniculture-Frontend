@@ -2,6 +2,9 @@ import React from 'react'
 import styles from '../Study.module.css'
 import {  FaRegHeart, FaRegEye, FaRegComment} from "react-icons/fa";
 import moment from 'moment';
+import 'moment/locale/ko';
+
+moment.locale('ko');
 
 export const StudyListCard = ({data}) => {
   return (
@@ -18,7 +21,7 @@ export const StudyListCard = ({data}) => {
                           <div className={styles.question_info_detail}>
                             <span className={styles.writer}>{data.writerName}</span>
                             <span>&nbsp;·&nbsp;</span>
-                            <span>{moment(data.createDate).add(9,"hour").format('YYYY년 MM월 DD일')}</span>
+                            <span>{moment(data.createDate).fromNow()}</span>
                           </div>
                           <div className={styles.question_info_data}>
                             <dl>
@@ -40,10 +43,10 @@ export const StudyListCard = ({data}) => {
                             </dl>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    
-                  </a>
-                </li>
+                  </div>
+        </div>
+      
+      </a>
+    </li>
   )
 }
