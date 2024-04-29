@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
-export default function FriendList({action, userInfo, deleteFriend, cancelSentFriendRequest, acceptReceivedRequest, rejectReceivedRequest}) {
+export default function FriendList({action, userInfo, deleteFriend, cancelSentFriendRequest, acceptReceivedRequest, rejectReceivedRequest, onUserSelect}) {
     const navigate = useNavigate();
 
     //친구 삭제
@@ -44,8 +44,15 @@ export default function FriendList({action, userInfo, deleteFriend, cancelSentFr
         navigate(`/profile/${userInfo.nickname}`);
     }
 
+    // FriendList 클릭 시 선택된 사용자 정보 전달
+    const handleCheck = () => {
+        if (onUserSelect) {
+            onUserSelect(userInfo.nickname);
+        }
+    };
+
     return (
-        <div style={{ display: 'flex', width: "280px", justifyContent: 'space-between', borderBottom: '1px solid #E0E0E0', padding: '10px 0', alignItems:"center" }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E0E0E0', padding: '10px 0', alignItems:"center" }}>
             <div style={{ display: 'flex', alignItems:"center"}}>
                 <div style={{marginRight:"10px"}} onClick={handleProfile}>
                     <img
@@ -145,6 +152,14 @@ export default function FriendList({action, userInfo, deleteFriend, cancelSentFr
                         onMouseOut={(e) => e.target.style.backgroundColor = 'white'}
                     >⭕️</button>
                 </div>
+            }
+
+            {/* 받은 친구 신청 */}
+            {action === 'createChat' && 
+                <input
+                type="checkbox"
+                onChange={handleCheck}
+              />
             }
 
         </div>

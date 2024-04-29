@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as StompJs from "@stomp/stompjs";
 import "./ChatMain.css";
 import axios from "axios";
 import {Link} from "react-router-dom";
 
-const ChatMain = ({selectedChatRoom}) => {
+const ChatMain = ({selectedChatRoom, userInfo}) => {
     const [chats, setChats] = useState([]);
     const [currentChat, setCurrentChat] = useState("");
     const [stompClient, setStompClient] = useState(null);
+    const messageEndRef = useRef(null);
 
     // 로그인 후 저장된 토큰 가져오는 함수
     const getToken = () => {
@@ -88,26 +89,47 @@ const ChatMain = ({selectedChatRoom}) => {
         
     }
     
-
+    //채팅 맨 아래로 이동
+    useEffect(() => { 
+        messageEndRef.current.scrollIntoView({});
+    }, [chats]); 
+    
     return (
         <div className="chat-main">
         {selectedChatRoom ? (
                 <>
-                    <div>
+                    <div className="chat-name">
                         <h3>{selectedChatRoom.name}</h3>
                     </div>
-                    <div className="chat-list">
+                    <div className="chats">
                         {chats.map(chat =>(
-                            <div key={chat.id} className="chat-message" >
-                                {chat.sender} : {chat.message}
+                            <div 
+                                key={chat.id} 
+                                className="chat-message"
+                                style={{ 
+                                    alignItems: (userInfo.nickname === chat.sender) ? ("flex-end") : ("flex-start"),
+                                    
+                                }}
+                            >
+                                <div className="chat-text" style={{backgroundColor: (userInfo.nickname === chat.sender) ? ("#E7F3FF") : ("FFFFFF")}}> 
+                                    {/* {chat.sender} : */}
+                                    {chat.message} 
+                                </div>
                             </div>
                         ))}
+                        <div ref={messageEndRef}></div>
                     </div>
                     <div className="chat-input">
                         <input 
                             type="text"
                             value={currentChat}
-                            onChange={(e) => setCurrentChat(e.target.value)} />
+                            onChange={(e) => setCurrentChat(e.target.value)}
+                            onKeyDown={(e) =>{
+                                if (e.key === 'Enter') {
+                                    handleSendChat();
+                                }
+                            }}
+                        />
                             <button onClick={handleSendChat}>전송</button>
                     </div>
                 </>

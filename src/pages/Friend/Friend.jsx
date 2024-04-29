@@ -708,7 +708,7 @@ export default function Friend() {
                                     </li>
                                 </ul>
 
-                            <div className="modal-body">
+                            <div className="modal-body" style={{width:"80%"}}>
                                 {renderTabContent2()}
                             </div>
                             <div className="modal-footer">
