@@ -1,12 +1,33 @@
-.comments-wrapper {
-  padding-bottom: 50px;
-  margin: 0 10px;
-  .comments-header {
-    margin: 1rem 0;
-    display: flex;
+.replyComments-wrapper {
+  padding-bottom: 10px;
+  //margin: 0 10px;
 
-    .comments-header-textarea {
+  .header-with-icon { /* 새로운 스타일 */
+    display: flex; /* Flexbox를 사용하여 요소들을 가로로 배치 */
+    align-items: flex-start;
+    margin: 0.3rem 0;
+    margin-left: 10px;
+  }
+
+  .reply-style {
+    margin-left: 20px;
+    margin-right: 10px;
+  }
+
+  .replyWrapper {
+    width: 100%;
+  }
+
+  .replyComments-header {
+    /*margin: 1rem 0;
+    display: flex;*/
+    display: flex;
+    flex: 1;
+    margin-bottom: 13px;
+
+    .replyComments-header-textarea {
       flex: 1;
+      margin-left: 10px;
 
       &::-webkit-scrollbar {
         display: none;
@@ -19,21 +40,21 @@
     }
   }
 
-  .comments-body {
+  .replyComments-body {
 
-    .comments-comment {
+    .replyComments-comment {
       padding: 0.5rem 0.3rem;
 
-      .comment-username-wrap {
+      .replyComments-username-wrap {
         display: flex;
         align-items: baseline;
         justify-content: space-between;
-        .comment-username {
+        .replyComments-username {
           font-weight: 600;
         }
       }
 
-      .comment-content {
+      .replyComments-content {
         // \n(엔터)를 태그 안의 텍스트에 적용
         white-space: pre-wrap;
         word-break: break-all;
@@ -42,14 +63,14 @@
       }
     }
 
-    .comment-bottom {
+    .replyComments-bottom {
       display: flex;
       justify-content: space-between; /* 답글 버튼과 날짜를 양 끝으로 배치 */
       align-items: baseline;
       margin-top: 10px;
     }
 
-    .reply-button {
+    .replyComments-button {
       border: 1px solid lightgrey;
       //border-radius: 5px;
       background-color: #FBFBF3;
@@ -58,7 +79,7 @@
       font-size: 0.8rem;
     }
 
-    .comment-date {
+    .replyComments-date {
       color: lightgray;
       font-size: 0.9rem;
     }
@@ -67,13 +88,5 @@
       margin-bottom: 0;
       padding-bottom: 9px;
     }
-
-  }
-  .comments-footer{
-    display: flex;
-    justify-content: center;
-    cursor: pointer;
-    align-items: center;
-    padding-bottom: 10px;
   }
 }
