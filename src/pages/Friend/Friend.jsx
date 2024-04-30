@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import Layout from '../../components/Layout'
 import { TbAdjustmentsHorizontal, TbSearch } from "react-icons/tb";
-import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import FriendCard from './components/FriendCard';
 import FriendList from '../Profile/components/FriendList';
@@ -11,6 +10,7 @@ import { AiOutlineBell } from "react-icons/ai";
 import Pagination from '@mui/material/Pagination';
 import { GrClose, GrPowerReset } from "react-icons/gr";
 import RecommendFriendCard from './components/RecommendFriendCard';
+import styles from './Friend.module.css'
 
 export default function Friend() {
     const navigate = useNavigate();
@@ -185,13 +185,11 @@ export default function Friend() {
         switch (activeTab) {
             case 'myFriends':
                 return (
-                    // <div style={{marginTop: "30px", display: "flex", justifyContent: "center" }}>
-                    <div style={{display: "flex", justifyContent: "center", marginTop: "30px", width: "100%", paddingLeft: "50px"}}>
+                    <div style={{marginTop: "30px"}}>
                         {friendList.length > 0 ? (
-                            // <div style={{ display: "flex", flexWrap: "wrap", gap: "30px", justifyContent: "center" }}>
-                            <div style={{ display: "flex", flexWrap: "wrap", gap: "30px"}}>
+                            <div className={styles.myfrineds}>
                                 {friendList.map((friend) => (
-                                    <div key={friend.id} style={{ flexBasis: "350px", minWidth: "350px", marginBottom: "20px" }}>
+                                    <div key={friend.id} style={{ width: "350px", marginBottom: "20px"}}>
                                         <FriendCard key={friend.id} userInfo={friend} deleteFriend={deleteFriend} cl={selectCL} wl={selectWL} hb={selectHb}/>
                                     </div>
                                 ))}
@@ -211,7 +209,8 @@ export default function Friend() {
                 return (
                     <div style={{marginTop:"30px"}}>
                         {recommendFriendList.length > 0 ? (
-                            <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "40px" }}>
+                            // <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "40px" }}>
+                            <div className={styles.recommend}>
                                 {recommendFriendList.map((friend) => (
                                     <div key={friend.id} style={{ flexBasis: "550px", minWidth: "550px", marginBottom: "20px" }}>
                                         <RecommendFriendCard key={friend.id} userInfo={friend} sendFriendRequest={sendFriendRequest} hb={selectHb}/>

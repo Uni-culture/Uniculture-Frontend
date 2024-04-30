@@ -74,8 +74,41 @@ const Chat = () => {
         // 예: navigate(`/chat/rooms/${roomId}`);
     };
 
-    const handleCreateChat = () => {
+    const handleCreateChatModal = () => {
         setCreateChatModal(!createChatModal);
+    }
+
+    const createChat = async (userInfo) => {
+        try {
+            const token = getToken(); // 토큰 가져오기
+            if (!token) {
+                // 토큰이 없으면 로그인 페이지로 이동
+                navigate('/sign-in');
+                return;
+            }
+
+            const response = await axios.post('/api/auth/room', {
+                memberId: userInfo[0].id
+            },  {
+                headers: {
+                    Authorization: `Bearer ${token}` // 헤더에 토큰 추가
+                }
+            });
+            if (response.status === 200) {
+                setSelectedChatRoom(response.data); // 서버에서 받은 chatRoomId 저장
+                console.log(JSON.stringify(response.data));
+            } else {
+                console.log('서버 응답 오류:', response.status);
+            }
+        } catch (error) {
+            if(error.response.status === 500) {
+                console.log('500 start');
+                // logInWarning();
+                // navigate("/sign-in", {}) // 로그인하지 않은 사용자가 프로필 조회 시 로그인 페이지로 이동
+                console.log('500 end');
+            }
+            console.error('사용자 정보를 가져오는 도중 오류 발생:', error);
+        }
     }
 
     return (
@@ -83,7 +116,7 @@ const Chat = () => {
             <Header />
             <div className={styles.page_layout}>
                 <aside className={styles.aside}>
-                    <div className={styles.asideTitle}> <h3>채팅</h3> <div onClick={handleCreateChat}><LuMessageSquarePlus size={25}/></div></div>
+                    <div className={styles.asideTitle}> <h3>채팅</h3> <div onClick={handleCreateChatModal}><LuMessageSquarePlus size={25}/></div></div>
                     <ChatList onSelectedChatRoom={handleSelectChatRoom}/>
                 </aside>
                 <div className={styles.chatmain}>
@@ -92,14 +125,14 @@ const Chat = () => {
                             <BiMessageRoundedDots size={100}/>
                             <span style={{fontSize: "20px", padding: "5px 0px"}}>내 메시지</span>
                             <span style={{fontSize: "14px", padding: "5px 0px 10px 0px", color: "#737373"}}>친구나 그룹에 비공개 사진과 메시지를 보내보세요.</span>
-                            <button className= {styles.chatmainB} onClick={handleCreateChat}>메시지 보내기</button>
+                            <button className= {styles.chatmainB} onClick={handleCreateChatModal}>메시지 보내기</button>
                         </div>
                     ): (
                         <ChatMain selectedChatRoom={selectedChatRoom} userInfo={userInfo}/>
                     )}
                 </div>
             </div>
-            {createChatModal && <CreateChat modal={handleCreateChat}/>}
+            {createChatModal && <CreateChat modal={handleCreateChatModal} createChat={createChat}/>}
         </div>
     );
 };

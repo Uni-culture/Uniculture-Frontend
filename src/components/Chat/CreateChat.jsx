@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import FriendList from '../../pages/Profile/components/FriendList';
 
-export default function CreateChat({modal}) {
+export default function CreateChat({modal, createChat}) {
     //검색
     const [searchInput, setSearchInput] = useState(null); // 검색창 값
     const [friendList, setFriendList] = useState([]); //친구 목록
@@ -52,6 +52,8 @@ export default function CreateChat({modal}) {
 
     // FriendList 컴포넌트에서 사용자를 선택했을 때 호출될 함수
     const handleUserSelect = (userInfo) => {
+
+        console.log("userInfo : " + userInfo);
         // 기존 selectedUser 배열을 복제하여 새로운 배열을 생성
         const updatedSelectedUser = [...selectedUser];
         // 선택된 사용자 정보가 이미 배열에 있는지 확인
@@ -101,7 +103,7 @@ export default function CreateChat({modal}) {
                     </div>
                     
                     <div className="modal-footer" style={{width: "100%"}}>
-                        <button type="button" className="btn btn-primary" data-bs-dismiss="modal" style={{width: "100%"}} disabled={isChatButtonDisabled}>채팅</button>
+                        <button type="button" className="btn btn-primary" data-bs-dismiss="modal" style={{width: "100%"}} disabled={isChatButtonDisabled} onClick={()=>{createChat(selectedUser); modal();}}>채팅</button>
                     </div>
                 </div>
             </div>
