@@ -3,6 +3,8 @@ import "./ChatList.css";
 // import "./ChatMain.css"
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import moment from "moment";
+import 'moment/locale/ko'
 
 
 const ChatList = ({onSelectedChatRoom}) => {
@@ -48,7 +50,9 @@ const ChatList = ({onSelectedChatRoom}) => {
         <div className="chat-list">
             {chatRooms.map((room) => (
               <div key={room.id} className="chat-room" onClick={() => onSelectedChatRoom(room)}>
-                {room.name}
+                <div>{room.username}</div>
+                {room.latestMessage ? (<div>{room.latestMessage}</div>) : (<div>채팅 없음</div>)}
+                {room.latestMessageTime ? (<div>{moment(room.latestMessageTime).fromNow() }</div>) : (<div>채팅 없음</div>)}
               </div>
             ))}
 

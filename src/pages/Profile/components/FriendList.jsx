@@ -47,7 +47,7 @@ export default function FriendList({action, userInfo, deleteFriend, cancelSentFr
     // FriendList 클릭 시 선택된 사용자 정보 전달
     const handleCheck = () => {
         if (onUserSelect) {
-            onUserSelect(userInfo.nickname);
+            onUserSelect(userInfo);
         }
     };
 
