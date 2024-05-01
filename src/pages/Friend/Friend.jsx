@@ -212,8 +212,8 @@ export default function Friend() {
                             // <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "40px" }}>
                             <div className={styles.recommend}>
                                 {recommendFriendList.map((friend) => (
-                                    <div key={friend.id} style={{ flexBasis: "550px", minWidth: "550px", marginBottom: "20px" }}>
-                                        <RecommendFriendCard key={friend.id} userInfo={friend} sendFriendRequest={sendFriendRequest} hb={selectHb}/>
+                                    <div key={friend.id} style={{ marginBottom: "20px" }}>
+                                        <RecommendFriendCard key={friend.id} userInfo={friend} sendFriendRequest={sendFriendRequest} />
                                     </div>
                                 ))}
                             </div>
@@ -559,14 +559,14 @@ export default function Friend() {
                         <ul className="nav">
                             <li 
                                 className="nav-item"
-                                style={{ width:"50px", fontWeight: activeTab === 'myFriends' ? 'bold' : 'normal', marginRight: "20px"}}
+                                style={{ width:"65px", fontWeight: activeTab === 'myFriends' ? 'bold' : 'normal', marginRight: "20px"}}
                                 onClick={() => {setActiveTab('myFriends'); resetFriend("false");}}>
                                 내 친구
                             </li>
                             <li 
                                 className="nav-item"
                                 style={{ width:"70px", fontWeight: activeTab === 'recommend' ? 'bold' : 'normal' }}
-                                onClick={() => {setActiveTab('recommend'); setSearchInput(null); resetFriend("false"); }}>
+                                onClick={() => {setActiveTab('recommend'); setSearchInput(null); resetFriend("false");}}>
                                 추천 친구
                             </li>
                         </ul>
@@ -596,7 +596,7 @@ export default function Friend() {
                         </div>
                     )}
 
-                    <div style={{fontSize: "25px", marginLeft: "20px", paddingBottom: "5px"}} onClick={()=>{setShowFilter(!showFilter); }}><TbAdjustmentsHorizontal /></div>
+                    {activeTab==='myFriends' && <div style={{fontSize: "25px", marginLeft: "20px", paddingBottom: "5px"}} onClick={()=>{setShowFilter(!showFilter); }}><TbAdjustmentsHorizontal /></div>}
                 
                 </div>
 

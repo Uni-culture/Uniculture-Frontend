@@ -1,314 +1,128 @@
-import React, { useEffect, useState } from 'react'
-import { Card } from "antd";
+import React, { useState } from 'react'
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import PercentBar from '../../../components/PercentBar/PercentBar';
 import { GiMale, GiFemale } from "react-icons/gi";
-import { FaExchangeAlt } from "react-icons/fa";
+import { IoMdPersonAdd } from "react-icons/io";
+import { FaHome } from "react-icons/fa";
+import { BiSolidMessageRounded } from "react-icons/bi";
+import styles from './RecommendFriendCard.module.css'
+import cardImg from '../../../assets/cardImg.png'
+import { Card } from 'antd';
+const { Meta } = Card;
 
-export default function RecommendedFriendCard({userInfo, sendFriendRequest, hb}) {
+export default function RecommendFriendCard({userInfo, sendFriendRequest}) {
     const navigate = useNavigate();
-    const [canLanguage, setCanLanguage] = useState(); // Card에 보이는 cl
-    const [CLList, setCLList] = useState(); // 사용 언어 능숙도 높은순
-    const [wantLanguage, setWantLanguage] = useState(); // Card에 보이는 wl
-    const [WLList, setWLList] = useState(); // 학습 언어 능숙도 높은순
+    const [isFlipped, setIsFlipped] = useState(userInfo.isOpen); //Card 뒤집기
 
-    const [showAllInfo, setShowAllInfo] = useState(false); // 모든 취미 표시 여부 상태
-    const [showAllLanguage, setShowAllLanguage] = useState(false);
-    const [activeTab2, setActiveTab2] = useState('can');
+    // 로그인 후 저장된 토큰 가져오는 함수
+    const getToken = () => {
+        return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
+    };
+
+    //카드 뒤집기(추천 친구 보이게)
+    const handleCardClick = () => {
+        if(!isFlipped) { //카드가 열려있지 않을 때만 
+            handleCardOpen();
+        }
+    }
+
+    //카드 뒤집기 
+    const handleCardOpen = async () => {
+        try {
+            const token = getToken(); // 토큰 가져오기
+
+            const response = await axios.post('/api/auth/friend/open', {
+                targetId: userInfo.id
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}` // 헤더에 토큰 추가
+                }
+            });
+
+            if(response.status === 200){
+                console.log(userInfo.nickname + "님 카드 오픈");
+                setIsFlipped(true);
+            }
+            else if(response.status === 400){
+                console.log("카드 뒤집기 클라이언트 에러");
+            }
+            else if(response.status === 500){
+                console.log("카드 뒤집기 서버 에러");
+            }
+        } catch (error) {
+            console.error('카드 뒤집기 오류 발생:', error);
+        }
+    }
 
     //친구 프로필로 이동
     const handleProfile = () => {
         navigate(`/profile/${userInfo.nickname}`);
     }
 
-    useEffect(() => {
-        // 사용 언어 배열로 변환하여 업데이트한 후 능숙도가 높은 언어 구하기
-        const canLanguagesArray = Object.entries(userInfo.canLanguages).map(([language, level]) => ({ language, level }));
-        const sortedCanLanguagesArray = [...canLanguagesArray].sort((a, b) => b.level - a.level);
-        setCLList(sortedCanLanguagesArray);
-        setCanLanguage(sortedCanLanguagesArray[0]);
-
-        // 학습 언어 배열로 변환하여 업데이트한 후 능숙도가 가장 높은 언어 구하기
-        const wantLanguagesArray = Object.entries(userInfo.wantLanguages).map(([language, level]) => ({ language, level }));
-        const sortedWantLanguagesArray = [...wantLanguagesArray].sort((a, b) => b.level - a.level);
-        setWLList(sortedWantLanguagesArray);
-        setWantLanguage(sortedWantLanguagesArray[0]);
-
-        // 취미 중에서 hb와 동일한 항목을 맨 앞으로 이동
-        if (hb && userInfo.hobbies && userInfo.hobbies.includes(hb)) {
-            const updatedHobbies = [hb, ...userInfo.hobbies.filter(hobby => hobby !== hb)];
-            userInfo.hobbies = updatedHobbies;
-        }
-
-    }, [userInfo]);
-
-    // 취미 배열을 맨 앞에 hobby.same === true 인 항목이 오도록 재정렬하는 함수
-    const sortHobbies = (hobbies) => {
-        const sortedHobbies = [...hobbies];
-        sortedHobbies.sort((a, b) => {
-            if (a.same === true && b.same !== true) return -1; // a가 same === true이고 b가 same !== true인 경우 a를 더 앞에 위치시킵니다.
-            if (a.same !== true && b.same === true) return 1; // b가 same === true이고 a가 same !== true인 경우 b를 더 앞에 위치시킵니다.
-            return 0; // 같은 경우 순서를 유지합니다.
-        });
-        return sortedHobbies;
-    };
-
-    // 언어 모달창 : 선택된 탭에 따라 해당 목록을 표시하는 함수
-    const renderTabContent2 = () => {
-        switch (activeTab2) {
-            case 'can':
-                return (
-                    <div>
-                        {CLList && CLList.map((language, index) => (
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E0E0E0', padding: '10px' }}>
-                                <PercentBar key={index} language={language.language} level={language.level} color={"blue"}/>
-                            </div>
-                        ))}
-                    </div>
-                );
-            case 'want':
-                return (
-                    <div>
-                        {WLList && WLList.map((language, index) => (
-                            <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E0E0E0', padding: '10px' }}>
-                                <PercentBar key={index} language={language.language} level={language.level} color={"red"}/>
-                            </div>
-                        ))}
-                    </div>
-                );
-            default:
-                return ;
-        }
-    };
-
+    //친구 신청
     const handleSendFriendRequest = () => {
         sendFriendRequest(userInfo);
     }
 
     return (
-        <Card>
-            <div style={{ display: 'flex', alignItems:"center", justifyContent: "space-between"}}>
-                <div style={{ display: 'flex', alignItems:"center"}}>
-                    {/* 프로필 사진 */}
-                    <div style={{marginRight:"10px"}} onClick={handleProfile}>
-                        <img
-                            src={userInfo?.profileImage ? userInfo.profileImage : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
-                            alt="profile"
-                            style={{width:"40px", borderRadius: "50%"}}
-                        />
-                    </div>
-
-                    {/* 닉네임 */}
-                    <div onClick={handleProfile} style={{fontWeight : "bold", fontSize: "15px"}}>{userInfo.nickname}</div>
-
-                    {/* 성별, 나이 */}
-                    <div style={{fontWeight:"normal", display:"flex", marginLeft:"10px"}}>
-                        {userInfo?.gender === "MAN" ? (
-                                <GiMale color='blue' size={20} />
-                        ):(
-                            <GiFemale color='red' size={20}/>
-                        )}
-                        <div style={{fontSize:"13px", marginLeft:"3px"}}>{userInfo.age}</div>
-                    </div>
-
-                    <button
-                        type="button"
-                        style={{
-                            width: "100px",
-                            height: "25px",
-                            marginLeft: "15px",
-                            borderRadius:"25px",
-                            backgroundColor:"#B7DAA1",
-                            border:"0px"
-                        }}
-                        onClick={handleSendFriendRequest}
-                    >
-                        친구 신청
-                    </button>
-
-                    <button
-                        type="button"
-                        style={{
-                            width: "100px",
-                            height: "25px",
-                            marginLeft: "15px",
-                            borderRadius:"25px",
-                            backgroundColor:"#B7DAA1",
-                            border:"0px"
-                        }}
-                    >
-                        채팅 보내기
-                    </button>
-                </div>
+        <div className={`${styles.card} ${isFlipped ? styles.flipped : ""}`} >
+            <div className={styles.front} onClick={handleCardClick}>
+                <img
+                    style={{width: "100%", height: "100%"}}
+                    alt="cardimg"
+                    src={cardImg}
+                />
             </div>
-         
-            {/* 소개 */}
-            {userInfo?.introduce && <div style={{textAlign: "left",  marginTop: "15px", marginBottom: "15px"}}>{userInfo?.introduce}</div>}
+            <div className={styles.back}>
+                <Card
+                    style={{width: "100%", height: "100%"}}
+                    cover={
+                        // <div style={{width: "100%", textAlign: "center", marginTop: "10px"}}>
+                            <img
+                                // style={{width: "80%", borderRadius: "8px"}}
+                                alt="profileimg"
+                                src={userInfo?.profileImage ? userInfo.profileImage : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                            />
+                        // </div>
+                    }
+                    actions={[
+                        <span onClick={handleSendFriendRequest}><IoMdPersonAdd size={22}/></span>,
+                        <span onClick={handleProfile}><FaHome size={22}/></span>,
+                        <span><BiSolidMessageRounded size={22}/></span>
+                    ]}
+                >
+                    <Meta
+                        title={
+                            <div style={{display: "flex"}}>
+                                {/* 닉네임 */}
+                                <div onClick={handleProfile} style={{fontWeight : "bold", fontSize: "15px"}}>{userInfo.nickname}</div>
 
-            {/* 더보기 true/false */}
-            <div style={{ marginTop: "15px"}}>
-                {showAllInfo ? ( 
-                    <div>
-                        {/* 소개 */}
-                        {userInfo?.introduce && 
-                            <div style={{textAlign: "left", marginBottom: "15px"}}>
-                                {userInfo?.introduce}
+                                {/* 성별, 나이 */}
+                                <div style={{fontWeight:"normal", display:"flex", marginLeft:"10px"}}>
+                                    {userInfo?.gender === "MAN" ? (
+                                            <GiMale color='blue' size={20} />
+                                    ):(
+                                        <GiFemale color='red' size={20}/>
+                                    )}
+                                    <div style={{fontSize:"13px", marginLeft:"3px"}}>{userInfo.age}</div>
+                                </div>
                             </div>
                         }
-
-                        {/* 언어 */}
-                        <div style={{display:"flex", marginBottom: "15px"}}>
-                            {CLList ? (
-                                <div>
-                                    {CLList.map((language, index) => (
-                                        <div key={index} style={{ padding: '8px' }}>
-                                            <PercentBar language={language.language} level={language.level} color={"blue"}/>
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <div style={{color: "#A6A3A3"}}> 사용자가 설정한 사용 언어가 없습니다.</div>
-                            )}
-
-                            {CLList && WLList ? ( 
-                                <div style={{ marginLeft : "10px", marginRight : "10px" , padding: "8px 0px"}}><FaExchangeAlt /></div>
-                            ) : (
-                                <div style={{ marginLeft : "15px", marginRight : "15px", color: "#A6A3A3" }}><FaExchangeAlt /></div>
-                            )}
-
-                            {WLList ? (
-                                <div>
-                                    {WLList.map((language, index) => (
-                                        <div key={index} style={{ padding: '8px' }}>
-                                            <PercentBar language={language.language} level={language.level} color={"red"}/>
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <div style={{color: "#A6A3A3"}}> 사용자가 설정한 학습 언어가 없습니다.</div>
-                            )}
-
-                        </div>
-
-                        {/* 관심사 */}
-                        {sortHobbies(userInfo?.hobbies).map((hobby, index) => (
-                            <div
-                                key={`${userInfo.id}_${hobby}_${index}`} 
-                                style={{ 
-                                    display: "inline-block",
-                                    height: "30px",
-                                    borderRadius: "9px", 
-                                    backgroundColor: (hobby?.same == 1) || (hobby===hb) ? "#C8DCA0" : "#e9ecef",
-                                    padding: "5px 10px",
-                                    marginRight: "3px",
-                                    marginTop: "5px"
-                                }}
-                            >
-                                {hobby.hobby ? `# ${hobby.hobby}` : `# ${hobby}`}
-                            </div>
-                        ))}
-
-                        <div onClick={()=> setShowAllInfo(false)} style={{ cursor: "pointer", marginTop: "10px", padding: "0px 8px", color: "blue" }}>
-                            - 간략하게
-                        </div>
-                    </div>
-                ) : (
-                    // 간략하게 보기
-                    <div>
-                        {/* 소개 */}
-                        {userInfo?.introduce ? (
-                            <div style={{height: "20px", textAlign: "left", marginBottom: "15px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>
-                                {userInfo?.introduce}
-                            </div>
-                        ) : (
-                            <div style={{height: "20px", textAlign: "left", marginBottom: "15px", color: "#A6A3A3"}}> 사용자가 설정한 소개가 없습니다.</div>
-                        )}
-
-                        {/* 사용언어, 학습언어 */}
-                        <div style={{display:"flex", height: "22px", marginBottom: "15px"}}>
-                            {canLanguage ? (
-                                <PercentBar language={canLanguage.language} level={canLanguage.level} color={"blue"}/>
-                            ) : (
-                                <div style={{color: "#A6A3A3"}}> 사용자가 설정한 사용 언어가 없습니다.</div>
-                            )}
-                            {canLanguage && wantLanguage ? ( 
-                                <div style={{ marginLeft : "15px", marginRight : "15px" }}><FaExchangeAlt /></div>
-                            ) : (
-                                <div style={{ marginLeft : "15px", marginRight : "15px", color: "#A6A3A3" }}><FaExchangeAlt /></div>
-                            )}
-                            {wantLanguage ? (
-                                <PercentBar language={wantLanguage.language} level={wantLanguage.level} color={"red"}/>
-                            ) : (
-                                <div style={{color: "#A6A3A3"}}> 사용자가 설정한 학습 언어가 없습니다.</div>
-                            )}
-                        </div>
-
-                        {/* 취미 간략하게 보기(5개) */}
-                        {userInfo?.hobbies.length > 0 ? (
-                            <div style={{marginBottom: "10px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis"}}>
-                                {sortHobbies(userInfo?.hobbies).slice(0, 5).map((hobby, index) => (
-                                    <div
-                                        key={`${userInfo.id}_${hobby}_${index}`} 
-                                        style={{ 
-                                            display: "inline-block",
-                                            height: "30px",
-                                            borderRadius: "9px", 
-                                            backgroundColor: (hobby?.same == 1) || (hobby===hb) ? "#C8DCA0" : "#e9ecef",
-                                            padding: "5px 10px",
-                                            marginRight: "3px"
-                                        }}
-                                    >
-                                        {hobby.hobby ? `# ${hobby.hobby}` : `# ${hobby}`}
+                        description={
+                            <div style={{display: "flex", flexDirection: "column", color: "black"}}>
+                                {/* 소개 */}
+                                {userInfo?.introduce ? (
+                                    <div className={styles. introduce}>
+                                        {userInfo?.introduce}
                                     </div>
-                                ))}
+                                ) : (
+                                    <div style={{height: "20px", textAlign: "left", marginBottom: "5px", color: "#00000073"}}>설정한 소개가 없습니다.</div>
+                                )}
                             </div>
-                        ) : (
-                            <div style={{height: "30px",marginBottom: "10px", color: "#A6A3A3"}}>친구가 설정한 관심사가 없습니다.</div>
-                        )}
-
-                        {( (CLList && CLList.length > 1) || (WLList && WLList.length > 1) || userInfo.hobbies.length > 5 ) ? (
-                            <div onClick={()=> setShowAllInfo(true)} style={{ height: "20px",cursor: "pointer", color: "blue" }}>
-                                + 더 보기
-                            </div>
-                        ) : (
-                            <div style={{ height: "20px"}}/>
-                        )}
-                    </div>
-                )}
+                        }
+                    />
+                </Card>
             </div>
-
-            {/* 전체 사용, 학습 언어 보기 모달창 */}
-            {showAllLanguage && (
-                <div className="modal fade show" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
-                    <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                        <div className="modal-content" style={{height:"450px"}}>
-                                <ul className="nav nav-tabs">
-                                    <li className="nav-item">
-                                        <button 
-                                            className={`nav-link ${activeTab2 === 'can' ? 'active' : ''}`} 
-                                            style={{ width:"150px", backgroundColor: activeTab2 === 'can' ? '#B7DAA1' : 'white', color: "black"}}
-                                            onClick={() => setActiveTab2('can')}
-                                        >사용 언어</button>
-                                    </li>
-                                    <li className="nav-item">
-                                        <button 
-                                            className={`nav-link ${activeTab2 === 'want' ? 'active' : ''}`} 
-                                            style={{ width:"150px", backgroundColor: activeTab2 === 'want' ? '#B7DAA1' : 'white', color: "black"}}
-                                            onClick={() => setActiveTab2('want')}
-                                        >학습 언어</button>
-                                    </li>
-                                </ul>
-
-                            <div className="modal-body">
-                                {renderTabContent2()}
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => {setShowAllLanguage(false); setActiveTab2('can')}}>닫기</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-        </Card>
+        </div>
     )
 }
