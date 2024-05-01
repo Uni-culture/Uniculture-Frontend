@@ -7,6 +7,7 @@ import { FaHome } from "react-icons/fa";
 import { BiSolidMessageRounded } from "react-icons/bi";
 import styles from './RecommendFriendCard.module.css'
 import cardImg from '../../../assets/cardImg.png'
+import cardOpenSound from '../../../assets/cardOpen.mp3'
 import { Card } from 'antd';
 const { Meta } = Card;
 
@@ -42,6 +43,10 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest}) {
             if(response.status === 200){
                 console.log(userInfo.nickname + "님 카드 오픈");
                 setIsFlipped(true);
+
+                // 소리 재생
+                const flipSound = new Audio(cardOpenSound);
+                flipSound.play();
             }
             else if(response.status === 400){
                 console.log("카드 뒤집기 클라이언트 에러");
