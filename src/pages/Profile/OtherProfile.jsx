@@ -244,15 +244,14 @@ export default function OtherProfile({otherInformation}) {
             const token = getToken(); // 토큰 가져오기
 
             if(token){ //로그인 O
-                const response = await axios.post('/api/auth/friend', {
-                    targetId: otherInfo.id
-                }, {
+                const response = await axios.get(`/api/auth/room/duo?toId=${otherInfo.id}`, {
                     headers: {
-                        Authorization: `Bearer ${token}` // 헤더에 토큰 추가
+                        Authorization: `Bearer ${token}`
                     }
                 });
                 if(response.status === 200){
-                    alert("친구 신청 성공");
+                    console.log(response);
+                    navigate(`/chat/${response.data.chatRoomId}`);
                 }
                 else if(response.status === 400){
                     console.log("채팅 보내기 클라이언트 에러");

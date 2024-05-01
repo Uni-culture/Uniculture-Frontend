@@ -46,7 +46,7 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
             },
             reconnectDelay: 5000,       //자동 재연결 ? 
             onConnect: (frame) => {
-                console.log('Connected' + frame);
+                console.log('채팅내역 연결', frame);
                 clientdata.subscribe(`/sub/chat/room/${selectedChatRoom.id}`, (message) => {
                     //수신 처리
                     const receivedMessage = JSON.parse(message.body);

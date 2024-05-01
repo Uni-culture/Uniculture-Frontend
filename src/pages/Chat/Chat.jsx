@@ -4,7 +4,7 @@ import ChatList from "../../components/Chat/ChatList";
 import ChatMain from "../../components/Chat/ChatMain";
 import Swal from "sweetalert2";
 import "../../components/PageLayout/PageLayout.css"
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import axios from "axios";
 import styles from './Chat.module.css';
 import { LuMessageSquarePlus } from "react-icons/lu";
@@ -14,8 +14,10 @@ import CreateChat from "../../components/Chat/CreateChat";
 const Chat = () => {
     const navigate = useNavigate(); // 페이지 이동을 위한 navigate 함수
     const [userInfo, setUserInfo] = useState(null);
-    const [selectedChatRoom, setSelectedChatRoom] = useState(null);
+    const [selectedChatRoom, setSelectedChatRoom] = useState();
     const [createChatModal, setCreateChatModal] = useState(false);
+
+
 
     // 로그인 후 저장된 토큰 가져오는 함수
     const getToken = () => {
@@ -70,6 +72,7 @@ const Chat = () => {
     // 채팅방 선택 핸들러
     const handleSelectChatRoom = (room) => {
         setSelectedChatRoom(room);
+        navigate(`/chat/${room.id}`);
         // 필요한 경우 채팅방 상세 페이지로 이동하는 코드 추가
         // 예: navigate(`/chat/rooms/${roomId}`);
     };
@@ -96,7 +99,9 @@ const Chat = () => {
             });
             if (response.status === 200) {
                 setSelectedChatRoom(response.data); // 서버에서 받은 chatRoomId 저장
-                console.log(JSON.stringify(response.data));
+                // console.log(JSON.stringify(response.data));
+                console.log(response.data);
+                navigate(`/chat/${response.data.chatRoomId}`)
             } else {
                 console.log('서버 응답 오류:', response.status);
             }
@@ -117,7 +122,7 @@ const Chat = () => {
             <div className={styles.page_layout}>
                 <aside className={styles.aside}>
                     <div className={styles.asideTitle}> <h3>채팅</h3> <div onClick={handleCreateChatModal}><LuMessageSquarePlus size={25}/></div></div>
-                    <ChatList onSelectedChatRoom={handleSelectChatRoom}/>
+                    <ChatList onSelectedChatRoom={handleSelectChatRoom} user={userInfo}/>
                 </aside>
                 <div className={styles.chatmain}>
                     {selectedChatRoom== null ? (
@@ -127,9 +132,9 @@ const Chat = () => {
                             <span style={{fontSize: "14px", padding: "5px 0px 10px 0px", color: "#737373"}}>친구나 그룹에 비공개 사진과 메시지를 보내보세요.</span>
                             <button className= {styles.chatmainB} onClick={handleCreateChatModal}>메시지 보내기</button>
                         </div>
-                    ): (
+                    ): userInfo ? (
                         <ChatMain selectedChatRoom={selectedChatRoom} userInfo={userInfo}/>
-                    )}
+                    ): (<div>Loading</div>)}
                 </div>
             </div>
             {createChatModal && <CreateChat modal={handleCreateChatModal} createChat={createChat}/>}

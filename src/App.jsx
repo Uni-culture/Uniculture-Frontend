@@ -40,6 +40,7 @@ function App() {
             <Route path="/account/personal-info" element={<ProfileInfo />} />
             <Route path="/account/delete" element={<ProfileDelete />} />
             <Route path="/chat" element={<Chat />} />
+            <Route path="/chat/:chatId" element={<Chat />} />
             <Route path='/study' element={<Study/>} />
             <Route path='/post/new' element={<Post />}/>
             <Route path='/post' element={<PostView />} />
