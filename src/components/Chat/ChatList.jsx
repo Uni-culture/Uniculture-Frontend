@@ -102,8 +102,15 @@ const ChatList = ({onSelectedChatRoom, user}) => {
           console.error('Broker reported error: ' + frame.headers['message']);
           console.error('Additional details: ' + frame.body);
         },
-        heartbeatIncoming: 4000,
-        heartbeatOutgoing: 4000,
+        onStompError: (frame) => {
+          console.error('STOMP Error:', frame.headers['message'], 'Details:', frame.body);
+        },
+        onWebSocketError: (evt) => {
+          console.error('WebSocket Error:', evt);
+        },
+        onDisconnect: () => {
+          console.log("Disconnected");
+        },
       })
       clientdata.activate();
       setStompClient(clientdata);
@@ -114,8 +121,6 @@ const ChatList = ({onSelectedChatRoom, user}) => {
 
       // navigate('/chat');
     }, [navigate]);
-    
-
     
 
 

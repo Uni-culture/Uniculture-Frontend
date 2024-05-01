@@ -61,6 +61,7 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
                 console.error('Broker reported error: ' + frame.headers['message']);
                 console.error('Additional details: ' + frame.body);
             },
+            
             heartbeatIncoming: 4000,
             heartbeatOutgoing: 4000,
         });

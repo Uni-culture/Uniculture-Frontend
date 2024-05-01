@@ -122,7 +122,8 @@ const Chat = () => {
             <div className={styles.page_layout}>
                 <aside className={styles.aside}>
                     <div className={styles.asideTitle}> <h3>채팅</h3> <div onClick={handleCreateChatModal}><LuMessageSquarePlus size={25}/></div></div>
-                    <ChatList onSelectedChatRoom={handleSelectChatRoom} user={userInfo}/>
+                    {userInfo ? (<ChatList onSelectedChatRoom={handleSelectChatRoom} user={userInfo}/>) : (<div>Loading</div>)}
+                    
                 </aside>
                 <div className={styles.chatmain}>
                     {selectedChatRoom== null ? (
