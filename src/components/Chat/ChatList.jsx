@@ -87,6 +87,8 @@ const ChatList = ({onSelectedChatRoom, user}) => {
           console.log('STOMP' + str);
         },
         reconnectDelay: 5000,       //자동 재연결 ? 
+        heartbeatIncoming: 4000,
+        heartbeatOutgoing: 4000,
         onConnect:(frame) =>{
           console.log("채팅방 연결 확인", frame);
           clientdata.subscribe(`/sub/chat/user/${user.id}`, (message)=>{
