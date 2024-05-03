@@ -19,56 +19,6 @@
     }
   }
 
-  .comments-body {
-
-    .comments-comment {
-      padding: 0.5rem 0.3rem;
-
-      .comment-username-wrap {
-        display: flex;
-        align-items: baseline;
-        justify-content: space-between;
-        .comment-username {
-          font-weight: 600;
-        }
-      }
-
-      .comment-content {
-        // \n(엔터)를 태그 안의 텍스트에 적용
-        white-space: pre-wrap;
-        word-break: break-all;
-        margin: 0.4rem auto;
-        font-size: 0.95rem;
-      }
-    }
-
-    .comment-bottom {
-      display: flex;
-      justify-content: space-between; /* 답글 버튼과 날짜를 양 끝으로 배치 */
-      align-items: baseline;
-      margin-top: 10px;
-    }
-
-    .reply-button {
-      border: 1px solid lightgrey;
-      //border-radius: 5px;
-      background-color: #FBFBF3;
-      padding: 3px 7px;
-      color: black;
-      font-size: 0.8rem;
-    }
-
-    .comment-date {
-      color: lightgray;
-      font-size: 0.9rem;
-    }
-
-    .hr-style {
-      margin-bottom: 0;
-      padding-bottom: 9px;
-    }
-
-  }
   .comments-footer{
     display: flex;
     justify-content: center;

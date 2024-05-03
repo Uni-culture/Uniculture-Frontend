@@ -1,13 +1,11 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import moment from 'moment';
 import {Pagination, TextField} from "@mui/material";
 import {useLocation, useNavigate} from "react-router-dom";
 import "./comments.scss";
 import Swal from "sweetalert2";
-import ReplyComments from "./replyComments";
-import "./replyComments.scss";
-import {RxCornerBottomLeft} from "react-icons/rx";
+import "./replyInput.scss";
+import Comment from "./Comment";
 
 const Comments = ({board_id}) => {
     const location = useLocation();
@@ -16,8 +14,6 @@ const Comments = ({board_id}) => {
     const [content, setContent] = useState(""); // 입력한 댓글 내용
     const [page, setPage] = useState(0); // 현재 페이지
     const [pageCount, setPageCount] = useState(0); // 총 페이지 갯수
-    const [replyToCommentId, setReplyToCommentId] = useState(null); // 답글 대상 댓글의 ID를 저장할 상태
-    const [isReplyVisible, setIsReplyVisible] = useState(true); // 대댓글 입력창 상태
 
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 로컬 스토리지에서 토큰 가져옴
@@ -133,7 +129,6 @@ const Comments = ({board_id}) => {
         getCommentList();
     }, [page]);
 
-
     const LoginWarning = () => {
         Swal.fire({
             icon: "warning",
@@ -154,20 +149,6 @@ const Comments = ({board_id}) => {
     const changePage = (value) => {
         setPage(value);
     }
-
-    const replyComponent = (commentId) => {
-        if(!token) {
-            LoginWarning();
-            navigate("/sign-in", {state: {from: location.pathname}});
-        } else {
-            setReplyToCommentId(commentId); // 부모 id 업데이트
-            setIsReplyVisible(!isReplyVisible);
-        }
-    };
-
-    const handleReplySuccess = () => {
-        setIsReplyVisible(!isReplyVisible); // 대댓글 등록 성공 시 ReplyComments 컴포넌트를 숨김
-    };
 
     return (
         <div className="comments-wrapper">
@@ -192,47 +173,7 @@ const Comments = ({board_id}) => {
             </div>
             <div className="comments-body">
                 {commentList.map((item, index) => (
-                    <div key={index} className="comments-comment">
-                        <div className="comment-username-wrap">
-                            <div className="comment-username">{item.commentWriterName}</div>
-                        </div>
-                        <div className="comment-content">{item.content}</div>
-                        <div className="comment-bottom">
-                            <button className="reply-button" onClick={() => replyComponent(item.id)}>답글</button>
-                            <div className="comment-date">
-                                {moment(item.createDate).add(9, "hour").format('YYYY-MM-DD HH:mm')}
-                            </div>
-                        </div>
-                        <hr className="hr-style"/>
-                        {replyToCommentId === item.id && isReplyVisible && <ReplyComments parent_id={item.id} board_id={board_id} getCommentList={getCommentList} onReplySuccess={handleReplySuccess}/>}
-
-                        {item.children && item.children.length > 0 && (
-                            <div className="replyComments-wrapper">
-                                {item.children.map((childItem, childIndex) => (
-                                    <div>
-                                        <div className="header-with-icon">
-                                            <div className="reply-style">
-                                                <RxCornerBottomLeft />
-                                            </div>
-                                            <div className="replyWrapper">
-                                                <div key={childIndex} className="comment-username-wrap">
-                                                    <div className="comment-username">{childItem.commentWriterName}</div>
-                                                </div>
-                                                <div className="comment-content">{childItem.content}</div>
-                                                <div className="comment-bottom">
-                                                    <button className="reply-button" onClick={() => replyComponent(item.id)}>답글</button>
-                                                    <div className="comment-date">
-                                                        {moment(childItem.createDate).add(9, "hour").format('YYYY-MM-DD HH:mm')}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <hr/>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </div>
+                    <Comment key={index} board_id={board_id} comment={item} getCommentList={getCommentList} updateTotalCommentsAndPage={updateTotalCommentsAndPage} submitComment={submitComment}/>
                 ))}
             </div>
             <div className="comments-footer">
