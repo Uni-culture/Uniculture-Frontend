@@ -20,7 +20,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
     const [replyMenuVisible, setReplyMenuVisible] = useState({});
     const [commentEditMode, setCommentEditMode] = useState(false); // 댓글 수정 상태
     const [replyEditMode, setReplyEditMode] = useState({}); // 대댓글 수정 상태
-    const [content, setContent] = useState(comment.content); // 입력한 댓글 내용
+    const [content, setContent] = useState(""); // 입력한 댓글 내용
     const [replyContent, setReplyContent] = useState({}); // 대댓글 내용 상태 추가
 
     const getToken = () => {
@@ -186,7 +186,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                 ):(
                     <div>
                         <div className={`comment-content ${comment.isDeleted ? 'comment-deleted' : ''}`}>
-                            {comment.isDeleted ? '댓글이 삭제되었습니다' : content}
+                            {comment.isDeleted ? '댓글이 삭제되었습니다' : comment.content}
                         </div>
 
                         <div className="comment-bottom">
