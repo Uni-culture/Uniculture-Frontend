@@ -173,7 +173,7 @@ const Comments = ({board_id}) => {
             </div>
             <div className="comments-body">
                 {commentList.map((item, index) => (
-                    <Comment key={index} board_id={board_id} comment={item} getCommentList={getCommentList} updateTotalCommentsAndPage={updateTotalCommentsAndPage} submitComment={submitComment}/>
+                    <Comment key={index} board_id={board_id} comment={item} getCommentList={getCommentList} updateTotalCommentsAndPage={updateTotalCommentsAndPage}/>
                 ))}
             </div>
             <div className="comments-footer">

@@ -12,7 +12,7 @@ import axios from "axios";
 import {TextField} from "@mui/material";
 
 moment.locale('ko');
-const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage, submitComment}) => {
+const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage}) => {
     const location = useLocation();
     const navigate = useNavigate();
     const [isReplyFormVisible, setIsReplyFormVisible] = useState(false); // 대댓글 입력창 상태
@@ -59,21 +59,26 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
     }
 
     // 대댓글 수정 설정
-    const replyEdit = (commentId) => {
-        setReplyEditMode(prevState => ({
+    const replyEdit = (childId, childContent) => {
+        setReplyContent(prevState => ({ // 대댓글 내용 업데이트
             ...prevState,
-            [commentId]: !prevState[commentId]
-        })); // 수정 입력창 보이게
+            [childId]: childContent
+        }));
+        setReplyEditMode(prevState => ({ // 수정 입력창 보이게
+            ...prevState,
+            [childId]: !prevState[childId]
+        }));
         setReplyMenuVisible(false); // 대댓글 메뉴를 닫음
     }
 
     // 댓글 또는 대댓글 수정 요청
-    const modifyComment = async (commentId) => {
+    const modifyComment = async (commentId, isReply = false) => {
         console.log('modifyComment start');
-        console.log('content: ', content);
+        const contentToSubmit = isReply ? replyContent[commentId] : content;
+        console.log('content: ', contentToSubmit);
         try {
             const response = await axios.patch(`/api/auth/comment?commentId=${commentId}`,{
-                    content: content
+                    content: contentToSubmit
                 }, {
                     headers: {
                         Authorization: `Bearer ${token}` // 헤더에 토큰 추가
@@ -82,8 +87,15 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
             if (response.status === 200) {
                 const responseData = response.data;
                 console.log(`responseData : `, responseData);
-                setCommentEditMode(false); // 수정 입력창 숨기기
-                updateTotalCommentsAndPage(); // 새로운 댓글이 추가되면 총 댓글 수를 업데이트하고, 해당하는 페이지로 로드
+                if (isReply) {
+                    setReplyEditMode(prevState => ({ // 대댓글 수정 입력창 숨기기
+                        ...prevState,
+                        [commentId]: false
+                    }));
+                } else {
+                    setCommentEditMode(false); // 수정 입력창 숨기기
+                }
+                getCommentList();
             }
         } catch (error) { // 실패 시
             if(error.response.status === 401) {
@@ -202,7 +214,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                                         <HiOutlineDotsVertical className="HiOutlineDotsVertical" onClick={() => toggleReplyMenu(child.id)} />
                                         {replyMenuVisible[child.id] && (
                                             <div className="replyComment-options">
-                                                <button className="option-button" onClick={() => replyEdit(child.id)}>수정</button>
+                                                <button className="option-button" onClick={() => replyEdit(child.id, child.content)}>수정</button>
                                                 <button className="option-button" onClick={() => deleteComment(child.id)}>삭제</button>
                                             </div>
                                         )}
@@ -217,13 +229,16 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                                                     className="edit-comments-header-textarea"
                                                     maxRows={3}
                                                     onChange={(e) => {
-                                                        setContent(e.target.value)
+                                                        setReplyContent(prevState => ({
+                                                            ...prevState,
+                                                            [child.id]: e.target.value
+                                                        }));
                                                     }}
-                                                    value={content}
+                                                    value={replyContent[child.id] || ''}
                                                     multiline placeholder="댓글을 입력해주세요"
                                                 />
-                                                {content !== "" ? (
-                                                    <button onClick={submitComment}>수정하기</button>
+                                                {replyContent !== "" ? (
+                                                    <button onClick={() => modifyComment(child.id, true)}>수정하기</button>
                                                 ) : (
                                                     <button disabled={true}>
                                                         수정하기
