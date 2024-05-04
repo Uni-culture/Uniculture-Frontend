@@ -48,9 +48,10 @@ const OtherBoardList = ({memberId}) => {
         }
     };
 
+    /*
     useEffect(() => {
         fetchBoardData(0);
-    }, [])
+    }, [])*/
 
     useEffect(() => {
         fetchBoardData(currentPage);

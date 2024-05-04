@@ -13,6 +13,7 @@ import { FaExchangeAlt } from "react-icons/fa";
 import MyBoardList from "./MyBoardList";
 import TotalBoardList from "../BoardList/TotalBoardList";
 import ShowAllLanguage from './Modal/ShowAllLanguage';
+import MyStudyList from "./MyStudyList";
 
 export default function MyProfile({myInformation}) {
     const [myInfo, setMyInfo] = useState(myInformation); // 매개변수로 받은것을 가지고 다시 상태유지
@@ -246,9 +247,11 @@ export default function MyProfile({myInformation}) {
 
     // 모달이 표시될 때 친구 목록을 불러옴
     useEffect(() => {
-        fetchFriendList();
-        fetchSentRequests();
-        fetchReceivedRequests();
+        if(showFriend) {
+            fetchFriendList();
+            fetchSentRequests();
+            fetchReceivedRequests();
+        }
     }, [showFriend]);
 
     // 친구 모달창 : 선택된 탭에 따라 해당 목록을 표시하는 함수
@@ -315,7 +318,7 @@ export default function MyProfile({myInformation}) {
             case 'studyList':
                 return (
                     <div style={{marginTop: "30px"}}>
-                        <p>스터디</p>
+                        <MyStudyList />
                     </div>
                 );
             default:
