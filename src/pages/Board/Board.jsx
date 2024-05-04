@@ -19,6 +19,7 @@ const Board = () => {
     const [isLoaded, setIsLoaded] = useState(false);
     const navigate = useNavigate();
     const [liked, setLiked] = useState(false); // 좋아요 상태 관리
+    const [showTranslateOptions, setShowTranslateOptions] = useState(false);
 
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
@@ -80,10 +81,15 @@ const Board = () => {
                 console.log(response);
                 setIsTranslated(true);
                 setContent(response.data.text);
+                setShowTranslateOptions(false); // 번역 후 옵션 메뉴 숨김
             }
         } catch (e) {
             console.log(e);
         }
+    }
+
+    function toggleTranslateOptions() { // 번역 버튼 토글
+        setShowTranslateOptions(!showTranslateOptions);
     }
 
     const handleLike = async () => {
@@ -239,7 +245,13 @@ const Board = () => {
                                 {isTranslated ? (
                                     <button className="board-buttons" onClick={()=>{setContent(board.content); setIsTranslated(false);}}> 되돌리기 </button>
                                 ) : (
-                                    <button className="board-buttons" onClick={()=>{translate(content)}}> 번역 </button>
+                                    <button className="board-buttons" onClick={toggleTranslateOptions}> 번역 </button>
+                                )}
+                                {showTranslateOptions && (
+                                    <div className="translate-options">
+                                        <button className="option-button" onClick={()=> {translate(content)}}>게시글 번역</button>
+                                        <button className="option-button">댓글 번역</button>
+                                    </div>
                                 )}
                             </span>
                             {board.isMine && // 자신의 게시물이면 활성화

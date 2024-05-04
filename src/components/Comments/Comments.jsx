@@ -171,6 +171,9 @@ const Comments = ({board_id}) => {
                     </button>
                 )}
             </div>
+            {/*<div className="commentsTranslateBtnWrap">
+                <button className="commentsTranslateBtn">댓글 번역</button>
+            </div>*/}
             <div className="comments-body">
                 {commentList.map((item, index) => (
                     <Comment key={index} board_id={board_id} comment={item} getCommentList={getCommentList} updateTotalCommentsAndPage={updateTotalCommentsAndPage}/>

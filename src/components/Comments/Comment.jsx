@@ -22,6 +22,74 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
     const [replyEditMode, setReplyEditMode] = useState({}); // 대댓글 수정 상태
     const [content, setContent] = useState(""); // 입력한 댓글 내용
     const [replyContent, setReplyContent] = useState({}); // 대댓글 내용 상태 추가
+    const [isTranslated, setIsTranslated] = useState(false); // 번역 상태
+    const [translatedContent, setTranslatedContent] = useState(""); // 번역된 댓글 내용
+    const [replyIsTranslated, setReplyIsTranslated] = useState({}); // 대댓글 번역 상태
+    const [replyTranslations, setReplyTranslations] = useState({}); // 대댓글 번역된 내용
+
+    // 댓글 또는 대댓글 번역 기능
+    async function translateComment(id, content, isReply=false) {
+        if (!token) {
+            LoginWarning();
+            navigate("/sign-in", {state: {from: location.pathname}});
+            return;
+        }
+        try {
+            const response = await axios.post('/api/auth/translate', {
+                text: content,
+                target_lang: "KO"
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            if (response.status === 200) {
+                console.log(response);
+                if (!isReply) {
+                    // 댓글 번역
+                    setTranslatedContent(response.data.text);
+                    setIsTranslated(true);
+                } else {
+                    // 대댓글 번역
+                    setReplyTranslations(prev => ({
+                        ...prev,
+                        [id]: response.data.text
+                    }));
+                    setReplyIsTranslated(prev => ({
+                        ...prev,
+                        [id]: true
+                    }));
+                }
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    // 댓글 번역 토글 기능
+    const toggleTranslate = async () => {
+        // 이미 번역된 상태라면 번역 해제
+        if (isTranslated) {
+            setIsTranslated(false);
+        } else {
+            // 번역되지 않은 상태라면 번역 진행
+            await translateComment(comment.content);
+        }
+    };
+
+    // 대댓글 번역 토글 기능
+    const toggleReplyTranslate = async (id, content) => {
+        // 이미 번역된 상태라면 번역 해제
+        if (replyIsTranslated[id]) {
+            setReplyIsTranslated(prev => ({
+                ...prev,
+                [id]: false
+            }));
+        } else {
+            // 번역되지 않은 상태라면 번역 진행
+            await translateComment(id, content, true);
+        }
+    };
 
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 로컬 스토리지에서 토큰 가져옴
@@ -186,9 +254,9 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                 ):(
                     <div>
                         <div className={`comment-content ${comment.isDeleted ? 'comment-deleted' : ''}`}>
-                            {comment.isDeleted ? '댓글이 삭제되었습니다' : comment.content}
+                            {comment.isDeleted ? '댓글이 삭제되었습니다' : (isTranslated ? translatedContent : comment.content)}
                         </div>
-
+                        <div className="ComentTranslate" onClick={toggleTranslate}>번역하기</div>
                         <div className="comment-bottom">
                             <button className="reply-button" onClick={replyComponent}>답글</button>
                             <div className="comment-date">
@@ -248,7 +316,10 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                                         </div>
                                     ):(
                                         <div>
-                                            <div className="replyComment-content">{child.content}</div>
+                                            <div className="replyComment-content">
+                                                {replyIsTranslated[child.id] ? replyTranslations[child.id] : child.content}
+                                            </div>
+                                            <div className="ComentTranslate" onClick={() => toggleReplyTranslate(child.id, child.content)}>번역하기</div>
                                             <div className="replyComment-bottom">
                                                 <div className="replyComment-date">
                                                     {moment(child.createdDate).fromNow()}

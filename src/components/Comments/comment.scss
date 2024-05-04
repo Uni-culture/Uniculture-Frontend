@@ -87,6 +87,14 @@
   }
 }
 
+.ComentTranslate {
+  font-size: 0.8rem;
+  color: gray;
+}
+.ComentTranslate:hover {
+  cursor: pointer;
+}
+
 .comment-bottom {
   display: flex;
   justify-content: space-between; /* 답글 버튼과 날짜를 양 끝으로 배치 */
@@ -105,7 +113,7 @@
 
 .comment-date {
   color: lightgray;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 .hr-style {
@@ -178,7 +186,7 @@
       // \n(엔터)를 태그 안의 텍스트에 적용
       white-space: pre-wrap;
       word-break: break-all;
-      margin-top: 6px;
+      margin: 0.4rem auto;
       font-size: 0.95rem;
     }
   }
@@ -191,7 +199,7 @@
   .replyComment-date {
     margin-left: auto;
     color: lightgray;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 
   .hr-style {
