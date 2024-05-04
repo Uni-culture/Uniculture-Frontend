@@ -81,7 +81,7 @@ export const Study = () => {
   };
 
   useEffect(() => {
-    if(status==='전체' && !search && tags.length===0){
+    if(!search && tags.length===0){
     fetchBoardData(currentPage);
     } else{
       searchData();
@@ -122,6 +122,12 @@ useEffect(() => {
   // 게시물 검색 요청
   const searchData = async (page=currentPage, newTags = tags) => {
     let url = `/api/post/search?page=${page}&size=10&category=STUDY`;
+
+    if (status === '모집중') {
+      url += '&ps=START';
+    } else if (status === '모집완료') {
+      url += '&ps=FINISH';
+    }
 
     // 검색어가 존재하는 경우
     if (debouncedSearch) {
