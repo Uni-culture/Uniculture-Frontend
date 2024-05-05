@@ -73,7 +73,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
             setIsTranslated(false);
         } else {
             // 번역되지 않은 상태라면 번역 진행
-            await translateComment(comment.content);
+            await translateComment(comment.id, comment.content, false);
         }
     };
 
