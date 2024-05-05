@@ -21,7 +21,7 @@ const OtherBoardList = ({memberId}) => {
         try {
             const token = getToken(); // 토큰 가져오기
             // const page_number = searchParams.get("page");
-            const response = await axios.get(`/api/post/member/${memberId}?ca=NORMAL&page=${page}&size=8`, {
+            const response = await axios.get(`/api/post/member/${memberId}?category=NORMAL&page=${page}&size=8`, {
                 headers: {
                     Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                 }
@@ -48,9 +48,10 @@ const OtherBoardList = ({memberId}) => {
         }
     };
 
+    /*
     useEffect(() => {
         fetchBoardData(0);
-    }, [])
+    }, [])*/
 
     useEffect(() => {
         fetchBoardData(currentPage);
