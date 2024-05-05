@@ -218,7 +218,12 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
         <div style={{ width: '100%' }}>
             <div className="comments-comment">
                 <div className="comment-username-wrap">
-                    <div className="comment-username">{comment.commentWriterName}</div>
+                    <div className="postMine-wrap">
+                        <div className="comment-username">{comment.commentWriterName}</div>
+                        {comment.postMine && (
+                            <div className="postMine-style">작성자</div>
+                        )}
+                    </div>
                     <HiOutlineDotsVertical className="HiOutlineDotsVertical" onClick={() => setCommentMenuVisible(!commentMenuVisible)} />
                     {commentMenuVisible && (
                         <div className="comment-options">
@@ -278,7 +283,12 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                                 </div>
                                 <div className="comments-replyComment">
                                     <div className="replyComment-username-wrap">
-                                        <div className="replyComment-username">{child.commentWriterName}</div>
+                                        <div className="postMine-wrap">
+                                            <div className="replyComment-username">{child.commentWriterName}</div>
+                                            {child.postMine && (
+                                                <div className="postMine-style">작성자</div>
+                                            )}
+                                        </div>
                                         <HiOutlineDotsVertical className="HiOutlineDotsVertical" onClick={() => toggleReplyMenu(child.id)} />
                                         {replyMenuVisible[child.id] && (
                                             <div className="replyComment-options">
