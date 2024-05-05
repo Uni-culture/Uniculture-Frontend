@@ -11,7 +11,7 @@ import cardOpenSound from '../../../assets/cardOpen.mp3';
 import { Card } from 'antd';
 const { Meta } = Card;
 
-export default function RecommendFriendCard({userInfo, sendFriendRequest}) {
+export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMessage}) {
     const navigate = useNavigate();
     const [isFlipped, setIsFlipped] = useState(userInfo.isOpen); //Card 뒤집기
 
@@ -69,6 +69,11 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest}) {
         sendFriendRequest(userInfo);
     }
 
+    //채팅 보내기
+    const handleSendMessage = () => {
+        sendMessage(userInfo);
+    }
+
     return (
         <div className={`${styles.card} ${isFlipped ? styles.flipped : ""}`} >
             <div className={styles.front} onClick={handleCardClick}>
@@ -93,7 +98,7 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest}) {
                     actions={[
                         <span onClick={handleSendFriendRequest}><IoMdPersonAdd size={22}/></span>,
                         <span onClick={handleProfile}><FaHome size={22}/></span>,
-                        <span><BiSolidMessageRounded size={22}/></span>
+                        <span onClick={handleSendMessage}><BiSolidMessageRounded size={22}/></span>
                     ]}
                 >
                     <Meta

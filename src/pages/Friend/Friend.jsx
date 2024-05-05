@@ -248,7 +248,7 @@ export default function Friend() {
                             <div className={styles.myfrineds}>
                                 {friendList.map((friend) => (
                                     <div key={friend.id} style={{ width: "350px", marginBottom: "20px"}}>
-                                        <FriendCard key={friend.id} userInfo={friend} deleteFriend={deleteFriend} cl={selectCL} wl={selectWL} hb={selectHb}/>
+                                        <FriendCard key={friend.id} userInfo={friend} deleteFriend={deleteFriend} cl={selectCL} wl={selectWL} hb={selectHb} sendMessage={sendMessage}/>
                                     </div>
                                 ))}
                             </div>
@@ -273,7 +273,7 @@ export default function Friend() {
                                     <div className={styles.recommend}>
                                         {recommendFriendList.map((friend) => (
                                             <div key={friend.id} style={{ marginBottom: "20px" }}>
-                                                <RecommendFriendCard key={friend.id} userInfo={friend} sendFriendRequest={sendFriendRequest} />
+                                                <RecommendFriendCard key={friend.id} userInfo={friend} sendFriendRequest={sendFriendRequest} sendMessage={sendMessage}/>
                                             </div>
                                         ))}
                                     </div>
@@ -323,7 +323,6 @@ export default function Friend() {
         }, 1000);
     };
 
-
     //친구 신청
     const sendFriendRequest = async (userInfo) => {
         try {
@@ -349,6 +348,37 @@ export default function Friend() {
             }
         } catch (error) {
             console.error('친구 걸기 오류 발생:', error);
+        }
+    }
+
+    //채팅 보내기
+    const sendMessage = async (otherInfo) => {
+        try {
+            const token = getToken(); // 토큰 가져오기
+
+            if(token){ //로그인 O
+                const response = await axios.get(`/api/auth/room/duo?toId=${otherInfo.id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                if(response.status === 200){
+                    console.log(response);
+                    navigate(`/chat/${response.data.chatRoomId}`);
+                }
+                else if(response.status === 400){
+                    console.log("채팅 보내기 클라이언트 에러");
+                }
+                else if(response.status ===  500){
+                    console.log("채팅 보내기 서버 에러");
+                }
+            }
+            else {
+                alert("로그인 해주세요.");
+                navigate("/sign-in");
+            }
+        } catch (error) {
+            console.error('채팅 보내기 오류 발생:', error);
         }
     }
 
