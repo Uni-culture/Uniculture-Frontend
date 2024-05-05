@@ -2,13 +2,14 @@ import React, { useEffect, useRef, useState } from "react";
 import * as StompJs from "@stomp/stompjs";
 import "./ChatMain.css";
 import axios from "axios";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 const ChatMain = ({selectedChatRoom, userInfo}) => {
     const [chats, setChats] = useState([]);
     const [currentChat, setCurrentChat] = useState("");
     const [stompClient, setStompClient] = useState(null);
     const messageEndRef = useRef(null);
+    const navigate = useNavigate();
 
     // 로그인 후 저장된 토큰 가져오는 함수
     const getToken = () => {
@@ -16,6 +17,7 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
     };
 
     useEffect(()=>{
+
         const token = getToken();
 
         const loadChatHistory = async () => {
@@ -44,7 +46,7 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
             },
             reconnectDelay: 5000,       //자동 재연결 ? 
             onConnect: (frame) => {
-                console.log('Connected' + frame);
+                console.log('채팅내역 연결', frame);
                 clientdata.subscribe(`/sub/chat/room/${selectedChatRoom.id}`, (message) => {
                     //수신 처리
                     const receivedMessage = JSON.parse(message.body);
@@ -59,6 +61,7 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
                 console.error('Broker reported error: ' + frame.headers['message']);
                 console.error('Additional details: ' + frame.body);
             },
+            
             heartbeatIncoming: 4000,
             heartbeatOutgoing: 4000,
         });
@@ -99,7 +102,7 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
         {selectedChatRoom ? (
                 <>
                     <div className="chat-name">
-                        <h3>{selectedChatRoom.name}</h3>
+                        <h3>{selectedChatRoom.username}</h3>
                     </div>
                     <div className="chats">
                         {chats.map(chat =>(
@@ -125,7 +128,7 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
                             value={currentChat}
                             onChange={(e) => setCurrentChat(e.target.value)}
                             onKeyDown={(e) =>{
-                                if (e.key === 'Enter') {
+                                if (e.key === 'Enter'&& e.nativeEvent.isComposing===false) {
                                     handleSendChat();
                                 }
                             }}

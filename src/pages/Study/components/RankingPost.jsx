@@ -11,19 +11,19 @@ export const RankingPost = () => {
     return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
   };
 
-  const token = getToken(); // 토큰 가져오기
 
   useEffect(()=>{
+    const token = getToken(); // 토큰 가져오기
     async function fetchData(){
-    const res = await axios.get(`/api/post?size=5&sort=likeCount,DESC&ca=STUDY`,{
+    const res = await axios.get(`/api/post/hot`,{
       headers:{
         Authorization: `Bearer ${token}`
       }
     })
-    console.log('서버 응답: ', res);
+    console.log('인기글 서버 응답: ', res);
     if(res.status===200){
       console.log(res.data);
-      setData(res.data.content);
+      setData(res.data);
     }}
     fetchData();
   },[])

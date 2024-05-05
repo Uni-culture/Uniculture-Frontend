@@ -40,3 +40,46 @@
     height: 200px;
     margin-top: 20px;
 }
+
+.myfrineds { 
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-row-gap: 20px;
+    justify-content: center;
+    gap: 30px;
+    justify-items: center;
+}
+
+/* .myfrineds {
+    display: flex;
+    justify-content: left;
+    flex-wrap: wrap;
+    gap: 40px;
+} */
+
+.recommend {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
+    grid-row-gap: 20px;
+    justify-content: center;
+    gap: 30px;
+    justify-items: center;
+}
+/* 
+@media (min-width: 370px) {
+    .myfriends { 
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+@media (min-width: 720px) {
+    .myfriends { 
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1070px) {
+    .myfriends { 
+        grid-template-columns: repeat(3, 1fr);
+    }
+} */
