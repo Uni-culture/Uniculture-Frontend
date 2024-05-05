@@ -82,7 +82,7 @@
         .board-buttons-wrap {
             display: flex;
             justify-content: flex-end; /* 내부 요소들을 오른쪽으로 정렬 */
-            margin-top: 100px;
+            margin-top: 65px;
             margin-bottom: 30px;
 
             .board-buttons {
@@ -126,6 +126,20 @@
                 background-color: #f5f5f5;
             }
         }
+    }
+
+    .board-content {
+        margin-bottom: 100px;
+    }
+
+    .board-translate-content {
+        margin-top: 90px;
+        margin-bottom: 20px
+    }
+
+    .board-translate-title {
+        color: gray;
+        margin-bottom: 10px;
     }
 
     .board-footer {

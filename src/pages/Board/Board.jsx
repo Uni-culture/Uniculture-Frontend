@@ -15,11 +15,12 @@ const Board = () => {
     const {board_id} = useParams();
     const [board, setBoard] = useState({});
     const [content, setContent] = useState(null);
-    const [isTranslated, setIsTranslated] = useState(false);
+    const [isTranslated, setIsTranslated] = useState(false); // 번역 여부
+    const [showTranslate, setShowTranslate] = useState(""); // 번역한 내용
+    const [translatedTitle, setTranslatedTitle] = useState(""); // 번역된 제목
     const [isLoaded, setIsLoaded] = useState(false);
     const navigate = useNavigate();
     const [liked, setLiked] = useState(false); // 좋아요 상태 관리
-    const [showTranslateOptions, setShowTranslateOptions] = useState(false);
 
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
@@ -69,6 +70,7 @@ const Board = () => {
         }
 
         try {
+            // 내용 번역
             const response = await axios.post('/api/auth/translate', {
                 text : content,
                 target_lang : "KO"
@@ -76,20 +78,26 @@ const Board = () => {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }// 헤더에 토큰 추가
-                });
-            if (response.status === 200) {
-                console.log(response);
+            });
+
+            // 제목 변역
+            let titleResponse = await axios.post('/api/auth/translate', {
+                text: "Translated Content", // 여기서 "번역된 내용"이라는 문자열을 영어로 설정했습니다. 필요에 따라 수정하세요.
+                target_lang: "KO"
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                } // 헤더에 토큰 추가
+            });
+
+            if (response.status === 200 && titleResponse.status === 200) {
                 setIsTranslated(true);
-                setContent(response.data.text);
-                setShowTranslateOptions(false); // 번역 후 옵션 메뉴 숨김
+                setShowTranslate(response.data.text); // 번역된 내용
+                setTranslatedTitle(titleResponse.data.text); // 번역된 제목
             }
         } catch (e) {
             console.log(e);
         }
-    }
-
-    function toggleTranslateOptions() { // 번역 버튼 토글
-        setShowTranslateOptions(!showTranslateOptions);
     }
 
     const handleLike = async () => {
@@ -240,18 +248,18 @@ const Board = () => {
                         <div className="board-content">
                             <SafeHtml html={content} />
                         </div>
+                        {isTranslated && (
+                            <div className="board-translate-content">
+                                <div className="board-translate-title">{`[${translatedTitle}]`}</div>
+                                <SafeHtml html={showTranslate} />
+                            </div>
+                        )}
                         <div className="board-buttons-wrap">
                             <span className="translation-buttons">
                                 {isTranslated ? (
                                     <button className="board-buttons" onClick={()=>{setContent(board.content); setIsTranslated(false);}}> 되돌리기 </button>
                                 ) : (
-                                    <button className="board-buttons" onClick={toggleTranslateOptions}> 번역 </button>
-                                )}
-                                {showTranslateOptions && (
-                                    <div className="translate-options">
-                                        <button className="option-button" onClick={()=> {translate(content)}}>게시글 번역</button>
-                                        <button className="option-button">댓글 번역</button>
-                                    </div>
+                                    <button className="board-buttons" onClick={()=>{translate(content)}}> 번역 </button>
                                 )}
                             </span>
                             {board.isMine && // 자신의 게시물이면 활성화
