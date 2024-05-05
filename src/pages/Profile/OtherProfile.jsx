@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 import MyBoardList from "./MyBoardList";
 import OtherBoardList from "./OtherBoardList";
 import ShowAllLanguage from './Modal/ShowAllLanguage';
+import OtherStudyList from "./OtherStudyList";
 
 
 export default function OtherProfile({otherInformation}) {
@@ -281,7 +282,7 @@ export default function OtherProfile({otherInformation}) {
             case 'studyList':
                 return (
                     <div style={{marginTop: "30px"}}>
-                        <p>스터디</p>
+                        <OtherStudyList memberId={otherInfo.id}/>
                     </div>
                 );
             default:
