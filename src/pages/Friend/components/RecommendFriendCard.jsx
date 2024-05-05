@@ -5,9 +5,9 @@ import { GiMale, GiFemale } from "react-icons/gi";
 import { IoMdPersonAdd } from "react-icons/io";
 import { FaHome } from "react-icons/fa";
 import { BiSolidMessageRounded } from "react-icons/bi";
-import styles from './RecommendFriendCard.module.css'
-import cardImg from '../../../assets/cardImg.png'
-import cardOpenSound from '../../../assets/cardOpen.mp3'
+import styles from './RecommendFriendCard.module.css';
+import cardImg from '../../../assets/cardImg.png';
+import cardOpenSound from '../../../assets/cardOpen.mp3';
 import { Card } from 'antd';
 const { Meta } = Card;
 

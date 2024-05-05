@@ -9,14 +9,20 @@ import { Badge, Input, Select} from "antd";
 import { AiOutlineBell } from "react-icons/ai";
 import Pagination from '@mui/material/Pagination';
 import { GrClose, GrPowerReset } from "react-icons/gr";
+import { TbReload } from "react-icons/tb";
 import RecommendFriendCard from './components/RecommendFriendCard';
-import styles from './Friend.module.css'
+import presentImg from '../../assets/presentImg.png';
+import openImg from '../../assets/openimg.png'
+import styles from './Friend.module.css';
 
 export default function Friend() {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('myFriends'); //컴포넌트 선택
     const [friendList, setFriendList] = useState([]); //친구 목록
     const [recommendFriendList, setRecommendFriendList] = useState([]); //추천 친구 목록
+    const [showPresent, setShowpresent] = useState(null); //모든 추천친구 isOpen === false인지 아닌지
+    const [presentOpen, setPresentOpen] = useState(false); //선물상자를 열었는지 아닌지
+    const [isAnimating, setIsAnimating] = useState(false); // 애니메이션 여부를 저장하는 상태
     const interestTag = [ // 관심사 태그
         "요리",
         "여행",
@@ -135,12 +141,64 @@ export default function Friend() {
             if(response.status === 200){
                 setRecommendFriendList(response.data);
                 console.log("추천 친구 : " + JSON.stringify(response.data));
+                console.log("추천 친구 수: " + response.data.length);
+
+                // 모든 추천 친구의 isOpen 속성이 false인지 확인
+                const allClosed = response.data.every(friend => !friend.isOpen);
+                if (allClosed) {
+                    setShowpresent(false);
+                    console.log("showPresent === false");
+                }
+                else { 
+                    setShowpresent(true); 
+                    console.log("showPresent === true");
+                }
             }
             else if(response.status === 400){
                 console.log("친구 목록 불러오기 클라이언트 오류");
             }
             else if(response.status === 500){
                 console.log("친구 목록 불러오기 서버 오류");
+            }
+            
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    // 추천 친구 목록 다시 불러오기
+    const recommendFriendReload = async () => {
+        try {
+            console.log("추천 친구 목록 다시 불러오기");
+            const token = getToken();
+
+            const response = await axios.get(`/api/auth/friend/recommend/reload`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            
+            if(response.status === 200){
+                setRecommendFriendList(response.data);
+                console.log("추천 친구 : " + JSON.stringify(response.data));
+                console.log("추천 친구 수: " + response.data.length);
+
+                // 모든 추천 친구의 isOpen 속성이 false인지 확인
+                const allClosed = response.data.every(friend => !friend.isOpen);
+                if (allClosed) {
+                    setShowpresent(false);
+                    console.log("showPresent === false");
+                }
+                else { 
+                    setShowpresent(true); 
+                    console.log("showPresent === true");
+                }
+            }
+            else if(response.status === 400){
+                console.log("친구 목록 다시 불러오기 클라이언트 오류");
+            }
+            else if(response.status === 500){
+                console.log("친구 목록 다시 불러오기 서버 오류");
             }
             
         } catch (error) {
@@ -208,32 +266,63 @@ export default function Friend() {
             case 'recommend':
                 return (
                     <div style={{marginTop:"30px"}}>
-                        {recommendFriendList.length > 0 ? (
-                            // <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "40px" }}>
-                            <div className={styles.recommend}>
-                                {recommendFriendList.map((friend) => (
-                                    <div key={friend.id} style={{ marginBottom: "20px" }}>
-                                        <RecommendFriendCard key={friend.id} userInfo={friend} sendFriendRequest={sendFriendRequest} />
+                        {showPresent ? (
+                            <>
+                                {recommendFriendList.length > 0 ? (
+                                    // <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "40px" }}>
+                                    <div className={styles.recommend}>
+                                        {recommendFriendList.map((friend) => (
+                                            <div key={friend.id} style={{ marginBottom: "20px" }}>
+                                                <RecommendFriendCard key={friend.id} userInfo={friend} sendFriendRequest={sendFriendRequest} />
+                                            </div>
+                                        ))}
                                     </div>
-                                ))}
-                            </div>
+                                ) : (
+                                    <div>
+                                        <p>아쉽게도, 현재 시스템에서 추천할 친구를 찾지 못했습니다.</p>
+                                        <p>사용자의 활동이나 관심사를 더 많이 입력해주시면 보다 정확한 추천을 제공할 수 있습니다.</p>
+                                    </div>
+                                )}
+                            </>
                         ) : (
-                            <div>
-                                <p>아쉽게도, 현재 시스템에서 추천할 친구를 찾지 못했습니다.</p>
-                                <p>사용자의 활동이나 관심사를 더 많이 입력해주시면 보다 정확한 추천을 제공할 수 있습니다.</p>
+                            <div style={{textAlign: "center", width: "100%", paddingTop: "50px"}}>
+                                {presentOpen ? (
+                                    <img
+                                        style={{width: "200px"}}
+                                        alt='openimg'
+                                        src={openImg}
+                                    />
+                                ) : (
+                                    <img
+                                        className={isAnimating ? `${styles.vibration}` : ""} // 애니메이션이 실행 중일 때 클래스 추가
+                                        style={{width: "200px"}}
+                                        alt='presentimg'
+                                        src={presentImg}
+                                        onClick={handlePresentImg}
+                                    />
+                                )}
                             </div>
                         )}
-                        {/* {friendList.length > 0 && (
-                            <div style={{display: "flex", justifyContent: "center", marginTop: "30px", width: "100%" }}>
-                                <Pagination page={currentPage + 1} count={pageCount}  defaultPage={1} onChange={changePage} showFirstButton showLastButton />
-                            </div>
-                        )} */}
+                        
                     </div>
                 );
             default:
                 return null;
         }
     };
+
+    const handlePresentImg = () => {
+        // presentImg를 클릭하면 2초 후에 openImg 이미지로 변경
+        setIsAnimating(true);
+        setTimeout(() => {
+            setIsAnimating(false);
+            setPresentOpen(true);
+            setTimeout(() => {
+                setShowpresent(true);
+            }, 500);
+        }, 1000);
+    };
+
 
     //친구 신청
     const sendFriendRequest = async (userInfo) => {
@@ -537,6 +626,8 @@ export default function Friend() {
 
     //필터 없애기
     const resetFriend = (bool) => {
+        setPresentOpen(false);
+
         setSelectGender("ge");
         setSelectMina('0');
         setSelectMaxa('100');
@@ -600,7 +691,8 @@ export default function Friend() {
                 
                 </div>
 
-                <div>
+                <div style={{display: "flex"}}>
+                    <span style={{marginRight: "10px"}} onClick={recommendFriendReload}><TbReload size={25}/></span>
                     <Badge count={receivedRequests.length} size="small" overflowCount={10}>
                         <AiOutlineBell size={25} onClick={() => {
                             setShowRequests(true);
@@ -721,3 +813,4 @@ export default function Friend() {
         </Layout>
     )
 }
+
