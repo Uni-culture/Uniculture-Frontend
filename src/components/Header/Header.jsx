@@ -5,6 +5,7 @@ import axios from "axios";
 import "../PageLayout/PageLayout.css"
 import Swal from "sweetalert2";
 import "./Header.css";
+import {IoSearch} from "react-icons/io5";
 
 const Header = () => {
     const navigate = useNavigate(); // 다른 component 로 이동할 때 사용
@@ -120,6 +121,10 @@ const Header = () => {
         }
     };
 
+    const navigateToSearch = () => {
+        navigate("/search", { state: { from: location.pathname } });
+    };
+
     return (
             <nav className={`navbar navbar-expand-lg`} style={{ backgroundColor: '#C8DCA0' }}>
                 <div className="container-fluid" style={{paddingLeft: "80px", paddingRight: "70px"}}>
@@ -129,7 +134,9 @@ const Header = () => {
                             UniCulture
                         </div>
                     </div>
-
+                    <div className={`ms-auto order-lg-last`}>
+                        <IoSearch className="search-icon" onClick={navigateToSearch}/>
+                    </div>
                     {isLogin ? (
                         <button className={`btn nav-link ms-auto order-lg-last`} onClick={removeToken} style={{ backgroundColor: "#B3C693", padding: "5px 15px", marginRight: "10px"}}>
                             로그아웃

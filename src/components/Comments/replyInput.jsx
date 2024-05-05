@@ -1,12 +1,11 @@
 import {TextField} from "@mui/material";
-import moment from "moment/moment";
 import React, {useState} from "react";
-import "./replyComments.scss";
+import "./replyInput.scss";
 import { RxCornerBottomLeft } from "react-icons/rx";
 import axios from "axios";
 
-const ReplyComments = ({parent_id, board_id, getCommentList, onReplySuccess}) => {
-    const [content, setContent] = useState(""); // 입력한 댓글 내용
+const ReplyInput = ({ parent_id, board_id, onReplySuccess}) => {
+    const [replyContent, setReplyContent] = useState('');
 
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 로컬 스토리지에서 토큰 가져옴
@@ -20,7 +19,7 @@ const ReplyComments = ({parent_id, board_id, getCommentList, onReplySuccess}) =>
                 {
                     postId: board_id,
                     parentId: parent_id,
-                    content: content
+                    content: replyContent
                 }, {
                     headers: {
                         Authorization: `Bearer ${token}` // 헤더에 토큰 추가
@@ -29,8 +28,7 @@ const ReplyComments = ({parent_id, board_id, getCommentList, onReplySuccess}) =>
             if (response.status === 200) {
                 const responseData = response.data;
                 console.log(`responseData : `, responseData);
-                setContent(""); // 댓글 입력창 초기화
-                getCommentList();
+                setReplyContent(""); // 댓글 입력창 초기화
                 onReplySuccess();
             }
         } catch (error) { // 실패 시
@@ -56,12 +54,12 @@ const ReplyComments = ({parent_id, board_id, getCommentList, onReplySuccess}) =>
                         minRows={1.5}
                         maxRows={3}
                         onChange={(e) => {
-                            setContent(e.target.value)
+                            setReplyContent(e.target.value)
                         }}
-                        value={content}
+                        value={replyContent}
                         multiline placeholder="답글을 입력해주세요"
                     />
-                    {content !== "" ? (
+                    {replyContent !== "" ? (
                         <button onClick={replyComment}>등록하기</button>
                     ) : (
                         <button disabled={true}>
@@ -73,6 +71,6 @@ const ReplyComments = ({parent_id, board_id, getCommentList, onReplySuccess}) =>
             <hr className="hr-style"/>
         </div>
     );
-}
+};
 
-export default ReplyComments;
+export default ReplyInput;

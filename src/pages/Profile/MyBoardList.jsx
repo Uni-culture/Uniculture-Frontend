@@ -48,6 +48,9 @@ const MyBoardList = () => {
         }
     };
 
+    useEffect(() => {
+        fetchBoardData(0);
+    }, [])
 
     useEffect(() => {
         fetchBoardData(currentPage);
