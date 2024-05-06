@@ -6,7 +6,7 @@ import { Card } from "antd";
 import { SlBubbles, SlClose } from "react-icons/sl";
 import { GiMale, GiFemale } from "react-icons/gi";
 
-export default function FriendCard({userInfo, deleteFriend, cl, wl, hb}) {
+export default function FriendCard({userInfo, deleteFriend, cl, wl, hb, sendMessage}) {
     const navigate = useNavigate();
     const [canLanguage, setCanLanguage] = useState(); // Card에 보이는 cl
     const [CLList, setCLList] = useState(); // 사용 언어 능숙도 높은순
@@ -20,6 +20,11 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb}) {
     //친구 프로필로 이동
     const handleProfile = () => {
         navigate(`/profile/${userInfo.nickname}`);
+    }
+
+    //채팅 보내기
+    const handleSendMessage = () => {
+        sendMessage(userInfo);
     }
 
     useEffect(() => {
@@ -131,7 +136,7 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb}) {
 
                     <div style={{ display: 'flex', alignItems:"center"}}>
                         {/* 채팅 보내기 */}
-                        <div style={{marginLeft: "15px"}}><SlBubbles size={20}/></div>
+                        <div style={{marginLeft: "15px"}} onClick={handleSendMessage}><SlBubbles size={20}/></div>
                         {/* 친구 삭제 */}
                         {deleteFriend && <div style={{marginLeft: "15px"}} onClick={handleDeleteFriend}><SlClose size={20}/></div>}
                     </div>

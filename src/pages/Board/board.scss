@@ -82,7 +82,7 @@
         .board-buttons-wrap {
             display: flex;
             justify-content: flex-end; /* 내부 요소들을 오른쪽으로 정렬 */
-            margin-top: 100px;
+            margin-top: 65px;
             margin-bottom: 30px;
 
             .board-buttons {
@@ -100,7 +100,46 @@
                 //position: absolute;
                 //right: 0;
             }
+
+            .translate-options {
+                position: absolute;
+                background-color: #fff;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                padding: 8px 0;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                z-index: 1;
+            }
+
+            .option-button {
+                display: block;
+                width: 100%;
+                padding: 4px 11px;
+                text-align: left;
+                background-color: transparent;
+                border: none;
+                cursor: pointer;
+                font-size: 0.7rem;
+            }
+
+            .option-button:hover {
+                background-color: #f5f5f5;
+            }
         }
+    }
+
+    .board-content {
+        margin-bottom: 100px;
+    }
+
+    .board-translate-content {
+        margin-top: 90px;
+        margin-bottom: 20px
+    }
+
+    .board-translate-title {
+        color: gray;
+        margin-bottom: 10px;
     }
 
     .board-footer {

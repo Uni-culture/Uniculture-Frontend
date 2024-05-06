@@ -1,16 +1,17 @@
 import {Pagination} from "@mui/material";
 import {Card} from "../../components/Card/Card";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {useSearchParams} from "react-router-dom";
 import "../BoardList/boardList.scss";
 import moment from "moment";
+import {StudyListCard} from "../Study/components/StudyListCard";
 
-const OtherBoardList = ({memberId}) => {
+const MyBoardList = ({memberId}) => {
     const [pageCount, setPageCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
     const [boardList, setBoardList] = useState([]);
-    // const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
@@ -21,7 +22,7 @@ const OtherBoardList = ({memberId}) => {
         try {
             const token = getToken(); // 토큰 가져오기
             // const page_number = searchParams.get("page");
-            const response = await axios.get(`/api/post/member/${memberId}?category=NORMAL&page=${page}&size=8`, {
+            const response = await axios.get(`/api/post/member/${memberId}?category=STUDY&page=${page}&size=8`, {
                 headers: {
                     Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                 }
@@ -48,11 +49,6 @@ const OtherBoardList = ({memberId}) => {
         }
     };
 
-    /*
-    useEffect(() => {
-        fetchBoardData(0);
-    }, [])*/
-
     useEffect(() => {
         fetchBoardData(currentPage);
     }, [currentPage])
@@ -65,9 +61,8 @@ const OtherBoardList = ({memberId}) => {
     return (
         <div className="boardList-wrapper">
             <div className="boardList-body">
-                {boardList.map(post => (
-                    <Card key={post.postId} board_id={post.postId} title={post.title} content={post.content} username={post.writerName}
-                          date={moment(post.createDate).add(9, "hour").format('YYYY-MM-DD')} style={{margin: '5px'}}></Card>
+                {boardList.map(i => (
+                    <StudyListCard data={i} key={i.postId}/>
                 ))}
             </div>
             <div className="boardList-footer">
@@ -85,4 +80,4 @@ const OtherBoardList = ({memberId}) => {
         </div>
     )
 }
-export default OtherBoardList;
+export default MyBoardList;

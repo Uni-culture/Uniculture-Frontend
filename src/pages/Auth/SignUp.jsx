@@ -10,12 +10,14 @@ const SignUp = () => {
     const navigate = useNavigate(); // 다른 component 로 이동할 때 사용
     const location = useLocation();
     const [email, setEmail] = useState('');
+    const [emailNum, setEmailNum] = useState('');
     const [pw, setPw] = useState('');
     const [pw2, setPw2] = useState('');
     const [nickName, setNickName] = useState('');
 
     const [emailValid, setEmailValid] = useState(false);
     const [pwValid, setPwValid] = useState(false);
+    const [emailAuth, setEmailAuth] = useState(false);
     const [showPassword, setShowPassword] = useState(false); // 비밀번호를 텍스트 형태로 보여줄지 여부 결정
     const [showPassword2, setShowPassword2] = useState(false); // 비밀번호2를 텍스트 형태로 보여줄지 여부 결정
     const [passwordsMatch, setPasswordsMatch] = useState(true);
@@ -34,6 +36,7 @@ const SignUp = () => {
 
     const resetInput = () => {
         setEmail('');
+        setEmailValid('');
         setPw('');
         setPw2('');
         setNickName('');
@@ -124,6 +127,38 @@ const SignUp = () => {
         });
     };
 
+    const emailAuthFun = async (e) => {
+        console.log("이메일 인증을 시작합니다");
+        try {
+            const request_data = {
+                email: email
+            };
+            let response = await axios({
+                method: 'post',
+                url: '/api/mailSend',
+                headers: {'Content-Type': 'application/json'},
+                data: JSON.stringify(request_data)
+            });
+            if (response.status === 200) {
+                console.log(`이메일 인증 성공`)
+                console.log(response.data);
+                setEmailAuth(response.data.number);
+            }
+        } catch (err) {
+            console.log("오류발생");
+        }
+    };
+
+    const emailAuthFun2 = () => {
+        // emailNum과 emailAuth를 비교하여 일치할 경우에만 인증에 성공하였다는 메시지를 표시
+        if (emailNum === emailAuth) {
+            alert('인증에 성공하였습니다.');
+            // 여기에 인증에 성공한 후의 추가 동작을 넣으시면 됩니다.
+        } else {
+            alert('인증에 실패하였습니다.');
+            // 여기에 인증에 실패한 경우의 처리를 넣으시면 됩니다.
+        }
+    };
     // 닉네임 중복 검사
     const handleNickName = async (e) => {
         console.log(`handleNickName: ${nickName}`);
@@ -178,6 +213,7 @@ const SignUp = () => {
     // 이메일 정규표현식 검사
     const handleEmail = (e) => {
         setEmail(e.target.value);
+        console.log(email);
         const regex =
             /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
         if (regex.test(e.target.value)) {
@@ -302,6 +338,7 @@ const SignUp = () => {
                 <div className="inputTitle">이메일</div>
                 <div className="inputWrap">
                     <input className="input" type="email" placeholder="test@example.com" value={email} onChange={handleEmail} onKeyDown={handleKeyDown}/>
+                    <button className='nickNameButton' onClick={emailAuthFun}>인증요청</button>
                 </div>
                 <div className="errorMessageWrap">
                     {!emailValid && email.length > 0 && (
@@ -309,6 +346,12 @@ const SignUp = () => {
                     )}
                 </div>
 
+                {emailAuth && (
+                    <div className="inputWrap" style={{padding: '10px'}}>
+                        <input className="input" type="text" placeholder="인증번호를 입력해주세요" style={{width: '80%', marginTop: '9px'}} value={emailNum} onChange={(e) => setEmailNum(e.target.value)} />
+                        <button className='nickNameButton' onClick={emailAuthFun2}>인증확인</button>
+                    </div>
+                )}
                 <div className="inputTitle">비밀번호</div>
                 <div className="inputWrap">
                     <input className="input" type={showPassword ? "text" : "password"} placeholder="영문, 숫자, 특수문자 포함 8자 이상" value={pw} onChange={handlePw} onKeyDown={handleKeyDown}/>
