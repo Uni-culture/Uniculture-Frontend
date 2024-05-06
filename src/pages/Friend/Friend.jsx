@@ -567,7 +567,8 @@ export default function Friend() {
                 return (
                     <div>
                         {sentRequests && sentRequests.map((request) => (
-                            <FriendList key={request.id} action={activeTab2} userInfo={request} cancelSentFriendRequest={cancelSentFriendRequest} />))}
+                            <FriendList key={request.id} action={activeTab2} userInfo={request} cancelSentFriendRequest={cancelSentFriendRequest} />
+                        ))}
                     </div>
                 );
             case 'receivedRequests':
