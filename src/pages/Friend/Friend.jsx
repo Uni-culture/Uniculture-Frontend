@@ -179,6 +179,7 @@ export default function Friend() {
             });
             
             if(response.status === 200){
+                setPresentOpen(false);
                 setRecommendFriendList(response.data);
                 console.log("추천 친구 : " + JSON.stringify(response.data));
                 console.log("추천 친구 수: " + response.data.length);
@@ -657,8 +658,6 @@ export default function Friend() {
 
     //필터 없애기
     const resetFriend = (bool) => {
-        setPresentOpen(false);
-
         setSelectGender("ge");
         setSelectMina('0');
         setSelectMaxa('100');
