@@ -23,8 +23,6 @@ const Header = () => {
 
     useEffect(() => {
         loginCheck(); // 컴포넌트가 마운트될 때 로그인 상태 확인
-        getNotification();
-        getChatCount();
     }, []);
 
     const getToken = () => {
@@ -61,6 +59,8 @@ const Header = () => {
                 });
                 if(response.status === 200){
                     setIsLogin(true);
+                    getNotification();
+                    getChatCount();
                 }
             }
         } catch (error) {
@@ -233,8 +233,14 @@ const Header = () => {
 
     //알림 아이콘 클릭 시 
     const handleNotification = () => {
-        getNotificationDetail(); 
-        setShowDetailAlert(true); //모달창 
+        if(isLogin){
+            getNotificationDetail(); 
+            setShowDetailAlert(true); //모달창 
+        }
+        else {
+            LoginWarning();
+            navigate("/sign-in");
+        }
     }
 
     //알림 모달창
