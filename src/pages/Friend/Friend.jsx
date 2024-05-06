@@ -20,6 +20,7 @@ export default function Friend() {
     const [activeTab, setActiveTab] = useState('myFriends'); //컴포넌트 선택
     const [friendList, setFriendList] = useState([]); //친구 목록
     const [recommendFriendList, setRecommendFriendList] = useState([]); //추천 친구 목록
+    const [recommendCount, setRecommendCount] = useState(null); //추천 친구 새로고침 잔여 횟수
     const [showPresent, setShowpresent] = useState(null); //모든 추천친구 isOpen === false인지 아닌지
     const [presentOpen, setPresentOpen] = useState(false); //선물상자를 열었는지 아닌지
     const [isAnimating, setIsAnimating] = useState(false); // 애니메이션 여부를 저장하는 상태
@@ -200,6 +201,35 @@ export default function Friend() {
             }
             else if(response.status === 500){
                 console.log("친구 목록 다시 불러오기 서버 오류");
+            }
+            
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    // 추천 친구 새로고침 잔여 횟수
+    const recommendFriendCount = async () => {
+        try {
+            console.log("추천 친구 목록 새로고침 잔여 횟수");
+            const token = getToken();
+
+            const response = await axios.get(`/api/auth/friend/recommend/count`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            
+            if(response.status === 200){
+                setRecommendCount(response.data);
+                console.log("추천 친구 목록 새로고침 잔여 횟수" + response.data);
+
+            }
+            else if(response.status === 400){
+                console.log("추천 친구 목록 새로고침 잔여 횟수 클라이언트 오류");
+            }
+            else if(response.status === 500){
+                console.log("추천 친구 목록 새로고침 잔여 횟수 서버 오류");
             }
             
         } catch (error) {
@@ -687,7 +717,7 @@ export default function Friend() {
                             <li 
                                 className="nav-item"
                                 style={{ width:"70px", fontWeight: activeTab === 'recommend' ? 'bold' : 'normal' }}
-                                onClick={() => {setActiveTab('recommend'); setSearchInput(null); resetFriend("false");}}>
+                                onClick={() => {setActiveTab('recommend'); setSearchInput(null); resetFriend("false"); recommendFriendCount();}}>
                                 추천 친구
                             </li>
                         </ul>
@@ -722,7 +752,13 @@ export default function Friend() {
                 </div>
 
                 <div style={{display: "flex"}}>
-                    <span style={{marginRight: "10px"}} onClick={recommendFriendReload}><TbReload size={25}/></span>
+                    {activeTab=="recommend" && 
+                        <span 
+                            style={{marginRight: "10px", color: recommendCount > 0 ? "black" : "#737373"}} 
+                            onClick={recommendCount > 0 ? recommendFriendReload : null}>
+                                <TbReload size={25}/>
+                        </span> 
+                    }
                     <Badge count={receivedRequests.length} size="small" overflowCount={10}>
                         <AiOutlineBell size={25} onClick={() => {
                             setShowRequests(true);
