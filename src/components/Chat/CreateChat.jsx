@@ -82,7 +82,7 @@ export default function CreateChat({modal, createChat}) {
                 <div className="modal-content" style={{height:"450px"}}>
                     <div className="modal-header" style={{width: "100%", justifyContent: "normal"}}>
                         <div className="modal-title" style={{fontWeight: "bold"}}>새로운 메시지</div>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={modal}></button>
+                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={modal}></button>
                     </div>
                     <div style={{display: "flex", width: "100%", borderBottom: "1px solid #E0E0E0", padding: "10px"}}>
                         <span style={{fontWeight: "bold"}}>받는 사람:</span>
