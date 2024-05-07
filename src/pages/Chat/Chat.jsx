@@ -65,6 +65,7 @@ const Chat = () => {
         }
     };
 
+
     useEffect(() => {
         fetchUserInfo();
     }, []);
