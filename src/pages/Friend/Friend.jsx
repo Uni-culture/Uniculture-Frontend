@@ -5,16 +5,16 @@ import { TbAdjustmentsHorizontal, TbSearch } from "react-icons/tb";
 import { useNavigate } from 'react-router-dom';
 import FriendCard from './components/FriendCard';
 import FriendList from '../Profile/components/FriendList';
-import { Badge, Input, Select} from "antd";
+import { Badge, Input } from "antd";
 import { AiOutlineBell } from "react-icons/ai";
 import Pagination from '@mui/material/Pagination';
-import { GrClose, GrPowerReset } from "react-icons/gr";
 import { TbReload } from "react-icons/tb";
 import RecommendFriendCard from './components/RecommendFriendCard';
 import presentImg from '../../assets/presentImg.png';
 import openImg from '../../assets/openimg.png'
 import styles from './Friend.module.css';
 import RequestModal from '../../components/Friend/RequestModal';
+import Filter from './components/Filter';
 
 export default function Friend() {
     const navigate = useNavigate();
@@ -25,54 +25,12 @@ export default function Friend() {
     const [showPresent, setShowpresent] = useState(null); //모든 추천친구 isOpen === false인지 아닌지
     const [presentOpen, setPresentOpen] = useState(false); //선물상자를 열었는지 아닌지
     const [isAnimating, setIsAnimating] = useState(false); // 애니메이션 여부를 저장하는 상태
-    const interestTag = [ // 관심사 태그
-        "요리",
-        "여행",
-        "영화",
-        "드라마",
-        "애니메이션",
-        "유튜브",
-        "넷플릭스",
-        "웹툰",
-        "게임",
-        "음악",
-        "미술",
-        "공예",
-        "독서",
-        "축구",
-        "야구",
-        "농구",
-        "테니스",
-        "배드민턴",
-        "볼링",
-        "탁구",
-        "서핑",
-        "스노우보드",
-        "헬스",
-        "명상",
-        "요가",
-        "필라테스",
-        "과학",
-        "패션",
-        "메이크업",
-        "헤어",
-        "사진",
-        "자연",
-        "탐험",
-        "캠핑",
-        "등산",
-        "재태크",
-        "k-pop",
-        "자원봉사",
-        "사회공헌"
-    ];
 
     //검색
     const [searchInput, setSearchInput] = useState(null); // 검색창 값
     const [isLoading, setIsLoading] = useState(false); //검색 로딩 상태
 
     //필터
-    const { Option } = Select;
     const [showFilter, setShowFilter] = useState(false); //필터 div 보이기
     
     //select
@@ -688,7 +646,7 @@ export default function Friend() {
     }, [selectGender, selectMina, selectMaxa, selectCL, selectWL, selectHb]);
 
     //필터 없애기
-    const resetFriend = (bool) => {
+    const resetFilter = (bool) => {
         setSelectGender("ge");
         setSelectMina('0');
         setSelectMaxa('100');
@@ -712,13 +670,13 @@ export default function Friend() {
                             <li 
                                 className="nav-item"
                                 style={{ width:"65px", fontWeight: activeTab === 'myFriends' ? 'bold' : 'normal', marginRight: "20px"}}
-                                onClick={() => {setActiveTab('myFriends'); resetFriend("false");}}>
+                                onClick={() => {setActiveTab('myFriends'); resetFilter("false");}}>
                                 내 친구
                             </li>
                             <li 
                                 className="nav-item"
                                 style={{ width:"70px", fontWeight: activeTab === 'recommend' ? 'bold' : 'normal' }}
-                                onClick={() => {setActiveTab('recommend'); setSearchInput(null); resetFriend("false"); recommendFriendCount();}}>
+                                onClick={() => {setActiveTab('recommend'); setSearchInput(null); resetFilter("false"); recommendFriendCount();}}>
                                 추천 친구
                             </li>
                         </ul>
@@ -771,70 +729,7 @@ export default function Friend() {
 
             {/* 친구 필터 */}
             {showFilter && (
-                <div style={{display:"flex", marginTop:"10px"}}>
-                    <Select
-                        defaultValue="ge"
-                        value={selectGender} 
-                        style={{ width: 120, marginRight: "5px" }} 
-                        onChange={(value) => handleSelect(value, "gender")}
-                    >
-                        <Option value="ge" >Gender</Option>
-                        <Option value="MAN">Man</Option>
-                        <Option value="WOMAN">Woman</Option>
-                    </Select>
-
-                    <input 
-                        style={{width: "80px", marginRight: "5px", padding: "0 11px", borderRadius: "6px", border: "1px solid #d9d9d9", boxSizing: "border-box", fontSize: "14px"}} 
-                        placeholder={selectMina} 
-                        value={selectMina} 
-                        onChange={(e) => handleSelect(e.target.value, "mina")}
-                    />
-                    <input 
-                        style={{width: "80px", marginRight: "5px", padding: "0 11px", borderRadius: "6px", border: "1px solid #d9d9d9", boxSizing: "border-box", fontSize: "14px"}} 
-                        placeholder={selectMaxa} 
-                        value={selectMaxa} 
-                        onChange={(e) => handleSelect(e.target.value, "maxa")}
-                    />
-
-                    <Select
-                        defaultValue="cl"
-                        value={selectCL} 
-                        style={{ width: 150, marginRight: "5px" }} 
-                        onChange={(value) => handleSelect(value, "cl")}
-                    >
-                        <Option value="cl" >Can Language</Option>
-                        <Option value="한국어">한국어</Option>
-                        <Option value="일본어">일본어</Option>
-                        <Option value="중국어">중국어</Option>
-                    </Select>
-
-                    <Select
-                        defaultValue="wl"
-                        value={selectWL} 
-                        style={{ width: 150, marginRight: "5px" }} 
-                        onChange={(value) => handleSelect(value, "wl")}
-                    >
-                        <Option value="wl" >Want Language</Option>
-                        <Option value="한국어">한국어</Option>
-                        <Option value="일본어">일본어</Option>
-                        <Option value="중국어">중국어</Option>
-                    </Select>
-
-                    <Select
-                        defaultValue="hb"
-                        value={selectHb} 
-                        style={{ width: 150 }} 
-                        onChange={(value) => handleSelect(value, "hobby")}
-                    >
-                        <Option value="hb" >Interest</Option>
-                        {interestTag.map((hobby)=>(
-                            <Option value={hobby}>{hobby}</Option>
-                        ))}
-                    </Select>
-
-                    <div style={{marginLeft: "10px"}} onClick={()=> {resetFriend();}}><GrPowerReset /></div>
-                    <div style={{marginLeft: "10px"}} onClick={()=> {resetFriend("false");}}><GrClose/></div>
-                </div>
+                <Filter handleSelect={handleSelect} resetFilter={resetFilter} ge={selectGender} mina={selectMina} maxa={selectMaxa} cl={selectCL} wl={selectWL} hb={selectHb}/>
             )}
 
             {renderTabContent()}
