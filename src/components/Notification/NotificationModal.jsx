@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import NotificationList from './NotificationList';
 
 export default function NotificationModal({handleModal, myNotification, readNotification}) {
@@ -16,6 +16,16 @@ export default function NotificationModal({handleModal, myNotification, readNoti
                 return <div style={{fontSize: "13px", color: "#737373"}}>알림이 없습니다.</div>;
         }
     };
+
+    useEffect(() => {
+        // 모달이 열렸을 때 body에 overflow: hidden 스타일을 적용하여 스크롤을 막음
+        document.body.style.overflow = 'hidden';
+
+        // 모달이 닫힐 때 body에 적용한 스타일을 제거하여 스크롤을 복원
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, []);
 
     return (
         <div className="modal fade show" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>

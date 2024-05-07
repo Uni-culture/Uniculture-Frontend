@@ -1,10 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 export default function RequestModal({renderTabContent, activeTab, setActiveTab, setShowRequests, type}) {
     const handleModal = () => {
         setActiveTab('receivedRequests'); //다시 모달창 켰을때 가장 먼저 받은 친구신청이 보이도록 설정
         setShowRequests(false); //모달창 닫기
     }
+
+    useEffect(() => {
+        // 모달이 열렸을 때 body에 overflow: hidden 스타일을 적용하여 스크롤을 막음
+        document.body.style.overflow = 'hidden';
+
+        // 모달이 닫힐 때 body에 적용한 스타일을 제거하여 스크롤을 복원
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, []);
 
     return (
         <div className="modal fade show" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
