@@ -14,6 +14,7 @@ import MyBoardList from "./MyBoardList";
 import TotalBoardList from "../BoardList/TotalBoardList";
 import ShowAllLanguage from './Modal/ShowAllLanguage';
 import MyStudyList from "./MyStudyList";
+import RequestModal from '../../components/Friend/RequestModal';
 
 export default function MyProfile({myInformation}) {
     const [myInfo, setMyInfo] = useState(myInformation); // 매개변수로 받은것을 가지고 다시 상태유지
@@ -426,42 +427,7 @@ export default function MyProfile({myInformation}) {
 
             {/* 친구리스트 모달창 */}
             {showFriend && (
-                <div className="modal fade show" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
-                    <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                        <div className="modal-content" style={{height:"450px"}}>
-                                <ul className="nav nav-tabs">
-                                    <li className="nav-item">
-                                        <button 
-                                            className={`nav-link ${activeTab === 'friends' ? 'active' : ''}`} 
-                                            style={{ backgroundColor: activeTab === 'friends' ? '#B7DAA1' : 'white', color: "black"}}
-                                            onClick={() => setActiveTab('friends')}
-                                        >친구 리스트</button>
-                                    </li>
-                                    <li className="nav-item">
-                                        <button 
-                                            className={`nav-link ${activeTab === 'sentRequests' ? 'active' : ''}`} 
-                                            style={{ backgroundColor: activeTab === 'sentRequests' ? '#B7DAA1' : 'white', color: "black"}}
-                                            onClick={() => setActiveTab('sentRequests')}
-                                        >보낸 친구 신청</button>
-                                    </li>
-                                    <li className="nav-item">
-                                        <button 
-                                            className={`nav-link ${activeTab === 'receivedRequests' ? 'active' : ''}`} 
-                                            style={{ backgroundColor: activeTab === 'receivedRequests' ? '#B7DAA1' : 'white', color: "black"}}
-                                            onClick={() => setActiveTab('receivedRequests')}
-                                        >받은 친구 신청</button>
-                                    </li>
-                                </ul>
-
-                            <div className="modal-body" style={{width: "80%"}}>
-                                {renderTabContent()}
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => {setShowFriend(false); setActiveTab('friends')}}>닫기</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <RequestModal renderTabContent={renderTabContent} activeTab={activeTab} setActiveTab={setActiveTab} setShowRequests={setShowFriend} type="includeFriendList" />
             )}
 
             {/* 전체 사용, 학습 언어 보기 모달창 */}

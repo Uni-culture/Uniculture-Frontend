@@ -14,6 +14,7 @@ import RecommendFriendCard from './components/RecommendFriendCard';
 import presentImg from '../../assets/presentImg.png';
 import openImg from '../../assets/openimg.png'
 import styles from './Friend.module.css';
+import RequestModal from '../../components/Friend/RequestModal';
 
 export default function Friend() {
     const navigate = useNavigate();
@@ -677,7 +678,6 @@ export default function Friend() {
 
     //필터내용 바뀌면 실행
     useEffect(() => {
-        
         // if(selectGender !== 'ge' || selectMina !=='0' || selectMaxa !== '100' || selectCL !== "cl" || selectWL !== "wl" || selectHb !== "hb") {
         if(showFilter){
             setCurrentPage(0);
@@ -846,35 +846,7 @@ export default function Friend() {
 
             {/* 친구 신청 모달창 */}
             {showRequests && (
-                <div className="modal fade show" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
-                    <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                        <div className="modal-content" style={{height:"450px"}}>
-                                <ul className="nav nav-tabs">
-                                    <li className="nav-item">
-                                        <button 
-                                            className={`nav-link ${activeTab2 === 'sentRequests' ? 'active' : ''}`} 
-                                            style={{ backgroundColor: activeTab2 === 'sentRequests' ? '#B7DAA1' : 'white', color: "black"}}
-                                            onClick={() => setActiveTab2('sentRequests')}
-                                        >보낸 친구 신청</button>
-                                    </li>
-                                    <li className="nav-item">
-                                        <button 
-                                            className={`nav-link ${activeTab2 === 'receivedRequests' ? 'active' : ''}`} 
-                                            style={{ backgroundColor: activeTab2 === 'receivedRequests' ? '#B7DAA1' : 'white', color: "black"}}
-                                            onClick={() => setActiveTab2('receivedRequests')}
-                                        >받은 친구 신청</button>
-                                    </li>
-                                </ul>
-
-                            <div className="modal-body" style={{width:"80%"}}>
-                                {renderTabContent2()}
-                            </div>
-                            <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => {setShowRequests(false); setActiveTab2('receivedRequests')}}>닫기</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <RequestModal renderTabContent={renderTabContent2} activeTab={activeTab2}setActiveTab={setActiveTab2} setShowRequests={setShowRequests} />
             )}
 
         </Layout>
