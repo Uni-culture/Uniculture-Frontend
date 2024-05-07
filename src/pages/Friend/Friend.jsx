@@ -142,6 +142,7 @@ export default function Friend() {
             if(response.status === 200){
                 setPresentOpen(false);
                 setRecommendFriendList(response.data);
+                recommendFriendCount();
                 console.log("추천 친구 : " + JSON.stringify(response.data));
                 console.log("추천 친구 수: " + response.data.length);
 
@@ -712,12 +713,21 @@ export default function Friend() {
 
                 <div style={{display: "flex"}}>
                     {activeTab=="recommend" && 
-                        <span 
-                            style={{marginRight: "10px", color: recommendCount > 0 ? "black" : "#737373"}} 
-                            onClick={recommendCount > 0 ? recommendFriendReload : null}>
-                                <TbReload size={25}/>
-                        </span> 
+                        <>
+                            <span 
+                                style={{marginRight: "2px", color: recommendCount > 0 ? "black" : "#737373"}} 
+                                onClick={recommendCount > 0 ? recommendFriendReload : null}>
+                                    <TbReload size={25}/>
+
+                            </span> 
+                            {recommendCount > 0 ? (
+                                <span style={{marginRight: "10px", color: "#737373", fontSize: "11px", alignSelf: "flex-end"}} >( {recommendCount} / 3)</span>
+                            ) : (
+                                <span style={{marginRight: "10px", color: "#737373", fontSize: "11px", alignSelf: "flex-end"}} >매일 00시에 초기화됩니다.</span>
+                            )}
+                        </>
                     }
+                    
                     <Badge count={receivedRequests.length} size="small" overflowCount={10}>
                         <AiOutlineBell size={25} onClick={() => {
                             setShowRequests(true);
