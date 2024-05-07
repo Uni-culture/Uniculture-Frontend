@@ -148,6 +148,7 @@ export default function Friend() {
                 const allClosed = response.data.every(friend => !friend.isOpen);
                 if (allClosed) {
                     setShowpresent(false);
+                    setPresentOpen(false);
                     console.log("showPresent === false");
                 }
                 else { 
