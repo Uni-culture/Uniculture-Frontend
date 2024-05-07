@@ -6,6 +6,7 @@ import TotalBoardList from "../BoardList/TotalBoardList";
 import DailyBoardList from "../BoardList/DailyBoardList";
 import HelpBoardList from "../BoardList/HelpBoardList";
 import FriendBoardList from "../BoardList/FriendBoardList";
+import { Select, Space } from 'antd';
 
 const Home = () => {
     const navigate = useNavigate();
@@ -78,7 +79,35 @@ const Home = () => {
                             </li>
                         </ul>
                     </span>
+
                     <span>
+                        <span className="select-style">
+                            <Select
+                                defaultValue="default"
+                                style={{
+                                    width: 100,
+                                }}
+                                options={[
+                                    {
+                                        value: 'default',
+                                        label: '최신순',
+                                    },
+                                    {
+                                        value: 'viewCount',
+                                        label: '조회순',
+                                    },
+                                    {
+                                        value: 'likeCount',
+                                        label: '좋아요순'
+                                    },
+                                    {
+                                        value: 'commentCount',
+                                        label: '댓글순'
+                                    },
+                                ]}
+                            />
+                        </span>
+
                         {isLogin ? (
                             <button className="write-button" onClick={() => {
                                 // navigate("/add-board", {state : {from : location.pathname}});

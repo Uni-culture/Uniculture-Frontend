@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import ReplyInput from "./replyInput";
 import moment from "moment/moment";
 import {RxCornerBottomLeft} from "react-icons/rx";
@@ -26,6 +26,10 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
     const [translatedContent, setTranslatedContent] = useState(""); // 번역된 댓글 내용
     const [replyIsTranslated, setReplyIsTranslated] = useState({}); // 대댓글 번역 상태
     const [replyTranslations, setReplyTranslations] = useState({}); // 대댓글 번역된 내용
+
+    useEffect(() => {
+        setIsTranslated(false);
+    }, [comment]);
 
     // 댓글 또는 대댓글 번역 기능
     async function translateComment(id, content, isReply=false) {
