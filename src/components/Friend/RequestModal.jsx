@@ -39,8 +39,8 @@ export default function RequestModal({renderTabContent, activeTab, setActiveTab,
                     <div className="modal-body" style={{width:"80%"}}>
                         {renderTabContent()}
                     </div>
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={handleModal}>닫기</button>
+                    <div className="modal-footer" style={{width: "100%"}}>
+                        <button type="button" className="btn btn-primary" data-bs-dismiss="modal" style={{width: "100%"}} onClick={handleModal}>닫기</button>
                     </div>
                 </div>
             </div>
