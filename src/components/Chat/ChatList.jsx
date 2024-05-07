@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./ChatList.css";
 // import "./ChatMain.css"
 import { useNavigate, useParams } from "react-router-dom";
+import { AiOutlineBell } from "react-icons/ai";
+import { Badge} from "antd";
 import axios from "axios";
 import moment from "moment";
 import 'moment/locale/ko'
@@ -36,10 +38,11 @@ const ChatList = ({onSelectedChatRoom, user}) => {
           ...updatedRooms[roomIndex],
           latestMessage: receivedMessage.message,
           latestMessageTime: receivedMessage.createdDate,
+          unreadCount: receivedMessage.roomId.toString() === chatId? 0: prev[roomIndex].unreadCount+1,
         };
         // return updatedRooms;
       } else {
-        updatedRooms = [{id:receivedMessage.roomId,username: receivedMessage.sender, latestMessage: receivedMessage.message, latestMessageTime: receivedMessage.createdTime},...prev, ];
+        updatedRooms = [{id:receivedMessage.roomId,username: receivedMessage.sender, latestMessage: receivedMessage.message, latestMessageTime: receivedMessage.createdTime, unreadCount: receivedMessage.roomId.toString() === chatId? 0 : 1},...prev, ];
         
       } 
       return updatedRooms.sort((a,b) => new Date(b.latestMessageTime) - new Date(a.latestMessageTime));
@@ -67,7 +70,8 @@ const ChatList = ({onSelectedChatRoom, user}) => {
             setChatRooms(sortedRooms);
             if(chatId){
               const selectedRoom = response.data.find(room => room.id.toString() === chatId);
-              console.log(selectedRoom);
+              console.log("선택한 방 정보"+ selectedRoom);
+              selectedRoom.unreadCount = 0;
               if(selectedRoom){
                 onSelectedChatRoom(selectedRoom);
               }
@@ -131,6 +135,7 @@ const ChatList = ({onSelectedChatRoom, user}) => {
             {chatRooms.map((room) => (
               <div key={room.id} className="chat-room" onClick={() => onSelectedChatRoom(room)}>
                 <div>{room.username}</div>
+                <Badge count={room.unreadCount} size="small" overflowCount={10}/>
                 {room.latestMessage ? (<div>{room.latestMessage}</div>) : (<div>채팅 없음</div>)}
                 {room.latestMessageTime ? (<div>{moment(room.latestMessageTime).fromNow() }</div>) : (<div>채팅 없음</div>)}
               </div>
