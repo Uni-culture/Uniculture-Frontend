@@ -11,15 +11,11 @@ export default function NotificationList({notification, readNotification}) {
         switch (type) {
             case "COMMENT":
                 return (
-                    <div>
-                        <BiSolidEdit size={20} />
-                    </div>
+                    <BiSolidEdit size={20} />
                 );
             case "FRIEND":
                 return (
-                    <div>
-                        <IoPersonAddSharp size={20} />
-                    </div>
+                    <IoPersonAddSharp size={20} />
                 );
             default:
                 return null;
