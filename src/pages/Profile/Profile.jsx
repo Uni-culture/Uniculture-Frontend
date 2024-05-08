@@ -80,7 +80,7 @@ const Profile = () => {
 
     return (
         <>
-           {myProfile ? <MyProfile myInformation={myInfo} /> : (otherInfo && <OtherProfile myInformation={myInfo} otherInformation={otherInfo} />)} 
+           {myProfile ? <MyProfile myInfo={myInfo} /> : (otherInfo && <OtherProfile myInformation={myInfo} otherInformation={otherInfo} />)} 
         </>
     );
 };
