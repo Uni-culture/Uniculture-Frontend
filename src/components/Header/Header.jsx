@@ -29,8 +29,14 @@ const Header = () => {
         return localStorage.getItem('accessToken'); // 로컬 스토리지에서 토큰 가져옴
     };
 
+    const getUsername = () => {
+        console.log(localStorage.getItem('username'));
+        return localStorage.getItem('username'); // 로컬 스토리지에서 닉네임 가져옴
+    };
+
     const removeToken = () => {
         localStorage.removeItem('accessToken'); // 로컬 스토리지에서 토큰 가져옴
+        localStorage.removeItem('username');
         Swal.fire({
             title: "<span style='font-size: 18px;'>로그아웃 되었습니다.</span>",
             confirmButtonColor: "#8BC765",
@@ -205,7 +211,9 @@ const Header = () => {
         if(isLogin) {
             if (location.pathname === to) {
                 window.location.reload();
-            } else{
+            } 
+            else if (to===`/profile`) navigate(to + "/" + getUsername());
+            else{
                 navigate(to);
             }
 
