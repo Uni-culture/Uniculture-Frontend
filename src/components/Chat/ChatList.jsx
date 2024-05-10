@@ -134,10 +134,16 @@ const ChatList = ({onSelectedChatRoom, user}) => {
         <div className="chat-list">
             {chatRooms.map((room) => (
               <div key={room.id} className="chat-room" onClick={() => onSelectedChatRoom(room)}>
-                <div>{room.username}</div>
-                <Badge count={room.unreadCount} size="small" overflowCount={10}/>
-                {room.latestMessage ? (<div>{room.latestMessage}</div>) : (<div>채팅 없음</div>)}
-                {room.latestMessageTime ? (<div>{moment(room.latestMessageTime).fromNow() }</div>) : (<div>채팅 없음</div>)}
+                <div className="room-top">
+                  <div className="room-title">{room.username}</div>
+                  <Badge count={room.unreadCount} size="large" overflowCount={99}/>
+                </div>
+                <div className="room-bot">
+                  {room.latestMessage ? (<div className="last_message">{room.latestMessage}</div>) : (<div>채팅 없음</div>)}
+                  <span>&nbsp;·&nbsp;</span>
+                  {room.latestMessageTime ? (<div className="last_time">{moment(room.latestMessageTime).fromNow() }</div>) : (<div>채팅 없음</div>)}
+                </div>
+                
               </div>
             ))}
 

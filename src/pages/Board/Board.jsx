@@ -191,6 +191,49 @@ const Board = () => {
         });
     };
 
+    const recruitedComplete = async () =>{
+        if (!token) {
+            LoginWarning();
+            return;
+        }
+
+        try {
+            if (board.postStatus === 'START') {
+                const response = await axios.post(`/api/auth/post/${board_id}/status`, {
+                    status: 'FINISH'
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    },
+                });
+                if (response.status === 200) {
+                    window.location.reload();
+                }
+                console.log("모집완료!!");
+            } else {
+                const response = await axios.post(`/api/auth/post/${board_id}/status`, {
+                    status:'START'
+                },{
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                if (response.status === 200) {
+                    window.location.reload();
+                }
+                console.log("모집중~");
+            }
+        } catch (error) {
+            if(error.response.status === 401) {
+                console.log("토큰이 만료되었습니다.");
+            }
+            else {
+                console.log("서버 오류 입니다.");
+                alert(error.response.data);
+            }
+        }
+    }
+
     const LoginWarning = () => {
         Swal.fire({
             icon: "warning",
@@ -232,6 +275,8 @@ const Board = () => {
                                 </div>
                                 <div className="board-likeCount">{board.likeCount}</div>
                             </div>
+                            {board.postType === 'HOBBY' || board.postType === 'Language' ? (<button className="board-buttons" onClick={recruitedComplete}>{board.postStatus === 'START' ? ('모집중') : ('모집완료')}</button>): ''}
+
                             <div className="board-postType">{board.postType}</div>
                         </div>
                         <div className="hashtag-wrapper">

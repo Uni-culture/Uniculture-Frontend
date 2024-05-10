@@ -3,6 +3,8 @@
 }
 
 .chat-room {
+  display: flex;
+  flex-direction: column;
   padding: 10px 15px;
   margin: 5px 0;
   background-color: #f2f2f2;
@@ -11,6 +13,30 @@
   transition: background-color 0.3s ease;
 }
 
+.room-top{
+  display: flex;
+  gap: 5px;
+  flex-direction: row;
+}
+
+.room-bot{
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
 .chat-room:hover {
   background-color: #e6e6e6;
+}
+
+.last_message {
+  overflow: hidden; /* 넘치는 내용 숨김 */
+  text-overflow: ellipsis; /* 말줄임표로 표시 */
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* 최대 1줄까지만 표시 */
+  -webkit-box-orient: vertical;
+}
+
+.last_time{
+  flex-shrink: 0;
 }
