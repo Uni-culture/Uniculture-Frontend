@@ -170,7 +170,31 @@ const Header = () => {
             if(error.response.status === 401) {
                 console.log("401 오류");
             }
-            else console.error('Login Error:', error);
+            else console.error('notification Error:', error);
+        }
+    };
+
+    //알림 모두 읽기
+    const readAllNotification = async () => {
+        try {
+            const token = getToken(); // 토큰 가져오기
+            if(token){
+                const response = await axios.post(`/api/auth/notification/all`, {}, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                if(response.status === 200){
+                    console.log("알림 모두 읽기 성공");
+                    getNotification();
+                    getNotificationDetail();
+                }
+            }
+        } catch (error) {
+            if(error.response.status === 401) {
+                console.log("401 오류");
+            }
+            else console.error('notification Error:', error);
         }
     };
 
@@ -325,7 +349,7 @@ const Header = () => {
                     </ul>
                 </div>
             </div>
-            {showDetailAlert && <NotificationModal handleModal={handleModal} myNotification={detailNotification} readNotification={readNotification} />}
+            {showDetailAlert && <NotificationModal handleModal={handleModal} myNotification={detailNotification} readNotification={readNotification} readAllNotification={readAllNotification} />}
         </nav>
     );
 };
