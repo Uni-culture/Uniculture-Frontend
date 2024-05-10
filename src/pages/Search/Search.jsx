@@ -9,6 +9,7 @@ import { GrPowerReset } from "react-icons/gr";
 import axios from "axios";
 import { SearchCard } from "../../components/SearchCard/SearchCard";
 import moment from "moment";
+import SearchUserCard from '../../components/SearchCard/SearchUserCard';
 
 const Search = () => {
     const navigate = useNavigate();
@@ -17,8 +18,14 @@ const Search = () => {
     const [debouncedSearch, setDebouncedSearch] = useState(""); // API 호출에 사용될 검색어
     const [tag, setTag] = useState(""); // 사용자 입력 태그
     const [tags, setTags] = useState([]); // 입력된 태그들을 저장할 배열
+    const [searchType, setSearchType] = useState('post'); //검색하는 것(게시글-post, 친구-friend, 전체 멤버-member)
+    const [memberList, setMemberList] = useState([]);
     const [boardList, setBoardList] = useState([]);
-    const [totalElements, setTotalElements] = useState(0);
+    const [friendList, setFriendList] = useState([]);
+    const [totalElements, setTotalElements] = useState(0); //검색 결과 수
+    const [postElements, setPostElements] = useState(0); //게시물 수 
+    const [friendElements, setFriendElements] = useState(0); //친구 수 
+    const [memberElements, setMemberElements] = useState(0); //전체 사용자 수 
     const [currentPage, setCurrentPage] = useState(0);
     const [isLoading, setIsLoading] = useState(false); // 데이터 로딩 상태
     const [hasMore, setHasMore] = useState(true); // 데이터가 더 있는지 여부
@@ -129,17 +136,19 @@ const Search = () => {
 
     // debouncedSearch가 변경될 때마다 검색 실행
     useEffect(() => {
+        getResultCount();
         if (debouncedSearch) { // debouncedSearch가 비어있지 않다면
             setCurrentPage(0); // 페이지 처음부터 시작
-            setBoardList([]); // 검색 결과 목록을 초기화
-            setTotalElements(0);
-            searchData(0);
+            if(searchType === 'post') {
+                setBoardList([]); // 검색 결과 목록을 초기화
+                searchData(0);
+            }
+            
         } else {
             // debouncedSearch가 비어있을 경우, 목록과 총 항목 수 초기화
-            setBoardList([]);
-            setTotalElements(0);
+            if(searchType === 'post') setBoardList([]);
         }
-    }, [debouncedSearch]);
+    }, [debouncedSearch, tags]);
 
     /*useEffect(() => {
         console.log(currentPage);
@@ -172,6 +181,109 @@ const Search = () => {
         if (node) observer.current.observe(node); // 관찰 대상 설정
     }, [isLoading, hasMore]);
 
+    // 로그인 후 저장된 토큰 가져오는 함수
+    const getToken = () => {
+        return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
+    };
+
+    //검색 결과 개수
+    const getResultCount = async (newTags = tags) => {
+        try {
+            console.log("검색 결과 개수");
+            const token = getToken();
+
+            let url = `/api/search/count?`
+
+            if(debouncedSearch) url += `content=${debouncedSearch}`
+            // 태그가 존재하는 경우
+            if (newTags.length > 0) {
+                const tagsQuery = newTags.map(tag => `tag=${(tag)}`).join('&');
+                console.log("tagsQuery:", tagsQuery);
+                url += `&${tagsQuery}`;
+            }
+
+            const response = await axios.get(url, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            
+            if(response.status === 200){
+                setTotalElements(response.data.total);
+                setPostElements(response.data.post);
+                setFriendElements(response.data.friend);
+                setMemberElements(response.data.member);
+            }
+            else if(response.status === 400){
+                console.log("검색 결과 개수 얻기 클라이언트 오류");
+            }
+            else if(response.status === 500){
+                console.log("검색 결과 개수 얻기 서버 오류");
+            }
+            
+        } catch (error) {
+            navigate("/");
+        }
+    }; 
+
+    const renderContent = () => {
+        switch (searchType) {
+            case "post":
+                return (
+                    <div className="List-wrapper">
+                        <div className="boardList-body">
+                            {boardList && boardList.map((post, index) => {
+                                const key = `${post.postId}-${index}`; // 고유한 key 생성
+                                if (boardList.length === index + 1) { //현재 요소가 배열의 마지막 요소임을 의미
+                                    return <div ref={lastBoardElementRef} key={post.postId}> {/* 마지막 요소에 ref 할당 */}
+                                        <SearchCard
+                                            board_id={post.postId}
+                                            title={post.title}
+                                            content={post.content}
+                                            hashtag={post.tags}
+                                            username={post.writerName}
+                                            date={moment(post.createDate).add(9, "hours").format('YYYY년 MM월 DD일')}
+                                            likeCount={post.likeCount}
+                                        />
+                                    </div>
+                                } else {
+                                    return <SearchCard key={key}
+                                        board_id={post.postId}
+                                        title={post.title}
+                                        content={post.content}
+                                        hashtag={post.tags}
+                                        username={post.writerName}
+                                        date={moment(post.createDate).add(9, "hours").format('YYYY년 MM월 DD일')}
+                                        likeCount={post.likeCount}
+                                    />
+                                }
+                            })}
+                        </div>
+                    </div>
+                );
+            case "friend":
+                return (    
+                    <div className="List-wrapper">
+                        <div className="friendList-body">
+                            {friendList.length > 0 && friendList.map((friend, index) => (
+                                <SearchUserCard key={index} user={friend} />
+                            ))}
+                        </div>
+                    </div>
+                );
+            case "member":
+                return (
+                    <div className="List-wrapper">
+                        <div className="memberList-body">
+                            {memberList.length > 0 && memberList.map((user, index) => (
+                                <SearchUserCard key={index} user={user} />
+                            ))}
+                        </div>
+                    </div>
+                );
+        }
+    }
+    
     return (
         <div style={{ backgroundColor: '#FBFBF3', minHeight: '100vh' }}>
             <Header />
@@ -200,38 +312,28 @@ const Search = () => {
                     </div>
                     <button className="reset-button" onClick={handleReset}><GrPowerReset className="reset-icon"/>초기화</button>
                 </div>
-                <div className="total-elements">총 <b>{totalElements}개</b>의 포스트를 찾았습니다.</div>
+                
+                
+                <div className="total-elements">총 <b>{totalElements}개</b>의 검색 결과를 찾았습니다.</div>
 
-                <div className="boardList-wrapper">
-                    <div className="boardList-body">
-                        {boardList && boardList.map((post, index) => {
-                            const key = `${post.postId}-${index}`; // 고유한 key 생성
-                            if (boardList.length === index + 1) { //현재 요소가 배열의 마지막 요소임을 의미
-                                return <div ref={lastBoardElementRef} key={post.postId}> {/* 마지막 요소에 ref 할당 */}
-                                    <SearchCard
-                                        board_id={post.postId}
-                                        title={post.title}
-                                        content={post.content}
-                                        hashtag={post.tags}
-                                        username={post.writerName}
-                                        date={moment(post.createDate).add(9, "hours").format('YYYY년 MM월 DD일')}
-                                        likeCount={post.likeCount}
-                                    />
-                                </div>
-                            } else {
-                                return <SearchCard key={key}
-                                    board_id={post.postId}
-                                    title={post.title}
-                                    content={post.content}
-                                    hashtag={post.tags}
-                                    username={post.writerName}
-                                    date={moment(post.createDate).add(9, "hours").format('YYYY년 MM월 DD일')}
-                                    likeCount={post.likeCount}
-                                />
-                            }
-                        })}
-                    </div>
+                <div className="navDiv">
+                    <ul className="nav nav-underline nav-tab">
+                        <li className="search-nav-item">
+                            <button className={`nav-link ${searchType === 'post' ? 'active' : ''}`} style={{color: "black"}}
+                                    onClick={() => setSearchType('post')}>게시물 <span className="elements">{postElements}</span></button>
+                        </li>
+                        <li className="search-nav-item">
+                            <button className={`nav-link ${searchType === 'friend' ? 'active' : ''}`} style={{color: "black"}}
+                                    onClick={() => setSearchType('friend')}>친구 <span className="elements">{friendElements}</span></button>
+                        </li>
+                        <li className="search-nav-item">
+                            <button className={`nav-link ${searchType === 'member' ? 'active' : ''}`} style={{color: "black"}}
+                                    onClick={() => setSearchType('member')}>전체 사용자 <span className="elements">{memberElements}</span></button>
+                        </li>
+                    </ul>   
                 </div>
+                
+                {renderContent()}
             </div>
         </div>
     );

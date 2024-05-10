@@ -4,7 +4,6 @@ import Layout from '../../components/Layout'
 import { TbAdjustmentsHorizontal, TbSearch } from "react-icons/tb";
 import { useNavigate } from 'react-router-dom';
 import FriendCard from './components/FriendCard';
-import FriendList from '../Profile/components/FriendList';
 import { Badge, Input } from "antd";
 import { AiOutlineBell } from "react-icons/ai";
 import Pagination from '@mui/material/Pagination';
@@ -20,6 +19,8 @@ export default function Friend() {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('myFriends'); //컴포넌트 선택
     const [friendList, setFriendList] = useState([]); //친구 목록
+    const [receivedRequestsNum, setReceivedRequestsNum] = useState(0); // 받은 요청 수
+
     const [recommendFriendList, setRecommendFriendList] = useState([]); //추천 친구 목록
     const [recommendCount, setRecommendCount] = useState(null); //추천 친구 새로고침 잔여 횟수
     const [showPresent, setShowpresent] = useState(null); //모든 추천친구 isOpen === false인지 아닌지
@@ -46,10 +47,7 @@ export default function Friend() {
     const [currentPage, setCurrentPage] = useState(0); //현재 페이지
 
     //친구 신청 모달창
-    const [showRequests, setShowRequests] = useState(false); 
-    const [activeTab2, setActiveTab2] = useState('receivedRequests');
-    const [sentRequests, setSentRequests] = useState([]); //보낸 친구 신청
-    const [receivedRequests, setReceivedRequests] = useState([]); //받은 친구 신청
+    const [showRequests, setShowRequests] = useState(false);
 
     // 로그인 후 저장된 토큰 가져오는 함수
     const getToken = () => {
@@ -142,6 +140,7 @@ export default function Friend() {
             if(response.status === 200){
                 setPresentOpen(false);
                 setRecommendFriendList(response.data);
+                recommendFriendCount();
                 console.log("추천 친구 : " + JSON.stringify(response.data));
                 console.log("추천 친구 수: " + response.data.length);
 
@@ -199,8 +198,11 @@ export default function Friend() {
 
     //검색 내용 바뀌면 실행
     useEffect(() => {
-        if(activeTab==='myFriends') fetchFriendList(0);
-        else fetchRecommendFriend(0);
+        if(activeTab==='myFriends') {
+            fetchFriendList(0); //친구목록(페이지1) 불러오기
+            fetchReceivedRequests(); //받은 친구 요청 수 불러오기
+        }
+        else fetchRecommendFriend(0); //추천친구(페이지1) 불러오기
     }, [activeTab]);
 
     //검색 내용 바뀌면 실행
@@ -260,7 +262,6 @@ export default function Friend() {
                         {showPresent ? (
                             <>
                                 {recommendFriendList.length > 0 ? (
-                                    // <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "40px" }}>
                                     <div className={styles.recommend}>
                                         {recommendFriendList.map((friend) => (
                                             <div key={friend.id} style={{ marginBottom: "20px" }}>
@@ -302,8 +303,7 @@ export default function Friend() {
         }
     };
 
-    const handlePresentImg = () => {
-        // presentImg를 클릭하면 2초 후에 openImg 이미지로 변경
+    const handlePresentImg = () => { // presentImg를 클릭하면 2초 후에 openImg 이미지로 변경
         setIsAnimating(true);
         setTimeout(() => {
             setIsAnimating(false);
@@ -404,32 +404,6 @@ export default function Friend() {
         }
     };
 
-    // 보낸 친구 신청 목록 불러오기
-    const fetchSentRequests = async () => {
-        try {
-            const token = getToken();
-
-            const response = await axios.get('/api/auth/friend/checkMyRequest', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            
-            if(response.status === 200){
-                setSentRequests(response.data);
-            }
-            else if(response.status === 400){
-                console.log("클라이언트 오류");
-            }
-            else if(response.status === 500){
-                console.log("서버 오류");
-            }
-            
-        } catch (error) {
-            console.error('친구 신청 보낸 목록을 불러오는 중 에러 발생:', error);
-        }
-    };
-
     // 받은 친구 신청 목록 불러오기
     const fetchReceivedRequests = async () => {
         try {
@@ -442,7 +416,7 @@ export default function Friend() {
             });
             
             if(response.status === 200){
-                setReceivedRequests(response.data);
+                setReceivedRequestsNum(response.data.length);
             }
             else if(response.status === 400){
                 console.log("클라이언트 오류");
@@ -456,124 +430,17 @@ export default function Friend() {
         }
     };
 
-    // 보낸 친구 신청 취소
-    const  cancelSentFriendRequest = async (userInfo) => {
-        try {
-            const token = getToken();
-
-            const response = await axios.delete('/api/auth/friend', {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                },
-                data: {
-                    targetId: userInfo.id
-                }
-            });
-            
-            if(response.status === 200){
-                console.log(userInfo.nickname + "님에게 보낸 친구 신청을 취소합니다.");
-                setSentRequests(sentRequests.filter(request => request.id !== userInfo.id)); //보낸 친구 신청 목록에서 삭제
-            }
-            else if(response.status === 400){
-                console.log("클라이언트 오류");
-            }
-            else if(response.status === 500){
-                console.log("서버 오류");
-            }
-            
-        } catch (error) {
-            console.error('보낸 친구 신청 취소 중 에러 발생:', error);
-        }
-    };
-
-    // 친구 신청 받기
-    const acceptReceivedRequest = async (userInfo) => {
-        try {
-            const token = getToken();
-
-            const response = await axios.post('/api/auth/friend/accept', {
-                targetId: userInfo.id
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            
-            if(response.status === 200){
-                console.log(userInfo.nickname + "님의 친구 요청을 수락했습니다.");
-                setReceivedRequests(receivedRequests.filter(request => request.id !== userInfo.id)); //받은 친구 신청 목록에서 삭제
-                fetchFriendList(currentPage); //현재 페이지 친구 목록 다시 불러오기
-            }
-            else if(response.status === 400){
-                console.log("클라이언트 오류");
-            }
-            else if(response.status === 500){
-                console.log("서버 오류");
-            }
-            
-        } catch (error) {
-            console.error('친구 신청 수락 중 에러 발생:', error);
-        }
-    };
-
-    // 친구 신청 거절
-    const  rejectReceivedRequest = async (userInfo) => {
-        try {
-            const token = getToken();
-
-            const response = await axios.post('/api/auth/friend/reject', {
-                targetId: userInfo.id
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            
-            if(response.status === 200){
-                console.log(userInfo.nickname + "님의 친구 요청을 거절했습니다.");
-                setReceivedRequests(receivedRequests.filter(request => request.id !== userInfo.id)); //받은 친구 신청 목록에서 삭제
-            }
-            else if(response.status === 400){
-                console.log("클라이언트 오류");
-            }
-            else if(response.status === 500){
-                console.log("서버 오류");
-            }
-            
-        } catch (error) {
-            console.error('친구 신청 거절 중 에러 발생:', error);
-        }
-    };
-
     // 모달이 표시될 때 친구 목록을 불러옴
     useEffect(() => {
-        fetchSentRequests();
-        fetchReceivedRequests();
+        if(!showRequests) { //모달창 닫을 때 요청
+            fetchFriendList(currentPage); 
+        }
     }, [showRequests]);
 
-    // 친구 모달창 : 선택된 탭에 따라 해당 목록을 표시하는 함수
-    const renderTabContent2 = () => {
-        switch (activeTab2) {
-            case 'sentRequests':
-                return (
-                    <div>
-                        {sentRequests && sentRequests.map((request) => (
-                            <FriendList key={request.id} action={activeTab2} userInfo={request} cancelSentFriendRequest={cancelSentFriendRequest} />
-                        ))}
-                    </div>
-                );
-            case 'receivedRequests':
-                return (
-                    <div>
-                        {receivedRequests && receivedRequests.map((request) => (
-                            <FriendList key={request.id} action= {activeTab2} userInfo={request} acceptReceivedRequest={acceptReceivedRequest} rejectReceivedRequest={rejectReceivedRequest} />
-                        ))}
-                    </div>
-                );
-            default:
-                return null;
-        }
-    };
+    const handleReceivedRequestsNum = (type) => {
+        if(type === "add") setReceivedRequestsNum(receivedRequestsNum + 1);
+        else if( type === "subtract") setReceivedRequestsNum(receivedRequestsNum - 1);
+    }
 
     //필터 선택
     const handleSelect = (value, select) => {
@@ -636,13 +503,10 @@ export default function Friend() {
 
     //필터내용 바뀌면 실행
     useEffect(() => {
-        // if(selectGender !== 'ge' || selectMina !=='0' || selectMaxa !== '100' || selectCL !== "cl" || selectWL !== "wl" || selectHb !== "hb") {
         if(showFilter){
             setCurrentPage(0);
             fetchFriendFilter(0);
         }
-        
-        // }
     }, [selectGender, selectMina, selectMaxa, selectCL, selectWL, selectHb]);
 
     //필터 없애기
@@ -712,16 +576,24 @@ export default function Friend() {
 
                 <div style={{display: "flex"}}>
                     {activeTab=="recommend" && 
-                        <span 
-                            style={{marginRight: "10px", color: recommendCount > 0 ? "black" : "#737373"}} 
-                            onClick={recommendCount > 0 ? recommendFriendReload : null}>
-                                <TbReload size={25}/>
-                        </span> 
+                        <>
+                            <span 
+                                style={{marginRight: "2px", color: recommendCount > 0 ? "black" : "#737373"}} 
+                                onClick={recommendCount > 0 ? recommendFriendReload : null}>
+                                    <TbReload size={25}/>
+
+                            </span> 
+                            {recommendCount > 0 ? (
+                                <span style={{marginRight: "10px", color: "#737373", fontSize: "11px", alignSelf: "flex-end"}} >( {recommendCount} / 3)</span>
+                            ) : (
+                                <span style={{marginRight: "10px", color: "#737373", fontSize: "11px", alignSelf: "flex-end"}} >매일 00시에 초기화됩니다.</span>
+                            )}
+                        </>
                     }
-                    <Badge count={receivedRequests.length} size="small" overflowCount={10}>
+                    
+                    <Badge count={receivedRequestsNum} size="small" overflowCount={10}>
                         <AiOutlineBell size={25} onClick={() => {
                             setShowRequests(true);
-                            setActiveTab2('receivedRequests');
                         }}/>
                     </Badge>              
                 </div>
@@ -741,10 +613,9 @@ export default function Friend() {
 
             {/* 친구 신청 모달창 */}
             {showRequests && (
-                <RequestModal renderTabContent={renderTabContent2} activeTab={activeTab2}setActiveTab={setActiveTab2} setShowRequests={setShowRequests} />
+                <RequestModal modal={setShowRequests} handleReceivedRequestsNum={handleReceivedRequestsNum} />
             )}
 
         </Layout>
     )
 }
-

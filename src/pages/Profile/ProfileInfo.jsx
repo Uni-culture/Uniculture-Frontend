@@ -21,6 +21,8 @@ const ProfileInfo = () => {
     const [checkPassword, setCheckPassword] = useState(''); //확인 비밀번호
     const [showCheckPassword, setShowCheckPassword] = useState(false) //확인 비밀번호 보기
 
+    const [country, setCountry] = useState(""); // 국적
+
     const [selectedYear, setSelectedYear] = useState(null);
     const [selectedMonth, setSelectedMonth] = useState(null);
     const [selectedDay, setSelectedDay] = useState(null);
@@ -45,6 +47,7 @@ const ProfileInfo = () => {
                 setUserInfo(response.data); // 서버에서 받은 사용자 정보 반환
                 setOriginalNickname(response.data.nickname);
                 setAge(response.data.age);
+                setCountry(response.data.country);
                 setSelectedYear(response.data.year);
                 setSelectedMonth(response.data.month);
                 setSelectedDay(response.data.day);
@@ -195,6 +198,11 @@ const ProfileInfo = () => {
         } else {
             setPwValid(false);
         }
+    };
+
+    //국적
+    const handleCountryChange = (e) => {
+        setCountry(e.target.value);
     };
 
     // 생년월일 선택한 값으로 상태 설정
@@ -368,6 +376,11 @@ const ProfileInfo = () => {
                                 />
                                 <label htmlFor="btnradio2" style={{marginLeft: "5px"}}>WOMAN</label>
                             </div>
+                        </div>
+
+                        <div className="mb-4 row">
+                            <label className="col-sm-3 col-form-label">Country</label>
+                            <div className="col-sm-8">{country}</div>
                         </div>
 
                         <div className="mb-4 row">

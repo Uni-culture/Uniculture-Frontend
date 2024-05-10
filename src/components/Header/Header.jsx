@@ -29,8 +29,14 @@ const Header = () => {
         return localStorage.getItem('accessToken'); // 로컬 스토리지에서 토큰 가져옴
     };
 
+    const getUsername = () => {
+        console.log(localStorage.getItem('username'));
+        return localStorage.getItem('username'); // 로컬 스토리지에서 닉네임 가져옴
+    };
+
     const removeToken = () => {
         localStorage.removeItem('accessToken'); // 로컬 스토리지에서 토큰 가져옴
+        localStorage.removeItem('username');
         Swal.fire({
             title: "<span style='font-size: 18px;'>로그아웃 되었습니다.</span>",
             confirmButtonColor: "#8BC765",
@@ -164,7 +170,31 @@ const Header = () => {
             if(error.response.status === 401) {
                 console.log("401 오류");
             }
-            else console.error('Login Error:', error);
+            else console.error('notification Error:', error);
+        }
+    };
+
+    //알림 모두 읽기
+    const readAllNotification = async () => {
+        try {
+            const token = getToken(); // 토큰 가져오기
+            if(token){
+                const response = await axios.post(`/api/auth/notification/all`, {}, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                if(response.status === 200){
+                    console.log("알림 모두 읽기 성공");
+                    getNotification();
+                    getNotificationDetail();
+                }
+            }
+        } catch (error) {
+            if(error.response.status === 401) {
+                console.log("401 오류");
+            }
+            else console.error('notification Error:', error);
         }
     };
 
@@ -208,7 +238,9 @@ const Header = () => {
         if(isLogin) {
             if (location.pathname === to) {
                 window.location.reload();
-            } else{
+            } 
+            else if (to===`/profile`) navigate(to + "/" + getUsername());
+            else{
                 navigate(to);
             }
 
@@ -320,7 +352,7 @@ const Header = () => {
                     </ul>
                 </div>
             </div>
-            {showDetailAlert && <NotificationModal handleModal={handleModal} myNotification={detailNotification} readNotification={readNotification} />}
+            {showDetailAlert && <NotificationModal handleModal={handleModal} myNotification={detailNotification} readNotification={readNotification} readAllNotification={readAllNotification} />}
         </nav>
     );
 };
