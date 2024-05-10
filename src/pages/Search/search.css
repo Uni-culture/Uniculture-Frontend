@@ -141,6 +141,23 @@
 
 .total-elements {
     margin-top: 1.3rem;
+}
+
+.setSearchType {
+    display: flex;
+    margin-top: 1.3rem;
     margin-bottom: 1.3rem;
+}
+
+.navDiv {
+    margin-bottom: 30px;
+}
+
+.search-nav-item {
+    padding: 0px 5px;
+}
+
+.elements {
+    padding: 0px 3px;
 }
 
