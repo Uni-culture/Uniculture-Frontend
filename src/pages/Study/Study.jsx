@@ -233,13 +233,12 @@ useEffect(() => {
                 <option value="viewCount">눈팅</option>
               </select>
     
-                {token && (
-                  <button onClick={() => navigate("/post/new?type=study")}>
+              {token && (
+                <button onClick={() => navigate("/post/new?type=study")} className={styles.write}>
                   <FaPencilAlt />
                   글쓰기
-                  </button>
-                )
-                }
+                </button>
+              )}
             </div>
             <ul className={styles.study_list}>
               {

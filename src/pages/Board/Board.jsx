@@ -274,9 +274,8 @@ const Board = () => {
                                     )}
                                 </div>
                                 <div className="board-likeCount">{board.likeCount}</div>
+                                {board.postType === 'HOBBY' || board.postType === 'Language' ? (<button className="board-buttons" onClick={recruitedComplete}>{board.postStatus === 'START' ? ('모집중') : ('모집완료')}</button>): ''}
                             </div>
-                            {board.postType === 'HOBBY' || board.postType === 'Language' ? (<button className="board-buttons" onClick={recruitedComplete}>{board.postStatus === 'START' ? ('모집중') : ('모집완료')}</button>): ''}
-
                             <div className="board-postType">{board.postType}</div>
                         </div>
                         <div className="hashtag-wrapper">

@@ -18,13 +18,10 @@ const ChatList = ({onSelectedChatRoom, user}) => {
 
     const {chatId} = useParams();
 
-
     // 로그인 후 저장된 토큰 가져오는 함수
     const getToken = () => {
       return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
   };
-
-  
 
   const updateChatRooms = (receivedMessage) =>{
     setChatRooms(prev => {
