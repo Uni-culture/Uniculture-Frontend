@@ -38,6 +38,9 @@ const SignIn = () => {
                 if(response.data.accessToken){ // null인 경우 실행되지 않음
                     localStorage.setItem('accessToken', response.data.accessToken);
                 }
+                if(response.data.username){ // null인 경우 실행되지 않음
+                    localStorage.setItem('username', response.data.username);
+                }
                 const previousPath = location.state?.from || "/"; // 이전 경로가 없으면 기본 경로는 "/"
                 console.log(`이전 경로: ${previousPath}`);
                 navigate(previousPath, {}); // 로그인 성공 후 이전 페이지로 이동
