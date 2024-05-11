@@ -9,6 +9,8 @@ import {IoSearch} from "react-icons/io5";
 import { Badge } from "antd";
 import { AiOutlineBell } from "react-icons/ai";
 import NotificationModal from "../Notification/NotificationModal";
+import { useTranslation } from "react-i18next";
+import i18n from "../../locales/i18n";
 
 const Header = () => {
     const navigate = useNavigate(); // 다른 component 로 이동할 때 사용
@@ -20,6 +22,14 @@ const Header = () => {
     const [showDetailAlert, setShowDetailAlert] = useState(false); //알림 상세보기 모달창
     const [detailNotification, setDetailNotification] = useState([]); //알림 상세내용
     const [chatCount, setChatCount] = useState(null); //안 읽은 채팅 개수
+
+    const { t } = useTranslation();
+
+    // 언어를 변경하는 함수
+    const changeLanguage = (language) => {
+        console.log("언어 변경");
+        i18n.changeLanguage(language);
+    };
 
     useEffect(() => {
         loginCheck(); // 컴포넌트가 마운트될 때 로그인 상태 확인
@@ -194,9 +204,9 @@ const Header = () => {
     const LoginWarning = () => {
         Swal.fire({
             icon: "warning",
-            title: "<div style='font-size: 21px; margin-bottom: 10px;'>로그인 후 이용해 주세요.</div>",
+            title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
             confirmButtonColor: "#8BC765",
-            confirmButtonText: "확인",
+            confirmButtonText: t('loginWarning.confirmButton'),
         });
     };
 
@@ -259,6 +269,8 @@ const Header = () => {
                     </div>
                 </div>
                 <div className={`ms-auto order-lg-last`}>
+                    <img src={"/korea.png"} alt="korea Image" onClick={() => changeLanguage('ko')} className="headerImg" />
+                    <img src={"/united-states.png"} alt="united-states Image" onClick={() => changeLanguage('en')} className="headerImg" />
                     <IoSearch className="search-icon" onClick={navigateToSearch}/>
                     <Badge className="alert-icon" count={myNotification} size="small" overflowCount={99}>
                         <AiOutlineBell onClick={handleNotification} />
@@ -266,18 +278,18 @@ const Header = () => {
                 </div>
                 {isLogin ? (
                     <button className={`btn nav-link order-lg-last`} onClick={removeToken} style={{ backgroundColor: "#B3C693", padding: "5px 15px", marginRight: "10px"}}>
-                        로그아웃
+                        {t(`header.로그아웃`)}
                     </button>
                 ) : (
                     <>
                         <div className={`order-lg-last`}>
                             <button className={`btn nav-link`} style={{ backgroundColor: "#B3C693", padding: "5px 15px", marginRight: "10px" }} onClick={handleSignIn}>
-                                로그인
+                                {t(`header.로그인`)}
                             </button>
                         </div>
                         <div className={`order-lg-last`}>
                             <button className={`btn nav-link`} style={{ backgroundColor: "#B3C693", padding: "5px 15px", marginRight: "10px" }} onClick={handleSignUp}>
-                                회원가입
+                                {t(`header.회원가입`)}
                             </button>
                         </div>
                     </>
@@ -295,24 +307,24 @@ const Header = () => {
                 <div className={`collapse navbar-collapse ${isNavOpen ? 'show' : ''}`}>
                     <ul className="navbar-nav">
                         <li className={`nav-item ${activePage("/")}`}>
-                            <button className={`btn nav-link ${activePage("/")}`} onClick={() => handleNavigation("/")}>홈</button>
+                            <button className={`btn nav-link ${activePage("/")}`} onClick={() => handleNavigation("/")}>{t(`header.홈`)}</button>
                         </li>
                         <li className={`nav-item ${activePage("/friend")}`}>
-                            <button className={`btn nav-link ${activePage("/friend")}`} onClick={() => handleNavigation("/friend")}>친구</button>
+                            <button className={`btn nav-link ${activePage("/friend")}`} onClick={() => handleNavigation("/friend")}>{t(`header.친구`)}</button>
                         </li>
                         <li className="nav-item">
-                            <button className={`btn nav-link ${activePage("/study")}`} onClick={() => handleNavigation("/study")}>스터디</button>
+                            <button className={`btn nav-link ${activePage("/study")}`} onClick={() => handleNavigation("/study")}>{t(`header.스터디`)}</button>
                         </li>
                         <li className={`nav-item ${activePage("/chat")}`}>
                             <Badge className="chat-icon" count={chatCount} size="small" overflowCount={99}>
-                                <button className={`btn nav-link ${activePage("/chat")}`} onClick={() => handleNavigation("/chat")}>채팅</button>
+                                <button className={`btn nav-link ${activePage("/chat")}`} onClick={() => handleNavigation("/chat")}>{t(`header.채팅`)}</button>
                             </Badge>
                         </li>
                         <li className={`nav-item ${activePage(`/profile`)}`}>
-                            <button className={`btn nav-link ${activePage("/profile")}`} onClick={() => handleNavigation(`/profile`)}>프로필</button>
+                            <button className={`btn nav-link ${activePage("/profile")}`} onClick={() => handleNavigation(`/profile`)}>{t(`header.프로필`)}</button>
                         </li>
                         <li className={`nav-item ${activePage(`/translate`)}`}>
-                            <button className={`btn nav-link ${activePage("/translate")}`} onClick={() => handleNavigation(`/translate`)}>번역</button>
+                            <button className={`btn nav-link ${activePage("/translate")}`} onClick={() => handleNavigation(`/translate`)}>{t(`header.번역`)}</button>
                         </li>
                     </ul>
                 </div>

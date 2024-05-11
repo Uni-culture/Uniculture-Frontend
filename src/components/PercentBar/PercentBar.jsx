@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { RiDeleteBinLine } from "react-icons/ri";
+import {useTranslation} from "react-i18next";
 
 const PercentBar = ({ language, level, color, onDelete}) => {
     const [percentage, setPercentage] = useState();
     const [bg, setBg] = useState();
+    const { t } = useTranslation();
 
     useEffect(()=>{
         setBg(color);
@@ -22,7 +24,7 @@ const PercentBar = ({ language, level, color, onDelete}) => {
     return (
         <>
             <div className="d-flex align-items-center" style={{display: "flex"}}>
-                {language && (<label style={{textAlign: "left", minWidth: "50px", marginRight: "10px"}}>{language}</label>)}
+                {language && (<label style={{textAlign: "left", minWidth: "50px", marginRight: "10px"}}>{t(`languageSelect.${language}`)}</label>)}
                 <div style={{ position: 'relative' }}>
                     <div className="progress" style={{ width: '150px'}}>
                         <div

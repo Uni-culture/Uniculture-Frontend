@@ -84,7 +84,7 @@
 .authButton {
     width: 100%;
     border: none;
-    margin-top: 63px;
+    margin-top: 55px;
     border-radius: 7px;
     height: 55px;
     font-size: 18px;
@@ -145,6 +145,7 @@
     background-color: #8BC765;
     padding: 7px;
     font-weight: 549;
+    display: inline-block;
 }
 
 .nickNameButton:hover {

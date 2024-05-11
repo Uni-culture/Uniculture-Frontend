@@ -4,12 +4,14 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import {useTranslation} from "react-i18next";
 
 const ProfileDelete = () => {
     const [deleteInput, setDeleteInput] = useState('');
     const [isModalOpened, setIsModalOpened] = useState(false);
     
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const handleModal = () => {
         loginCheck();
@@ -89,11 +91,11 @@ const ProfileDelete = () => {
                     <Sidebar />
                     <div className="col-md-9 ms-sm-auto col-lg-10 px-md-4" style={{ overflowY: "auto" }}>
                         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h4 className="h4">계정 탈퇴</h4>
+                            <h4 className="h4">{t('ProfileDelete.accountDeletion')}</h4>
                         </div>
                         <div className="mb-3 row" style={{ textAlign: "center" }}>
                             {/* 탈퇴하기 버튼에 모달 열기 함수 연결 */}
-                            <button type="button" className="btn btn-primary btn-sm" style={{ width: "100px" }} onClick={handleModal}>탈퇴하기</button>
+                            <button type="button" className="btn btn-primary btn-sm" style={{ width: "100px" }} onClick={handleModal}>{t('ProfileDelete.accountDeletion')}</button>
                         </div>
                     </div>
                 </div>
@@ -105,24 +107,24 @@ const ProfileDelete = () => {
                     <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalLabel">탈퇴하기</h5>
+                                <h5 className="modal-title" id="exampleModalLabel">{t('ProfileDelete.deleteAccount')}</h5>
                             </div>
                             <div className="modal-body">
-                                탈퇴하기 입력 후 '탈퇴'버튼을 클릭하면 탈퇴됩니다.
-                                <div style={{textAlign:"center", marginTop:"20px"}}><input placeholder="탈퇴하기"onChange={(e)=>{setDeleteInput(e.target.value)}}/></div>
+                                {t('ProfileDelete.modalBody')}
+                                <div style={{textAlign:"center", marginTop:"20px"}}><input placeholder={t('ProfileDelete.modalInputPlaceholder')} onChange={(e)=>{setDeleteInput(e.target.value)}}/></div>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={handleModal}>닫기</button>
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={handleModal}>{t('ProfileDelete.closeButton')}</button>
                                 <button type="button" className="btn btn-primary" 
                                     onClick={()=>{
                                         if(deleteInput==="탈퇴하기"){
                                             deleteUser();
                                         }
                                         else {
-                                            alert("'탈퇴하기'를 입력해주세요.");
+                                            alert(t('ProfileDelete.deleteInputAlert'));
                                         }
                                     }}
-                                >탈퇴</button>
+                                >{t('ProfileDelete.deleteButton')}</button>
                             </div>
                         </div>
                     </div>

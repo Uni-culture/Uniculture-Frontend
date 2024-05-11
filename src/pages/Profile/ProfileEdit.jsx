@@ -6,6 +6,7 @@ import AddLanuageModal from "./Modal/AddLanuageModal";
 import { useNavigate } from "react-router-dom";
 import PercentBar from "../../components/PercentBar/PercentBar";
 import Swal from "sweetalert2";
+import {useTranslation} from "react-i18next";
 
 const ProfileEdit = () => {
     const [userInfo, setUserInfo] = useState(null);
@@ -20,6 +21,7 @@ const ProfileEdit = () => {
 
     const [isModalOpened1, setIsModalOpened1] = useState(false); //사용 언어 추가 모달창
     const [isModalOpened2, setIsModalOpened2] = useState(false); //학습 언어 추가 모달창
+    const { t } = useTranslation();
 
     const interestTag = [ // 관심사 태그
         "요리",
@@ -240,7 +242,7 @@ const ProfileEdit = () => {
                     <Sidebar/>
                     <div className="col-md-9 ms-sm-auto col-lg-10 px-md-4" style={{ overflowY: "auto" }}>
                         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h4 className="h4">프로필 편집</h4>
+                            <h4 className="h4">{t('ProfileEdit.editProfile')}</h4>
                         </div>
                         <div className="mb-3 row justify-content-center">
                             <div
@@ -267,8 +269,8 @@ const ProfileEdit = () => {
                         </div>
                         
                         <div className="mb-4 row justify-content-center">
-                            <button type="button" style={{width:"80px", marginRight:"15px"}} onClick={()=>{setProfileImg(null); setUserInfo({...userInfo, profileurl: null})}}>삭제</button>
-                            <button type="file" style={{width:"80px"}} accept='image/*' onClick={() => selectFile.current.click()} >변경</button>
+                            <button type="button" style={{width:"80px", marginRight:"15px"}} onClick={()=>{setProfileImg(null); setUserInfo({...userInfo, profileurl: null})}}>{t('ProfileEdit.delete')}</button>
+                            <button type="file" style={{width:"80px"}} accept='image/*' onClick={() => selectFile.current.click()} >{t('ProfileEdit.change')}</button>
                             <input
                                 type="file"
                                 accept='image/*'
@@ -280,25 +282,25 @@ const ProfileEdit = () => {
 
                         {/* 소개 */}
                         <div className="mb-5 row">
-                            <label className="col-sm-2 col-form-label" style={{minWidth: "100px"}}>소개</label>
+                            <label className="col-sm-2 col-form-label" style={{minWidth: "100px"}}>{t('ProfileEdit.introduction')}</label>
                             <div className="col-sm-8">
                                 <textarea
                                     className="form-control"
-                                    placeholder="소개 입력"
+                                    placeholder={t('ProfileEdit.enterIntroduction')}
                                     value={userInfo?.introduce || ''}
                                     onChange={changeIntroduce}
                                     maxLength="100" 
                                 />
                                 <div style={{float:"right", marginTop: "10px", marginRight: "5px"}}>
                                     <span>{inputCount}</span>
-                                    <span>/100 자</span>
+                                    <span>/100 {t('ProfileEdit.charLimit')}</span>
                                 </div>
                             </div>
                         </div>
 
                         {/* 관심사 */}
                         <div className="mb-5 row">
-                            <label className="col-sm-2 col-form-label" style={{minWidth: "100px"}}>관심사</label>
+                            <label className="col-sm-2 col-form-label" style={{minWidth: "100px"}}>{t('ProfileEdit.interests')}</label>
                             <div className="col-sm-8">
                                 {interestTag.map((tag) => (
                                     <button
@@ -306,18 +308,18 @@ const ProfileEdit = () => {
                                         className={`interest-tag ${userInfo?.myHobbyList.includes(tag) ? 'selectedIntTag' : ''}`}
                                         onClick={() => handleHobbyChange(tag)}
                                     >
-                                        {tag}
+                                        {t(`interestTag.${tag}`)}
                                     </button>
                                 ))}
                                 {isOverSelectedIntTags && (
                                     <div className="interest-tag-warning">
-                                        10개 이하로 선택해주세요.
+                                        {t('ProfileEdit.interestsLimitWarning')}
                                     </div>
                                 )}
                             </div>
                         </div>
                         <div className="mb-2 row">
-                            <label className="col-sm-2 col-form-label" style={{minWidth: "100px"}}>사용 언어</label>
+                            <label className="col-sm-2 col-form-label" style={{minWidth: "100px"}}>{t('ProfileEdit.usedLanguages')}</label>
                             <div className="col-sm-7 col-form-label">
                                 <button style={{borderRadius:"9px",backgroundColor:"#e9ecef", border:"0px"}} onClick={()=>{setIsModalOpened1(true)}}>Add Language</button>
                                 {isModalOpened1&&<AddLanuageModal handleModal={()=>{setIsModalOpened1(false)}} addLanguage={handleMyLanguages}/>}
@@ -336,7 +338,7 @@ const ProfileEdit = () => {
                             ))}
                         </div>
                         <div className="mb-2 row">
-                            <label className="col-sm-2 col-form-label" style={{minWidth: "100px"}}>학습 언어</label>
+                            <label className="col-sm-2 col-form-label" style={{minWidth: "100px"}}>{t('ProfileEdit.learningLanguages')}</label>
                             <div className="col-sm-7 col-form-label">
                                 <button style={{borderRadius:"9px",backgroundColor:"#e9ecef", border:"0px"}} onClick={()=>{setIsModalOpened2(true)}}>Add Language</button>
                                 {isModalOpened2&&<AddLanuageModal handleModal={()=>{setIsModalOpened2(false)}} addLanguage={handleWantLanguage}/>}
@@ -367,7 +369,7 @@ const ProfileEdit = () => {
                                 }}
                                 onClick={changeInfo}
                             >
-                                수정
+                                {t('ProfileEdit.editButton')}
                             </button>
                         </div>
                     </div>

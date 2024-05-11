@@ -15,6 +15,7 @@ import TotalBoardList from "../BoardList/TotalBoardList";
 import ShowAllLanguage from './Modal/ShowAllLanguage';
 import MyStudyList from "./MyStudyList";
 import RequestModal from '../../components/Friend/RequestModal';
+import {useTranslation} from "react-i18next";
 
 export default function MyProfile({myInformation}) {
     const [myInfo, setMyInfo] = useState(myInformation); // 매개변수로 받은것을 가지고 다시 상태유지
@@ -37,6 +38,7 @@ export default function MyProfile({myInformation}) {
     const [wantLanguages, setWantLanguages] = useState([]); //학습 언어 능숙도가 높은 순
 
     const [activeTab3, setActiveTab3] = useState('boardList'); //게시글, 스터디 보기
+    const { t } = useTranslation();
 
     useEffect(() => {
         setMyInfo(myInformation); // myInformation을 props로 받아서 업데이트
@@ -356,10 +358,10 @@ export default function MyProfile({myInformation}) {
 
                 {/* 게시글, 친구 */}
                 <div>
-                    <div className={styles.post}>게시글</div>
+                    <div className={styles.post}>{t('profile.posts')}</div>
                     <div className={styles.postNum}>{myInfo?.postnum}</div>
                     {/* 친구, 친구수중 아무거나 클릭하더라도 setShowFriend state 를 변경시켜서 모달창을띄움(useEffect 에 showfriend 가 걸려있기때문에 리렌더링) */}
-                    <div className={styles.friend} onClick={()=> {setShowFriend(true)}}>친구</div>
+                    <div className={styles.friend} onClick={()=> {setShowFriend(true)}}>{t('profile.friends')}</div>
                     <div className={styles.friendNum} onClick={()=> {setShowFriend(true)}}>{friendNum}</div>
                     <Badge count={myInfo?.receiverequestnum} size="small" overflowCount={10}>
                         <AiOutlineBell size={20} onClick={() => {
@@ -400,7 +402,7 @@ export default function MyProfile({myInformation}) {
                                 marginTop: "5px"
                             }}
                         >
-                            # {hobby}
+                            # {t(`interestTag.${hobby}`)}
                         </div>
                     ))}
                 </div>
@@ -412,13 +414,13 @@ export default function MyProfile({myInformation}) {
                         className="nav-item"
                         style={{ fontWeight: activeTab3 === 'boardList' ? 'bold' : 'normal', backgroundColor: activeTab3 === 'boardList' ? '#B7DAA1' : '', marginRight: "20px", padding: "5px 15px", borderRadius: 11}}
                         onClick={() => setActiveTab3('boardList')}>
-                        게시물
+                        {t('profile.게시물')}
                     </li>
                     <li 
                         className="nav-item"
                         style={{ fontWeight: activeTab3 === 'studyList' ? 'bold' : 'normal',  backgroundColor: activeTab3 === 'studyList' ? '#B7DAA1' : '', marginRight: "20px", padding: "5px 15px", borderRadius: 11}}
                         onClick={() => {setActiveTab3('studyList');}}>
-                        스터디
+                        {t('profile.스터디')}
                     </li>
                 </ul>
            

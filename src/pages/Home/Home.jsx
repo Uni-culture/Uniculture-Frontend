@@ -7,11 +7,13 @@ import DailyBoardList from "../BoardList/DailyBoardList";
 import HelpBoardList from "../BoardList/HelpBoardList";
 import FriendBoardList from "../BoardList/FriendBoardList";
 import { Select, Space } from 'antd';
+import {useTranslation} from "react-i18next";
 
 const Home = () => {
     const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(false);
     const [activeTab, setActiveTab] = useState('total'); //컴포넌트 선택
+    const { t} = useTranslation();
 
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 로컬 스토리지에서 토큰 가져옴
@@ -63,19 +65,19 @@ const Home = () => {
                         <ul className="nav nav-underline nav-tab">
                             <li className="nav-item">
                                 <button className={`nav-link ${activeTab === 'total' ? 'active' : ''}`} style={{color: "black"}}
-                                        onClick={() => setActiveTab('total')}>전체</button>
+                                        onClick={() => setActiveTab('total')}>{t(`nav.전체`)}</button>
                             </li>
                             <li className="nav-item">
                                 <button className={`nav-link ${activeTab === 'daily' ? 'active' : ''}`} style={{color: "black"}}
-                                        onClick={() => setActiveTab('daily')}>일상</button>
+                                        onClick={() => setActiveTab('daily')}>{t(`nav.일상`)}</button>
                             </li>
                             <li className="nav-item">
                                 <button className={`nav-link ${activeTab === 'help' ? 'active' : ''}`} style={{color: "black"}}
-                                        onClick={() => setActiveTab('help')}>도움</button>
+                                        onClick={() => setActiveTab('help')}>{t(`nav.도움`)}</button>
                             </li>
                             <li className="nav-item">
                                 <button className={`nav-link ${activeTab === 'friend' ? 'active' : ''}`} style={{color: "black"}}
-                                        onClick={() => setActiveTab('friend')}>친구</button>
+                                        onClick={() => setActiveTab('friend')}>{t(`nav.친구`)}</button>
                             </li>
                         </ul>
                     </span>
@@ -90,19 +92,19 @@ const Home = () => {
                                 options={[
                                     {
                                         value: 'default',
-                                        label: '최신순',
+                                        label: t('sort.최신순'),
                                     },
                                     {
                                         value: 'viewCount',
-                                        label: '조회순',
+                                        label: t('sort.조회순'),
                                     },
                                     {
                                         value: 'likeCount',
-                                        label: '좋아요순'
+                                        label: t('sort.좋아요순')
                                     },
                                     {
                                         value: 'commentCount',
-                                        label: '댓글순'
+                                        label: t('sort.댓글순')
                                     },
                                 ]}
                             />
@@ -113,7 +115,7 @@ const Home = () => {
                                 // navigate("/add-board", {state : {from : location.pathname}});
                                 navigate("/post/new?type=post")
                             }}>
-                                글쓰기
+                                {t(`nav.글쓰기`)}
                             </button>
                         ) : (
                             <></>

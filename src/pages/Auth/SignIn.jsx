@@ -5,6 +5,7 @@ import {Link, useNavigate, useLocation} from "react-router-dom";
 import './Auth.css';
 import { IoArrowBack } from "react-icons/io5";
 import Swal from "sweetalert2";
+import {useTranslation} from "react-i18next";
 
 const SignIn = () => {
     const navigate = useNavigate(); // 다른 component 로 이동할 때 사용
@@ -15,6 +16,8 @@ const SignIn = () => {
     const [pwValid, setPwValid] = useState(false);
     const [showPassword, setShowPassword] = useState(false); // 비밀번호를 텍스트 형태로 보여줄지 여부 결정
     const [notAllow, setNotAllow] = useState(true);
+    const { t } = useTranslation();
+
     const resetInput = () => {
         setEmail('');
         setPw('');
@@ -120,33 +123,33 @@ const SignIn = () => {
             <IoArrowBack style={{ fontSize: '25px', marginTop: '20px', marginLeft: '20px'}} onClick={goBackToPreviousPath}/>
             <div className="auth-layout">
                 <div className="title"><Link to={"/"} style={{ color: "#04B404", textDecoration: "none"}}>UniCulture</Link></div>
-                <div className="sub-title">나의 성장을 돕는 언어교류 플랫폼</div>
-                <div className="inputTitle">✉️ 이메일</div>
+                <div className="sub-title">{t(`signIn.subTitle`)}</div>
+                <div className="inputTitle">{t(`signIn.emailInput`)}</div>
                 <div className="inputWrap">
                     <input className="input" type="email" placeholder="test@example.com" value={email} onChange={handleEmail} onKeyDown={handleKeyDown}/>
                 </div>
                 <div className="errorMessageWrap">
                     {!emailValid && email.length > 0 && (
-                        <div>이메일 형식이 올바르지 않습니다.</div>
+                        <div>{t(`signIn.emailError`)}</div>
                     )}
                 </div>
-                <div className="inputTitle">🔒 비밀번호</div>
+                <div className="inputTitle">{t(`signIn.passwordInput`)}</div>
                 <div className="inputWrap">
-                    <input className="input" type={showPassword ? "text" : "password"} placeholder="영문, 숫자, 특수문자 포함 8자 이상" value={pw} onChange={handlePw} onKeyDown={handleKeyDown}/>
+                    <input className="input" type={showPassword ? "text" : "password"} placeholder={t('signIn.passwordPlaceholder')} value={pw} onChange={handlePw} onKeyDown={handleKeyDown}/>
                 </div>
                 <div className="errorMessageWrap">
                     {!pwValid && pw.length > 0 && (
-                        <div>영문, 숫자, 특수문자 포함 8자 이상 입력해주세요.</div>
+                        <div>{t('signIn.passwordError')}</div>
                     )}
                 </div>
                 <label>
                     <input type='checkbox' className="custom-checkbox" onChange={toggleShowPassword} />
-                    <span className="pwCheck">비밀번호 보기</span>
+                    <span className="pwCheck">{t('signIn.passwordVisibility')}</span>
                 </label>
-                <button disabled={notAllow} className="authButton" onClick={handleLogin} style={{marginBottom: '7px', marginTop: '35px'}}>로그인</button>
+                <button disabled={notAllow} className="authButton" onClick={handleLogin} style={{marginBottom: '7px', marginTop: '35px'}}>{t('signIn.loginButton')}</button>
                 <div className="signUpText">
                     <Link to={"/sign-up"}>
-                        <div style={{color: "dimgrey"}}>회원가입</div>
+                        <div style={{color: "dimgrey"}}>{t('signIn.Register')}</div>
                     </Link>
                 </div>
             </div>

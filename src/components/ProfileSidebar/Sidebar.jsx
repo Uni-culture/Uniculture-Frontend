@@ -1,9 +1,11 @@
 import React from 'react'
 import {Link, useLocation, useNavigate } from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 const Sidebar = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const activePage = (link) => {
         return location.pathname === link ? "nav-link active" : "nav-link link-dark";
@@ -24,9 +26,9 @@ const Sidebar = () => {
             <span className="fs-4" onClick={goBack}>←</span>
             <hr />
             <ul className="nav nav-pills flex-column mb-auto">
-                <NavItem to="/account/edit" text="프로필 편집" />
-                <NavItem to="/account/personal-info" text="개인정보" />
-                <NavItem to="/account/delete" text="계정 탈퇴" />
+                <NavItem to="/account/edit" text={t('Sidebar.editProfile')} />
+                <NavItem to="/account/personal-info" text={t('Sidebar.personalInfo')} />
+                <NavItem to="/account/delete" text={t('Sidebar.deleteAccount')} />
             </ul>
         </div>
     );
