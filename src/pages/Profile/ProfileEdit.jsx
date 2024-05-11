@@ -7,22 +7,24 @@ import { useNavigate } from "react-router-dom";
 import PercentBar from "../../components/PercentBar/PercentBar";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
+import styles from './ProfileEdit.module.css';
 
 const ProfileEdit = () => {
-    const [userInfo, setUserInfo] = useState(null);
+    const { t } = useTranslation();
     const navigate = useNavigate();
+    const [userInfo, setUserInfo] = useState(null);
 
     // 프로필 사진
     const [profileImg, setProfileImg] = useState(null);
     const selectFile = useRef(null);
 
-    // 소개
-    let [inputCount, setInputCount] = useState(0);
-
-    const [isModalOpened1, setIsModalOpened1] = useState(false); //사용 언어 추가 모달창
-    const [isModalOpened2, setIsModalOpened2] = useState(false); //학습 언어 추가 모달창
-    const { t } = useTranslation();
-
+    const [inputCount, setInputCount] = useState(0); // 소개
+    const purposeTag = [ // 가입 목적 태그
+        "언어 교류",
+        "친목",
+        "문화 교류"
+    ];
+    const [isOverSelectedIntTags, setIsOverSelectedIntTags] = useState(false); //관심사 10개 넘는지
     const interestTag = [ // 관심사 태그
         "요리",
         "여행",
@@ -64,7 +66,13 @@ const ProfileEdit = () => {
         "자원봉사",
         "사회공헌"
     ];
-    const [isOverSelectedIntTags, setIsOverSelectedIntTags] = useState(false);
+
+    const [isModalOpened1, setIsModalOpened1] = useState(false); //사용 언어 추가 모달창
+    const [isModalOpened2, setIsModalOpened2] = useState(false); //학습 언어 추가 모달창
+
+    useEffect(() => {
+        fetchUserInfo();
+    }, [])
 
     // 로그인 후 저장된 토큰 가져오는 함수
     const getToken = () => {
@@ -97,10 +105,6 @@ const ProfileEdit = () => {
         }
     };
 
-    useEffect(() => {
-        fetchUserInfo();
-    }, [])
-
     //회원정보 수정
     const changeInfo = async () => {
         console.log('changeInfo');
@@ -122,6 +126,8 @@ const ProfileEdit = () => {
                     '/api/auth/member/editProfile',
                     {
                         introduce: userInfo.introduce,
+                        purpose: userInfo.purpose,
+                        mainPurpose: userInfo.mainPurpose,
                         myHobbyList : userInfo.myHobbyList,
                         myLanguages : userInfo.myLanguages,
                         wantLanguage : userInfo.wantLanguage
@@ -152,12 +158,6 @@ const ProfileEdit = () => {
         }
     };
 
-    //소개 변경
-    const changeIntroduce = (e) => {
-        setUserInfo({...userInfo, introduce : e.target.value});
-        setInputCount(e.target.value.length);
-    };
-
     // 프로필 사진 변경
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -170,7 +170,37 @@ const ProfileEdit = () => {
         };
     };
 
-    // 취미 변경
+    //소개 변경
+    const changeIntroduce = (e) => {
+        setUserInfo({...userInfo, introduce : e.target.value});
+        setInputCount(e.target.value.length);
+    };
+
+    //주 가입목적
+    useEffect(() => {
+        if (userInfo?.purpose.length === 1) {
+            setUserInfo({ ...userInfo, mainPurpose: userInfo?.purpose[0] });
+        }
+    }, [userInfo?.purpose]);
+
+    const purposeTagClick = (purpose) => {
+        let updatedPurpose = userInfo?.purpose || [];
+
+        if (updatedPurpose.includes(purpose)) { // 목적이 이미 존재하는 경우 : 해당 목적 제거
+            updatedPurpose = updatedPurpose.filter(item => item !== purpose);
+        } else { // 선택된 목적이 포함되어 있지 않은 경우 :  해당 목적 추가
+            updatedPurpose = [...updatedPurpose, purpose];
+        }
+
+        setUserInfo({ ...userInfo, purpose: updatedPurpose });
+    };
+
+    // 최종 주 목적 태그 선택 함수
+    const selectFinalPurpose = (tag) => {
+        setUserInfo({ ...userInfo, mainPurpose: tag });
+    };
+
+    // 관심사 변경
     const handleHobbyChange = (hobby) => {
         // updatedHobbies를 userInfo?.myHobbyList로 초기화
         let updatedHobbies = userInfo?.myHobbyList || [];
@@ -246,7 +276,7 @@ const ProfileEdit = () => {
                         </div>
                         <div className="mb-3 row justify-content-center">
                             <div
-                                className="imageWrapper"
+                                className={styles.imageWrapper}
                                 style={{
                                     width: "200px",
                                     height: "200px",
@@ -257,20 +287,16 @@ const ProfileEdit = () => {
                             >
                                 <img
                                     src={profileImg ? profileImg : (userInfo?.profileurl ? userInfo.profileurl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")}
+                                    className={styles.profileImage}
                                     alt="profile"
-                                    style={{
-                                        width:"100%",
-                                        height: "100%",
-                                        objectFit:"cover"
-                                    }}
                                 />
 
                             </div>
                         </div>
                         
-                        <div className="mb-4 row justify-content-center">
-                            <button type="button" style={{width:"80px", marginRight:"15px"}} onClick={()=>{setProfileImg(null); setUserInfo({...userInfo, profileurl: null})}}>{t('ProfileEdit.delete')}</button>
-                            <button type="file" style={{width:"80px"}} accept='image/*' onClick={() => selectFile.current.click()} >{t('ProfileEdit.change')}</button>
+                        <div className={`mb-5 ${styles.imgButton}`}>
+                            <button type="button" className={styles.imgDelete} onClick={()=>{setProfileImg(null); setUserInfo({...userInfo, profileurl: null})}}>{t('ProfileEdit.delete')}</button>
+                            <button type="file" className={styles.imgChange} accept='image/*' onClick={() => selectFile.current.click()} >{t('ProfileEdit.change')}</button>
                             <input
                                 type="file"
                                 accept='image/*'
@@ -282,25 +308,55 @@ const ProfileEdit = () => {
 
                         {/* 소개 */}
                         <div className="mb-5 row">
-                            <label className="col-sm-2 col-form-label" style={{minWidth: "100px"}}>{t('ProfileEdit.introduction')}</label>
+                            <label className={`col-sm-2 col-form-label ${styles.label}`}>{t('ProfileEdit.introduction')}</label>
                             <div className="col-sm-8">
                                 <textarea
-                                    className="form-control"
+                                    className={`form-control ${styles.introduceTextarea}`}
                                     placeholder={t('ProfileEdit.enterIntroduction')}
                                     value={userInfo?.introduce || ''}
                                     onChange={changeIntroduce}
                                     maxLength="100" 
                                 />
-                                <div style={{float:"right", marginTop: "10px", marginRight: "5px"}}>
+                                <div className={styles.inputCount}>
                                     <span>{inputCount}</span>
                                     <span>/100 {t('ProfileEdit.charLimit')}</span>
                                 </div>
                             </div>
                         </div>
 
+                        {/* 가입 목적 */}
+                        <div className="mb-5 row">
+                            <label className={`col-sm-2 col-form-label ${styles.label}`}>가입 목적</label>
+                            <div className="col-sm-8">
+                                {purposeTag.map((tag) => (
+                                    <button
+                                        key={tag}
+                                        className={`purpose-tag ${userInfo?.purpose.includes(tag) ? 'selectedPurTag' : ''}`}
+                                        onClick={() => purposeTagClick(tag)}
+                                    >
+                                        {tag}
+                                    </button>
+                                ))}
+                                {userInfo?.purpose.length > 1 && (
+                                    <div>
+                                        <div className={styles.finalPurpose}>주 목적은 어떤 것인가요?</div>
+                                        {userInfo?.purpose.map((tag) => (
+                                            <button
+                                                key={tag}
+                                                className={`purpose-tag ${userInfo?.mainPurpose.includes(tag) ? 'selectedPurTag' : ''}`}
+                                                onClick={() => selectFinalPurpose(tag)} // 선택된 태그를 다시 클릭하면 제거됨
+                                            >
+                                                {tag}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
                         {/* 관심사 */}
                         <div className="mb-5 row">
-                            <label className="col-sm-2 col-form-label" style={{minWidth: "100px"}}>{t('ProfileEdit.interests')}</label>
+                            <label className={`col-sm-2 col-form-label ${styles.label}`}>{t('ProfileEdit.interests')}</label>
                             <div className="col-sm-8">
                                 {interestTag.map((tag) => (
                                     <button
@@ -318,10 +374,12 @@ const ProfileEdit = () => {
                                 )}
                             </div>
                         </div>
+
+                        {/* 사용 언어 */}
                         <div className="mb-2 row">
-                            <label className="col-sm-2 col-form-label" style={{minWidth: "100px"}}>{t('ProfileEdit.usedLanguages')}</label>
+                            <label className={`col-sm-2 col-form-label ${styles.label}`}>{t('ProfileEdit.usedLanguages')}</label>
                             <div className="col-sm-7 col-form-label">
-                                <button style={{borderRadius:"9px",backgroundColor:"#e9ecef", border:"0px"}} onClick={()=>{setIsModalOpened1(true)}}>Add Language</button>
+                                <button className={styles.languageAdd} onClick={()=>{setIsModalOpened1(true)}}>Add Language</button>
                                 {isModalOpened1&&<AddLanuageModal handleModal={()=>{setIsModalOpened1(false)}} addLanguage={handleMyLanguages}/>}
                             </div>
 
@@ -338,9 +396,9 @@ const ProfileEdit = () => {
                             ))}
                         </div>
                         <div className="mb-2 row">
-                            <label className="col-sm-2 col-form-label" style={{minWidth: "100px"}}>{t('ProfileEdit.learningLanguages')}</label>
+                            <label className={`col-sm-2 col-form-label ${styles.label}`}>{t('ProfileEdit.learningLanguages')}</label>
                             <div className="col-sm-7 col-form-label">
-                                <button style={{borderRadius:"9px",backgroundColor:"#e9ecef", border:"0px"}} onClick={()=>{setIsModalOpened2(true)}}>Add Language</button>
+                                <button className={styles.languageAdd} onClick={()=>{setIsModalOpened2(true)}}>Add Language</button>
                                 {isModalOpened2&&<AddLanuageModal handleModal={()=>{setIsModalOpened2(false)}} addLanguage={handleWantLanguage}/>}
                             </div>
 
@@ -356,17 +414,11 @@ const ProfileEdit = () => {
                                 </div>
                             ))}
                         </div>
-                        <div className="row justify-content-center">
+
+                        <div className={styles.buttonGroup}>
                             <button
                                 type="button"
-                                style={{
-                                    width: "109px",
-                                    height: "34px",
-                                    marginBottom: "20px",
-                                    borderRadius:"9px",
-                                    backgroundColor:"#B7DAA1",
-                                    border:"0px"
-                                }}
+                                className={styles.changeButton}
                                 onClick={changeInfo}
                             >
                                 {t('ProfileEdit.editButton')}

@@ -5,7 +5,7 @@ import PercentBar from '../../../components/PercentBar/PercentBar';
 import { GiMale, GiFemale } from "react-icons/gi";
 import { FaExchangeAlt } from "react-icons/fa";
 
-export default function RecommendedFriendCard({userInfo, sendFriendRequest, hb}) {
+export default function AllUserCard({userInfo, sendFriendRequest, hb}) {
     const navigate = useNavigate();
     const [canLanguage, setCanLanguage] = useState(); // Card에 보이는 cl
     const [CLList, setCLList] = useState(); // 사용 언어 능숙도 높은순

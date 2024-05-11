@@ -78,6 +78,22 @@
   padding: 18px 0;
 }
 
+.sortBtn{
+  display: flex;
+  justify-content: space-between; /* 양 끝 정렬 */
+  align-items: baseline;
+}
+
+.write{
+  
+  font-weight: 400;
+  margin-left: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #C8DCA0;
+  padding: 5px 15px;
+  color: black;
+}
 
 .study_list{
   list-style: none;

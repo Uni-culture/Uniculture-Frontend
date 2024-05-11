@@ -18,13 +18,10 @@ const ChatList = ({onSelectedChatRoom, user}) => {
 
     const {chatId} = useParams();
 
-
     // 로그인 후 저장된 토큰 가져오는 함수
     const getToken = () => {
       return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
   };
-
-  
 
   const updateChatRooms = (receivedMessage) =>{
     setChatRooms(prev => {
@@ -134,10 +131,16 @@ const ChatList = ({onSelectedChatRoom, user}) => {
         <div className="chat-list">
             {chatRooms.map((room) => (
               <div key={room.id} className="chat-room" onClick={() => onSelectedChatRoom(room)}>
-                <div>{room.username}</div>
-                <Badge count={room.unreadCount} size="small" overflowCount={10}/>
-                {room.latestMessage ? (<div>{room.latestMessage}</div>) : (<div>채팅 없음</div>)}
-                {room.latestMessageTime ? (<div>{moment(room.latestMessageTime).fromNow() }</div>) : (<div>채팅 없음</div>)}
+                <div className="room-top">
+                  <div className="room-title">{room.username}</div>
+                  <Badge count={room.unreadCount} size="large" overflowCount={99}/>
+                </div>
+                <div className="room-bot">
+                  {room.latestMessage ? (<div className="last_message">{room.latestMessage}</div>) : (<div>채팅 없음</div>)}
+                  <span>&nbsp;·&nbsp;</span>
+                  {room.latestMessageTime ? (<div className="last_time">{moment(room.latestMessageTime).fromNow() }</div>) : (<div>채팅 없음</div>)}
+                </div>
+                
               </div>
             ))}
 

@@ -30,7 +30,7 @@ export const Study = () => {
   const [tag, setTag] = useState(""); // 사용자 입력 태그
   const [tags, setTags] = useState([]); // 입력된 태그들을 저장할 배열
   const { t } = useTranslation();
-  
+
 
   const getToken = () => {
     return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
@@ -126,10 +126,10 @@ useEffect(() => {
     let url = `/api/post/search?page=${page}&size=10&category=STUDY`;
 
     if (status === '모집중') {
-      url += '&ps=START';
-    } else if (status === '모집완료') {
-      url += '&ps=FINISH';
-    }
+          url += '&ps=START';
+        } else if (status === '모집완료') {
+          url += '&ps=FINISH';
+        }
 
     // 검색어가 존재하는 경우
     if (debouncedSearch) {
@@ -220,9 +220,9 @@ useEffect(() => {
                   </span>
                 ))}
               </div>
-              <input className="tag-input" type="text" value={tag} onChange={handleTagChange} onKeyDown={handleKeyDown} placeholder={t('Study.tagSearchPlaceholder')}/>
+              <input className="tag-input" type="text" value={tag} onChange={handleTagChange} onKeyDown={handleKeyDown} placeholder="태그로 검색해보세요!"/>
             </div>
-            <button className="reset-button" onClick={handleReset}><GrPowerReset className="reset-icon"/>{t('Study.resetButton')}</button>
+            <button className="reset-button" onClick={handleReset}><GrPowerReset className="reset-icon"/>초기화</button>
           </div>
 
           </div>
@@ -235,13 +235,12 @@ useEffect(() => {
                 <option value="viewCount">눈팅</option>
               </select>
     
-                {token && (
-                  <button onClick={() => navigate("/post/new?type=study")}>
+              {token && (
+                <button onClick={() => navigate("/post/new?type=study")} className={styles.write}>
                   <FaPencilAlt />
-                      {t('Study.writePost')}
-                  </button>
-                )
-                }
+                    {t('Study.writePost')}
+                </button>
+              )}
             </div>
             <ul className={styles.study_list}>
               {
