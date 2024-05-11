@@ -124,10 +124,10 @@ useEffect(() => {
     let url = `/api/post/search?page=${page}&size=10&category=STUDY`;
 
     if (status === '모집중') {
-      url += '&ps=START';
-    } else if (status === '모집완료') {
-      url += '&ps=FINISH';
-    }
+          url += '&ps=START';
+        } else if (status === '모집완료') {
+          url += '&ps=FINISH';
+        }
 
     // 검색어가 존재하는 경우
     if (debouncedSearch) {
@@ -233,13 +233,12 @@ useEffect(() => {
                 <option value="viewCount">눈팅</option>
               </select>
     
-                {token && (
-                  <button onClick={() => navigate("/post/new?type=study")}>
+              {token && (
+                <button onClick={() => navigate("/post/new?type=study")} className={styles.write}>
                   <FaPencilAlt />
                   글쓰기
-                  </button>
-                )
-                }
+                </button>
+              )}
             </div>
             <ul className={styles.study_list}>
               {

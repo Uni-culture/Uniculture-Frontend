@@ -13,7 +13,7 @@ export const Card = ({board_id, title, content, username, date, likeCount, style
     return (
         <div className="card-wrapper" style={style}>
             <div className="card-body-img">
-                <img src={"default_image.jpg"} alt="Card Image" onClick={() => {navigate(`/board/${board_id}`)}}/>
+                <img src={"/default_image.jpg"} alt="Card Image" onClick={() => {navigate(`/board/${board_id}`)}}/>
             </div>
             <div className="card-body-text" onClick={() => {navigate(`/board/${board_id}`)}}>
                 <div className="card-body-text-title">{title}</div>
@@ -26,7 +26,7 @@ export const Card = ({board_id, title, content, username, date, likeCount, style
 
             <div className="card-footer">
                 <div className="username" onClick={handleProfile}>
-                    <img src={"default_profile_image.jpg"} alt="User Image" />by {username}
+                    <img src={"/default_profile_image.jpg"} alt="User Image" />by {username}
                 </div>
                 <div className="likeCount">
                     <IoMdHeart style={{marginRight: '5px', marginBottom: '3px'}}/>

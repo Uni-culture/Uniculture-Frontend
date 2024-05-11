@@ -13,7 +13,7 @@ export const StudyListCard = ({data}) => {
         <div className={styles.question}>
           <div className={styles.question_info}>
             <div className={styles.question_title}>
-              <div>{data.postStatus==="START" ? <span className='badge rounded-pill bg-primary'>모집중</span>: <span >모집완료</span>}</div>
+              <div>{data.postStatus==="START" ? <span className='badge rounded-pill bg-success'>모집중</span>: <span className='badge rounded-pill bg-secondary'>모집완료</span>}</div>
               <h3 className={styles.title_text}>{data.title}</h3>
             </div>
             <p className={styles.question_body}>{data.content.replace(/(<([^>]+)>)/gi, '')}</p>

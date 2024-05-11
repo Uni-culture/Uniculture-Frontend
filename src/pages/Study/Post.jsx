@@ -23,6 +23,8 @@ export const Post = () => {
 
   const [preset, setPreset] = useState(type);
 
+  const [postType, setPostType] = useState('');
+
 
   const [inputs, setInputs] = useState({
     title:'',
@@ -42,6 +44,7 @@ export const Post = () => {
         ...inputs,
         category: studyOptions[0].value,
       }));
+      setPostType("스터디");
     }
     else{
       setPreset('post');
@@ -50,6 +53,7 @@ export const Post = () => {
         ...inputs,
         category: postOptions[0].value,
       }));
+      setPostType("게시글");
     }
     handleTagChange(null);
   },[type])
@@ -138,7 +142,7 @@ export const Post = () => {
     <Layout>
     <div className={styles.root}>
       <div className={styles.post_name}>
-        <h2>{preset} 작성</h2>
+        <h2>{postType} 작성</h2>
         {/* <div className={styles.example}>스터디 모집 예시를 참고해 작성해주세요. 꼼꼼히 작성하면 멋진 스터디 팀원을 만날 수 있을거예요.</div> */}
         <div>
           {/* <button onClick={() => handlePresetChange("post")} className={preset === "post" ? styles.active : ""}>게시글</button>

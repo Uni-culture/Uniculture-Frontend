@@ -203,14 +203,17 @@ const Header = () => {
     };
 
     const activePage = (link) => {
-        if (location.pathname === link) {
-            return 'active';
-        } else if (location.pathname.startsWith('/profile/') && link === '/friend') {
-            return 'active';
-        } else {
-            return '';
+        // if (location.pathname === link) {
+        //     return 'active';
+        // } else if (location.pathname.startsWith('/profile/') && link === '/friend') {
+        //     return 'active';
+        // } else {
+        //     return '';
+        // }
+        if(link === '/'){
+            return location.pathname === link ? 'active' : '';
         }
-
+        return location.pathname.startsWith(link) ? 'active' : '';
     };
 
     const handleSignUp = () => {
