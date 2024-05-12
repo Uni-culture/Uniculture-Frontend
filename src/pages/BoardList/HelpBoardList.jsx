@@ -59,7 +59,7 @@ const HelpBoardList = () => {
             <div className="boardList-body">
                 {boardList.map(post => (
                     <Card key={post.postId} board_id={post.postId} title={post.title} content={post.content} username={post.writerName}
-                          date={moment(post.createDate).add(9, "hour").format('YYYY년 MM월 DD일')}></Card>
+                          date={moment(post.createDate).add(9, "hour").format('YYYY년 MM월 DD일')} commentCount={post.commentCount}></Card>
                 ))}
             </div>
             <div className="boardList-footer">

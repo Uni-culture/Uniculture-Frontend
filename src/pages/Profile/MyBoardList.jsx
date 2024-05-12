@@ -66,7 +66,7 @@ const MyBoardList = () => {
             <div className="boardList-body">
                 {boardList.map(post => (
                     <Card key={post.postId} board_id={post.postId} title={post.title} content={post.content} username={post.writerName}
-                          date={moment(post.createDate).add(9, "hour").format('YYYY-MM-DD')} style={{margin: '5px'}}></Card>
+                          date={moment(post.createDate).add(9, "hour").format('YYYY-MM-DD')} style={{margin: '5px'}} commentCount={post.commentCount} likeCount={post.likeCount}></Card>
                 ))}
             </div>
             <div className="boardList-footer">

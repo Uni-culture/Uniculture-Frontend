@@ -2,7 +2,7 @@ import "./card.scss";
 import {useNavigate} from "react-router-dom";
 import { IoMdHeart } from "react-icons/io";
 
-export const Card = ({board_id, title, content, username, date, likeCount, style}) => {
+export const Card = ({board_id, title, content, username, date, likeCount,commentCount, style}) => {
     const navigate = useNavigate();
 
     //해당 게시물의 프로필로 이동
@@ -20,7 +20,7 @@ export const Card = ({board_id, title, content, username, date, likeCount, style
                 <div className="card-body-text-content">{content.replace(/(<([^>]+)>)/gi, '')}</div>
                 <div className="card-body-text-bottom">
                     <span>{date}</span>
-                    <span> · 0개의 댓글</span>
+                    <span> · {commentCount}개의 댓글</span>
                 </div>
             </div>
 
