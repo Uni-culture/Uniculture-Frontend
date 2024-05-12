@@ -45,7 +45,7 @@ export const Post = () => {
         ...inputs,
         category: studyOptions[0].value,
       }));
-      setPostType("스터디");
+      setPostType(t('Post.createStudy'));
     }
     else{
       setPreset('post');
@@ -54,10 +54,10 @@ export const Post = () => {
         ...inputs,
         category: postOptions[0].value,
       }));
-      setPostType("게시글");
+      setPostType(t('Post.createPost'));
     }
     handleTagChange(null);
-  },[type])
+  },[type, t])
 
   const handleCategoryChange = (value) => {
     console.log(`Selected: ${value}`);
@@ -143,7 +143,7 @@ export const Post = () => {
     <Layout>
     <div className={styles.root}>
       <div className={styles.post_name}>
-        <h2>{postType} 작성</h2>
+        <h2>{t(postType)}</h2>
         {/* <div className={styles.example}>스터디 모집 예시를 참고해 작성해주세요. 꼼꼼히 작성하면 멋진 스터디 팀원을 만날 수 있을거예요.</div> */}
         <div>
           {/* <button onClick={() => handlePresetChange("post")} className={preset === "post" ? styles.active : ""}>게시글</button>

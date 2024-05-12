@@ -163,7 +163,7 @@ export default function MyProfile({myInfo}) {
                                 marginTop: "5px"
                             }}
                         >
-                            # {hobby}
+                            # {t(`interestTag.${hobby}`)}
                         </div>
                     ))}
                 </div>

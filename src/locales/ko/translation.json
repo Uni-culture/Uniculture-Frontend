@@ -8,7 +8,8 @@
     "번역": "번역",
     "로그인": "로그인",
     "회원가입": "회원가입",
-    "로그아웃": "로그아웃"
+    "로그아웃": "로그아웃",
+    "logoutMessage": "로그아웃 되었습니다."
   },
   "nav": {
     "전체": "전체",
@@ -230,9 +231,8 @@
     "deleteInputAlert": "'탈퇴하기'를 입력해주세요."
   },
   "Post": {
-    "create": "작성",
-    "study": "Study",
-    "post": "Post",
+    "createPost": "게시글 작성",
+    "createStudy": "스터디 작성",
     "postButton": "게시글",
     "studyButton": "스터디",
     "title": "제목",
@@ -248,5 +248,37 @@
     "cancelButton": "취소",
     "submitButton": "글 작성",
     "studyRecruitmentExample": "<p><strong>[개발 스터디 모집 내용 예시]</strong></p><ul><li>스터디 주제 :</li><li>스터디 목표 :</li><li>예상 스터디 일정(횟수) :</li><li>예상 커리큘럼 간략히 :</li><li>예상 모집인원 :</li><li>스터디 소개와 개설 이유 :</li><li>스터디 관련 주의사항 :</li><li>스터디에 지원할 수 있는 방법을 남겨주세요. (이메일, 카카오 오픈채팅방, 구글폼 등.) :</li></ul><p><br></p>"
+  },
+  "Board": {
+    "dateFormat": "YYYY년 M월 D일",
+    "TranslateButton": "번역",
+    "RevertButton": "되돌리기",
+    "DeleteButton": "삭제",
+    "EditButton": "수정"
+  },
+  "Comments": {
+    "Placeholder": "댓글을 입력해주세요",
+    "SubmitButton": "등록하기",
+    "Author": "작성자",
+    "Edit": "수정",
+    "Delete": "삭제",
+    "Cancel": "X 취소",
+    "EnterComment": "댓글을 입력해주세요",
+    "Modify": "수정하기",
+    "CommentDeleted": "댓글이 삭제되었습니다",
+    "Translate": "번역하기",
+    "Reply": "답글",
+    "ConfirmDelete": "댓글을 삭제하시겠습니까?"
+  },
+  "Translate": {
+    "KO": "한국어",
+    "EN": "영어",
+    "ZH": "중국어",
+    "JA": "일본어",
+    "DE": "독일어",
+    "ES": "스페인어",
+    "FR": "프랑스어",
+    "IT": "이탈리아어",
+    "Translate": "번역하기"
   }
 }

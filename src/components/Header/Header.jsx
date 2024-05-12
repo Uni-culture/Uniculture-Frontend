@@ -48,7 +48,7 @@ const Header = () => {
         localStorage.removeItem('accessToken'); // 로컬 스토리지에서 토큰 가져옴
         localStorage.removeItem('username');
         Swal.fire({
-            title: "<span style='font-size: 18px;'>로그아웃 되었습니다.</span>",
+            title: `<span style='font-size: 18px;'>${t('header.logoutMessage')}</span>`,
             confirmButtonColor: "#8BC765",
             customClass: {
                 popup: 'custom-logout-popup',

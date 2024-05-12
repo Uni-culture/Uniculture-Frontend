@@ -220,9 +220,9 @@ useEffect(() => {
                   </span>
                 ))}
               </div>
-              <input className="tag-input" type="text" value={tag} onChange={handleTagChange} onKeyDown={handleKeyDown} placeholder="태그로 검색해보세요!"/>
+              <input className="tag-input" type="text" value={tag} onChange={handleTagChange} onKeyDown={handleKeyDown} placeholder={t('Study.tagSearchPlaceholder')}/>
             </div>
-            <button className="reset-button" onClick={handleReset}><GrPowerReset className="reset-icon"/>초기화</button>
+            <button className="reset-button" onClick={handleReset}><GrPowerReset className="reset-icon"/>{t('Study.resetButton')}</button>
           </div>
 
           </div>

@@ -14,6 +14,7 @@ import openImg from '../../assets/openimg.png'
 import styles from './Friend.module.css';
 import RequestModal from '../../components/Friend/RequestModal';
 import Filter from './components/Filter';
+import {useTranslation} from "react-i18next";
 
 export default function Friend() {
     const navigate = useNavigate();
@@ -48,6 +49,8 @@ export default function Friend() {
 
     //친구 신청 모달창
     const [showRequests, setShowRequests] = useState(false);
+
+    const { t } = useTranslation();
 
     // 로그인 후 저장된 토큰 가져오는 함수
     const getToken = () => {
@@ -248,9 +251,9 @@ export default function Friend() {
                         ) : (
                             <div>
                                 {selectGender === 'ge' && selectMina ==='0' && selectMaxa === '100' && selectCL === "cl" && selectWL === "wl" && selectHb === "hb" ? (
-                                    <p>친구를 추가해주세요.</p>
+                                    <p>{t('Friend.addFriendsPrompt')}</p>
                                 ) : (
-                                    <p>죄송합니다, 해당 조건에 맞는 결과가 없습니다.</p>
+                                    <p>{t('Friend.noResults')}</p>
                                 )}
                             </div>
                         )}
@@ -271,8 +274,8 @@ export default function Friend() {
                                     </div>
                                 ) : (
                                     <div>
-                                        <p>아쉽게도, 현재 시스템에서 추천할 친구를 찾지 못했습니다.</p>
-                                        <p>사용자의 활동이나 관심사를 더 많이 입력해주시면 보다 정확한 추천을 제공할 수 있습니다.</p>
+                                        <p>{t('Friend.noRecommendedFriends')}</p>
+                                        <p>{t('Friend.moreInputPrompt')}</p>
                                     </div>
                                 )}
                             </>
@@ -535,13 +538,13 @@ export default function Friend() {
                                 className="nav-item"
                                 style={{ width:"65px", fontWeight: activeTab === 'myFriends' ? 'bold' : 'normal', marginRight: "20px"}}
                                 onClick={() => {setActiveTab('myFriends'); resetFilter("false");}}>
-                                내 친구
+                                {t('Friend.내 친구')}
                             </li>
                             <li 
                                 className="nav-item"
                                 style={{ width:"70px", fontWeight: activeTab === 'recommend' ? 'bold' : 'normal' }}
                                 onClick={() => {setActiveTab('recommend'); setSearchInput(null); resetFilter("false"); recommendFriendCount();}}>
-                                추천 친구
+                                {t('Friend.추천 친구')}
                             </li>
                         </ul>
                     </div>
