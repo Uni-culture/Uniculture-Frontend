@@ -532,21 +532,21 @@ export default function Friend() {
         <Layout>
             <div style={{display:"flex", justifyContent: "space-between", alignItems: "center"}}>
                 <div style={{display:"flex", alignItems: "center"}}>
-                    <div>
-                        <ul className="nav">
-                            <li 
-                                className="nav-item"
-                                style={{ width:"65px", fontWeight: activeTab === 'myFriends' ? 'bold' : 'normal', marginRight: "20px"}}
-                                onClick={() => {setActiveTab('myFriends'); resetFilter("false");}}>
-                                {t('friend.내 친구')}
+                    <div className="navDiv">
+                        <ul className="nav nav-underline nav-tab">
+                            <li className="nav-item">
+                                <button className={`nav-link ${activeTab === 'myFriends' ? 'active' : ''}`} style={{color: "black"}}
+                                        onClick={() => {setActiveTab('myFriends'); resetFilter("false");}}>
+                                        {t('friend.내 친구')}
+                                </button>
                             </li>
-                            <li 
-                                className="nav-item"
-                                style={{ width:"70px", fontWeight: activeTab === 'recommend' ? 'bold' : 'normal' }}
-                                onClick={() => {setActiveTab('recommend'); setSearchInput(null); resetFilter("false"); recommendFriendCount();}}>
-                                {t('friend.추천 친구')}
+                            <li className="nav-item">
+                                <button className={`nav-link ${activeTab === 'recommend' ? 'active' : ''}`} style={{color: "black"}}
+                                       onClick={() => {setActiveTab('recommend'); setSearchInput(null); resetFilter("false"); recommendFriendCount();}}>
+                                       {t('friend.추천 친구')}
+                                    </button>
                             </li>
-                        </ul>
+                        </ul>   
                     </div>
                     
                     {activeTab === 'myFriends' && (
