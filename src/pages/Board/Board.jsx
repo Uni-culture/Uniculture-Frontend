@@ -9,6 +9,8 @@ import {IoArrowBack} from "react-icons/io5";
 import Swal from "sweetalert2";
 import Comments from "../../components/Comments/Comments"
 import DOMPurify from "dompurify";
+import {useTranslation} from "react-i18next";
+import i18n from "i18next";
 
 const Board = () => {
     const location = useLocation();
@@ -21,6 +23,9 @@ const Board = () => {
     const [isLoaded, setIsLoaded] = useState(false);
     const navigate = useNavigate();
     const [liked, setLiked] = useState(false); // 좋아요 상태 관리
+    const { t } = useTranslation();
+    // 현재 언어 설정에 따라 moment의 로케일 설정
+    moment.locale(i18n.language);
 
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
@@ -191,6 +196,49 @@ const Board = () => {
         });
     };
 
+    const recruitedComplete = async () =>{
+        if (!token) {
+            LoginWarning();
+            return;
+        }
+
+        try {
+            if (board.postStatus === 'START') {
+                const response = await axios.post(`/api/auth/post/${board_id}/status`, {
+                    status: 'FINISH'
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    },
+                });
+                if (response.status === 200) {
+                    window.location.reload();
+                }
+                console.log("모집완료!!");
+            } else {
+                const response = await axios.post(`/api/auth/post/${board_id}/status`, {
+                    status:'START'
+                },{
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                if (response.status === 200) {
+                    window.location.reload();
+                }
+                console.log("모집중~");
+            }
+        } catch (error) {
+            if(error.response.status === 401) {
+                console.log("토큰이 만료되었습니다.");
+            }
+            else {
+                console.log("서버 오류 입니다.");
+                alert(error.response.data);
+            }
+        }
+    }
+
     const LoginWarning = () => {
         Swal.fire({
             icon: "warning",
@@ -222,7 +270,7 @@ const Board = () => {
                             <div className="left-container">
                                 <div className="board-header-username" onClick={handleProfile}>{board.writerName}</div>
                                 <div className="board-header-dot">·</div>
-                                <div className="board-header-date">{moment(board.createDate).add(9,"hour").format('YYYY년 MM월 DD일')}</div>
+                                <div className="board-header-date">{moment(board.createDate).add(9,"hour").format(t('board.dateFormat'))}</div>
                                 <div className="like" style={{marginLeft: "30px"}}>
                                     {liked ? (
                                         <HeartFilled style={{color: 'red'}} onClick={handleLike} />
@@ -231,6 +279,7 @@ const Board = () => {
                                     )}
                                 </div>
                                 <div className="board-likeCount">{board.likeCount}</div>
+                                { board.isMine &&(board.postType === 'HOBBY' || board.postType === 'LANGUAGE') ? (<button className="board-buttons" onClick={recruitedComplete}>{board.postStatus === 'START' ? ('모집종료') : ('다시모집')}</button>): ''}
                             </div>
                             <div className="board-postType">{board.postType}</div>
                         </div>
@@ -257,15 +306,15 @@ const Board = () => {
                         <div className="board-buttons-wrap">
                             <span className="translation-buttons">
                                 {isTranslated ? (
-                                    <button className="board-buttons" onClick={()=>{setContent(board.content); setIsTranslated(false);}}> 되돌리기 </button>
+                                    <button className="board-buttons" onClick={()=>{setContent(board.content); setIsTranslated(false);}}> {t('board.RevertButton')} </button>
                                 ) : (
-                                    <button className="board-buttons" onClick={()=>{translate(content)}}> 번역 </button>
+                                    <button className="board-buttons" onClick={()=>{translate(content)}}> {t('board.TranslateButton')} </button>
                                 )}
                             </span>
                             {board.isMine && // 자신의 게시물이면 활성화
                                 <span className="edit-delete-button">
-                                    <button className="board-buttons" onClick={boardDelete}> 삭제 </button>
-                                    <button className="board-buttons" onClick={() => {navigate(`/${board_id}?type=post`, {state : {from : location.pathname}});}}> 수정 </button>
+                                    <button className="board-buttons" onClick={boardDelete}> {t('board.DeleteButton')} </button>
+                                    <button className="board-buttons" onClick={() => {navigate(`/${board_id}?type=post`, {state : {from : location.pathname}});}}> {t('board.EditButton')} </button>
                                 </span>
                             }
                         </div>

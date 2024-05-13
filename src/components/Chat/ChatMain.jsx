@@ -4,10 +4,13 @@ import "./ChatMain.css";
 import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 
+import { ChatMessage } from "./ChatMessage";
+
 const ChatMain = ({selectedChatRoom, userInfo}) => {
     const [chats, setChats] = useState([]);
     const [currentChat, setCurrentChat] = useState("");
     const [stompClient, setStompClient] = useState(null);
+
     const messageEndRef = useRef(null);
     const navigate = useNavigate();
 
@@ -93,6 +96,25 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
         }
         
     }
+
+    const modify = (current, modifyMessage) =>{
+        console.log("수정 요청 드가자~");
+        if(stompClient && stompClient.connected && current && modifyMessage){
+            const message = {               //메시지 포멧 DTO 참조
+                type: "ENTER",
+                roomId: selectedChatRoom.id,
+                message: current+"*#%"+modifyMessage,
+            };
+            console.log(message);
+            stompClient.publish({
+                destination: `/pub/chat/${selectedChatRoom.id}`,
+                body: JSON.stringify(message),
+            });
+            setCurrentChat("");
+        }
+    }
+
+
     
     //채팅 맨 아래로 이동
     useEffect(() => { 
@@ -108,19 +130,7 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
                     </div>
                     <div className="chats">
                         {chats.map(chat =>(
-                            <div 
-                                key={chat.id} 
-                                className="chat-message"
-                                style={{ 
-                                    alignItems: (userInfo.nickname === chat.sender) ? ("flex-end") : ("flex-start"),
-                                    
-                                }}
-                            >
-                                <div className="chat-text" style={{backgroundColor: (userInfo.nickname === chat.sender) ? ("#E7F3FF") : ("FFFFFF")}}> 
-                                    {/* {chat.sender} : */}
-                                    {chat.message} 
-                                </div>
-                            </div>
+                            <ChatMessage chat={chat} userInfo={userInfo} key={chat.id} modify={modify}/>
                         ))}
                         <div ref={messageEndRef}></div>
                     </div>

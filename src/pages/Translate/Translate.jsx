@@ -6,9 +6,11 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import { FaExchangeAlt } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import {useTranslation} from "react-i18next";
 
 export default function Translate() {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const [inputLanguage, setInputLanguage] = useState({ name: "한국어", code: "KO" }); //input 언어
     const [inputText, setInputText] = useState(''); //input 값
@@ -26,14 +28,14 @@ export default function Translate() {
     const [isInputDropDownOpen, setIsInputDropDownOpen] = useState(false);
     const [isOutputDropDownOpen, setIsOutputDropDownOpen] = useState(false);
     const languages = [ 
-        { name: "한국어", code: "KO" },
-        { name: "영어", code: "EN" },
-        { name: "중국어", code: "ZH" },
-        { name: "일본어", code: "JA" },
-        { name: "독일어", code: "DE" },
-        { name: "스페인어", code: "ES" },
-        { name: "프랑스어", code: "FR" },
-        { name: "이탈리아어", code: "IT" },
+        { name: t('translate.KO'), code: "KO" },
+        { name: t('translate.EN'), code: "EN" },
+        { name: t('translate.ZH'), code: "ZH" },
+        { name: t('translate.JA'), code: "JA" },
+        { name: t('translate.DE'), code: "DE" },
+        { name: t('translate.ES'), code: "ES" },
+        { name: t('translate.FR'), code: "FR" },
+        { name: t('translate.IT'), code: "IT" },
     ]
 
     // 로그인 후 저장된 토큰 가져오는 함수
@@ -168,7 +170,7 @@ export default function Translate() {
                     <textarea className={styles.textarea} value={inputText} onChange={(e) => handleInputTextarea(e.target.value)} onFocus={handleInputTextareaClick} onBlur={()=>setIsInputTextareaClicked(false)}/>
 
                     <div className={styles.translateBtnDiv}>
-                        <button className={styles.translateBtn} onClick={performTranslation}>번역하기</button>
+                        <button className={styles.translateBtn} onClick={performTranslation}>{t('translate.Translate')}</button>
                     </div>
                 </div>
 

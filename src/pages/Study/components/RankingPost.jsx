@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './RankingPost.module.css'
+import {useTranslation} from "react-i18next";
 
 export const RankingPost = () => {
   const [data, setData] = useState([]);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const getToken = () => {
     return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
@@ -30,7 +32,7 @@ export const RankingPost = () => {
 
   return (
     <div className={styles.container}>
-      <h4 className={styles.header}>주간 인기글</h4>
+      <h4 className={styles.header}>{t('rankingPost.weeklyPopularPosts')}</h4>
         <ul className={styles.ul}>
           {data.map((i)=>(
             <li className={styles.list} onClick={() => navigate(`/board/${i.postId}`)} key={i.postId}>

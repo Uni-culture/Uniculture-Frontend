@@ -13,15 +13,16 @@ import MyBoardList from "./MyBoardList";
 import ShowAllLanguage from './Modal/ShowAllLanguage';
 import MyStudyList from "./MyStudyList";
 import RequestModal from '../../components/Friend/RequestModal';
+import {useTranslation} from "react-i18next";
 
 export default function MyProfile({myInfo}) {
     const [friendNum, setFriendNum] = useState(myInfo.friendnum) // 친구 수 (친구수락, 삭제시 친구수 관리를 위해)
-    const [receivedRequestsNum, setReceivedRequestsNum] = useState(myInfo.receiverequestnum); //받은 친구 신청 수 
+    const [receivedRequestsNum, setReceivedRequestsNum] = useState(myInfo.receiverequestnum); //받은 친구 신청 수
     const [maxCanLanguage, setMaxCanLanguage] = useState(); // 능숙도가 가장 높은 사용 언어
     const [maxWantLanguage, setMaxWantLanguage] = useState(); // 능숙도가 가장 높은 학습 언어
 
     //친구 모달창
-    const [showFriendModal, setShowFriendModal] = useState(false); //친구 모달창 
+    const [showFriendModal, setShowFriendModal] = useState(false); //친구 모달창
     const [showFriend, setShowFriend] = useState(false); //친구리스트 보기
 
     //언어 모달창
@@ -31,6 +32,7 @@ export default function MyProfile({myInfo}) {
     const [wantLanguages, setWantLanguages] = useState([]); //학습 언어 능숙도가 높은 순
 
     const [activeTab, setActiveTab] = useState('boardList'); //게시글, 스터디 보기
+    const { t } = useTranslation();
 
     useEffect(() => {
         // 사용 언어 배열로 변환하여 업데이트한 후 능숙도가 높은 순으로 정렬
@@ -118,10 +120,10 @@ export default function MyProfile({myInfo}) {
 
                 {/* 게시글, 친구 */}
                 <div>
-                    <div className={styles.post}>게시글</div>
+                    <div className={styles.post}>{t('profile.posts')}</div>
                     <div className={styles.postNum}>{myInfo?.postnum}</div>
                     {/* 친구, 친구수중 아무거나 클릭하더라도 setShowFriend state 를 변경시켜서 모달창을띄움(useEffect 에 showfriend 가 걸려있기때문에 리렌더링) */}
-                    <div className={styles.friend} onClick={()=> {setShowFriend(true); setShowFriendModal(true);}}>친구</div>
+                    <div className={styles.friend} onClick={()=> {setShowFriend(true); setShowFriendModal(true);}}>{t('profile.friends')}</div>
                     <div className={styles.friendNum} onClick={()=> {setShowFriend(true); setShowFriendModal(true);}}>{friendNum}</div>
                     <Badge count={receivedRequestsNum} size="small" overflowCount={10}>
                         <AiOutlineBell size={20} onClick={() => {
@@ -161,7 +163,7 @@ export default function MyProfile({myInfo}) {
                                 marginTop: "5px"
                             }}
                         >
-                            # {hobby}
+                            # {t(`interestTag.${hobby}`)}
                         </div>
                     ))}
                 </div>
@@ -173,13 +175,13 @@ export default function MyProfile({myInfo}) {
                         className="nav-item"
                         style={{ fontWeight: activeTab === 'boardList' ? 'bold' : 'normal', backgroundColor: activeTab === 'boardList' ? '#B7DAA1' : '', marginRight: "20px", padding: "5px 15px", borderRadius: 11}}
                         onClick={() => setActiveTab('boardList')}>
-                        게시물
+                        {t('profile.게시물')}
                     </li>
                     <li 
                         className="nav-item"
                         style={{ fontWeight: activeTab === 'studyList' ? 'bold' : 'normal',  backgroundColor: activeTab === 'studyList' ? '#B7DAA1' : '', marginRight: "20px", padding: "5px 15px", borderRadius: 11}}
                         onClick={() => {setActiveTab('studyList');}}>
-                        스터디
+                        {t('profile.스터디')}
                     </li>
                 </ul>
            

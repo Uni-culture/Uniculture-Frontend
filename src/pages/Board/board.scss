@@ -151,6 +151,16 @@
 .left-container {
     display: flex;
     align-items: baseline;
+    
+    .board-buttons {
+        font-weight: 400;
+        margin-left: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #C8DCA0;
+        padding: 5px 15px;
+        color: black;
+    }
 }
 
 .like {

@@ -11,6 +11,7 @@ import MyBoardList from "./MyBoardList";
 import OtherBoardList from "./OtherBoardList";
 import ShowAllLanguage from './Modal/ShowAllLanguage';
 import OtherStudyList from "./OtherStudyList";
+import {useTranslation} from "react-i18next";
 
 
 export default function OtherProfile({otherInformation}) {
@@ -29,6 +30,7 @@ export default function OtherProfile({otherInformation}) {
     const [wantLanguages, setWantLanguages] = useState([]); //학습 언어 능숙도가 높은 순
 
     const [activeTab3, setActiveTab3] = useState('boardList'); //게시글, 스터디 보기
+    const { t } = useTranslation();
 
     // 로그인 후 저장된 토큰 가져오는 함수
     const getToken = () => {
@@ -70,7 +72,7 @@ export default function OtherProfile({otherInformation}) {
                     <button
                         className={styles.buttonStyle}
                         onClick={deleteFriend}
-                    >친구 끊기</button>
+                    >{t('profile.removeFriend')}</button>
                 );
 
             case 2 :
@@ -78,7 +80,7 @@ export default function OtherProfile({otherInformation}) {
                     <button
                         className={styles.buttonStyle}
                         onClick={sendFriendRequest}
-                    >친구 걸기</button>
+                    >{t('profile.addFriend')}</button>
                 );
 
             case 3 :
@@ -86,14 +88,14 @@ export default function OtherProfile({otherInformation}) {
                     <button
                         className={styles.buttonStyle}
                         onClick={cancelRequest}
-                    >신청 취소</button>
+                    >{t('profile.cancelRequest')}</button>
                 );
             case 4 :
                 return (
                     <button
                         className={styles.buttonStyle}
                         onClick={acceptReceivedRequest}
-                    >친구 수락</button>
+                    >{t('profile.acceptFriend')}</button>
                 );
             default:
                 return ;
@@ -114,7 +116,7 @@ export default function OtherProfile({otherInformation}) {
                     }
                 });
                 if(response.status === 200){
-                    alert("친구 신청 성공");
+                    alert(t("profile.friendRequestSuccess"));
                     setFriendStatus(3); //친구 신청 중으로 변경
 
                 }
@@ -312,16 +314,16 @@ export default function OtherProfile({otherInformation}) {
                 <button
                     className={styles.buttonStyle}
                     onClick={sendMessage}
-                >채팅 보내기</button>
+                >{t('profile.sendMessage')}</button>
 
                 {/* 소개 */}
                 {otherInfo?.introduce && <div className={styles.intro}>{otherInfo.introduce}</div>}
 
                 {/* 게시글, 친구 */}
                 <div>
-                    <div className={styles.post}>게시글</div>
+                    <div className={styles.post}>{t('profile.posts')}</div>
                     <div className={styles.postNum}>{otherInfo?.postnum}</div>
-                    <div className={styles.friend}>친구</div>
+                    <div className={styles.friend}>{t('profile.friends')}</div>
                     <div className={styles.friendNum}>{friendNum}</div>
                 </div>
 
@@ -356,7 +358,7 @@ export default function OtherProfile({otherInformation}) {
                                 marginTop: "5px"
                             }}
                         >
-                            # {hobby}
+                            # {t(`interestTag.${hobby}`)}
                         </div>
                     ))}
                 </div>
@@ -368,13 +370,13 @@ export default function OtherProfile({otherInformation}) {
                         className="nav-item"
                         style={{ fontWeight: activeTab3 === 'boardList' ? 'bold' : 'normal', backgroundColor: activeTab3 === 'boardList' ? '#B7DAA1' : '', marginRight: "20px", padding: "5px 15px", borderRadius: 11}}
                         onClick={() => setActiveTab3('boardList')}>
-                        게시물
+                        {t('profile.게시물')}
                     </li>
                     <li 
                         className="nav-item"
                         style={{ fontWeight: activeTab3 === 'studyList' ? 'bold' : 'normal',  backgroundColor: activeTab3 === 'studyList' ? '#B7DAA1' : '', marginRight: "20px", padding: "5px 15px", borderRadius: 11}}
                         onClick={() => {setActiveTab3('studyList');}}>
-                        스터디
+                        {t('profile.스터디')}
                     </li>
                 </ul>
 

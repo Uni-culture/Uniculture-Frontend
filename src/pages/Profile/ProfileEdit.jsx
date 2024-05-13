@@ -6,16 +6,18 @@ import AddLanuageModal from "./Modal/AddLanuageModal";
 import { useNavigate } from "react-router-dom";
 import PercentBar from "../../components/PercentBar/PercentBar";
 import Swal from "sweetalert2";
+import {useTranslation} from "react-i18next";
 import styles from './ProfileEdit.module.css';
 
 const ProfileEdit = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [userInfo, setUserInfo] = useState(null);
 
     // 프로필 사진
     const [profileImg, setProfileImg] = useState(null);
     const selectFile = useRef(null);
-    
+
     const [inputCount, setInputCount] = useState(0); // 소개
     const purposeTag = [ // 가입 목적 태그
         "언어 교류",
@@ -178,7 +180,7 @@ const ProfileEdit = () => {
     useEffect(() => {
         if (userInfo?.purpose.length === 1) {
             setUserInfo({ ...userInfo, mainPurpose: userInfo?.purpose[0] });
-        } 
+        }
     }, [userInfo?.purpose]);
 
     const purposeTagClick = (purpose) => {
@@ -189,7 +191,7 @@ const ProfileEdit = () => {
         } else { // 선택된 목적이 포함되어 있지 않은 경우 :  해당 목적 추가
             updatedPurpose = [...updatedPurpose, purpose];
         }
-        
+
         setUserInfo({ ...userInfo, purpose: updatedPurpose });
     };
 
@@ -270,7 +272,7 @@ const ProfileEdit = () => {
                     <Sidebar/>
                     <div className="col-md-9 ms-sm-auto col-lg-10 px-md-4" style={{ overflowY: "auto" }}>
                         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h4 className="h4">프로필 편집</h4>
+                            <h4 className="h4">{t('profileEdit.editProfile')}</h4>
                         </div>
                         <div className="mb-3 row justify-content-center">
                             <div
@@ -293,8 +295,8 @@ const ProfileEdit = () => {
                         </div>
                         
                         <div className={`mb-5 ${styles.imgButton}`}>
-                            <button type="button" className={styles.imgDelete} onClick={()=>{setProfileImg(null); setUserInfo({...userInfo, profileurl: null})}}>삭제</button>
-                            <button type="file" className={styles.imgChange} accept='image/*' onClick={() => selectFile.current.click()} >변경</button>
+                            <button type="button" className={styles.imgDelete} onClick={()=>{setProfileImg(null); setUserInfo({...userInfo, profileurl: null})}}>{t('profileEdit.delete')}</button>
+                            <button type="file" className={styles.imgChange} accept='image/*' onClick={() => selectFile.current.click()} >{t('profileEdit.change')}</button>
                             <input
                                 type="file"
                                 accept='image/*'
@@ -306,18 +308,18 @@ const ProfileEdit = () => {
 
                         {/* 소개 */}
                         <div className="mb-5 row">
-                            <label className={`col-sm-2 col-form-label ${styles.label}`}>소개</label>
+                            <label className={`col-sm-2 col-form-label ${styles.label}`}>{t('profileEdit.introduction')}</label>
                             <div className="col-sm-8">
                                 <textarea
                                     className={`form-control ${styles.introduceTextarea}`}
-                                    placeholder="소개 입력"
+                                    placeholder={t('profileEdit.enterIntroduction')}
                                     value={userInfo?.introduce || ''}
                                     onChange={changeIntroduce}
                                     maxLength="100" 
                                 />
                                 <div className={styles.inputCount}>
                                     <span>{inputCount}</span>
-                                    <span>/100 자</span>
+                                    <span>/100 {t('profileEdit.charLimit')}</span>
                                 </div>
                             </div>
                         </div>
@@ -354,7 +356,7 @@ const ProfileEdit = () => {
 
                         {/* 관심사 */}
                         <div className="mb-5 row">
-                            <label className={`col-sm-2 col-form-label ${styles.label}`}>관심사</label>
+                            <label className={`col-sm-2 col-form-label ${styles.label}`}>{t('profileEdit.interests')}</label>
                             <div className="col-sm-8">
                                 {interestTag.map((tag) => (
                                     <button
@@ -362,12 +364,12 @@ const ProfileEdit = () => {
                                         className={`interest-tag ${userInfo?.myHobbyList.includes(tag) ? 'selectedIntTag' : ''}`}
                                         onClick={() => handleHobbyChange(tag)}
                                     >
-                                        {tag}
+                                        {t(`interestTag.${tag}`)}
                                     </button>
                                 ))}
                                 {isOverSelectedIntTags && (
                                     <div className="interest-tag-warning">
-                                        10개 이하로 선택해주세요.
+                                        {t('profileEdit.interestsLimitWarning')}
                                     </div>
                                 )}
                             </div>
@@ -375,7 +377,7 @@ const ProfileEdit = () => {
 
                         {/* 사용 언어 */}
                         <div className="mb-2 row">
-                            <label className={`col-sm-2 col-form-label ${styles.label}`}>사용 언어</label>
+                            <label className={`col-sm-2 col-form-label ${styles.label}`}>{t('profileEdit.usedLanguages')}</label>
                             <div className="col-sm-7 col-form-label">
                                 <button className={styles.languageAdd} onClick={()=>{setIsModalOpened1(true)}}>Add Language</button>
                                 {isModalOpened1&&<AddLanuageModal handleModal={()=>{setIsModalOpened1(false)}} addLanguage={handleMyLanguages}/>}
@@ -394,7 +396,7 @@ const ProfileEdit = () => {
                             ))}
                         </div>
                         <div className="mb-2 row">
-                            <label className={`col-sm-2 col-form-label ${styles.label}`}>학습 언어</label>
+                            <label className={`col-sm-2 col-form-label ${styles.label}`}>{t('profileEdit.learningLanguages')}</label>
                             <div className="col-sm-7 col-form-label">
                                 <button className={styles.languageAdd} onClick={()=>{setIsModalOpened2(true)}}>Add Language</button>
                                 {isModalOpened2&&<AddLanuageModal handleModal={()=>{setIsModalOpened2(false)}} addLanguage={handleWantLanguage}/>}
@@ -419,7 +421,7 @@ const ProfileEdit = () => {
                                 className={styles.changeButton}
                                 onClick={changeInfo}
                             >
-                                수정
+                                {t('profileEdit.editButton')}
                             </button>
                         </div>
                     </div>

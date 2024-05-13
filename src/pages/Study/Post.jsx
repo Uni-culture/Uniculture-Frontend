@@ -6,22 +6,25 @@ import "react-quill/dist/quill.snow.css"
 import axios from 'axios';
 import { Select, Button} from 'antd';
 import Layout from '../../components/Layout';
+import {useTranslation} from "react-i18next";
 
 export const Post = () => {
   const location = useLocation();
   console.log(location);
   const searchParams = new URLSearchParams(location.search);
   const type = searchParams.get('type');
-
+  const { t } = useTranslation();
   const getToken = () => {
     return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
   };
   const token = getToken();
 
-  const postOptions = [{value: 'DAILY', label: '일상'}, {value: 'HELP', label: '도움'}];
-  const studyOptions = [{value: 'LANGUAGE', label:'언어교류'},{value: 'HOBBY', label:'취미'}]
+  const postOptions = [{value: 'DAILY', label: t('post.DAILY')}, {value: 'HELP', label: t('post.HELP')}];
+  const studyOptions = [{value: 'LANGUAGE', label: t('post.LANGUAGE')},{value: 'HOBBY', label: t('post.HOBBY')}]
 
   const [preset, setPreset] = useState(type);
+
+  const [postType, setPostType] = useState('');
 
 
   const [inputs, setInputs] = useState({
@@ -37,11 +40,12 @@ export const Post = () => {
   useEffect(()=>{
     if(type ==='study'){
       setPreset('study');
-      setContent("<p><strong>[개발 스터디 모집 내용 예시]</strong></p><ul><li>스터디 주제 :</li><li>스터디 목표 :</li><li>예상 스터디 일정(횟수) :</li><li>예상 커리큘럼 간략히 :</li><li>예상 모집인원 :</li><li>스터디 소개와 개설 이유 :</li><li>스터디 관련 주의사항 :</li><li>스터디에 지원할 수 있는 방법을 남겨주세요. (이메일, 카카오 오픈채팅방, 구글폼 등.) :</li></ul><p><br></p>");
+      setContent(t('post.studyRecruitmentExample'));
       setInputs(inputs =>({
         ...inputs,
         category: studyOptions[0].value,
       }));
+      setPostType(t('post.createStudy'));
     }
     else{
       setPreset('post');
@@ -50,9 +54,10 @@ export const Post = () => {
         ...inputs,
         category: postOptions[0].value,
       }));
+      setPostType(t('post.createPost'));
     }
     handleTagChange(null);
-  },[type])
+  },[type, t])
 
   const handleCategoryChange = (value) => {
     console.log(`Selected: ${value}`);
@@ -138,13 +143,13 @@ export const Post = () => {
     <Layout>
     <div className={styles.root}>
       <div className={styles.post_name}>
-        <h2>{preset} 작성</h2>
+        <h2>{t(postType)}</h2>
         {/* <div className={styles.example}>스터디 모집 예시를 참고해 작성해주세요. 꼼꼼히 작성하면 멋진 스터디 팀원을 만날 수 있을거예요.</div> */}
         <div>
           {/* <button onClick={() => handlePresetChange("post")} className={preset === "post" ? styles.active : ""}>게시글</button>
           <button onClick={() => handlePresetChange("study")} className={preset === "study" ? styles.active : ""}>스터디</button>   */}
-          <Button onClick={() => navigate("/post/new?type=post")} type={type==="post" ? 'primary' : 'default'}>게시글</Button>
-          <Button onClick={() => navigate("/post/new?type=study")} type={type==="study" ? 'primary' : 'default'} >스터디</Button>
+          <Button onClick={() => navigate("/post/new?type=post")} type={type==="post" ? 'primary' : 'default'}>{t('post.postButton')}</Button>
+          <Button onClick={() => navigate("/post/new?type=study")} type={type==="study" ? 'primary' : 'default'} >{t('post.studyButton')}</Button>
           {/* <button onClick={() => navigate("/post/new?type=post")} className={preset === "post" ? styles.active : ""}>게시글</button>
           <button onClick={() => navigate("/post/new?type=study")} className={preset === "study" ? styles.active : ""}>스터디</button>   */}
         </div>
@@ -155,18 +160,18 @@ export const Post = () => {
         <div className={styles.left}>
           <div className={styles.title}>
             <label htmlFor="title">
-              <span>제목</span>
+              <span>{t('post.title')}</span>
             </label>
             <div className={styles.title_box}>
-              <input type="text" name='title' id='title' value={title} onChange={onChange} placeholder='제목에 핵심 내용을 요약해보세요.' className={styles.title_input}/>
+              <input type="text" name='title' id='title' value={title} onChange={onChange} placeholder={t('post.titlePlaceholder')} className={styles.title_input}/>
             </div>
             
           </div>
           <div className={styles.content_body}>
-            <span>내용</span>
+            <span>{t('post.content')}</span>
             <ReactQuill
               style={{ width: "800px", height: "500px" }}
-              placeholder="내용 작성 바랍니다~ 야호~"
+              placeholder={t('post.contentPlaceholder')}
               theme="snow"
               ref={quillRef}
               value={content}
@@ -178,7 +183,7 @@ export const Post = () => {
 
         <div className={styles.right}>
           <div className={styles.category}>
-            <label htmlFor="category"><span>카테고리 설정</span></label>
+            <label htmlFor="category"><span>{t('post.categoryLabel')}</span></label>
             <Select          
                 value={category}
                 onChange={handleCategoryChange}
@@ -189,7 +194,7 @@ export const Post = () => {
               />
           </div>
           <div className={styles.tags}>
-            <label htmlFor="tags"><span>태그 설정 (최대 5 개)</span></label>
+            <label htmlFor="tags"><span>{t('post.tagsLabel')}</span></label>
             <Select
               mode="tags"              
               placeholder="Please select"
@@ -202,8 +207,8 @@ export const Post = () => {
             />
           </div>
           <div className={styles.btns}>
-            <Button className={styles.btn} onClick={handleCancel}>취소</Button>
-            <Button type="primary" onClick={handleSubmit} className={styles.btn} disabled={!title || !content || content==="<p><br></p>"}>글 작성</Button>
+            <Button className={styles.btn} onClick={handleCancel}>{t('post.cancelButton')}</Button>
+            <Button type="primary" onClick={handleSubmit} className={styles.btn} disabled={!title || !content || content==="<p><br></p>"}>{t('post.submitButton')}</Button>
           </div>
         </div>
       </div>

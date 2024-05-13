@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import styles from './PopTag.module.css'
 import axios from 'axios'
+import {useTranslation} from "react-i18next";
 
 export const PopTag = () => {
   const [data, setData] = useState([]);
+  const { t } = useTranslation();
 
   const getToken = () => {
     return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
@@ -29,7 +31,7 @@ export const PopTag = () => {
 
   return (
     <div className={styles.pop_container}>
-      <h4 className={styles.title}>인기 태그</h4>
+      <h4 className={styles.title}>{t('popTag.popularTags')}</h4>
       <ul className={styles.tag_list}>
         {data.map((i, index)=>(
           <li className={styles.tag_item} key={index}>

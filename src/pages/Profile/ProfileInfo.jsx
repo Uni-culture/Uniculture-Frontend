@@ -4,6 +4,7 @@ import Sidebar from "../../components/ProfileSidebar/Sidebar";
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
+import {useTranslation} from "react-i18next";
 
 const ProfileInfo = () => {
     const navigate = useNavigate();
@@ -27,6 +28,7 @@ const ProfileInfo = () => {
     const [selectedMonth, setSelectedMonth] = useState(null);
     const [selectedDay, setSelectedDay] = useState(null);
     const [age, setAge] = useState(null); // 선택한 생년월일 계산한 나이
+    const { t } = useTranslation();
 
     // 로그인 후 저장된 토큰 가져오는 함수
     const getToken = () => {
@@ -259,7 +261,7 @@ const ProfileInfo = () => {
                     <Sidebar/>
                     <div className="col-md-9 ms-sm-auto col-lg-10 px-md-4" style={{ overflowY: "auto" }}>
                         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h4 className="h4">개인정보 수정</h4>
+                            <h4 className="h4">{t('profileInfo.editPersonalInfo')}</h4>
                         </div>
                         <div className="mb-4 row">
                             <label className="col-sm-3 col-form-label">Email</label>
@@ -272,7 +274,7 @@ const ProfileInfo = () => {
                                 style={{display:"flex", width:"150px", height:"40px"}}
                                 type="text"
                                 name="nickname"
-                                placeholder="닉네임 입력"
+                                placeholder={t('profileInfo.enterNickName')}
                                 value={userInfo?.nickname}
                                 onChange={changeNickName}
                             />
@@ -287,17 +289,17 @@ const ProfileInfo = () => {
                                     border:"0px"
                                 }}
                                 onClick={handleNickName}
-                            >중복확인</button>
+                            >{t('profileInfo.checkDuplicate')}</button>
 
                             {nickNameValid!== null && (
                                 <div className="mt-2 row">
                                     <label className="col-sm-3 col-form-label"></label>
                                     <div className="col-sm-6" style={{fontWeight: "550", fontSize: "13px"}}>
                                         {nickNameValid && (
-                                            <div style={{color: "green"}}>사용 가능한 닉네임입니다.</div>
+                                            <div style={{color: "green"}}>{t('profileInfo.nickNameAvailable')}</div>
                                         )}
                                         {!nickNameValid && userInfo?.nickname.length > 0 && (
-                                            <div style={{color: "red"}}>사용 불가능한 닉네임입니다.</div>
+                                            <div style={{color: "red"}}>{t('profileInfo.nickNameUnavailable')}</div>
                                         )}
                                     </div>
                                 </div>
@@ -309,12 +311,12 @@ const ProfileInfo = () => {
                             <input
                                 style={{display:"flex", width:"150px", height:"40px"}}
                                 type={showExPassword ? "text" : "password"}
-                                placeholder="현재 비밀번호 입력"
+                                placeholder={t('profileInfo.enterCurrentPassword')}
                                 onChange={(e) => {setExPassword(e.target.value)}}
                             />
                             <label className="col-sm-3">
                                 <input type='checkbox' className="custom-checkbox" onChange={() => toggleShowPassword('ex')} />
-                                <span className="pwCheck">비밀번호 보기</span>
+                                <span className="pwCheck">{t('profileInfo.showPassword')}</span>
                             </label>
                         </div>
 
@@ -323,12 +325,12 @@ const ProfileInfo = () => {
                             <input
                                 style={{display:"flex", width:"150px", height:"40px"}}
                                 type={showNewPassword ? "text" : "password"}
-                                placeholder="새 비밀번호 입력"
+                                placeholder={t('profileInfo.enterNewPassword')}
                                 onChange={(e) => {setNewPassword(e.target.value); handlePw(e.target.value);}}
                             />
                             <label className="col-sm-3">
                                 <input type='checkbox' className="custom-checkbox" onChange={() => toggleShowPassword('new')} />
-                                <span className="pwCheck">비밀번호 보기</span>
+                                <span className="pwCheck">{t('profileInfo.showPassword')}</span>
                             </label>
                         </div>
 
@@ -336,7 +338,7 @@ const ProfileInfo = () => {
                             <div className="mb-2 row">
                                 <label className="col-sm-3 col-form-label"></label>
                                 <div className="col-sm-6" style={{fontWeight: "550", fontSize: "13px"}}>
-                                    <div style={{color:"red"}}>영문, 숫자, 특수문자 포함 8자 이상 입력해주세요.</div>
+                                    <div style={{color:"red"}}>{t('profileInfo.passwordRequirement')}</div>
                                 </div>
                             </div>
                         )}
@@ -346,12 +348,12 @@ const ProfileInfo = () => {
                             <input
                                 style={{display:"flex", width:"150px", height:"40px"}}
                                 type={showCheckPassword ? "text" : "password"}
-                                placeholder="새 비밀번호 확인"
+                                placeholder={t('profileInfo.confirmNewPassword')}
                                 onChange={(e) => {setCheckPassword(e.target.value)}}
                             />
                             <label className="col-sm-3">
                                 <input type='checkbox' className="custom-checkbox" onChange={() => toggleShowPassword('check')} />
-                                <span className="pwCheck">비밀번호 보기</span>
+                                <span className="pwCheck">{t('profileInfo.showPassword')}</span>
                             </label>
                         </div>
 
@@ -387,7 +389,7 @@ const ProfileInfo = () => {
                             <label className="col-sm-3 col-form-label">Birth</label>
                             <div style={{display:"flex", width:"300px", padding:"0px"}}>
                                 <select className="box" id="birth-year" onChange={handleYearChange} >
-                                    <option disabled selected>출생 연도</option>
+                                    <option disabled selected>{t('profileInfo.birthYear')}</option>
                                     {userInfo && userInfo.year && (
                                         Array.from({ length: 2023 - 1940 }, (_, index) => {
                                             const year = 1940 + index;
@@ -398,7 +400,7 @@ const ProfileInfo = () => {
                                     )}
                                 </select>
                                 <select className="box" id="birth-month" onChange={handleMonthChange}>
-                                    <option disabled selected>월</option>
+                                    <option disabled selected>{t('profileInfo.birthMonth')}</option>
                                     { userInfo && userInfo.month && (
                                         Array.from({ length: 12 }, (_, index) => {
                                             const month = index + 1;
@@ -409,7 +411,7 @@ const ProfileInfo = () => {
                                     )}
                                 </select>
                                 <select className="box" id="birth-day" onChange={handleDayChange}>
-                                    <option disabled selected>일</option>
+                                    <option disabled selected>{t('profileInfo.birthDay')}</option>
                                     {userInfo && userInfo.day && (
                                         Array.from({ length: 31 }, (_, index) => {
                                             const day = index + 1;
@@ -440,7 +442,7 @@ const ProfileInfo = () => {
                                     }}
                                     onClick={() => { window.location.reload(); }}
                             >
-                                재설정
+                                {t('profileInfo.resetButton')}
                             </button>
                             <button
                                 type="button"
@@ -454,7 +456,7 @@ const ProfileInfo = () => {
                                 }}
                                 onClick={changeInfo}
                             >
-                                수정
+                                {t('profileInfo.editButton')}
                             </button>
                         </div>
                     </div>
