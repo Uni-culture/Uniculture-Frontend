@@ -5,6 +5,7 @@ import "./Auth.css";
 import AddLanuageModal from "../Profile/Modal/AddLanuageModal";
 import PercentBar from "../../components/PercentBar/PercentBar";
 import axios from "axios";
+import {useTranslation} from "react-i18next";
 
 const SignUpOption = () => {
     const navigate = useNavigate(); // 다른 component 로 이동할 때 사용
@@ -20,11 +21,13 @@ const SignUpOption = () => {
     const [nationality, setNationality] = useState("");
     const handleNationalityChange = (e) => {
         setNationality(e.target.value);
+        console.log("nationality: ", nationality);
     };
     const [isModalOpened1, setIsModalOpened1] = useState(false); //사용 언어 추가 모달창
     const [isModalOpened2, setIsModalOpened2] = useState(false); //학습 언어 추가 모달창
     const [usedLanguages, setUsedLanguages] = useState({});
     const [learningLanguages, setLearningLanguages] = useState({});
+    const { t } = useTranslation();
 
     // IoArrowBack 클릭 시 이전 경로로 이동
     const goBackToPreviousPath = () => {
@@ -91,6 +94,7 @@ const SignUpOption = () => {
     ];
 
     const purposeTagClick = (tag) => {
+        console.log("tag: ", tag);
         // 선택된 태그가 이미 selectedTags 배열에 있으면 제거, 없으면 추가
         setSelectedPurTags(prev => {
             if (prev.includes(tag)) {
@@ -162,7 +166,7 @@ const SignUpOption = () => {
             console.log('response.status: ', response.status);
             // 등록 성공
             if (response.status === 200) {
-                alert("성공적으로 저장되었습니다.");
+                alert(t("signUpOption.successMessage"));
                 navigate("/"); // 성공 후 이전 페이지로 이동
             }
         } catch (error) { // 실패 시
@@ -202,9 +206,9 @@ const SignUpOption = () => {
         <div style={{ backgroundColor: '#FBFBF3', minHeight: '100vh' }}>
             <IoArrowBack style={{ fontSize: '25px', marginTop: '20px', marginLeft: '20px'}} onClick={goBackToPreviousPath}/>
             <div className="auth-layout">
-                <div className="setup-title1">회원가입이 완료되었습니다!</div>
-                <div className="setup-title2">한 단계만 더 완료하면 <br/>꼭 맞는 친구 추천을 받을 수 있어요😊</div>
-                <div className="setup-subTitle">가입 목적 (최소 1개)</div>
+                <div className="setup-title1">{t('signUpOption.signUpCompleted')}</div>
+                <div className="setup-title2" dangerouslySetInnerHTML={{ __html: t('signUpOption.oneMoreStep') }}></div>
+                <div className="setup-subTitle">{t('signUpOption.signUpPurpose')}</div>
                 <div className="tagWrap">
                     {purposeTag.map((tag) => (
                         <button
@@ -212,7 +216,7 @@ const SignUpOption = () => {
                             className={`purpose-tag ${selectedPurTags.includes(tag) ? 'selectedPurTag' : ''}`}
                             onClick={() => purposeTagClick(tag)}
                         >
-                            {tag}
+                            {t(`purposeTag.${tag}`)}
                         </button>
                     ))}
                 </div>
@@ -220,7 +224,7 @@ const SignUpOption = () => {
                 {/*목적 태그를 여러 개 선택했을 경우*/}
                 {selectedPurTags.length > 1 && (
                     <div>
-                        <div className="setup-subTitle">주 목적은 어떤 것인가요?</div>
+                        <div className="setup-subTitle">{t('signUpOption.mainPurpose')}</div>
                         <div className="tagWrap">
                             {selectedPurTags.map((tag) => (
                                 <button
@@ -228,14 +232,14 @@ const SignUpOption = () => {
                                     className={`purpose-tag ${finalPurpose.includes(tag) ? 'selectedPurTag' : ''}`}
                                     onClick={() => selectFinalPurpose(tag)} // 선택된 태그를 다시 클릭하면 제거됨
                                 >
-                                    {tag}
+                                    {t(`purposeTag.${tag}`)}
                                 </button>
                             ))}
                         </div>
                     </div>
                 )}
 
-                <div className="setup-subTitle">관심사 (최소 3개, 최대 10개)</div>
+                <div className="setup-subTitle">{t('signUpOption.interests')}</div>
                 <div className="tagWrap">
                     {interestTag.map((tag) => (
                         <button
@@ -243,19 +247,19 @@ const SignUpOption = () => {
                             className={`interest-tag ${selectedIntTags.includes(tag) ? 'selectedIntTag' : ''}`}
                             onClick={() => interestTagClick(tag)}
                         >
-                            {tag}
+                            {t(`interestTag.${tag}`)}
                         </button>
                     ))}
                     {isOverSelectedIntTags && (
                         <div className="interest-tag-warning">
-                            10개 이하로 선택해주세요.
+                            {t('signUpOption.interestsWarning')}
                         </div>
                     )}
                 </div>
 
-                <div className="setup-subTitle">국적</div>
+                <div className="setup-subTitle">{t('signUpOption.nationality')}</div>
                 <select className="box" id="birth-year" onChange={handleNationalityChange} defaultValue="">
-                    <option value="" disabled>국적을 선택해주세요</option>
+                    <option value="" disabled>{t('signUpOption.selectNationality')}</option>
                     <option value="Korea">Republic of Korea</option>
                     <option value="China">People's Republic of China</option>
                     <option value="Japan">Japan</option>
@@ -263,7 +267,7 @@ const SignUpOption = () => {
 
                 {/*사용 언어*/}
                 <div className="setup-subTitle-container">
-                    <div className="setup-subTitle">사용 언어</div>
+                    <div className="setup-subTitle">{t('signUpOption.languageUsage')}</div>
                     {Object.keys(usedLanguages).length > 0 ? (
                         <button className="after-select" onClick={() => {setIsModalOpened1(true)}}>
                             Add Language More
@@ -287,7 +291,7 @@ const SignUpOption = () => {
 
                 {/*학습 언어*/}
                 <div className="setup-subTitle-container">
-                    <div className="setup-subTitle">학습 언어</div>
+                    <div className="setup-subTitle">{t('signUpOption.learningLanguages')}</div>
                     {Object.keys(learningLanguages).length > 0 ? (
                         <button className="after-select" onClick={() => {setIsModalOpened2(true)}}>
                             Add Language More
@@ -312,10 +316,10 @@ const SignUpOption = () => {
                 <button className="authButton"
                         disabled={!isButtonEnabled}
                         onClick={handleComplete}>
-                    선택 완료
+                    {t('signUpOption.completeSelection')}
                 </button>
                 <div className="next-time-wrapper">
-                    <Link to={"/"} className="next-time">다음에 할래요😅</Link>
+                    <Link to={"/"} className="next-time">{t('signUpOption.doItNextTime')}</Link>
                 </div>
                 {/*<button onClick={testtt}>test</button>*/}
             </div>

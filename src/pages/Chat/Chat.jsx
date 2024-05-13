@@ -10,13 +10,14 @@ import styles from './Chat.module.css';
 import { LuMessageSquarePlus } from "react-icons/lu";
 import { BiMessageRoundedDots } from "react-icons/bi";
 import CreateChat from "../../components/Chat/CreateChat";
+import {useTranslation} from "react-i18next";
 
 const Chat = () => {
     const navigate = useNavigate(); // 페이지 이동을 위한 navigate 함수
     const [userInfo, setUserInfo] = useState(null);
     const [selectedChatRoom, setSelectedChatRoom] = useState();
     const [createChatModal, setCreateChatModal] = useState(false);
-
+    const { t } = useTranslation();
 
 
     // 로그인 후 저장된 토큰 가져오는 함수
@@ -28,9 +29,9 @@ const Chat = () => {
         Swal.fire({
             icon: "warning",
             title: "주의",
-            text: "로그인 후 이용해주세요!",
+            text: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
             confirmButtonColor: "#8BC765",
-            confirmButtonText: "확인",
+            confirmButtonText: t('loginWarning.confirmButton'),
         });
     };
 
@@ -122,7 +123,7 @@ const Chat = () => {
             <Header />
             <div className={styles.page_layout}>
                 <aside className={styles.aside}>
-                    <div className={styles.asideTitle}> <h3>채팅</h3> <div onClick={handleCreateChatModal}><LuMessageSquarePlus size={25}/></div></div>
+                    <div className={styles.asideTitle}> <h3>{t('chat.chat')}</h3> <div onClick={handleCreateChatModal}><LuMessageSquarePlus size={25}/></div></div>
                     {userInfo ? (<ChatList onSelectedChatRoom={handleSelectChatRoom} user={userInfo}/>) : (<div>Loading</div>)}
                     
                 </aside>
@@ -130,9 +131,9 @@ const Chat = () => {
                     {selectedChatRoom== null ? (
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                             <BiMessageRoundedDots size={100}/>
-                            <span style={{fontSize: "20px", padding: "5px 0px"}}>내 메시지</span>
-                            <span style={{fontSize: "14px", padding: "5px 0px 10px 0px", color: "#737373"}}>친구나 그룹에 비공개 사진과 메시지를 보내보세요.</span>
-                            <button className= {styles.chatmainB} onClick={handleCreateChatModal}>메시지 보내기</button>
+                            <span style={{fontSize: "20px", padding: "5px 0px"}}>{t('chat.myMessages')}</span>
+                            <span style={{fontSize: "14px", padding: "5px 0px 10px 0px", color: "#737373"}}>{t('chat.PrivateMessages')}</span>
+                            <button className= {styles.chatmainB} onClick={handleCreateChatModal}>{t('chat.sendMessage')}</button>
                         </div>
                     ): userInfo ? (
                         <ChatMain selectedChatRoom={selectedChatRoom} userInfo={userInfo}/>

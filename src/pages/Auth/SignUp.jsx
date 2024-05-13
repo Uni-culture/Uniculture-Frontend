@@ -5,6 +5,7 @@ import {Link, useLocation, useNavigate} from "react-router-dom";
 import './Auth.css';
 import Swal from "sweetalert2";
 import { IoArrowBack } from "react-icons/io5";
+import {useTranslation} from "react-i18next";
 
 const SignUp = () => {
     const navigate = useNavigate(); // 다른 component 로 이동할 때 사용
@@ -33,6 +34,7 @@ const SignUp = () => {
     const [selectedMonth, setSelectedMonth] = useState(null);
     const [selectedDay, setSelectedDay] = useState(null);
     const [age, setAge] = useState(null); // 선택한 생년월일 계산한 나이
+    const { t } = useTranslation();
 
     const resetInput = () => {
         setEmail('');
@@ -333,54 +335,54 @@ const SignUp = () => {
             <IoArrowBack style={{ fontSize: '25px', marginTop: '20px', marginLeft: '20px'}} onClick={goBackToPreviousPath}/>
             <div className="auth-layout">
                 <div className="title"><Link to={"/"} style={{ color: "#04B404", textDecoration: "none"}}>UniCulture</Link></div>
-                <div className="sub-title">나의 성장을 돕는 언어교류 플랫폼</div>
+                <div className="sub-title">{t('signUp.subTitle')}</div>
 
-                <div className="inputTitle">이메일</div>
-                <div className="inputWrap">
-                    <input className="input" type="email" placeholder="test@example.com" value={email} onChange={handleEmail} onKeyDown={handleKeyDown}/>
-                    <button className='nickNameButton' onClick={emailAuthFun}>인증요청</button>
+                <div className="inputTitle">{t('signUp.email')}</div>
+                <div className="inputWrap" style={{padding: '12px 17px'}}>
+                    <input className="input" type="email" placeholder="test@example.com" value={email} onChange={handleEmail} onKeyDown={handleKeyDown} style={{marginTop: '9px'}}/>
+                    <button className='nickNameButton' onClick={emailAuthFun} style={{width: '80px'}}>{t('signUp.requestAuth')}</button>
                 </div>
                 <div className="errorMessageWrap">
                     {!emailValid && email.length > 0 && (
-                        <div>이메일 형식이 올바르지 않습니다.</div>
+                        <div>{t('signUp.emailError')}</div>
                     )}
                 </div>
 
                 {emailAuth && (
                     <div className="inputWrap" style={{padding: '10px'}}>
-                        <input className="input" type="text" placeholder="인증번호를 입력해주세요" style={{width: '80%', marginTop: '9px'}} value={emailNum} onChange={(e) => setEmailNum(e.target.value)} />
-                        <button className='nickNameButton' onClick={emailAuthFun2}>인증확인</button>
+                        <input className="input" type="text" placeholder={t('signUp.enterAuthCode')} style={{width: '80%', marginTop: '9px'}} value={emailNum} onChange={(e) => setEmailNum(e.target.value)} />
+                        <button className='nickNameButton' onClick={emailAuthFun2}>{t('signUp.confirmAuth')}</button>
                     </div>
                 )}
-                <div className="inputTitle">비밀번호</div>
+                <div className="inputTitle">{t('signUp.password')}</div>
                 <div className="inputWrap">
-                    <input className="input" type={showPassword ? "text" : "password"} placeholder="영문, 숫자, 특수문자 포함 8자 이상" value={pw} onChange={handlePw} onKeyDown={handleKeyDown}/>
+                    <input className="input" type={showPassword ? "text" : "password"} placeholder={t('signUp.passwordPlaceholder')} value={pw} onChange={handlePw} onKeyDown={handleKeyDown}/>
                 </div>
                 <div className="errorMessageWrap">
                     {!pwValid && pw.length > 0 && (
-                        <div>영문, 숫자, 특수문자 포함 8자 이상 입력해주세요.</div>
+                        <div>{t('signUp.passwordError')}</div>
                     )}
                 </div>
                 <label className="checkbox-hover">
                     <input type="checkbox" onChange={toggleShowPassword} />
-                    <span className="pwCheck">비밀번호 보기</span>
+                    <span className="pwCheck">{t('signUp.showPassword')}</span>
                 </label>
 
-                <div className="inputTitle">비밀번호 확인</div>
+                <div className="inputTitle">{t('signUp.confirmPassword')}</div>
                 <div className="inputWrap">
-                    <input className="input" type={showPassword2 ? "text" : "password"} placeholder="영문, 숫자, 특수문자 포함 8자 이상" value={pw2} onChange={handlePw2} onKeyDown={handleKeyDown}/>
+                    <input className="input" type={showPassword2 ? "text" : "password"} placeholder={t('signUp.passwordPlaceholder')} value={pw2} onChange={handlePw2} onKeyDown={handleKeyDown}/>
                 </div>
                 <div className="errorMessageWrap">
                     {!passwordsMatch && pw2.length > 0 && (
-                        <div>비밀번호가 일치하지 않습니다.</div>
+                        <div>{t('signUp.passwordsNotMatching')}</div>
                     )}
                 </div>
                 <label className="checkbox-hover">
                     <input type="checkbox" onChange={toggleShowPassword2} />
-                    <span className="pwCheck">비밀번호 보기</span>
+                    <span className="pwCheck">{t('signUp.confirmPassword')}</span>
                 </label>
 
-                <div className="inputTitle">성별</div>
+                <div className="inputTitle">{t('signUp.gender')}</div>
                 <label className="radio-style">
                     <input
                         type="radio"
@@ -388,7 +390,7 @@ const SignUp = () => {
                         checked={gender === 'MAN'}
                         onChange={handleGenderChange}
                     />
-                    <span className="radio-text">남성</span>
+                    <span className="radio-text">{t('signUp.male')}</span>
                 </label>
                 <label className="radio-style">
                     <input
@@ -397,14 +399,14 @@ const SignUp = () => {
                         checked={gender === 'WOMAN'}
                         onChange={handleGenderChange}
                     />
-                    <span className="radio-text">여성</span>
+                    <span className="radio-text">{t('signUp.female')}</span>
                 </label>
                 <div>{gender}</div>
 
-                <div className="inputTitle">생년월일</div>
+                <div className="inputTitle">{t('signUp.birthdateTitle')}</div>
                 <div className="info" id="info__birth">
                     <select className="box" id="birth-year" onFocus={handleFocusYear} onChange={handleYearChange}>
-                        <option disabled selected>출생 연도</option>
+                        <option disabled selected>{t('signUp.yearPlaceholder')}</option>
                         {isYearOptionExisted && (
                             Array.from({ length: 2023 - 1940 }, (_, index) => {
                                 const year = 1940 + index;
@@ -413,7 +415,7 @@ const SignUp = () => {
                         )}
                     </select>
                     <select className="box" id="birth-month" onFocus={handleFocusMonth} onChange={handleMonthChange}>
-                        <option disabled selected>월</option>
+                        <option disabled selected>{t('signUp.monthPlaceholder')}</option>
                         {isMonthOptionExisted && (
                             Array.from({ length: 12 }, (_, index) => {
                                 const month = index + 1;
@@ -422,7 +424,7 @@ const SignUp = () => {
                         )}
                     </select>
                     <select className="box" id="birth-day" onFocus={handleFocusDay} onChange={handleDayChange}>
-                        <option disabled selected>일</option>
+                        <option disabled selected>{t('signUp.dayPlaceholder')}</option>
                         {isDayOptionExisted && (
                             Array.from({ length: 31 }, (_, index) => {
                                 const day = index + 1;
@@ -436,20 +438,20 @@ const SignUp = () => {
                 </div>
                 <div><div> 나이: {age}세</div></div>*/}
 
-                <div className="inputTitle">닉네임</div>
-                <div className="inputWrap" style={{padding: '10px'}}>
-                    <input className="input" type="text" placeholder="닉네임을 입력하세요" style={{width: '80%', marginTop: '9px'}} value={nickName} onChange={changeNickName} onKeyDown={handleKeyDown}/>
-                    <button className='nickNameButton' onClick={handleNickName}>중복확인</button>
+                <div className="inputTitle">{t('signUp.nicknameTitle')}</div>
+                <div className="inputWrap" style={{padding: '11px 17px'}}>
+                    <input className="input" type="text" placeholder={t('signUp.nicknamePlaceholder')} style={{width: '80%', marginTop: '9px'}} value={nickName} onChange={changeNickName} onKeyDown={handleKeyDown}/>
+                    <button className='nickNameButton' onClick={handleNickName}>{t('signUp.nicknameButton')}</button>
                 </div>
                 <div className="nickNameMessageWrap">
                     {isTooLong && (
-                        <div style={{color: 'red'}}>15글자 이하로 입력해주세요.</div>
+                        <div style={{color: 'red'}}>{t('signUp.nicknameTooLong')}</div>
                     )}
                     {nickNameValid && nickName.length > 0 && !isTooLong && (
-                        <div>사용 가능한 닉네임입니다.</div>
+                        <div>{t('signUp.nicknameValid')}</div>
                     )}
                 </div>
-                <button disabled={notAllow} className="authButton" onClick={handleInputClick}>가입하기</button>
+                <button disabled={notAllow} className="authButton" onClick={handleInputClick}>{t('signUp.signupButton')}</button>
                 <button onClick={testClick}>test</button>
             </div>
         </div>

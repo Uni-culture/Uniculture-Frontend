@@ -14,6 +14,7 @@ import { IoSearch, IoArrowBack } from "react-icons/io5";
 import { HiOutlineHashtag } from "react-icons/hi";
 import { IoIosClose } from "react-icons/io";
 import { GrPowerReset } from "react-icons/gr";
+import {useTranslation} from "react-i18next";
 
 export const Study = () => {
   const navigate = useNavigate();
@@ -28,7 +29,8 @@ export const Study = () => {
   const [search, setSearch] = useState(""); // 사용자 입력 검색어
   const [tag, setTag] = useState(""); // 사용자 입력 태그
   const [tags, setTags] = useState([]); // 입력된 태그들을 저장할 배열
-  
+  const { t } = useTranslation();
+
 
   const getToken = () => {
     return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
@@ -194,17 +196,17 @@ useEffect(() => {
       <div className={styles.background}>
         <div className={styles.body_content}>
           <div className={styles.menu}>
-            <button className={status==='전체' ? styles.statusbtn_selected : styles.statusbtn} onClick={handleMenuClick('전체')}>전체</button>
-            <button className={status==='모집중' ? styles.statusbtn_selected : styles.statusbtn} onClick={handleMenuClick('모집중')}>모집중</button>
-            <button className={status==='모집완료' ? styles.statusbtn_selected : styles.statusbtn} onClick={handleMenuClick('모집완료')}>모집완료</button>
+            <button className={status==='전체' ? styles.statusbtn_selected : styles.statusbtn} onClick={handleMenuClick('전체')}>{t('study.전체')}</button>
+            <button className={status==='모집중' ? styles.statusbtn_selected : styles.statusbtn} onClick={handleMenuClick('모집중')}>{t('study.모집중')}</button>
+            <button className={status==='모집완료' ? styles.statusbtn_selected : styles.statusbtn} onClick={handleMenuClick('모집완료')}>{t('study.모집완료')}</button>
           </div>
           <div>
           <div className="search-container">
             <div className="searchWrap">
               <IoSearch className="input-icon" />
-              <input className="search-input" type="text" value={search} onChange={handleSearchChange} placeholder="검색어를 입력하세요"/>
+              <input className="search-input" type="text" value={search} onChange={handleSearchChange} placeholder={t('study.searchPlaceholder')}/>
               </div>
-              <button className="search-button" onClick={() => searchData(0)}>검색</button>
+              <button className="search-button" onClick={() => searchData(0)}>{t('study.searchButton')}</button>
           </div>
 
           <div className="tag-container">
@@ -218,9 +220,9 @@ useEffect(() => {
                   </span>
                 ))}
               </div>
-              <input className="tag-input" type="text" value={tag} onChange={handleTagChange} onKeyDown={handleKeyDown} placeholder="태그로 검색해보세요!"/>
+              <input className="tag-input" type="text" value={tag} onChange={handleTagChange} onKeyDown={handleKeyDown} placeholder={t('study.tagSearchPlaceholder')}/>
             </div>
-            <button className="reset-button" onClick={handleReset}><GrPowerReset className="reset-icon"/>초기화</button>
+            <button className="reset-button" onClick={handleReset}><GrPowerReset className="reset-icon"/>{t('study.resetButton')}</button>
           </div>
 
           </div>
@@ -236,7 +238,7 @@ useEffect(() => {
               {token && (
                 <button onClick={() => navigate("/post/new?type=study")} className={styles.write}>
                   <FaPencilAlt />
-                  글쓰기
+                    {t('study.writePost')}
                 </button>
               )}
             </div>

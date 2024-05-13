@@ -7,8 +7,12 @@ import Swal from "sweetalert2";
 import "./Header.css";
 import {IoSearch} from "react-icons/io5";
 import { Badge } from "antd";
+import {CaretDownOutlined} from '@ant-design/icons';
+import { Dropdown, message, Space } from 'antd';
 import { AiOutlineBell } from "react-icons/ai";
 import NotificationModal from "../Notification/NotificationModal";
+import { useTranslation } from "react-i18next";
+import i18n from "../../locales/i18n";
 
 const Header = () => {
     const navigate = useNavigate(); // 다른 component 로 이동할 때 사용
@@ -20,6 +24,32 @@ const Header = () => {
     const [showDetailAlert, setShowDetailAlert] = useState(false); //알림 상세보기 모달창
     const [detailNotification, setDetailNotification] = useState([]); //알림 상세내용
     const [chatCount, setChatCount] = useState(null); //안 읽은 채팅 개수
+
+    const { t } = useTranslation();
+    const [selectedLabel, setSelectedLabel] = useState(getInitialLanguageLabel()); // 선택된 언어 아이템 라벨을 저장
+    const [imageSrc, setImageSrc] = useState('/translate.png'); // 초기 이미지 설정
+    const [hasLanguageChanged, setHasLanguageChanged] = useState(false); // 언어 변경이 명시적으로 발생했을 때만 알림이 표시되도록 하기 위함
+
+    // 언어 라벨 초기값 설정
+    function getInitialLanguageLabel() {
+        const savedLang = localStorage.getItem('i18nextLng'); // 로컬 스토리지에서 언어 설정을 가져옴
+        switch(savedLang) {
+            case 'ko':
+                return '한국어';
+            case 'en':
+                return 'English';
+            default:
+                return '한국어'; // 기본값
+        }
+    }
+
+    // 언어를 변경하는 함수
+    const changeLanguage = (language) => {
+        console.log("언어 변경");
+        i18n.changeLanguage(language, () => {
+            setHasLanguageChanged(true); // 언어가 변경되었다는 상태를 true로 설정
+        });
+    };
 
     useEffect(() => {
         loginCheck(); // 컴포넌트가 마운트될 때 로그인 상태 확인
@@ -38,7 +68,7 @@ const Header = () => {
         localStorage.removeItem('accessToken'); // 로컬 스토리지에서 토큰 가져옴
         localStorage.removeItem('username');
         Swal.fire({
-            title: "<span style='font-size: 18px;'>로그아웃 되었습니다.</span>",
+            title: `<span style='font-size: 18px;'>${t('header.logoutMessage')}</span>`,
             confirmButtonColor: "#8BC765",
             customClass: {
                 popup: 'custom-logout-popup',
@@ -227,9 +257,9 @@ const Header = () => {
     const LoginWarning = () => {
         Swal.fire({
             icon: "warning",
-            title: "<div style='font-size: 21px; margin-bottom: 10px;'>로그인 후 이용해 주세요.</div>",
+            title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
             confirmButtonColor: "#8BC765",
-            confirmButtonText: "확인",
+            confirmButtonText: t('loginWarning.confirmButton'),
         });
     };
 
@@ -283,6 +313,50 @@ const Header = () => {
         setShowDetailAlert(!showDetailAlert);
     }
 
+    // 언어 설정
+    useEffect(() => {
+        // 언어 변경이 감지되었고, 명시적인 변경이 있었을 때만 알림 표시
+        if (i18n.language && hasLanguageChanged) {
+            const currentItem = items.find(item => item.langCode === i18n.language);
+            if (currentItem) {
+                setSelectedLabel(currentItem.text);
+                // 현재 언어가 한국어일 경우와 그 외 언어일 경우를 구분하여 메시지 표시
+                const messageText = i18n.language === 'ko' ? `${currentItem.text} 선택` : `${t('header.select')} ${currentItem.text}`;
+                message.info(messageText, 1.5);
+                setHasLanguageChanged(false); // 알림 표시 후 상태 초기화
+            }
+        }
+    }, [i18n.language, hasLanguageChanged]);
+
+    const onClick = ({ key }) => {
+        const item = items.find(item => item.key === key); // 클릭된 아이템 찾기
+        changeLanguage(item.langCode); // 언어 변경
+    };
+
+    const items = [
+        {
+            label: (
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <img src="/korea.png" alt="korea" className="national-flag"/>
+                    {t('header.한국어')}
+                </div>
+            ),
+            text: t('header.한국어'),
+            langCode: 'ko',
+            key: '1',
+        },
+        {
+            label: (
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <img src="/united-states.png" alt="united-states" className="national-flag"/>
+                    {t('header.영어')}
+                </div>
+            ),
+            text: t('header.영어'),
+            langCode: 'en',
+            key: '2',
+        },
+    ];
 
     return (
         <nav className={`navbar navbar-expand-lg`} style={{ backgroundColor: '#C8DCA0' }}>
@@ -294,6 +368,18 @@ const Header = () => {
                     </div>
                 </div>
                 <div className={`ms-auto order-lg-last`}>
+                    <Dropdown menu={{ items, onClick }} className="dropdown-style">
+                        <a onClick={(e) => e.preventDefault()}>
+                            <Space className="custom-color" size={3}
+                                   onMouseEnter={() => setImageSrc('/Gtranslate.png')} // 마우스를 올렸을 때 이미지 변경
+                                   onMouseLeave={() => setImageSrc('/translate.png')} // 마우스가 떠났을 때 이미지 원상 복구
+                            >
+                                <img src={imageSrc} alt="translate Image" className="translateImg"/>
+                                <span className="selectedLabel">{selectedLabel}</span>
+                                <CaretDownOutlined className="dropdownIcon"/>
+                            </Space>
+                        </a>
+                    </Dropdown>
                     <IoSearch className="search-icon" onClick={navigateToSearch}/>
                     <Badge className="alert-icon" count={myNotification} size="small" overflowCount={99}>
                         <AiOutlineBell onClick={handleNotification} />
@@ -301,18 +387,18 @@ const Header = () => {
                 </div>
                 {isLogin ? (
                     <button className={`btn nav-link order-lg-last`} onClick={removeToken} style={{ backgroundColor: "#B3C693", padding: "5px 15px", marginRight: "10px"}}>
-                        로그아웃
+                        {t(`header.로그아웃`)}
                     </button>
                 ) : (
                     <>
                         <div className={`order-lg-last`}>
                             <button className={`btn nav-link`} style={{ backgroundColor: "#B3C693", padding: "5px 15px", marginRight: "10px" }} onClick={handleSignIn}>
-                                로그인
+                                {t(`header.로그인`)}
                             </button>
                         </div>
                         <div className={`order-lg-last`}>
                             <button className={`btn nav-link`} style={{ backgroundColor: "#B3C693", padding: "5px 15px", marginRight: "10px" }} onClick={handleSignUp}>
-                                회원가입
+                                {t(`header.회원가입`)}
                             </button>
                         </div>
                     </>
@@ -330,24 +416,24 @@ const Header = () => {
                 <div className={`collapse navbar-collapse ${isNavOpen ? 'show' : ''}`}>
                     <ul className="navbar-nav">
                         <li className={`nav-item ${activePage("/")}`}>
-                            <button className={`btn nav-link ${activePage("/")}`} onClick={() => handleNavigation("/")}>홈</button>
+                            <button className={`btn nav-link ${activePage("/")}`} onClick={() => handleNavigation("/")}>{t(`header.홈`)}</button>
                         </li>
                         <li className={`nav-item ${activePage("/friend")}`}>
-                            <button className={`btn nav-link ${activePage("/friend")}`} onClick={() => handleNavigation("/friend")}>친구</button>
+                            <button className={`btn nav-link ${activePage("/friend")}`} onClick={() => handleNavigation("/friend")}>{t(`header.친구`)}</button>
                         </li>
                         <li className="nav-item">
-                            <button className={`btn nav-link ${activePage("/study")}`} onClick={() => handleNavigation("/study")}>스터디</button>
+                            <button className={`btn nav-link ${activePage("/study")}`} onClick={() => handleNavigation("/study")}>{t(`header.스터디`)}</button>
                         </li>
                         <li className={`nav-item ${activePage("/chat")}`}>
                             <Badge className="chat-icon" count={chatCount} size="small" overflowCount={99}>
-                                <button className={`btn nav-link ${activePage("/chat")}`} onClick={() => handleNavigation("/chat")}>채팅</button>
+                                <button className={`btn nav-link ${activePage("/chat")}`} onClick={() => handleNavigation("/chat")}>{t(`header.채팅`)}</button>
                             </Badge>
                         </li>
                         <li className={`nav-item ${activePage(`/profile`)}`}>
-                            <button className={`btn nav-link ${activePage("/profile")}`} onClick={() => handleNavigation(`/profile`)}>프로필</button>
+                            <button className={`btn nav-link ${activePage("/profile")}`} onClick={() => handleNavigation(`/profile`)}>{t(`header.프로필`)}</button>
                         </li>
                         <li className={`nav-item ${activePage(`/translate`)}`}>
-                            <button className={`btn nav-link ${activePage("/translate")}`} onClick={() => handleNavigation(`/translate`)}>번역</button>
+                            <button className={`btn nav-link ${activePage("/translate")}`} onClick={() => handleNavigation(`/translate`)}>{t(`header.번역`)}</button>
                         </li>
                     </ul>
                 </div>
