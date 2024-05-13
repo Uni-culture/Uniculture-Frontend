@@ -31,7 +31,7 @@ export const PopTag = () => {
 
   return (
     <div className={styles.pop_container}>
-      <h4 className={styles.title}>{t('PopTag.popularTags')}</h4>
+      <h4 className={styles.title}>{t('popTag.popularTags')}</h4>
       <ul className={styles.tag_list}>
         {data.map((i, index)=>(
           <li className={styles.tag_item} key={index}>

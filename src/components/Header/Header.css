@@ -14,7 +14,7 @@
 }
 
 .search-icon {
-    margin-right: 1.0rem;
+    margin-right: 1.1rem;
     font-size: 1.3rem;
 }
 
@@ -27,12 +27,35 @@
     font-size: 16px;
 }
 
-.headerImg {
-    width: 30px;
+.translateImg {
+    width: 20px;
     height: auto;
-    margin-right: 10px;
 }
 
-.headerImg:hover {
+.translateImg:hover {
     cursor: pointer;
+}
+
+.dropdown-style {
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.custom-color {
+    color: black;
+    font-weight: 600;
+}
+
+.custom-color:hover {
+    color: #2E9630;
+}
+
+.ant-message .anticon-info-circle {
+    color: #2E9630 !important; /* 원하는 색상 코드로 변경 */
+}
+
+.national-flag {
+    width: 20px;
+    height: auto;
+    margin-right: 8px;
 }

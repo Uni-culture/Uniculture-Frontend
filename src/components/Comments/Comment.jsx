@@ -183,7 +183,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
 
     // 댓글 또는 대댓글 삭제
     const deleteComment = async (commentId) => {
-        const isConfirmed = window.confirm(t('Comments.ConfirmDelete'));
+        const isConfirmed = window.confirm(t('comments.ConfirmDelete'));
         if (!isConfirmed) {
             return; // 사용자가 취소를 선택하면 여기서 함수 종료
         }
@@ -227,21 +227,21 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                     <div className="postMine-wrap">
                         <div className="comment-username">{comment.commentWriterName}</div>
                         {comment.postMine && (
-                            <div className="postMine-style">{t('Comments.Author')}</div>
+                            <div className="postMine-style">{t('comments.Author')}</div>
                         )}
                     </div>
                     <HiOutlineDotsVertical className="HiOutlineDotsVertical" onClick={() => setCommentMenuVisible(!commentMenuVisible)} />
                     {commentMenuVisible && (
                         <div className="comment-options">
-                            <button className="option-button" onClick={() => commentEdit()}>{t('Comments.Edit')}</button>
-                            <button className="option-button" onClick={() => deleteComment(comment.id)}>{t('Comments.Delete')}</button>
+                            <button className="option-button" onClick={() => commentEdit()}>{t('comments.Edit')}</button>
+                            <button className="option-button" onClick={() => deleteComment(comment.id)}>{t('comments.Delete')}</button>
                         </div>
                     )}
                 </div>
                 {commentEditMode ? (
                     <div className="edit-comments-header">
                         <div className="cancel-button-container">
-                            <button className="cancel" onClick={() => setCommentEditMode(false)}>{t('Comments.Cancel')}</button>
+                            <button className="cancel" onClick={() => setCommentEditMode(false)}>{t('comments.Cancel')}</button>
                         </div>
                         <div className="edit-comments-content">
                             <TextField
@@ -251,13 +251,13 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                                     setContent(e.target.value)
                                 }}
                                 value={content}
-                                multiline placeholder={t('Comments.EnterComment')}
+                                multiline placeholder={t('comments.EnterComment')}
                             />
                             {content !== "" ? (
-                                <button onClick={() => modifyComment(comment.id)}>{t('Comments.Modify')}</button>
+                                <button onClick={() => modifyComment(comment.id)}>{t('comments.Modify')}</button>
                             ) : (
                                 <button disabled={true}>
-                                    {t('Comments.Modify')}
+                                    {t('comments.Modify')}
                                 </button>
                             )}
                         </div>
@@ -265,11 +265,11 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                 ):(
                     <div>
                         <div className={`comment-content ${comment.isDeleted ? 'comment-deleted' : ''}`}>
-                            {comment.isDeleted ? t('Comments.CommentDeleted') : (isTranslated ? translatedContent : comment.content)}
+                            {comment.isDeleted ? t('comments.CommentDeleted') : (isTranslated ? translatedContent : comment.content)}
                         </div>
-                        <div className="ComentTranslate" onClick={toggleTranslate}>{t('Comments.Translate')}</div>
+                        <div className="ComentTranslate" onClick={toggleTranslate}>{t('comments.Translate')}</div>
                         <div className="comment-bottom">
-                            <button className="reply-button" onClick={replyComponent}>{t('Comments.Reply')}</button>
+                            <button className="reply-button" onClick={replyComponent}>{t('comments.Reply')}</button>
                             <div className="comment-date">
                                 {moment(comment.createdDate).fromNow()}
                             </div>
@@ -292,21 +292,21 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                                         <div className="postMine-wrap">
                                             <div className="replyComment-username">{child.commentWriterName}</div>
                                             {child.postMine && (
-                                                <div className="postMine-style">{t('Comments.Author')}</div>
+                                                <div className="postMine-style">{t('comments.Author')}</div>
                                             )}
                                         </div>
                                         <HiOutlineDotsVertical className="HiOutlineDotsVertical" onClick={() => toggleReplyMenu(child.id)} />
                                         {replyMenuVisible[child.id] && (
                                             <div className="replyComment-options">
-                                                <button className="option-button" onClick={() => replyEdit(child.id, child.content)}>{t('Comments.Edit')}</button>
-                                                <button className="option-button" onClick={() => deleteComment(child.id)}>{t('Comments.Delete')}</button>
+                                                <button className="option-button" onClick={() => replyEdit(child.id, child.content)}>{t('comments.Edit')}</button>
+                                                <button className="option-button" onClick={() => deleteComment(child.id)}>{t('comments.Delete')}</button>
                                             </div>
                                         )}
                                     </div>
                                     {replyEditMode[child.id] ? (
                                         <div className="edit-comments-header">
                                             <div className="cancel-button-container">
-                                                <button className="cancel" onClick={() => replyEdit(child.id)}>{t('Comments.Cancel')}</button>
+                                                <button className="cancel" onClick={() => replyEdit(child.id)}>{t('comments.Cancel')}</button>
                                             </div>
                                             <div className="edit-comments-content">
                                                 <TextField
@@ -319,13 +319,13 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                                                         }));
                                                     }}
                                                     value={replyContent[child.id] || ''}
-                                                    multiline placeholder={t('Comments.EnterComment')}
+                                                    multiline placeholder={t('comments.EnterComment')}
                                                 />
                                                 {replyContent !== "" ? (
-                                                    <button onClick={() => modifyComment(child.id, true)}>{t('Comments.Modify')}</button>
+                                                    <button onClick={() => modifyComment(child.id, true)}>{t('comments.Modify')}</button>
                                                 ) : (
                                                     <button disabled={true}>
-                                                        {t('Comments.Modify')}
+                                                        {t('comments.Modify')}
                                                     </button>
                                                 )}
                                             </div>
@@ -335,7 +335,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                                             <div className="replyComment-content">
                                                 {replyIsTranslated[child.id] ? replyTranslations[child.id] : child.content}
                                             </div>
-                                            <div className="ComentTranslate" onClick={() => toggleReplyTranslate(child.id, child.content)}>{t('Comments.Translate')}</div>
+                                            <div className="ComentTranslate" onClick={() => toggleReplyTranslate(child.id, child.content)}>{t('comments.Translate')}</div>
                                             <div className="replyComment-bottom">
                                                 <div className="replyComment-date">
                                                     {moment(child.createdDate).fromNow()}

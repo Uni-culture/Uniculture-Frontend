@@ -28,14 +28,14 @@ export default function Translate() {
     const [isInputDropDownOpen, setIsInputDropDownOpen] = useState(false);
     const [isOutputDropDownOpen, setIsOutputDropDownOpen] = useState(false);
     const languages = [ 
-        { name: t('Translate.KO'), code: "KO" },
-        { name: t('Translate.EN'), code: "EN" },
-        { name: t('Translate.ZH'), code: "ZH" },
-        { name: t('Translate.JA'), code: "JA" },
-        { name: t('Translate.DE'), code: "DE" },
-        { name: t('Translate.ES'), code: "ES" },
-        { name: t('Translate.FR'), code: "FR" },
-        { name: t('Translate.IT'), code: "IT" },
+        { name: t('translate.KO'), code: "KO" },
+        { name: t('translate.EN'), code: "EN" },
+        { name: t('translate.ZH'), code: "ZH" },
+        { name: t('translate.JA'), code: "JA" },
+        { name: t('translate.DE'), code: "DE" },
+        { name: t('translate.ES'), code: "ES" },
+        { name: t('translate.FR'), code: "FR" },
+        { name: t('translate.IT'), code: "IT" },
     ]
 
     // 로그인 후 저장된 토큰 가져오는 함수
@@ -170,7 +170,7 @@ export default function Translate() {
                     <textarea className={styles.textarea} value={inputText} onChange={(e) => handleInputTextarea(e.target.value)} onFocus={handleInputTextareaClick} onBlur={()=>setIsInputTextareaClicked(false)}/>
 
                     <div className={styles.translateBtnDiv}>
-                        <button className={styles.translateBtn} onClick={performTranslation}>{t('Translate.Translate')}</button>
+                        <button className={styles.translateBtn} onClick={performTranslation}>{t('translate.Translate')}</button>
                     </div>
                 </div>
 

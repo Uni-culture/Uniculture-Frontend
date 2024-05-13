@@ -261,7 +261,7 @@ const ProfileInfo = () => {
                     <Sidebar/>
                     <div className="col-md-9 ms-sm-auto col-lg-10 px-md-4" style={{ overflowY: "auto" }}>
                         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h4 className="h4">{t('ProfileInfo.editPersonalInfo')}</h4>
+                            <h4 className="h4">{t('profileInfo.editPersonalInfo')}</h4>
                         </div>
                         <div className="mb-4 row">
                             <label className="col-sm-3 col-form-label">Email</label>
@@ -274,7 +274,7 @@ const ProfileInfo = () => {
                                 style={{display:"flex", width:"150px", height:"40px"}}
                                 type="text"
                                 name="nickname"
-                                placeholder={t('ProfileInfo.enterNickName')}
+                                placeholder={t('profileInfo.enterNickName')}
                                 value={userInfo?.nickname}
                                 onChange={changeNickName}
                             />
@@ -289,17 +289,17 @@ const ProfileInfo = () => {
                                     border:"0px"
                                 }}
                                 onClick={handleNickName}
-                            >{t('ProfileInfo.checkDuplicate')}</button>
+                            >{t('profileInfo.checkDuplicate')}</button>
 
                             {nickNameValid!== null && (
                                 <div className="mt-2 row">
                                     <label className="col-sm-3 col-form-label"></label>
                                     <div className="col-sm-6" style={{fontWeight: "550", fontSize: "13px"}}>
                                         {nickNameValid && (
-                                            <div style={{color: "green"}}>{t('ProfileInfo.nickNameAvailable')}</div>
+                                            <div style={{color: "green"}}>{t('profileInfo.nickNameAvailable')}</div>
                                         )}
                                         {!nickNameValid && userInfo?.nickname.length > 0 && (
-                                            <div style={{color: "red"}}>{t('ProfileInfo.nickNameUnavailable')}</div>
+                                            <div style={{color: "red"}}>{t('profileInfo.nickNameUnavailable')}</div>
                                         )}
                                     </div>
                                 </div>
@@ -311,12 +311,12 @@ const ProfileInfo = () => {
                             <input
                                 style={{display:"flex", width:"150px", height:"40px"}}
                                 type={showExPassword ? "text" : "password"}
-                                placeholder={t('ProfileInfo.enterCurrentPassword')}
+                                placeholder={t('profileInfo.enterCurrentPassword')}
                                 onChange={(e) => {setExPassword(e.target.value)}}
                             />
                             <label className="col-sm-3">
                                 <input type='checkbox' className="custom-checkbox" onChange={() => toggleShowPassword('ex')} />
-                                <span className="pwCheck">{t('ProfileInfo.showPassword')}</span>
+                                <span className="pwCheck">{t('profileInfo.showPassword')}</span>
                             </label>
                         </div>
 
@@ -325,12 +325,12 @@ const ProfileInfo = () => {
                             <input
                                 style={{display:"flex", width:"150px", height:"40px"}}
                                 type={showNewPassword ? "text" : "password"}
-                                placeholder={t('ProfileInfo.enterNewPassword')}
+                                placeholder={t('profileInfo.enterNewPassword')}
                                 onChange={(e) => {setNewPassword(e.target.value); handlePw(e.target.value);}}
                             />
                             <label className="col-sm-3">
                                 <input type='checkbox' className="custom-checkbox" onChange={() => toggleShowPassword('new')} />
-                                <span className="pwCheck">{t('ProfileInfo.showPassword')}</span>
+                                <span className="pwCheck">{t('profileInfo.showPassword')}</span>
                             </label>
                         </div>
 
@@ -338,7 +338,7 @@ const ProfileInfo = () => {
                             <div className="mb-2 row">
                                 <label className="col-sm-3 col-form-label"></label>
                                 <div className="col-sm-6" style={{fontWeight: "550", fontSize: "13px"}}>
-                                    <div style={{color:"red"}}>{t('ProfileInfo.passwordRequirement')}</div>
+                                    <div style={{color:"red"}}>{t('profileInfo.passwordRequirement')}</div>
                                 </div>
                             </div>
                         )}
@@ -348,12 +348,12 @@ const ProfileInfo = () => {
                             <input
                                 style={{display:"flex", width:"150px", height:"40px"}}
                                 type={showCheckPassword ? "text" : "password"}
-                                placeholder={t('ProfileInfo.confirmNewPassword')}
+                                placeholder={t('profileInfo.confirmNewPassword')}
                                 onChange={(e) => {setCheckPassword(e.target.value)}}
                             />
                             <label className="col-sm-3">
                                 <input type='checkbox' className="custom-checkbox" onChange={() => toggleShowPassword('check')} />
-                                <span className="pwCheck">{t('ProfileInfo.showPassword')}</span>
+                                <span className="pwCheck">{t('profileInfo.showPassword')}</span>
                             </label>
                         </div>
 
@@ -389,7 +389,7 @@ const ProfileInfo = () => {
                             <label className="col-sm-3 col-form-label">Birth</label>
                             <div style={{display:"flex", width:"300px", padding:"0px"}}>
                                 <select className="box" id="birth-year" onChange={handleYearChange} >
-                                    <option disabled selected>{t('ProfileInfo.birthYear')}</option>
+                                    <option disabled selected>{t('profileInfo.birthYear')}</option>
                                     {userInfo && userInfo.year && (
                                         Array.from({ length: 2023 - 1940 }, (_, index) => {
                                             const year = 1940 + index;
@@ -400,7 +400,7 @@ const ProfileInfo = () => {
                                     )}
                                 </select>
                                 <select className="box" id="birth-month" onChange={handleMonthChange}>
-                                    <option disabled selected>{t('ProfileInfo.birthMonth')}</option>
+                                    <option disabled selected>{t('profileInfo.birthMonth')}</option>
                                     { userInfo && userInfo.month && (
                                         Array.from({ length: 12 }, (_, index) => {
                                             const month = index + 1;
@@ -411,7 +411,7 @@ const ProfileInfo = () => {
                                     )}
                                 </select>
                                 <select className="box" id="birth-day" onChange={handleDayChange}>
-                                    <option disabled selected>{t('ProfileInfo.birthDay')}</option>
+                                    <option disabled selected>{t('profileInfo.birthDay')}</option>
                                     {userInfo && userInfo.day && (
                                         Array.from({ length: 31 }, (_, index) => {
                                             const day = index + 1;
@@ -442,7 +442,7 @@ const ProfileInfo = () => {
                                     }}
                                     onClick={() => { window.location.reload(); }}
                             >
-                                {t('ProfileInfo.resetButton')}
+                                {t('profileInfo.resetButton')}
                             </button>
                             <button
                                 type="button"
@@ -456,7 +456,7 @@ const ProfileInfo = () => {
                                 }}
                                 onClick={changeInfo}
                             >
-                                {t('ProfileInfo.editButton')}
+                                {t('profileInfo.editButton')}
                             </button>
                         </div>
                     </div>

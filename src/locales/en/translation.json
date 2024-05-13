@@ -9,7 +9,10 @@
     "로그인": "Sign in",
     "회원가입": "register",
     "로그아웃": "Sign out",
-    "logoutMessage": "You have been logged out."
+    "logoutMessage": "You have been logged out.",
+    "한국어": "Korean",
+    "영어": "English",
+    "select": "Select"
   },
   "nav": {
     "전체": "All",
@@ -144,7 +147,7 @@
     "addButton": "Add",
     "selectionPrompt": "Please select a language or proficiency level."
   },
-  "Friend": {
+  "friend": {
     "내 친구": "My Friends",
     "추천 친구": "Recommended Friends",
     "addFriendsPrompt": "Please add friends.",
@@ -152,7 +155,7 @@
     "noRecommendedFriends": "Unfortunately, we couldn't find any friends to recommend at the moment.",
     "moreInputPrompt": "Providing more details about your activities or interests can help us make more accurate recommendations."
   },
-  "Study": {
+  "study": {
     "전체": "All",
     "모집중": "Recruiting",
     "모집완료": "Recruitment Completed",
@@ -162,13 +165,13 @@
     "resetButton": "Reset",
     "writePost": "Write Post"
   },
-  "PopTag": {
+  "popTag": {
     "popularTags": "Popular Tags"
   },
-  "RankingPost": {
+  "rankingPost": {
     "weeklyPopularPosts": "Weekly Popular Posts"
   },
-  "Chat": {
+  "chat": {
     "chat": "Chat",
     "myMessages": "My Messages",
     "PrivateMessages": "Send private photos and messages to friends or groups.",
@@ -186,7 +189,7 @@
     "sendMessage": "Send Message",
     "friendRequestSuccess": "Friend Request Sent Successfully"
   },
-  "ProfileEdit": {
+  "profileEdit": {
     "editProfile": "Edit Profile",
     "introduction": "Introduction",
     "enterIntroduction": "Enter Introduction",
@@ -198,7 +201,7 @@
     "learningLanguages": "Learning Languages",
     "editButton": "Edit"
   },
-  "ProfileInfo": {
+  "profileInfo": {
     "editPersonalInfo": "Edit Personal Information",
     "enterNickName": "Enter NickName",
     "checkDuplicate": "Check Duplicate",
@@ -215,12 +218,12 @@
     "resetButton": "Reset",
     "editButton": "Edit"
   },
-  "Sidebar": {
+  "sidebar": {
     "editProfile": "Edit Profile",
     "personalInfo": "Personal Info",
     "deleteAccount": "Delete Account"
   },
-  "ProfileDelete": {
+  "profileDelete": {
     "accountDeletion": "Account Deletion",
     "deleteAccount": "Delete Account",
     "modalBody": "Enter 'delete' and click the 'Delete' button to proceed with account deletion.",
@@ -229,7 +232,7 @@
     "deleteButton": "Delete",
     "deleteInputAlert": "Please enter 'delete'"
   },
-  "Post": {
+  "post": {
     "createPost": "Create Post",
     "createStudy": "Create Study",
     "postButton": "Post",
@@ -248,14 +251,14 @@
     "submitButton": "Submit Post",
     "studyRecruitmentExample": "<p><strong>[Example of Development Study Recruitment]</strong></p><ul><li>Study Topic:</li><li>Study Goals:</li><li>Expected Study Schedule (Number of Sessions):</li><li>Brief Curriculum Overview:</li><li>Expected Number of Participants:</li><li>Introduction and Reason for Initiating the Study:</li><li>Precautions Related to the Study:</li><li>Please leave a method to apply for the study. (Email, Kakao Open Chat, Google Form, etc.):</li></ul><p><br></p>"
   },
-  "Board": {
+  "board": {
     "dateFormat": "MMMM D, YYYY",
     "TranslateButton": "Translate",
     "RevertButton": "Revert",
     "DeleteButton": "Delete",
     "EditButton": "Edit"
   },
-  "Comments": {
+  "comments": {
     "Placeholder": "Please enter a comment",
     "SubmitButton": "Submit",
     "Author": "Author",
@@ -269,7 +272,7 @@
     "Reply": "Reply",
     "ConfirmDelete": "Are you sure you want to delete this comment?"
   },
-  "Translate": {
+  "translate": {
     "KO": "Korean",
     "EN": "English",
     "ZH": "Chinese",

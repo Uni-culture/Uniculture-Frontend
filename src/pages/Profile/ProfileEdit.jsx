@@ -272,7 +272,7 @@ const ProfileEdit = () => {
                     <Sidebar/>
                     <div className="col-md-9 ms-sm-auto col-lg-10 px-md-4" style={{ overflowY: "auto" }}>
                         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h4 className="h4">{t('ProfileEdit.editProfile')}</h4>
+                            <h4 className="h4">{t('profileEdit.editProfile')}</h4>
                         </div>
                         <div className="mb-3 row justify-content-center">
                             <div
@@ -295,8 +295,8 @@ const ProfileEdit = () => {
                         </div>
                         
                         <div className={`mb-5 ${styles.imgButton}`}>
-                            <button type="button" className={styles.imgDelete} onClick={()=>{setProfileImg(null); setUserInfo({...userInfo, profileurl: null})}}>{t('ProfileEdit.delete')}</button>
-                            <button type="file" className={styles.imgChange} accept='image/*' onClick={() => selectFile.current.click()} >{t('ProfileEdit.change')}</button>
+                            <button type="button" className={styles.imgDelete} onClick={()=>{setProfileImg(null); setUserInfo({...userInfo, profileurl: null})}}>{t('profileEdit.delete')}</button>
+                            <button type="file" className={styles.imgChange} accept='image/*' onClick={() => selectFile.current.click()} >{t('profileEdit.change')}</button>
                             <input
                                 type="file"
                                 accept='image/*'
@@ -308,18 +308,18 @@ const ProfileEdit = () => {
 
                         {/* 소개 */}
                         <div className="mb-5 row">
-                            <label className={`col-sm-2 col-form-label ${styles.label}`}>{t('ProfileEdit.introduction')}</label>
+                            <label className={`col-sm-2 col-form-label ${styles.label}`}>{t('profileEdit.introduction')}</label>
                             <div className="col-sm-8">
                                 <textarea
                                     className={`form-control ${styles.introduceTextarea}`}
-                                    placeholder={t('ProfileEdit.enterIntroduction')}
+                                    placeholder={t('profileEdit.enterIntroduction')}
                                     value={userInfo?.introduce || ''}
                                     onChange={changeIntroduce}
                                     maxLength="100" 
                                 />
                                 <div className={styles.inputCount}>
                                     <span>{inputCount}</span>
-                                    <span>/100 {t('ProfileEdit.charLimit')}</span>
+                                    <span>/100 {t('profileEdit.charLimit')}</span>
                                 </div>
                             </div>
                         </div>
@@ -356,7 +356,7 @@ const ProfileEdit = () => {
 
                         {/* 관심사 */}
                         <div className="mb-5 row">
-                            <label className={`col-sm-2 col-form-label ${styles.label}`}>{t('ProfileEdit.interests')}</label>
+                            <label className={`col-sm-2 col-form-label ${styles.label}`}>{t('profileEdit.interests')}</label>
                             <div className="col-sm-8">
                                 {interestTag.map((tag) => (
                                     <button
@@ -369,7 +369,7 @@ const ProfileEdit = () => {
                                 ))}
                                 {isOverSelectedIntTags && (
                                     <div className="interest-tag-warning">
-                                        {t('ProfileEdit.interestsLimitWarning')}
+                                        {t('profileEdit.interestsLimitWarning')}
                                     </div>
                                 )}
                             </div>
@@ -377,7 +377,7 @@ const ProfileEdit = () => {
 
                         {/* 사용 언어 */}
                         <div className="mb-2 row">
-                            <label className={`col-sm-2 col-form-label ${styles.label}`}>{t('ProfileEdit.usedLanguages')}</label>
+                            <label className={`col-sm-2 col-form-label ${styles.label}`}>{t('profileEdit.usedLanguages')}</label>
                             <div className="col-sm-7 col-form-label">
                                 <button className={styles.languageAdd} onClick={()=>{setIsModalOpened1(true)}}>Add Language</button>
                                 {isModalOpened1&&<AddLanuageModal handleModal={()=>{setIsModalOpened1(false)}} addLanguage={handleMyLanguages}/>}
@@ -396,7 +396,7 @@ const ProfileEdit = () => {
                             ))}
                         </div>
                         <div className="mb-2 row">
-                            <label className={`col-sm-2 col-form-label ${styles.label}`}>{t('ProfileEdit.learningLanguages')}</label>
+                            <label className={`col-sm-2 col-form-label ${styles.label}`}>{t('profileEdit.learningLanguages')}</label>
                             <div className="col-sm-7 col-form-label">
                                 <button className={styles.languageAdd} onClick={()=>{setIsModalOpened2(true)}}>Add Language</button>
                                 {isModalOpened2&&<AddLanuageModal handleModal={()=>{setIsModalOpened2(false)}} addLanguage={handleWantLanguage}/>}
@@ -421,7 +421,7 @@ const ProfileEdit = () => {
                                 className={styles.changeButton}
                                 onClick={changeInfo}
                             >
-                                {t('ProfileEdit.editButton')}
+                                {t('profileEdit.editButton')}
                             </button>
                         </div>
                     </div>

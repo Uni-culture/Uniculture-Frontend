@@ -9,7 +9,9 @@
     "로그인": "로그인",
     "회원가입": "회원가입",
     "로그아웃": "로그아웃",
-    "logoutMessage": "로그아웃 되었습니다."
+    "logoutMessage": "로그아웃 되었습니다.",
+    "한국어": "한국어",
+    "영어": "영어"
   },
   "nav": {
     "전체": "전체",
@@ -144,7 +146,7 @@
     "addButton": "추가",
     "selectionPrompt": "언어 혹은 능숙도를 선택해주세요."
   },
-  "Friend": {
+  "friend": {
     "내 친구": "내 친구",
     "추천 친구": "추천 친구",
     "addFriendsPrompt": "친구를 추가해주세요.",
@@ -152,7 +154,7 @@
     "noRecommendedFriends": "아쉽게도, 현재 시스템에서 추천할 친구를 찾지 못했습니다.",
     "moreInputPrompt": "사용자의 활동이나 관심사를 더 많이 입력해주시면 보다 정확한 추천을 제공할 수 있습니다."
   },
-  "Study": {
+  "study": {
     "전체": "전체",
     "모집중": "모집중",
     "모집완료": "모집완료",
@@ -162,13 +164,13 @@
     "resetButton": "초기화",
     "writePost": "글쓰기"
   },
-  "PopTag": {
+  "popTag": {
     "popularTags": "인기 태그"
   },
-  "RankingPost": {
+  "rankingPost": {
     "weeklyPopularPosts": "주간 인기글"
   },
-  "Chat": {
+  "chat": {
     "chat": "채팅",
     "myMessages": "내 메시지",
     "PrivateMessages": "친구나 그룹에 비공개 사진과 메시지를 보내보세요.",
@@ -186,7 +188,7 @@
     "sendMessage": "채팅 보내기",
     "friendRequestSuccess": "친구 신청 성공"
   },
-  "ProfileEdit": {
+  "profileEdit": {
     "editProfile": "프로필 편집",
     "delete": "삭제",
     "change": "변경",
@@ -199,7 +201,7 @@
     "learningLanguages": "학습 언어",
     "editButton": "수정"
   },
-  "ProfileInfo": {
+  "profileInfo": {
     "editPersonalInfo": "개인정보 수정",
     "enterNickName": "닉네임 입력",
     "checkDuplicate": "중복확인",
@@ -216,12 +218,12 @@
     "resetButton": "재설정",
     "editButton": "수정"
   },
-  "Sidebar": {
+  "sidebar": {
     "editProfile": "프로필 편집",
     "personalInfo": "개인정보",
     "deleteAccount": "계정 탈퇴"
   },
-  "ProfileDelete": {
+  "profileDelete": {
     "accountDeletion": "계정 탈퇴",
     "deleteAccount": "탈퇴하기",
     "modalBody": "탈퇴하기 입력 후 '탈퇴'버튼을 클릭하면 탈퇴됩니다.",
@@ -230,7 +232,7 @@
     "deleteButton": "탈퇴",
     "deleteInputAlert": "'탈퇴하기'를 입력해주세요."
   },
-  "Post": {
+  "post": {
     "createPost": "게시글 작성",
     "createStudy": "스터디 작성",
     "postButton": "게시글",
@@ -249,14 +251,14 @@
     "submitButton": "글 작성",
     "studyRecruitmentExample": "<p><strong>[개발 스터디 모집 내용 예시]</strong></p><ul><li>스터디 주제 :</li><li>스터디 목표 :</li><li>예상 스터디 일정(횟수) :</li><li>예상 커리큘럼 간략히 :</li><li>예상 모집인원 :</li><li>스터디 소개와 개설 이유 :</li><li>스터디 관련 주의사항 :</li><li>스터디에 지원할 수 있는 방법을 남겨주세요. (이메일, 카카오 오픈채팅방, 구글폼 등.) :</li></ul><p><br></p>"
   },
-  "Board": {
+  "board": {
     "dateFormat": "YYYY년 M월 D일",
     "TranslateButton": "번역",
     "RevertButton": "되돌리기",
     "DeleteButton": "삭제",
     "EditButton": "수정"
   },
-  "Comments": {
+  "comments": {
     "Placeholder": "댓글을 입력해주세요",
     "SubmitButton": "등록하기",
     "Author": "작성자",
@@ -270,7 +272,7 @@
     "Reply": "답글",
     "ConfirmDelete": "댓글을 삭제하시겠습니까?"
   },
-  "Translate": {
+  "translate": {
     "KO": "한국어",
     "EN": "영어",
     "ZH": "중국어",

@@ -196,17 +196,17 @@ useEffect(() => {
       <div className={styles.background}>
         <div className={styles.body_content}>
           <div className={styles.menu}>
-            <button className={status==='전체' ? styles.statusbtn_selected : styles.statusbtn} onClick={handleMenuClick('전체')}>{t('Study.전체')}</button>
-            <button className={status==='모집중' ? styles.statusbtn_selected : styles.statusbtn} onClick={handleMenuClick('모집중')}>{t('Study.모집중')}</button>
-            <button className={status==='모집완료' ? styles.statusbtn_selected : styles.statusbtn} onClick={handleMenuClick('모집완료')}>{t('Study.모집완료')}</button>
+            <button className={status==='전체' ? styles.statusbtn_selected : styles.statusbtn} onClick={handleMenuClick('전체')}>{t('study.전체')}</button>
+            <button className={status==='모집중' ? styles.statusbtn_selected : styles.statusbtn} onClick={handleMenuClick('모집중')}>{t('study.모집중')}</button>
+            <button className={status==='모집완료' ? styles.statusbtn_selected : styles.statusbtn} onClick={handleMenuClick('모집완료')}>{t('study.모집완료')}</button>
           </div>
           <div>
           <div className="search-container">
             <div className="searchWrap">
               <IoSearch className="input-icon" />
-              <input className="search-input" type="text" value={search} onChange={handleSearchChange} placeholder={t('Study.searchPlaceholder')}/>
+              <input className="search-input" type="text" value={search} onChange={handleSearchChange} placeholder={t('study.searchPlaceholder')}/>
               </div>
-              <button className="search-button" onClick={() => searchData(0)}>{t('Study.searchButton')}</button>
+              <button className="search-button" onClick={() => searchData(0)}>{t('study.searchButton')}</button>
           </div>
 
           <div className="tag-container">
@@ -220,9 +220,9 @@ useEffect(() => {
                   </span>
                 ))}
               </div>
-              <input className="tag-input" type="text" value={tag} onChange={handleTagChange} onKeyDown={handleKeyDown} placeholder={t('Study.tagSearchPlaceholder')}/>
+              <input className="tag-input" type="text" value={tag} onChange={handleTagChange} onKeyDown={handleKeyDown} placeholder={t('study.tagSearchPlaceholder')}/>
             </div>
-            <button className="reset-button" onClick={handleReset}><GrPowerReset className="reset-icon"/>{t('Study.resetButton')}</button>
+            <button className="reset-button" onClick={handleReset}><GrPowerReset className="reset-icon"/>{t('study.resetButton')}</button>
           </div>
 
           </div>
@@ -238,7 +238,7 @@ useEffect(() => {
               {token && (
                 <button onClick={() => navigate("/post/new?type=study")} className={styles.write}>
                   <FaPencilAlt />
-                    {t('Study.writePost')}
+                    {t('study.writePost')}
                 </button>
               )}
             </div>

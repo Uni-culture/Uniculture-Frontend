@@ -19,8 +19,8 @@ export const Post = () => {
   };
   const token = getToken();
 
-  const postOptions = [{value: 'DAILY', label: t('Post.DAILY')}, {value: 'HELP', label: t('Post.HELP')}];
-  const studyOptions = [{value: 'LANGUAGE', label: t('Post.LANGUAGE')},{value: 'HOBBY', label: t('Post.HOBBY')}]
+  const postOptions = [{value: 'DAILY', label: t('post.DAILY')}, {value: 'HELP', label: t('post.HELP')}];
+  const studyOptions = [{value: 'LANGUAGE', label: t('post.LANGUAGE')},{value: 'HOBBY', label: t('post.HOBBY')}]
 
   const [preset, setPreset] = useState(type);
 
@@ -40,12 +40,12 @@ export const Post = () => {
   useEffect(()=>{
     if(type ==='study'){
       setPreset('study');
-      setContent(t('Post.studyRecruitmentExample'));
+      setContent(t('post.studyRecruitmentExample'));
       setInputs(inputs =>({
         ...inputs,
         category: studyOptions[0].value,
       }));
-      setPostType(t('Post.createStudy'));
+      setPostType(t('post.createStudy'));
     }
     else{
       setPreset('post');
@@ -54,7 +54,7 @@ export const Post = () => {
         ...inputs,
         category: postOptions[0].value,
       }));
-      setPostType(t('Post.createPost'));
+      setPostType(t('post.createPost'));
     }
     handleTagChange(null);
   },[type, t])
@@ -148,8 +148,8 @@ export const Post = () => {
         <div>
           {/* <button onClick={() => handlePresetChange("post")} className={preset === "post" ? styles.active : ""}>게시글</button>
           <button onClick={() => handlePresetChange("study")} className={preset === "study" ? styles.active : ""}>스터디</button>   */}
-          <Button onClick={() => navigate("/post/new?type=post")} type={type==="post" ? 'primary' : 'default'}>{t('Post.postButton')}</Button>
-          <Button onClick={() => navigate("/post/new?type=study")} type={type==="study" ? 'primary' : 'default'} >{t('Post.studyButton')}</Button>
+          <Button onClick={() => navigate("/post/new?type=post")} type={type==="post" ? 'primary' : 'default'}>{t('post.postButton')}</Button>
+          <Button onClick={() => navigate("/post/new?type=study")} type={type==="study" ? 'primary' : 'default'} >{t('post.studyButton')}</Button>
           {/* <button onClick={() => navigate("/post/new?type=post")} className={preset === "post" ? styles.active : ""}>게시글</button>
           <button onClick={() => navigate("/post/new?type=study")} className={preset === "study" ? styles.active : ""}>스터디</button>   */}
         </div>
@@ -160,18 +160,18 @@ export const Post = () => {
         <div className={styles.left}>
           <div className={styles.title}>
             <label htmlFor="title">
-              <span>{t('Post.title')}</span>
+              <span>{t('post.title')}</span>
             </label>
             <div className={styles.title_box}>
-              <input type="text" name='title' id='title' value={title} onChange={onChange} placeholder={t('Post.titlePlaceholder')} className={styles.title_input}/>
+              <input type="text" name='title' id='title' value={title} onChange={onChange} placeholder={t('post.titlePlaceholder')} className={styles.title_input}/>
             </div>
             
           </div>
           <div className={styles.content_body}>
-            <span>{t('Post.content')}</span>
+            <span>{t('post.content')}</span>
             <ReactQuill
               style={{ width: "800px", height: "500px" }}
-              placeholder={t('Post.contentPlaceholder')}
+              placeholder={t('post.contentPlaceholder')}
               theme="snow"
               ref={quillRef}
               value={content}
@@ -183,7 +183,7 @@ export const Post = () => {
 
         <div className={styles.right}>
           <div className={styles.category}>
-            <label htmlFor="category"><span>{t('Post.categoryLabel')}</span></label>
+            <label htmlFor="category"><span>{t('post.categoryLabel')}</span></label>
             <Select          
                 value={category}
                 onChange={handleCategoryChange}
@@ -194,7 +194,7 @@ export const Post = () => {
               />
           </div>
           <div className={styles.tags}>
-            <label htmlFor="tags"><span>{t('Post.tagsLabel')}</span></label>
+            <label htmlFor="tags"><span>{t('post.tagsLabel')}</span></label>
             <Select
               mode="tags"              
               placeholder="Please select"
@@ -207,8 +207,8 @@ export const Post = () => {
             />
           </div>
           <div className={styles.btns}>
-            <Button className={styles.btn} onClick={handleCancel}>{t('Post.cancelButton')}</Button>
-            <Button type="primary" onClick={handleSubmit} className={styles.btn} disabled={!title || !content || content==="<p><br></p>"}>{t('Post.submitButton')}</Button>
+            <Button className={styles.btn} onClick={handleCancel}>{t('post.cancelButton')}</Button>
+            <Button type="primary" onClick={handleSubmit} className={styles.btn} disabled={!title || !content || content==="<p><br></p>"}>{t('post.submitButton')}</Button>
           </div>
         </div>
       </div>

@@ -163,13 +163,13 @@ const Comments = ({board_id}) => {
                         setContent(e.target.value)
                     }}
                     value={content}
-                    multiline placeholder={t('Comments.Placeholder')}
+                    multiline placeholder={t('comments.Placeholder')}
                 />
                 {content !== "" ? (
-                    <button onClick={submitComment}>{t('Comments.SubmitButton')}</button>
+                    <button onClick={submitComment}>{t('comments.SubmitButton')}</button>
                 ) : (
                     <button disabled={true}>
-                        {t('Comments.SubmitButton')}
+                        {t('comments.SubmitButton')}
                     </button>
                 )}
             </div>

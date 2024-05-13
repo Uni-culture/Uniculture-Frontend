@@ -26,9 +26,9 @@ const Sidebar = () => {
             <span className="fs-4" onClick={goBack}>←</span>
             <hr />
             <ul className="nav nav-pills flex-column mb-auto">
-                <NavItem to="/account/edit" text={t('Sidebar.editProfile')} />
-                <NavItem to="/account/personal-info" text={t('Sidebar.personalInfo')} />
-                <NavItem to="/account/delete" text={t('Sidebar.deleteAccount')} />
+                <NavItem to="/account/edit" text={t('sidebar.editProfile')} />
+                <NavItem to="/account/personal-info" text={t('sidebar.personalInfo')} />
+                <NavItem to="/account/delete" text={t('sidebar.deleteAccount')} />
             </ul>
         </div>
     );

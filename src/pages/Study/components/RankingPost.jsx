@@ -32,7 +32,7 @@ export const RankingPost = () => {
 
   return (
     <div className={styles.container}>
-      <h4 className={styles.header}>{t('RankingPost.weeklyPopularPosts')}</h4>
+      <h4 className={styles.header}>{t('rankingPost.weeklyPopularPosts')}</h4>
         <ul className={styles.ul}>
           {data.map((i)=>(
             <li className={styles.list} onClick={() => navigate(`/board/${i.postId}`)} key={i.postId}>

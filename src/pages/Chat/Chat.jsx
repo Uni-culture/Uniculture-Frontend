@@ -123,7 +123,7 @@ const Chat = () => {
             <Header />
             <div className={styles.page_layout}>
                 <aside className={styles.aside}>
-                    <div className={styles.asideTitle}> <h3>{t('Chat.chat')}</h3> <div onClick={handleCreateChatModal}><LuMessageSquarePlus size={25}/></div></div>
+                    <div className={styles.asideTitle}> <h3>{t('chat.chat')}</h3> <div onClick={handleCreateChatModal}><LuMessageSquarePlus size={25}/></div></div>
                     {userInfo ? (<ChatList onSelectedChatRoom={handleSelectChatRoom} user={userInfo}/>) : (<div>Loading</div>)}
                     
                 </aside>
@@ -131,9 +131,9 @@ const Chat = () => {
                     {selectedChatRoom== null ? (
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                             <BiMessageRoundedDots size={100}/>
-                            <span style={{fontSize: "20px", padding: "5px 0px"}}>{t('Chat.myMessages')}</span>
-                            <span style={{fontSize: "14px", padding: "5px 0px 10px 0px", color: "#737373"}}>{t('Chat.PrivateMessages')}</span>
-                            <button className= {styles.chatmainB} onClick={handleCreateChatModal}>{t('Chat.sendMessage')}</button>
+                            <span style={{fontSize: "20px", padding: "5px 0px"}}>{t('chat.myMessages')}</span>
+                            <span style={{fontSize: "14px", padding: "5px 0px 10px 0px", color: "#737373"}}>{t('chat.PrivateMessages')}</span>
+                            <button className= {styles.chatmainB} onClick={handleCreateChatModal}>{t('chat.sendMessage')}</button>
                         </div>
                     ): userInfo ? (
                         <ChatMain selectedChatRoom={selectedChatRoom} userInfo={userInfo}/>

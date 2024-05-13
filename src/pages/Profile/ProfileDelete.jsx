@@ -91,11 +91,11 @@ const ProfileDelete = () => {
                     <Sidebar />
                     <div className="col-md-9 ms-sm-auto col-lg-10 px-md-4" style={{ overflowY: "auto" }}>
                         <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h4 className="h4">{t('ProfileDelete.accountDeletion')}</h4>
+                            <h4 className="h4">{t('profileDelete.accountDeletion')}</h4>
                         </div>
                         <div className="mb-3 row" style={{ textAlign: "center" }}>
                             {/* 탈퇴하기 버튼에 모달 열기 함수 연결 */}
-                            <button type="button" className="btn btn-primary btn-sm" style={{ width: "100px" }} onClick={handleModal}>{t('ProfileDelete.accountDeletion')}</button>
+                            <button type="button" className="btn btn-primary btn-sm" style={{ width: "100px" }} onClick={handleModal}>{t('profileDelete.accountDeletion')}</button>
                         </div>
                     </div>
                 </div>
@@ -107,24 +107,24 @@ const ProfileDelete = () => {
                     <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalLabel">{t('ProfileDelete.deleteAccount')}</h5>
+                                <h5 className="modal-title" id="exampleModalLabel">{t('profileDelete.deleteAccount')}</h5>
                             </div>
                             <div className="modal-body">
-                                {t('ProfileDelete.modalBody')}
-                                <div style={{textAlign:"center", marginTop:"20px"}}><input placeholder={t('ProfileDelete.modalInputPlaceholder')} onChange={(e)=>{setDeleteInput(e.target.value)}}/></div>
+                                {t('profileDelete.modalBody')}
+                                <div style={{textAlign:"center", marginTop:"20px"}}><input placeholder={t('profileDelete.modalInputPlaceholder')} onChange={(e)=>{setDeleteInput(e.target.value)}}/></div>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={handleModal}>{t('ProfileDelete.closeButton')}</button>
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={handleModal}>{t('profileDelete.closeButton')}</button>
                                 <button type="button" className="btn btn-primary" 
                                     onClick={()=>{
                                         if(deleteInput==="탈퇴하기"){
                                             deleteUser();
                                         }
                                         else {
-                                            alert(t('ProfileDelete.deleteInputAlert'));
+                                            alert(t('profileDelete.deleteInputAlert'));
                                         }
                                     }}
-                                >{t('ProfileDelete.deleteButton')}</button>
+                                >{t('profileDelete.deleteButton')}</button>
                             </div>
                         </div>
                     </div>

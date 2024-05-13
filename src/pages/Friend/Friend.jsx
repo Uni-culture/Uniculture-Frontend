@@ -251,9 +251,9 @@ export default function Friend() {
                         ) : (
                             <div>
                                 {selectGender === 'ge' && selectMina ==='0' && selectMaxa === '100' && selectCL === "cl" && selectWL === "wl" && selectHb === "hb" ? (
-                                    <p>{t('Friend.addFriendsPrompt')}</p>
+                                    <p>{t('friend.addFriendsPrompt')}</p>
                                 ) : (
-                                    <p>{t('Friend.noResults')}</p>
+                                    <p>{t('friend.noResults')}</p>
                                 )}
                             </div>
                         )}
@@ -274,8 +274,8 @@ export default function Friend() {
                                     </div>
                                 ) : (
                                     <div>
-                                        <p>{t('Friend.noRecommendedFriends')}</p>
-                                        <p>{t('Friend.moreInputPrompt')}</p>
+                                        <p>{t('friend.noRecommendedFriends')}</p>
+                                        <p>{t('friend.moreInputPrompt')}</p>
                                     </div>
                                 )}
                             </>
@@ -538,13 +538,13 @@ export default function Friend() {
                                 className="nav-item"
                                 style={{ width:"65px", fontWeight: activeTab === 'myFriends' ? 'bold' : 'normal', marginRight: "20px"}}
                                 onClick={() => {setActiveTab('myFriends'); resetFilter("false");}}>
-                                {t('Friend.내 친구')}
+                                {t('friend.내 친구')}
                             </li>
                             <li 
                                 className="nav-item"
                                 style={{ width:"70px", fontWeight: activeTab === 'recommend' ? 'bold' : 'normal' }}
                                 onClick={() => {setActiveTab('recommend'); setSearchInput(null); resetFilter("false"); recommendFriendCount();}}>
-                                {t('Friend.추천 친구')}
+                                {t('friend.추천 친구')}
                             </li>
                         </ul>
                     </div>
