@@ -6,6 +6,7 @@ import "./comments.scss";
 import Swal from "sweetalert2";
 import "./replyInput.scss";
 import Comment from "./Comment";
+import {useTranslation} from "react-i18next";
 
 const Comments = ({board_id}) => {
     const location = useLocation();
@@ -14,6 +15,7 @@ const Comments = ({board_id}) => {
     const [content, setContent] = useState(""); // 입력한 댓글 내용
     const [page, setPage] = useState(0); // 현재 페이지
     const [pageCount, setPageCount] = useState(0); // 총 페이지 갯수
+    const { t } = useTranslation();
 
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 로컬 스토리지에서 토큰 가져옴
@@ -161,19 +163,16 @@ const Comments = ({board_id}) => {
                         setContent(e.target.value)
                     }}
                     value={content}
-                    multiline placeholder="댓글을 입력해주세요"
+                    multiline placeholder={t('comments.Placeholder')}
                 />
                 {content !== "" ? (
-                    <button onClick={submitComment}>등록하기</button>
+                    <button onClick={submitComment}>{t('comments.SubmitButton')}</button>
                 ) : (
                     <button disabled={true}>
-                        등록하기
+                        {t('comments.SubmitButton')}
                     </button>
                 )}
             </div>
-            {/*<div className="commentsTranslateBtnWrap">
-                <button className="commentsTranslateBtn">댓글 번역</button>
-            </div>*/}
             <div className="comments-body">
                 {commentList.map((item, index) => (
                     <Comment key={index} board_id={board_id} comment={item} getCommentList={getCommentList} updateTotalCommentsAndPage={updateTotalCommentsAndPage}/>
