@@ -260,6 +260,8 @@ const Header = () => {
             title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
             confirmButtonColor: "#8BC765",
             confirmButtonText: t('loginWarning.confirmButton'),
+        }).then(() => {
+            navigate("/sign-in", {state: {from: location.pathname}});
         });
     };
 
@@ -286,8 +288,6 @@ const Header = () => {
             else if(to==='/translate') navigate(to); // 로그인x 번역페이지 이동
             else{
                 LoginWarning();
-                navigate("/sign-in", {state: {from: location.pathname}}); // 현재 경로를 저장하고 로그인 페이지로 이동
-        
             }    
         }
     };
@@ -304,7 +304,6 @@ const Header = () => {
         }
         else {
             LoginWarning();
-            navigate("/sign-in");
         }
     }
 
@@ -359,7 +358,15 @@ const Header = () => {
     ];
 
     return (
-        <nav className={`navbar navbar-expand-lg`} style={{ backgroundColor: '#C8DCA0' }}>
+        <nav className={`navbar navbar-expand-lg`} 
+            style={{ 
+                // backgroundColor: '#C8DCA0',
+                padding: "15px 0px", 
+                // padding: "15px 0px" ,
+                backgroundColor: "rgb(251 251 243)",
+                borderBottom: "1px solid #d0d0d0",
+                boxShadow: "rgb(0 0 0 / 15%) 0px 0px 5px"
+            }}>
             <div className="container-fluid" style={{paddingLeft: "80px", paddingRight: "70px"}}>
                 <div className="d-flex align-items-center">
                     <div className={`navbar-brand ${activePage("/")}`} style={{ fontFamily: "SuezOne", cursor: "pointer"}} onClick={() => handleNavigation("/")}>

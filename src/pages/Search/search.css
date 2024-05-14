@@ -8,7 +8,7 @@
     display: flex;
     justify-content: space-between; /* 내부 요소들을 양 끝으로 정렬 */
     align-items: center; /* 내부 요소들을 수직 중앙 정렬 */
-    margin-top: 3.0rem;
+    /* margin-top: 3.0rem; */
 }
 
 .searchWrap {
