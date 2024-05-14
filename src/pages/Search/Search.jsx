@@ -10,6 +10,7 @@ import axios from "axios";
 import { SearchCard } from "../../components/SearchCard/SearchCard";
 import moment from "moment";
 import SearchUserCard from '../../components/SearchCard/SearchUserCard';
+import Layout from "../../components/Layout";
 
 const Search = () => {
     const navigate = useNavigate();
@@ -377,9 +378,8 @@ const Search = () => {
     }
     
     return (
-        <div style={{ backgroundColor: '#FBFBF3', minHeight: '100vh' }}>
-            <Header />
-            <IoArrowBack style={{ fontSize: '25px', marginTop: '20px', marginLeft: '20px'}} onClick={goBackToPreviousPath}/>
+        <Layout>
+            <IoArrowBack style={{ fontSize: '25px', marginTop: '20px' }} onClick={goBackToPreviousPath}/>
             <div className="search-layout">
                 <div className="search-container">
                     <div className="searchWrap">
@@ -427,7 +427,7 @@ const Search = () => {
                 
                 {renderContent()}
             </div>
-        </div>
+        </Layout>
     );
 };
 
