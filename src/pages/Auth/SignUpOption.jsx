@@ -17,12 +17,7 @@ const SignUpOption = () => {
     const [selectedIntTags, setSelectedIntTags] = useState([]);
     // 관심사 태그 선택 개수가 10개를 초과하는지 확인하는 상태
     const [isOverSelectedIntTags, setIsOverSelectedIntTags] = useState(false);
-    // 국적 상태 설정
-    const [nationality, setNationality] = useState("");
-    const handleNationalityChange = (e) => {
-        setNationality(e.target.value);
-        console.log("nationality: ", nationality);
-    };
+
     const [isModalOpened1, setIsModalOpened1] = useState(false); //사용 언어 추가 모달창
     const [isModalOpened2, setIsModalOpened2] = useState(false); //학습 언어 추가 모달창
     const [usedLanguages, setUsedLanguages] = useState({});
@@ -41,7 +36,6 @@ const SignUpOption = () => {
         selectedIntTags.length >= 3 &&
         selectedIntTags.length <= 10 &&
         finalPurpose !== "" &&
-        nationality !== "" &&
         Object.keys(usedLanguages).length > 0 && // 사용 언어가 선택되었는지 확인
         Object.keys(learningLanguages).length > 0; // 학습 언어가 선택되었는지 확인
 
@@ -157,7 +151,6 @@ const SignUpOption = () => {
                 id: id,
                 purpose: selectedPurTags, // 가입 목적 태그
                 mainPurpose: finalPurpose, // 주 목적 태그
-                country: nationality, // 국적
                 myHobbyList: selectedIntTags, // 관심사 태그
                 canLanguages: usedLanguages, // 할 수 있는 언어
                 wantLanguage: learningLanguages // 배우고 싶은 언어
@@ -256,14 +249,6 @@ const SignUpOption = () => {
                         </div>
                     )}
                 </div>
-
-                <div className="setup-subTitle">{t('signUpOption.nationality')}</div>
-                <select className="box" id="birth-year" onChange={handleNationalityChange} defaultValue="">
-                    <option value="" disabled>{t('signUpOption.selectNationality')}</option>
-                    <option value="Korea">Republic of Korea</option>
-                    <option value="China">People's Republic of China</option>
-                    <option value="Japan">Japan</option>
-                </select>
 
                 {/*사용 언어*/}
                 <div className="setup-subTitle-container">

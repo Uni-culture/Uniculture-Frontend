@@ -26,6 +26,7 @@ const SignUp = () => {
     const [isTooLong, setIsTooLong] = useState(false); // 닉네임 길이 초과 상태
     const [notAllow, setNotAllow] = useState(true);
     const [gender, setGender] = useState('');
+    const [nationality, setNationality] = useState(""); // 국적 상태 설정
 
     const [isYearOptionExisted, setIsYearOptionExisted] = useState(false);
     const [isMonthOptionExisted, setIsMonthOptionExisted] = useState(false);
@@ -60,6 +61,11 @@ const SignUp = () => {
         if (daySelect) daySelect.selectedIndex = 0;
     }
 
+    const handleNationalityChange = (e) => {
+        setNationality(e.target.value);
+        console.log("nationality: ", nationality);
+    };
+
     const emailResetInput = () => { // 이메일만 초기화
         setEmail('');
         setEmailValid(false);
@@ -72,6 +78,7 @@ const SignUp = () => {
             password: pw,
             nickname: nickName,
             gender: gender,
+            country: nationality,
             year: selectedYear,
             month: selectedMonth,
             day: selectedDay,
@@ -279,14 +286,13 @@ const SignUp = () => {
     };
 
     useEffect(() => {
-        if(emailValid && pwValid && nickNameValid && gender && selectedYear && selectedMonth && selectedDay) {
+        if(emailValid && pwValid && nickNameValid && gender && nationality && selectedYear && selectedMonth && selectedDay) {
             setNotAllow(false); // 버튼 비활성화 해제
             return;
         }
         setNotAllow(true); // 기본적인 상황: 비활성화
 
-
-    }, [emailValid, pwValid, nickNameValid, gender, selectedYear, selectedMonth, selectedDay]); // 이메일, 비밀번호 등 state 값이 변경될 때마다 useEffect 실행
+    }, [emailValid, pwValid, nickNameValid, gender, nationality, selectedYear, selectedMonth, selectedDay]); // 이메일, 비밀번호 등 state 값이 변경될 때마다 useEffect 실행
 
     //나이 계산
     useEffect(()=> {
@@ -401,7 +407,14 @@ const SignUp = () => {
                     />
                     <span className="radio-text">{t('signUp.female')}</span>
                 </label>
-                <div>{gender}</div>
+
+                <div className="inputTitle">{t('signUpOption.nationality')}</div>
+                <select className="box" id="birth-year" onChange={handleNationalityChange} defaultValue="">
+                    <option value="" disabled>{t('signUpOption.selectNationality')}</option>
+                    <option value="Korea">Republic of Korea</option>
+                    <option value="China">People's Republic of China</option>
+                    <option value="Japan">Japan</option>
+                </select>
 
                 <div className="inputTitle">{t('signUp.birthdateTitle')}</div>
                 <div className="info" id="info__birth">
