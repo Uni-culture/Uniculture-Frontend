@@ -260,6 +260,8 @@ const Header = () => {
             title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
             confirmButtonColor: "#8BC765",
             confirmButtonText: t('loginWarning.confirmButton'),
+        }).then(() => {
+            navigate("/sign-in", {state: {from: location.pathname}});
         });
     };
 
@@ -286,8 +288,6 @@ const Header = () => {
             else if(to==='/translate') navigate(to); // 로그인x 번역페이지 이동
             else{
                 LoginWarning();
-                navigate("/sign-in", {state: {from: location.pathname}}); // 현재 경로를 저장하고 로그인 페이지로 이동
-        
             }    
         }
     };
@@ -304,7 +304,6 @@ const Header = () => {
         }
         else {
             LoginWarning();
-            navigate("/sign-in");
         }
     }
 
