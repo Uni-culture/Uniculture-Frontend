@@ -196,9 +196,29 @@ useEffect(() => {
       <div className={styles.background}>
         <div className={styles.body_content}>
           <div className={styles.menu}>
-            <button className={status==='전체' ? styles.statusbtn_selected : styles.statusbtn} onClick={handleMenuClick('전체')}>{t('study.전체')}</button>
+            {/* <button className={status==='전체' ? styles.statusbtn_selected : styles.statusbtn} onClick={handleMenuClick('전체')}>{t('study.전체')}</button>
             <button className={status==='모집중' ? styles.statusbtn_selected : styles.statusbtn} onClick={handleMenuClick('모집중')}>{t('study.모집중')}</button>
-            <button className={status==='모집완료' ? styles.statusbtn_selected : styles.statusbtn} onClick={handleMenuClick('모집완료')}>{t('study.모집완료')}</button>
+            <button className={status==='모집완료' ? styles.statusbtn_selected : styles.statusbtn} onClick={handleMenuClick('모집완료')}>{t('study.모집완료')}</button> */}
+            <ul className="nav nav-underline nav-tab">
+              <li className="nav-item">
+                  <button className={`nav-link ${status==='전체' ? 'active' : ''}`} style={{color: "black"}}
+                    onClick={handleMenuClick('전체')}>
+                    {t('study.전체')}
+                  </button>
+              </li>
+              <li className="nav-item">
+                  <button className={`nav-link ${status==='모집중' ? 'active' : ''}`} style={{color: "black"}}
+                    onClick={handleMenuClick('모집중')}>
+                    {t('study.모집중')}
+                  </button>
+              </li>
+              <li className="nav-item">
+                  <button className={`nav-link ${status==='모집완료' ? 'active' : ''}`} style={{color: "black"}}
+                    onClick={handleMenuClick('모집완료')}>
+                      {t('study.모집완료')}
+                  </button>
+              </li>
+            </ul>   
           </div>
           <div>
           <div className="search-container">
