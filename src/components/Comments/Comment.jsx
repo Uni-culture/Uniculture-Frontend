@@ -220,6 +220,27 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
         }));
     };
 
+    // 바깥 클릭을 감지하기 위한 함수
+    useEffect(() => {
+        const handleOutsideClick = (event) => {
+        if (!event.target.closest('.replyComment-options') && !event.target.closest('.HiOutlineDotsVertical')) {
+            setReplyMenuVisible({}); 
+        } 
+        if(!event.target.closest('.comment-options') && !event.target.closest('.HiOutlineDotsVertical')){
+            setCommentMenuVisible(false);
+        }
+        };
+
+        // 문서 전체에 이벤트 리스너를 추가
+        document.addEventListener('mousedown', handleOutsideClick);
+
+        return () => {
+        // 컴포넌트가 언마운트될 때 이벤트 리스너를 제거
+        document.removeEventListener('mousedown', handleOutsideClick);
+        };
+    }, []);
+
+
     return (
         <div style={{ width: '100%' }}>
             <div className="comments-comment">
@@ -295,7 +316,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                                                 <div className="postMine-style">{t('comments.Author')}</div>
                                             )}
                                         </div>
-                                        <HiOutlineDotsVertical className="HiOutlineDotsVertical" onClick={() => toggleReplyMenu(child.id)} />
+                                        <HiOutlineDotsVertical className="HiOutlineDotsVertical" onClick={() => {toggleReplyMenu(child.id); console.log(this)}} />
                                         {replyMenuVisible[child.id] && (
                                             <div className="replyComment-options">
                                                 <button className="option-button" onClick={() => replyEdit(child.id, child.content)}>{t('comments.Edit')}</button>
