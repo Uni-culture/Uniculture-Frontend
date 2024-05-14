@@ -45,7 +45,7 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
         loadChatHistory();
 
         const clientdata = new StompJs.Client({
-            brokerURL: "ws://localhost:8080/ws",          //웹소켓 주소.
+            brokerURL: "ws://54.180.29.40:8080/ws",          //웹소켓 주소.
             debug: function (str) {
                 console.log('STOMP' + str);
             },

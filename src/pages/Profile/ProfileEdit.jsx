@@ -162,11 +162,21 @@ const ProfileEdit = () => {
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         const reader = new FileReader();
+        const formData = new FormData();
 
         reader.readAsDataURL(file);
         reader.onloadend = () => {
             setProfileImg(reader.result);
+            const token = getToken();
+            formData.append('profileImg', file)
             event.target.value = ''; //같은 파일 올릴 수 있도록 초기화 해줌
+
+            axios.patch('/api/auth/member/editProfileImage', formData, {
+                headers:{
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
         };
     };
 
