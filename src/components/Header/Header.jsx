@@ -358,7 +358,15 @@ const Header = () => {
     ];
 
     return (
-        <nav className={`navbar navbar-expand-lg`} style={{ backgroundColor: '#C8DCA0' }}>
+        <nav className={`navbar navbar-expand-lg`} 
+            style={{ 
+                // backgroundColor: '#C8DCA0',
+                padding: "15px 0px", 
+                // padding: "15px 0px" ,
+                backgroundColor: "rgb(251 251 243)",
+                borderBottom: "1px solid #d0d0d0",
+                boxShadow: "rgb(0 0 0 / 15%) 0px 0px 5px"
+            }}>
             <div className="container-fluid" style={{paddingLeft: "80px", paddingRight: "70px"}}>
                 <div className="d-flex align-items-center">
                     <div className={`navbar-brand ${activePage("/")}`} style={{ fontFamily: "SuezOne", cursor: "pointer"}} onClick={() => handleNavigation("/")}>
