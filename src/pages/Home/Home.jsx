@@ -8,6 +8,7 @@ import HelpBoardList from "../BoardList/HelpBoardList";
 import FriendBoardList from "../BoardList/FriendBoardList";
 import { Select, Space } from 'antd';
 import {useTranslation} from "react-i18next";
+import ImgSlider from "./ImgSlider";
 
 const Home = () => {
     const navigate = useNavigate();
@@ -59,6 +60,7 @@ const Home = () => {
     return (
         <div className="home-layout">
             <Header />
+            <ImgSlider />
             <div className="home-nav-layout">
                 <div className="navbar">
                     <span>
