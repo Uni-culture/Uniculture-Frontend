@@ -12,13 +12,15 @@ const SignUp = () => {
     const location = useLocation();
     const [email, setEmail] = useState('');
     const [emailNum, setEmailNum] = useState('');
+    const [emailAuth, setEmailAuth] = useState(false);
     const [pw, setPw] = useState('');
     const [pw2, setPw2] = useState('');
     const [nickName, setNickName] = useState('');
 
     const [emailValid, setEmailValid] = useState(false);
+    const [emailAuthValid, setEmailAuthValid] = useState(false);
+    const [isAuthSuccess, setIsAuthSuccess] = useState(false); // 인증 성공 상태 관리
     const [pwValid, setPwValid] = useState(false);
-    const [emailAuth, setEmailAuth] = useState(false);
     const [showPassword, setShowPassword] = useState(false); // 비밀번호를 텍스트 형태로 보여줄지 여부 결정
     const [showPassword2, setShowPassword2] = useState(false); // 비밀번호2를 텍스트 형태로 보여줄지 여부 결정
     const [passwordsMatch, setPasswordsMatch] = useState(true);
@@ -138,6 +140,7 @@ const SignUp = () => {
 
     const emailAuthFun = async (e) => {
         console.log("이메일 인증을 시작합니다");
+        setEmailAuthValid(true);
         try {
             const request_data = {
                 email: email
@@ -162,12 +165,15 @@ const SignUp = () => {
         // emailNum과 emailAuth를 비교하여 일치할 경우에만 인증에 성공하였다는 메시지를 표시
         if (emailNum === emailAuth) {
             alert('인증에 성공하였습니다.');
+            setIsAuthSuccess(true);
             // 여기에 인증에 성공한 후의 추가 동작을 넣으시면 됩니다.
         } else {
             alert('인증에 실패하였습니다.');
+            setIsAuthSuccess(false);
             // 여기에 인증에 실패한 경우의 처리를 넣으시면 됩니다.
         }
     };
+
     // 닉네임 중복 검사
     const handleNickName = async (e) => {
         console.log(`handleNickName: ${nickName}`);
@@ -224,7 +230,7 @@ const SignUp = () => {
         setEmail(e.target.value);
         console.log(email);
         const regex =
-            /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+            /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@hansung\.ac\.kr$/i;
         if (regex.test(e.target.value)) {
             setEmailValid(true);
         } else {
@@ -344,22 +350,27 @@ const SignUp = () => {
                 <div className="sub-title">{t('signUp.subTitle')}</div>
 
                 <div className="inputTitle">{t('signUp.email')}</div>
-                <div className="inputWrap" style={{padding: '12px 17px'}}>
-                    <input className="input" type="email" placeholder="test@example.com" value={email} onChange={handleEmail} onKeyDown={handleKeyDown} style={{marginTop: '9px'}}/>
-                    <button className='nickNameButton' onClick={emailAuthFun} style={{width: '80px'}}>{t('signUp.requestAuth')}</button>
+                <div className="inputWrap" style={{padding: '11px 13px 11px 17px'}}>
+                    <input className="input" type="email" placeholder="email@hansung.ac.kr" value={email} onChange={handleEmail} onKeyDown={handleKeyDown} style={{marginTop: '9px'}}/>
+                    <button className='nickNameButton' onClick={emailAuthFun} disabled={!emailValid} style={{width: '80px'}}>{t('signUp.requestAuth')}</button>
                 </div>
                 <div className="errorMessageWrap">
                     {!emailValid && email.length > 0 && (
                         <div>{t('signUp.emailError')}</div>
                     )}
                 </div>
-
-                {emailAuth && (
-                    <div className="inputWrap" style={{padding: '10px'}}>
-                        <input className="input" type="text" placeholder={t('signUp.enterAuthCode')} style={{width: '80%', marginTop: '9px'}} value={emailNum} onChange={(e) => setEmailNum(e.target.value)} />
-                        <button className='nickNameButton' onClick={emailAuthFun2}>{t('signUp.confirmAuth')}</button>
+                {emailAuthValid && (
+                    <div className="inputWrap" style={{padding: '11px 13px 11px 17px', marginTop: '10px'}}>
+                        <input className="input" type="text" placeholder={t('signUp.enterAuthCode')} style={{marginTop: '9px'}} value={emailNum} onChange={(e) => setEmailNum(e.target.value)} />
+                        <button className='nickNameButton' onClick={emailAuthFun2} disabled={emailNum.length !== 6} style={{width: '80px'}}>{t('signUp.confirmAuth')}</button>
                     </div>
                 )}
+                <div className="nickNameMessageWrap">
+                    {isAuthSuccess && (
+                        <div>인증에 성공하였습니다.</div>
+                    )}
+                </div>
+
                 <div className="inputTitle">{t('signUp.password')}</div>
                 <div className="inputWrap">
                     <input className="input" type={showPassword ? "text" : "password"} placeholder={t('signUp.passwordPlaceholder')} value={pw} onChange={handlePw} onKeyDown={handleKeyDown}/>
@@ -452,7 +463,7 @@ const SignUp = () => {
                 <div><div> 나이: {age}세</div></div>*/}
 
                 <div className="inputTitle">{t('signUp.nicknameTitle')}</div>
-                <div className="inputWrap" style={{padding: '11px 17px'}}>
+                <div className="inputWrap" style={{padding: '11px 13px 11px 17px'}}>
                     <input className="input" type="text" placeholder={t('signUp.nicknamePlaceholder')} style={{width: '80%', marginTop: '9px'}} value={nickName} onChange={changeNickName} onKeyDown={handleKeyDown}/>
                     <button className='nickNameButton' onClick={handleNickName}>{t('signUp.nicknameButton')}</button>
                 </div>

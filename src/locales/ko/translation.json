@@ -45,7 +45,7 @@
     "subTitle": "나의 성장을 돕는 언어교류 플랫폼",
     "email": "이메일",
     "requestAuth": "인증요청",
-    "emailError": "이메일 형식이 올바르지 않습니다.",
+    "emailError": "이메일 주소는 @hansung.ac.kr로 끝나야 합니다.",
     "enterAuthCode": "인증번호를 입력해주세요",
     "confirmAuth": "인증확인",
     "password": "비밀번호",

@@ -46,7 +46,7 @@
     "subTitle": "A language exchange platform to support your growth",
     "email": "Email",
     "requestAuth": "Req Auth",
-    "emailError": "Invalid email format.",
+    "emailError": "The email address must end with @hansung.ac.kr.",
     "enterAuthCode": "Please enter the authentication code",
     "confirmAuth": "Conf Auth",
     "password": "Password",
