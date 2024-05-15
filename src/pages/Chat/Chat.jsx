@@ -92,9 +92,7 @@ const Chat = () => {
                 return;
             }
 
-            const response = await axios.post('/api/auth/room', {
-                memberId: userInfo[0].id
-            },  {
+            const response = await axios.get(`/api/auth/room/duo?toId=${userInfo[0].id}`,{
                 headers: {
                     Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                 }

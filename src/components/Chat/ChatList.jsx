@@ -33,7 +33,7 @@ const ChatList = ({onSelectedChatRoom, user}) => {
         updatedRooms = [...prev];
         updatedRooms[roomIndex] = {
           ...updatedRooms[roomIndex],
-          latestMessage: receivedMessage.message,
+          latestMessage : receivedMessage.messageType === "TALK" ? receivedMessage.message : '[수정됨]',
           latestMessageTime: receivedMessage.createdDate,
           unreadCount: receivedMessage.roomId.toString() === chatId? 0: prev[roomIndex].unreadCount+1,
         };
@@ -83,7 +83,8 @@ const ChatList = ({onSelectedChatRoom, user}) => {
       fetchChatRooms();
 
       const clientdata = new StompJs.Client({
-        brokerURL:"ws://54.180.29.40:8080/ws",
+        brokerURL:"ws://localhost:8080/ws",
+        //brokerURL:"ws://54.180.29.40:8080/ws",
         debug: function (str) {
           console.log('STOMP' + str);
         },
