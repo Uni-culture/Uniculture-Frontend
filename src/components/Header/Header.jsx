@@ -370,8 +370,8 @@ const Header = () => {
             <div className="container-fluid" style={{paddingLeft: "80px", paddingRight: "70px"}}>
                 <div className="d-flex align-items-center">
                     <div className={`navbar-brand ${activePage("/")}`} style={{ fontFamily: "SuezOne", cursor: "pointer"}} onClick={() => handleNavigation("/")}>
-                        <img src={logoImg} alt="Logo" width="30" height="24" className="d-inline-block align-text-top"/>
-                        UniCulture
+                        <img src="/LogoHeart.png" alt="Logo" width="35" height="30" className="d-inline-block align-text-top"/>
+                        <span style={{color:"#06AB62"}}>&nbsp;&nbsp;UniCulture</span>
                     </div>
                 </div>
                 <div className={`ms-auto order-lg-last`}>
@@ -393,18 +393,18 @@ const Header = () => {
                     </Badge>
                 </div>
                 {isLogin ? (
-                    <button className={`btn nav-link order-lg-last`} onClick={removeToken} style={{ backgroundColor: "#B3C693", padding: "5px 15px", marginRight: "10px"}}>
+                    <button className={`btn nav-link order-lg-last`} onClick={removeToken} style={{ backgroundColor: "#00b943",color:"white",fontWeight:"bold", padding: "5px 15px", marginRight: "10px"}}>
                         {t(`header.로그아웃`)}
                     </button>
                 ) : (
                     <>
                         <div className={`order-lg-last`}>
-                            <button className={`btn nav-link`} style={{ backgroundColor: "#B3C693", padding: "5px 15px", marginRight: "10px" }} onClick={handleSignIn}>
+                            <button className={`btn nav-link`} style={{ backgroundColor: "#00b943", color:"white",fontWeight:"bold",padding: "5px 15px", marginRight: "10px" }} onClick={handleSignIn}>
                                 {t(`header.로그인`)}
                             </button>
                         </div>
                         <div className={`order-lg-last`}>
-                            <button className={`btn nav-link`} style={{ backgroundColor: "#B3C693", padding: "5px 15px", marginRight: "10px" }} onClick={handleSignUp}>
+                            <button className={`btn nav-link`} style={{ backgroundColor: "#00b943",color:"white",fontWeight:"bold", padding: "5px 15px", marginRight: "10px" }} onClick={handleSignUp}>
                                 {t(`header.회원가입`)}
                             </button>
                         </div>
