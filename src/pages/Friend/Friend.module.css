@@ -57,14 +57,6 @@
     gap: 40px;
 } */
 
-.recommend {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    grid-row-gap: 20px;
-    justify-content: center;
-    gap: 30px;
-    justify-items: center;
-}
 /* 
 @media (min-width: 370px) {
     .myfriends { 
@@ -83,16 +75,3 @@
         grid-template-columns: repeat(3, 1fr);
     }
 } */
-
-.vibration {
-    animation: vibration .1000ms infinite;
-}
-
-@keyframes vibration {
-    from {  
-        transform: rotate(1deg);
-    }
-    to {
-        transform: rotate(-1deg);
-    }
-}

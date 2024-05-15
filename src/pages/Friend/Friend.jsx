@@ -8,26 +8,20 @@ import { Badge, Input } from "antd";
 import { AiOutlineBell } from "react-icons/ai";
 import Pagination from '@mui/material/Pagination';
 import { TbReload } from "react-icons/tb";
-import RecommendFriendCard from './components/RecommendFriendCard';
-import presentImg from '../../assets/presentImg.png';
-import openImg from '../../assets/openimg.png'
 import styles from './Friend.module.css';
 import RequestModal from '../../components/Friend/RequestModal';
 import Filter from './components/Filter';
 import {useTranslation} from "react-i18next";
+import Recommend from './Recommend';
 
 export default function Friend() {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('myFriends'); //컴포넌트 선택
     const [friendList, setFriendList] = useState([]); //친구 목록
-    const [receivedRequestsNum, setReceivedRequestsNum] = useState(0); // 받은 요청 수
-
     const [recommendFriendList, setRecommendFriendList] = useState([]); //추천 친구 목록
     const [recommendCount, setRecommendCount] = useState(null); //추천 친구 새로고침 잔여 횟수
-    const [showPresent, setShowpresent] = useState(null); //모든 추천친구 isOpen === false인지 아닌지
-    const [presentOpen, setPresentOpen] = useState(false); //선물상자를 열었는지 아닌지
-    const [isAnimating, setIsAnimating] = useState(false); // 애니메이션 여부를 저장하는 상태
-
+    const [receivedRequestsNum, setReceivedRequestsNum] = useState(0); // 받은 요청 수
+    
     //검색
     const [searchInput, setSearchInput] = useState(null); // 검색창 값
     const [isLoading, setIsLoading] = useState(false); //검색 로딩 상태
@@ -103,18 +97,6 @@ export default function Friend() {
                 setRecommendFriendList(response.data);
                 console.log("추천 친구 : " + JSON.stringify(response.data));
                 console.log("추천 친구 수: " + response.data.length);
-
-                // 모든 추천 친구의 isOpen 속성이 false인지 확인
-                const allClosed = response.data.every(friend => !friend.isOpen);
-                if (allClosed) {
-                    setShowpresent(false);
-                    setPresentOpen(false);
-                    console.log("showPresent === false");
-                }
-                else { 
-                    setShowpresent(true); 
-                    console.log("showPresent === true");
-                }
             }
             else if(response.status === 400){
                 console.log("친구 목록 불러오기 클라이언트 오류");
@@ -141,22 +123,10 @@ export default function Friend() {
             });
             
             if(response.status === 200){
-                setPresentOpen(false);
                 setRecommendFriendList(response.data);
                 recommendFriendCount();
                 console.log("추천 친구 : " + JSON.stringify(response.data));
                 console.log("추천 친구 수: " + response.data.length);
-
-                // 모든 추천 친구의 isOpen 속성이 false인지 확인
-                const allClosed = response.data.every(friend => !friend.isOpen);
-                if (allClosed) {
-                    setShowpresent(false);
-                    console.log("showPresent === false");
-                }
-                else { 
-                    setShowpresent(true); 
-                    console.log("showPresent === true");
-                }
             }
             else if(response.status === 400){
                 console.log("친구 목록 다시 불러오기 클라이언트 오류");
@@ -261,89 +231,10 @@ export default function Friend() {
                 );
             case 'recommend':
                 return (
-                    <div style={{marginTop:"30px"}}>
-                        {showPresent ? (
-                            <>
-                                {recommendFriendList.length > 0 ? (
-                                    <div className={styles.recommend}>
-                                        {recommendFriendList.map((friend) => (
-                                            <div key={friend.id} style={{ marginBottom: "20px" }}>
-                                                <RecommendFriendCard key={friend.id} userInfo={friend} sendFriendRequest={sendFriendRequest} sendMessage={sendMessage}/>
-                                            </div>
-                                        ))}
-                                    </div>
-                                ) : (
-                                    <div>
-                                        <p>{t('friend.noRecommendedFriends')}</p>
-                                        <p>{t('friend.moreInputPrompt')}</p>
-                                    </div>
-                                )}
-                            </>
-                        ) : (
-                            <div style={{textAlign: "center", width: "100%", paddingTop: "50px"}}>
-                                {presentOpen ? (
-                                    <img
-                                        style={{width: "200px"}}
-                                        alt='openimg'
-                                        src={openImg}
-                                    />
-                                ) : (
-                                    <img
-                                        className={isAnimating ? `${styles.vibration}` : ""} // 애니메이션이 실행 중일 때 클래스 추가
-                                        style={{width: "200px"}}
-                                        alt='presentimg'
-                                        src={presentImg}
-                                        onClick={handlePresentImg}
-                                    />
-                                )}
-                            </div>
-                        )}
-                        
-                    </div>
+                    <Recommend recommendFriendList={recommendFriendList} sendMessage={sendMessage} />
                 );
-            default:
-                return null;
         }
     };
-
-    const handlePresentImg = () => { // presentImg를 클릭하면 2초 후에 openImg 이미지로 변경
-        setIsAnimating(true);
-        setTimeout(() => {
-            setIsAnimating(false);
-            setPresentOpen(true);
-            setTimeout(() => {
-                setShowpresent(true);
-            }, 500);
-        }, 1000);
-    };
-
-    //친구 신청
-    const sendFriendRequest = async (userInfo) => {
-        try {
-            const token = getToken(); // 토큰 가져오기
-
-            const response = await axios.post('/api/auth/friend', {
-                targetId: userInfo.id
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}` // 헤더에 토큰 추가
-                }
-            });
-
-            if(response.status === 200){
-                alert("친구 신청 성공");
-                console.log(userInfo.nickname + "님에게 친구 신청");
-            }
-            else if(response.status === 400){
-                console.log("친구 신청 클라이언트 에러");
-            }
-            else if(response.status === 500){
-                console.log("친구 신청 서버 에러");
-            }
-        } catch (error) {
-            console.error('친구 걸기 오류 발생:', error);
-        }
-    }
 
     //채팅 보내기
     const sendMessage = async (otherInfo) => {
