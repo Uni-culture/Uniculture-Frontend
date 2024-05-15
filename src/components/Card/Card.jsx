@@ -2,7 +2,7 @@ import "./card.scss";
 import {useNavigate} from "react-router-dom";
 import { IoMdHeart } from "react-icons/io";
 
-export const Card = ({board_id, title, content, username, date, likeCount,commentCount, style}) => {
+export const Card = ({board_id, title, content, username, date, img, likeCount,commentCount, style}) => {
     const navigate = useNavigate();
 
     //해당 게시물의 프로필로 이동
@@ -13,7 +13,8 @@ export const Card = ({board_id, title, content, username, date, likeCount,commen
     return (
         <div className="card-wrapper" style={style}>
             <div className="card-body-img">
-                <img src={"/default_image.jpg"} alt="Card Image" onClick={() => {navigate(`/board/${board_id}`)}}/>
+                
+                <img src={img? img:"/default_image.jpg"} alt="Card Image" onClick={() => {navigate(`/board/${board_id}`)}}/>
             </div>
             <div className="card-body-text" onClick={() => {navigate(`/board/${board_id}`)}}>
                 <div className="card-body-text-title">{title}</div>

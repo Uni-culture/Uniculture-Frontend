@@ -4,17 +4,18 @@ import Layout from '../../components/Layout'
 import styles from './Translate.module.css';
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { FaExchangeAlt } from "react-icons/fa";
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import {useTranslation} from "react-i18next";
 
 export default function Translate() {
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // 다른 component 로 이동할 때 사용
+    const location = useLocation();
     const { t } = useTranslation();
 
-    const [inputLanguage, setInputLanguage] = useState({ name: "한국어", code: "KO" }); //input 언어
+    const [inputLanguage, setInputLanguage] = useState({ name: t('translate.KO'), code: "KO" }); //input 언어
     const [inputText, setInputText] = useState(''); //input 값
-    const [outputLanguage, setOutputLanguage] = useState({ name: "영어", code: "EN" }); //output 언어
+    const [outputLanguage, setOutputLanguage] = useState( { name: t('translate.EN'), code: "EN" }); //output 언어
     const [outputText, setOutputText] = useState(''); //output 값
 
     //textareaContainer border 색 변경을 위한 변수들
@@ -74,21 +75,24 @@ export default function Translate() {
                     console.log("번역하기 서버 오류");
                 }
             } else {
-                Swal.fire({
-                    title: "로그인 해주세요.",
-                    text: "로그인 창으로 이동합니다.",
-                    icon: "warning",
-                    confirmButtonColor: "#dc3545",
-                    confirmButtonText: "확인"
-                }).then(() => {
-                    navigate("/sign-in");
-                });
+                LoginWarning();
             }
         } catch (error) {
             console.log(error);
-            navigate("/");
         }
     };
+
+    const LoginWarning = () => {
+        Swal.fire({
+            icon: "warning",
+            title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+            confirmButtonColor: "#8BC765",
+            confirmButtonText: t('loginWarning.confirmButton'),
+        }).then(() => {
+            navigate("/sign-in", {state: {from: location.pathname}});
+        });
+    };
+
 
     useEffect(() => { // textareaContainer border 색 변경을 위한 함수
         function handleClickOutside(event) {

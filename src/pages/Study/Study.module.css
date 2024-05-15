@@ -1,11 +1,12 @@
 .background{
-  margin-top: 40px;
+  /* margin-top: 40px; */
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 .menu{
   display: flex;
-  gap: 42px;
+  /* gap: 42px; */
   margin-bottom: 20px;
 }
 

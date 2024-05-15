@@ -260,6 +260,8 @@ const Header = () => {
             title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
             confirmButtonColor: "#8BC765",
             confirmButtonText: t('loginWarning.confirmButton'),
+        }).then(() => {
+            navigate("/sign-in", {state: {from: location.pathname}});
         });
     };
 
@@ -286,8 +288,6 @@ const Header = () => {
             else if(to==='/translate') navigate(to); // 로그인x 번역페이지 이동
             else{
                 LoginWarning();
-                navigate("/sign-in", {state: {from: location.pathname}}); // 현재 경로를 저장하고 로그인 페이지로 이동
-        
             }    
         }
     };
@@ -304,7 +304,6 @@ const Header = () => {
         }
         else {
             LoginWarning();
-            navigate("/sign-in");
         }
     }
 
@@ -359,12 +358,20 @@ const Header = () => {
     ];
 
     return (
-        <nav className={`navbar navbar-expand-lg`} style={{ backgroundColor: '#C8DCA0' }}>
+        <nav className={`navbar navbar-expand-lg`} 
+            style={{ 
+                // backgroundColor: '#C8DCA0',
+                padding: "15px 0px", 
+                // padding: "15px 0px" ,
+                backgroundColor: "rgb(251 251 243)",
+                borderBottom: "1px solid #d0d0d0",
+                boxShadow: "rgb(0 0 0 / 15%) 0px 0px 5px"
+            }}>
             <div className="container-fluid" style={{paddingLeft: "80px", paddingRight: "70px"}}>
                 <div className="d-flex align-items-center">
                     <div className={`navbar-brand ${activePage("/")}`} style={{ fontFamily: "SuezOne", cursor: "pointer"}} onClick={() => handleNavigation("/")}>
-                        <img src={logoImg} alt="Logo" width="30" height="24" className="d-inline-block align-text-top"/>
-                        UniCulture
+                        <img src="/LogoHeart.png" alt="Logo" width="35" height="30" className="d-inline-block align-text-top"/>
+                        <span style={{color:"#06AB62"}}>&nbsp;&nbsp;UniCulture</span>
                     </div>
                 </div>
                 <div className={`ms-auto order-lg-last`}>
@@ -386,18 +393,18 @@ const Header = () => {
                     </Badge>
                 </div>
                 {isLogin ? (
-                    <button className={`btn nav-link order-lg-last`} onClick={removeToken} style={{ backgroundColor: "#B3C693", padding: "5px 15px", marginRight: "10px"}}>
+                    <button className={`btn nav-link order-lg-last`} onClick={removeToken} style={{ backgroundColor: "#00b943",color:"white",fontWeight:"bold", padding: "5px 15px", marginRight: "10px"}}>
                         {t(`header.로그아웃`)}
                     </button>
                 ) : (
                     <>
                         <div className={`order-lg-last`}>
-                            <button className={`btn nav-link`} style={{ backgroundColor: "#B3C693", padding: "5px 15px", marginRight: "10px" }} onClick={handleSignIn}>
+                            <button className={`btn nav-link`} style={{ backgroundColor: "#00b943", color:"white",fontWeight:"bold",padding: "5px 15px", marginRight: "10px" }} onClick={handleSignIn}>
                                 {t(`header.로그인`)}
                             </button>
                         </div>
                         <div className={`order-lg-last`}>
-                            <button className={`btn nav-link`} style={{ backgroundColor: "#B3C693", padding: "5px 15px", marginRight: "10px" }} onClick={handleSignUp}>
+                            <button className={`btn nav-link`} style={{ backgroundColor: "#00b943",color:"white",fontWeight:"bold", padding: "5px 15px", marginRight: "10px" }} onClick={handleSignUp}>
                                 {t(`header.회원가입`)}
                             </button>
                         </div>

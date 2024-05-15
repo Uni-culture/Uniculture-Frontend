@@ -121,10 +121,10 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb, sendMess
                         </div>
 
                         {/* 닉네임 */}
-                        <div style={{minWidth: "80px", whiteSpace: "pre-wrap"}} onClick={handleProfile}>{userInfo.nickname}</div>
+                        <div style={{whiteSpace: "pre-wrap"}} onClick={handleProfile}>{userInfo.nickname}</div>
 
                         {/* 성별, 나이 */}
-                        <div style={{fontWeight:"normal", display:"flex", marginLeft:"10px"}}>
+                        <div style={{fontWeight:"normal", display:"flex", marginLeft:"5px"}}>
                             {userInfo?.gender === "MAN" ? (
                                     <GiMale color='blue' size={20} />
                             ):(
