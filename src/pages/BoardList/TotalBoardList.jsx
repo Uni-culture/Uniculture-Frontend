@@ -6,11 +6,10 @@ import {useSearchParams} from "react-router-dom";
 import "./boardList.scss";
 import moment from "moment";
 
-const TotalBoardList = (activeTab) => {
+const TotalBoardList = ({activeTab}) => {
     const [pageCount, setPageCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
     const [boardList, setBoardList] = useState([]);
-    const [boardType, setBoardType] = useState(activeTab);
 
     // const [searchParams, setSearchParams] = useSearchParams();
 
