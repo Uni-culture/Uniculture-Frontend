@@ -155,6 +155,7 @@ const ChatList = ({onSelectedChatRoom, user}) => {
                         {room?.gender === "MAN" ? (<GiMale color='blue' size={20} />):(<GiFemale color='red' size={20}/>)}
                     </span>
                       <span className={styles.ageText}>{room?.age}</span>
+                      <Badge className={styles.badge} count={room.unreadCount} size="large" overflowCount={99}/>
                     </div>
                   </div>
                   <div className={styles.introduce}>{room.latestMessage ? room.latestMessage : "채팅 없음" }</div>
