@@ -237,29 +237,31 @@ const imageHandler = () => {
         </div>
 
         <div className={styles.right}>
-          <div className={styles.category}>
-            <label htmlFor="category"><span>{t('post.categoryLabel')}</span></label>
-            <Select          
-                value={category}
-                onChange={handleCategoryChange}
+          <div className={styles.catNTags}>
+            <div className={styles.category}>
+              <label htmlFor="category"><span>{t('post.categoryLabel')}</span></label>
+              <Select          
+                  value={category}
+                  onChange={handleCategoryChange}
+                  style={{
+                    width: "100%",
+                  }}
+                  options={type==="post" ? postOptions : studyOptions}
+                />
+            </div>
+            <div className={styles.tags}>
+              <label htmlFor="tags"><span>{t('post.tagsLabel')}</span></label>
+              <Select
+                mode="tags"              
+                placeholder="Please select"
+                value={tags}
+                onChange={handleTagChange}
+                maxCount={5}
                 style={{
-                  width: 200,
+                  width: '100%',
                 }}
-                options={type==="post" ? postOptions : studyOptions}
               />
-          </div>
-          <div className={styles.tags}>
-            <label htmlFor="tags"><span>{t('post.tagsLabel')}</span></label>
-            <Select
-              mode="tags"              
-              placeholder="Please select"
-              value={tags}
-              onChange={handleTagChange}
-              maxCount={5}
-              style={{
-                width: '100%',
-              }}
-            />
+            </div>
           </div>
           <div className={styles.btns}>
             <Button className={styles.btn} onClick={handleCancel}>{t('post.cancelButton')}</Button>
