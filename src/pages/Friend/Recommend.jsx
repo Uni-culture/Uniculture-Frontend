@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { FaHeart } from "react-icons/fa";
+import { IoMdAlert } from "react-icons/io";
 import styles from './Recommend.module.css';
 import RecommendFriendCard from './components/RecommendFriendCard';
 import presentImg from '../../assets/presentImg.png';
@@ -74,7 +74,7 @@ export default function Recommend({recommendFriendList, sendMessage}) {
     
     return (
         <>
-            {/* <div style={{marginBottom: "10px"}}><FaHeart />는 나랑 잘 맞는 정도를 나타냅니다. </div> */}
+            <div style={{marginBottom: "30px", fontSize: "14px", fontWeight: "bold"}}> <IoMdAlert size={20}/> 다음은 회원 정보를 바탕으로 추출된 빅데이터 기반 추천 친구 목록입니다.</div>
             {showPresent ? (
                 <div>
                     {recommendFriendList.length > 0 ? (
