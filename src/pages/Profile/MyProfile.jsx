@@ -92,7 +92,7 @@ export default function MyProfile({myInfo}) {
     }, [showFriendModal])
 
     return (
-        <Layout>
+        <div className={styles.container}>
             {/* 프로필 사진 */}
             <div className={styles.left}>
                 <div className={styles.imageWrapper}>
@@ -170,18 +170,14 @@ export default function MyProfile({myInfo}) {
             </div>
 
             <div style={{padding: "20px 0px"}}>
-                <ul className="nav">
-                    <li 
-                        className="nav-item"
-                        style={{ fontWeight: activeTab === 'boardList' ? 'bold' : 'normal', backgroundColor: activeTab === 'boardList' ? '#B7DAA1' : '', marginRight: "20px", padding: "5px 15px", borderRadius: 11}}
-                        onClick={() => setActiveTab('boardList')}>
-                        {t('profile.게시물')}
+                <ul className="nav nav-underline nav-tab">
+                    <li className="nav-item">
+                        <button className={`nav-link ${activeTab === 'boardList' ? 'active' : ''}`} style={{color: "black"}}
+                                onClick={() => setActiveTab('boardList')}>{t('profile.게시물')}</button>
                     </li>
-                    <li 
-                        className="nav-item"
-                        style={{ fontWeight: activeTab === 'studyList' ? 'bold' : 'normal',  backgroundColor: activeTab === 'studyList' ? '#B7DAA1' : '', marginRight: "20px", padding: "5px 15px", borderRadius: 11}}
-                        onClick={() => {setActiveTab('studyList');}}>
-                        {t('profile.스터디')}
+                    <li className="nav-item">
+                        <button className={`nav-link ${activeTab === 'studyList' ? 'active' : ''}`} style={{color: "black"}}
+                                onClick={() => setActiveTab('studyList')}>{t('profile.스터디')}</button>
                     </li>
                 </ul>
            
@@ -201,6 +197,6 @@ export default function MyProfile({myInfo}) {
                 <ShowAllLanguage  canLanguages={canLanguages} wantLanguages={wantLanguages} showAllLanguage={()=>setShowAllLanguage(false)}/>
             )}
 
-        </Layout>
+        </div>
     );
 };
