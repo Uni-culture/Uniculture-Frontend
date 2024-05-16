@@ -6,11 +6,11 @@ import {useSearchParams} from "react-router-dom";
 import "./boardList.scss";
 import moment from "moment";
 
-const TotalBoardList = () => {
+const TotalBoardList = ({activeTab}) => {
     const [pageCount, setPageCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
     const [boardList, setBoardList] = useState([]);
-    const [boardType, setBoardType] = useState('전체');
+
     // const [searchParams, setSearchParams] = useSearchParams();
 
     const getToken = () => {
@@ -23,11 +23,12 @@ const TotalBoardList = () => {
             const token = getToken(); // 토큰 가져오기
             // const page_number = searchParams.get("page");
             let apiUrl = `/api/post?ca=NORMAL&page=${page}&size=8`;
-
-            if(boardType==='전체') apiUrl = `/api/post?ca=NORMAL&page=${page}&size=8`;
-            else if(boardType==='일상') apiUrl = `/api/post?ca=NORMAL&pt=DAILY&page=${page}&size=8`;
-            else if(boardType==='도움') apiUrl = `/api/post?ca=NORMAL&pt=HELP&page=${page}&size=8`;
-            else if(boardType==='친구') apiUrl = `/api/auth/post/friend?page=${page}&size=8`;
+            console.log(activeTab);
+            if(activeTab==="total") apiUrl = `/api/post?ca=NORMAL&page=${page}&size=8`;
+            else if(activeTab==="daily") apiUrl = `/api/post?ca=NORMAL&pt=DAILY&page=${page}&size=8`;
+            else if(activeTab==="help") apiUrl = `/api/post?ca=NORMAL&pt=HELP&page=${page}&size=8`;
+            else if(activeTab==="friend") apiUrl = `/api/auth/post/friend?page=${page}&size=8`;
+            console.log(apiUrl);
             const response = await axios.get(apiUrl, {
                 headers: {
                     Authorization: `Bearer ${token}` // 헤더에 토큰 추가
@@ -58,7 +59,7 @@ const TotalBoardList = () => {
 
     useEffect(() => {
         fetchBoardData(currentPage);
-    }, [currentPage, boardType])
+    }, [currentPage, activeTab])
 
     const changePage = (value) => {
         setCurrentPage(value);

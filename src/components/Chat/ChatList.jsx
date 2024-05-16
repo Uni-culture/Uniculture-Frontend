@@ -8,6 +8,8 @@ import axios from "axios";
 import moment from "moment";
 import 'moment/locale/ko'
 import * as StompJs from "@stomp/stompjs";
+import {GiFemale, GiMale} from "react-icons/gi";
+import styles from './ChatList.module.css';
 
 
 const ChatList = ({onSelectedChatRoom, user}) => {
@@ -33,13 +35,20 @@ const ChatList = ({onSelectedChatRoom, user}) => {
         updatedRooms = [...prev];
         updatedRooms[roomIndex] = {
           ...updatedRooms[roomIndex],
-          latestMessage: receivedMessage.message,
+          //latestMessage : receivedMessage.message,
+          latestMessage : receivedMessage.type === "TALK" ? receivedMessage.message : '[수정됨]',
           latestMessageTime: receivedMessage.createdDate,
           unreadCount: receivedMessage.roomId.toString() === chatId? 0: prev[roomIndex].unreadCount+1,
         };
         // return updatedRooms;
       } else {
-        updatedRooms = [{id:receivedMessage.roomId,username: receivedMessage.sender, latestMessage: receivedMessage.message, latestMessageTime: receivedMessage.createdTime, unreadCount: receivedMessage.roomId.toString() === chatId? 0 : 1},...prev, ];
+        updatedRooms = [{
+          id:receivedMessage.roomId,
+          username: receivedMessage.sender,
+          //latestMessage : receivedMessage.message,
+          latestMessage : receivedMessage.type === "TALK" ? receivedMessage.message : '[수정됨]',
+          latestMessageTime: receivedMessage.createdTime,
+          unreadCount: receivedMessage.roomId.toString() === chatId? 0 : 1},...prev, ];
         
       } 
       return updatedRooms.sort((a,b) => new Date(b.latestMessageTime) - new Date(a.latestMessageTime));
@@ -83,7 +92,8 @@ const ChatList = ({onSelectedChatRoom, user}) => {
       fetchChatRooms();
 
       const clientdata = new StompJs.Client({
-        brokerURL:"ws://54.180.29.40:8080/ws",
+        brokerURL:"ws://localhost:8080/ws",
+        //brokerURL:"ws://54.180.29.40:8080/ws",
         debug: function (str) {
           console.log('STOMP' + str);
         },
@@ -128,8 +138,30 @@ const ChatList = ({onSelectedChatRoom, user}) => {
 
 
     return (
+
         <div className="chat-list">
             {chatRooms.map((room) => (
+                <div className={styles.cardWrapper} key={room.id} onClick={() => onSelectedChatRoom(room)}>
+                  <div className={styles.profileImage}>
+                    <img className={styles.image}
+                        alt="profileimg"
+                        src={room?.profileImage ? room.profileImage : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                    />
+                  </div>
+                  <div className={styles.profileText}>
+                    <div className={styles.userInfo}>
+                      <span className={styles.nicknameText}>{room.username}</span>
+                      <span className={styles.genderText}>
+                        {room?.gender === "MAN" ? (<GiMale color='blue' size={20} />):(<GiFemale color='red' size={20}/>)}
+                    </span>
+                      <span className={styles.ageText}>{room?.age}</span>
+                      <Badge className={styles.badge} count={room.unreadCount} size="large" overflowCount={99}/>
+                    </div>
+                  </div>
+                  <div className={styles.introduce}>{room.latestMessage ? room.latestMessage : "채팅 없음" }</div>
+                  <div className={styles.time}> {room.latestMessageTime ? moment(room.latestMessageTime).fromNow() : " " }</div>
+                </div>
+              /*
               <div key={room.id} className="chat-room" onClick={() => onSelectedChatRoom(room)}>
                 <div className="room-top">
                   <div className="room-title">{room.username}</div>
@@ -142,9 +174,12 @@ const ChatList = ({onSelectedChatRoom, user}) => {
                 </div>
                 
               </div>
+               */
             ))}
 
         </div>
+
+
     );
 };
 

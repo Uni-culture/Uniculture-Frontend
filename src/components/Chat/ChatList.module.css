@@ -1,6 +1,6 @@
 .cardWrapper {
     padding: 15px 15px 15px 15px;
-    margin: 15px auto;
+    margin: 10px auto;
     position: relative;
     flex-shrink: 0;
     font-family: 'Noto Sans KR', sans-serif;
@@ -14,9 +14,9 @@
 }
 
 .profileImage {
-    margin-left: 7px;
-    width: 150px;
-    height: 150px;
+    margin-left: 3px;
+    width: 50px;
+    height: 50px;
 }
 
 .image {
@@ -30,51 +30,36 @@
 
 .userInfo{
     position: absolute;
-    top: 37px;
-    left: 200px;
+    top: 10px;
+    left: 80px;
 }
 
 .nicknameText {
-    font-size: 25px;
+    font-size: 13px;
     font-weight: bold;
 }
 
 .genderText {
     padding-top: 2px;
-    margin-left: 5px;
+    margin-left: 2px;
 }
 
 .ageText {
+    font-weight : bold;
     padding-top: 5px;
     font-size: 13px;
     margin-left: 3px;
 }
 
-.btn {
-    position: absolute;
-    top: 0px;
-    left: 270px;
-    width: 80px;
-    cursor: pointer;
-
-    border-radius: 8px;
-    background-color: #B7DAA1;
-    border: 0;
-    margin-left: 20px;
-    font-size: 13px;
-    font-weight: bold;
-    padding: 5px 10px;
-}
-
 .introduce {
     display: -webkit-box;
-    height: 52px;
+    height: 25px;
     overflow: hidden;
     position: absolute;
     text-overflow: ellipsis;
-    top: 85px;
-    left: 200px;
-    width: 344px;
+    top: 39px;
+    left: 80px;
+    width: 100px;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     word-break: normal;
@@ -84,7 +69,26 @@
     line-height: 26px;
     /* font-weight: bold; */
 }
+.time{
+    display: -webkit-box;
+    height: 25px;
+    overflow: hidden;
+    position: absolute;
+    text-overflow: ellipsis;
+    top: 39px;
+    left: 180px;
+    width: 70px;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-break: normal;
+    word-wrap: break-word;
+    color: #000000;
+    font-size: 14px;
+    line-height: 26px;
+    text-align: right;
+    /* font-weight: bold; */
+}
 
-.introtext {
-    color: #737373;
+.badge{
+    margin-left: 70px;
 }

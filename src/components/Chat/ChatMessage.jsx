@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import { ChatOption } from './ChatOption';
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export const ChatMessage = ({chat, userInfo, modify}) => {
+  const navigate = useNavigate();
   const [originalMessage, modifiedMessage] = chat.message.split("*#%");
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   
@@ -33,6 +35,10 @@ export const ChatMessage = ({chat, userInfo, modify}) => {
   const handleCancelEdit = () =>{
     setIsEditing(false);
     setNewMessage(chat.message);
+  }
+
+  const clickProfile = (nickname) =>{
+    navigate(`/profile/${nickname}`);
   }
 
   const translateComment = async (content) =>{
@@ -70,6 +76,7 @@ export const ChatMessage = ({chat, userInfo, modify}) => {
       onMouseEnter={() => isEditing ? '' : setIsMenuVisible(true)}
       onMouseLeave={() =>  isEditing ? '' : setIsMenuVisible(false)}
     >
+      {userInfo.nickname === chat.sender? '' :  <div className="chat-sender" style={{width:"100%", paddingLeft:"5px" ,fontSize:"12px"}} onClick={() => clickProfile(chat.sender)}>{chat.sender}</div>}
       <div className="chat-text" style={{backgroundColor: isSender ? ("#E7F3FF") : ("FFFFFF")}}> 
         {/* {chat.sender} : */}
         {originalMessage}

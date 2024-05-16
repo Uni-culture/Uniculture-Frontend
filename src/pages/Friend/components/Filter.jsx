@@ -48,11 +48,11 @@ export default function FilterModal({handleSelect, resetFilter, ge, mina, maxa, 
     ];
 
     return (
-        <div style={{display:"flex", marginTop:"10px"}}>
+        <div style={{ marginTop:"10px"}}>
             <Select
                 defaultValue="ge"
                 value={ge} 
-                style={{ width: 120, marginRight: "5px" }} 
+                style={{ width: 120, marginRight: "5px", marginBottom: "5px", display: "inline-block" }} 
                 onChange={(value) => handleSelect(value, "gender")}
             >
                 <Option value="ge" >Gender</Option>
@@ -61,13 +61,13 @@ export default function FilterModal({handleSelect, resetFilter, ge, mina, maxa, 
             </Select>
 
             <input 
-                style={{width: "80px", marginRight: "5px", padding: "0 11px", borderRadius: "6px", border: "1px solid #d9d9d9", boxSizing: "border-box", fontSize: "14px"}} 
+                style={{width: "80px", height: "32px", display: "inline-block", marginRight: "5px", padding: "0 11px", borderRadius: "6px", border: "1px solid #d9d9d9", boxSizing: "border-box", fontSize: "14px"}} 
                 placeholder={mina} 
                 value={mina} 
                 onChange={(e) => handleSelect(e.target.value, "mina")}
             />
             <input 
-                style={{width: "80px", marginRight: "5px", padding: "0 11px", borderRadius: "6px", border: "1px solid #d9d9d9", boxSizing: "border-box", fontSize: "14px"}} 
+                style={{width: "80px", height: "32px", display: "inline-block", marginRight: "5px", padding: "0 11px", borderRadius: "6px", border: "1px solid #d9d9d9", boxSizing: "border-box", fontSize: "14px"}} 
                 placeholder={maxa} 
                 value={maxa} 
                 onChange={(e) => handleSelect(e.target.value, "maxa")}
@@ -76,7 +76,7 @@ export default function FilterModal({handleSelect, resetFilter, ge, mina, maxa, 
             <Select
                 defaultValue="cl"
                 value={cl} 
-                style={{ width: 150, marginRight: "5px" }} 
+                style={{ width: 150, display: "inline-block", marginRight: "5px" }} 
                 onChange={(value) => handleSelect(value, "cl")}
             >
                 <Option value="cl" >Can Language</Option>
@@ -88,7 +88,7 @@ export default function FilterModal({handleSelect, resetFilter, ge, mina, maxa, 
             <Select
                 defaultValue="wl"
                 value={wl} 
-                style={{ width: 150, marginRight: "5px" }} 
+                style={{ width: 150, display: "inline-block", marginRight: "5px" }} 
                 onChange={(value) => handleSelect(value, "wl")}
             >
                 <Option value="wl" >Want Language</Option>
@@ -100,7 +100,7 @@ export default function FilterModal({handleSelect, resetFilter, ge, mina, maxa, 
             <Select
                 defaultValue="hb"
                 value={hb} 
-                style={{ width: 150 }} 
+                style={{ width: 150, display: "inline-block" }} 
                 onChange={(value) => handleSelect(value, "hobby")}
             >
                 <Option value="hb" >Interest</Option>
@@ -109,8 +109,8 @@ export default function FilterModal({handleSelect, resetFilter, ge, mina, maxa, 
                 ))}
             </Select>
 
-            <div style={{marginLeft: "10px"}} onClick={()=> {resetFilter();}}><GrPowerReset /></div>
-            <div style={{marginLeft: "10px"}} onClick={()=> {resetFilter("false");}}><GrClose/></div>
+            <div style={{marginLeft: "10px", display: "inline-block"}} onClick={()=> {resetFilter();}}><GrPowerReset /></div>
+            <div style={{marginLeft: "10px", display: "inline-block"}} onClick={()=> {resetFilter("false");}}><GrClose/></div>
         </div>
     )
 }

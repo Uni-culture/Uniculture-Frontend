@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '../../components/Layout';
 import styles from './Profile.module.css';
 import PercentBar from "../../components/PercentBar/PercentBar";
 import { FaExchangeAlt } from "react-icons/fa";
@@ -7,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { PiPlusCircleBold, PiPlusCircleFill } from "react-icons/pi";
 import Swal from 'sweetalert2';
-import MyBoardList from "./MyBoardList";
 import OtherBoardList from "./OtherBoardList";
 import ShowAllLanguage from './Modal/ShowAllLanguage';
 import OtherStudyList from "./OtherStudyList";
@@ -293,9 +291,9 @@ export default function OtherProfile({otherInformation}) {
     };
 
     return (
-        <Layout>
-            {/* 프로필 사진 */}
-            <div className={styles.left}>
+        <div className={styles.container}>
+            <div className={styles.top}>
+                {/* 프로필 사진 */}
                 <div className={styles.imageWrapper}>
                     <img
                         src={otherInfo?.profileurl ? otherInfo.profileurl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
@@ -303,83 +301,73 @@ export default function OtherProfile({otherInformation}) {
                         className={styles.image}
                     />
                 </div>
-            </div>
 
-            <div className={styles.right}>
-                {/* 닉네임 */}
-                <div className={styles.name}>{otherInfo?.nickname}</div>
-                
-                {/* 친구 걸기/채팅 보내기 */}
-                {friendButton()}
-                <button
-                    className={styles.buttonStyle}
-                    onClick={sendMessage}
-                >{t('profile.sendMessage')}</button>
-
-                {/* 소개 */}
-                {otherInfo?.introduce && <div className={styles.intro}>{otherInfo.introduce}</div>}
-
-                {/* 게시글, 친구 */}
-                <div>
-                    <div className={styles.post}>{t('profile.posts')}</div>
-                    <div className={styles.postNum}>{otherInfo?.postnum}</div>
-                    <div className={styles.friend}>{t('profile.friends')}</div>
-                    <div className={styles.friendNum}>{friendNum}</div>
-                </div>
-
-                {/* 언어 */}
-                {(maxCanLanguage || maxWantLanguage) &&
-                    <div style={{ display: "flex", marginTop:"20px"}}>
-                        {maxCanLanguage && <div><PercentBar language={maxCanLanguage.language} level={maxCanLanguage.level} color={"blue"}/></div>}
-                        {maxCanLanguage && maxWantLanguage && <div style={{ marginLeft : "20px", marginRight : "20px" }}><FaExchangeAlt /></div>}
-                        {maxWantLanguage && <div><PercentBar language={maxWantLanguage.language} level={maxWantLanguage.level} color={"red"}/></div>}
-                        <span
+                <div className={styles.info}>
+                    <div className={styles.name}>
+                        {otherInfo?.nickname}
+                        {/* 친구 걸기/채팅 보내기 */}
+                        {friendButton()}
+                        <button
+                            className={styles.buttonStyle}
                             style={{marginLeft: "10px"}}
-                            onClick={()=> setShowAllLanguage(true)}
-                            onMouseEnter={()=> setOnMouseSpan(true)}
-                            onMouseLeave={()=> setOnMouseSpan(false)}
-                        >
-                            {onMouseSpan ? <PiPlusCircleFill size={20}/> : <PiPlusCircleBold size={20}/>}
-                        </span>
+                            onClick={sendMessage}
+                        >{t('profile.sendMessage')}</button>
                     </div>
-                }
+            
+                    {/* 소개 */}
+                    {otherInfo?.introduce && <div className={styles.intro}>{otherInfo.introduce}</div>}
 
-                {/* 취미 */}
-                <div style={{marginTop: "20px"}}>
-                    {otherInfo.hobbies && otherInfo.hobbies.map((hobby, index) => (
-                        <div
-                            key={index} 
-                            style={{ 
-                                display: "inline-block",
-                                borderRadius: "9px", 
-                                backgroundColor: "#e9ecef", 
-                                padding: "5px 10px",
-                                marginRight: "3px",
-                                marginTop: "5px"
-                            }}
-                        >
-                            # {t(`interestTag.${hobby}`)}
+                    {/* 게시글, 친구 */}
+                    <div className={styles.count}>
+                        <div className={styles.post}>{t('profile.posts')}</div>
+                        <div className={styles.postNum}>{otherInfo?.postnum}</div>
+                        <div className={styles.friend}>{t('profile.friends')}</div>
+                        <div className={styles.friendNum}>{friendNum}</div>
+                    </div>
+
+                    {/* 언어 */}
+                    {(maxCanLanguage || maxWantLanguage) &&
+                        <div className={styles.language}>
+                            {maxCanLanguage && <PercentBar language={maxCanLanguage.language} level={maxCanLanguage.level} color={"blue"}/>}
+                            {maxCanLanguage && maxWantLanguage && <div style={{ marginLeft : "20px", marginRight : "20px" }}><FaExchangeAlt /></div>}
+                            {maxWantLanguage && <PercentBar language={maxWantLanguage.language} level={maxWantLanguage.level} color={"red"}/>}
+                            <span
+                                style={{marginLeft: "10px"}}
+                                onClick={()=> setShowAllLanguage(true)}
+                                onMouseEnter={()=> setOnMouseSpan(true)}
+                                onMouseLeave={()=> setOnMouseSpan(false)}
+                            >
+                                {onMouseSpan ? <PiPlusCircleFill size={20}/> : <PiPlusCircleBold size={20}/>}
+                            </span>
                         </div>
-                    ))}
+                    }
+
+                    {/* 취미 */}
+                    <div className={styles.hobby}>
+                        {otherInfo.hobbies && otherInfo.hobbies.map((hobby, index) => (
+                            <div
+                                className={styles.hbTag}
+                                key={index}
+                            >
+                                # {t(`interestTag.${hobby}`)}
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
 
-            <div style={{marginTop: "30px"}}>
-                <ul className="nav">
-                    <li 
-                        className="nav-item"
-                        style={{ fontWeight: activeTab3 === 'boardList' ? 'bold' : 'normal', backgroundColor: activeTab3 === 'boardList' ? '#B7DAA1' : '', marginRight: "20px", padding: "5px 15px", borderRadius: 11}}
-                        onClick={() => setActiveTab3('boardList')}>
-                        {t('profile.게시물')}
+            <div className={styles.bottom}>
+                <ul className="nav nav-underline nav-tab">
+                    <li className="nav-item">
+                        <button className={`nav-link ${activeTab3 === 'boardList' ? 'active' : ''}`} style={{color: "black"}}
+                                onClick={() => setActiveTab3('boardList')}>{t('profile.게시물')}</button>
                     </li>
-                    <li 
-                        className="nav-item"
-                        style={{ fontWeight: activeTab3 === 'studyList' ? 'bold' : 'normal',  backgroundColor: activeTab3 === 'studyList' ? '#B7DAA1' : '', marginRight: "20px", padding: "5px 15px", borderRadius: 11}}
-                        onClick={() => {setActiveTab3('studyList');}}>
-                        {t('profile.스터디')}
+                    <li className="nav-item">
+                        <button className={`nav-link ${activeTab3 === 'studyList' ? 'active' : ''}`} style={{color: "black"}}
+                                onClick={() => setActiveTab3('studyList')}>{t('profile.스터디')}</button>
                     </li>
                 </ul>
-
+        
                 {renderTabContent3()}
             </div>
 
@@ -387,6 +375,6 @@ export default function OtherProfile({otherInformation}) {
             {showAllLanguage && (
                 <ShowAllLanguage  canLanguages={canLanguages} wantLanguages={wantLanguages} showAllLanguage={()=>setShowAllLanguage(false)}/>
             )}
-        </Layout>
+        </div>
     );
 };

@@ -31,7 +31,7 @@ const Search = () => {
     const [isLoading, setIsLoading] = useState(false); // 데이터 로딩 상태
     const [hasMore, setHasMore] = useState(true); // 데이터가 더 있는지 여부
     const observer = useRef();
-    const pageSize = 3; // 페이지 당 항목 수
+    const pageSize = 10; // 페이지 당 항목 수
 
     // 사용자 입력 처리
     const handleSearchChange = (e) => {
@@ -129,7 +129,7 @@ const Search = () => {
     // 게시물 검색 요청
     const searchPost = async (page, newTags = tags) => {
         setIsLoading(true); // 데이터 로딩 시작
-        let url = `/api/post/search?page=${page}&size=${pageSize}&category=NORMAL`;
+        let url = `/api/search/post?page=${page}&size=${pageSize}`;
 
         // 검색어가 존재하는 경우
         if (debouncedSearch) {
@@ -174,7 +174,7 @@ const Search = () => {
         setIsLoading(true); // 데이터 로딩 시작
         const token = getToken();
 
-        let url = `/api/auth/friend/detail?page=${page}&size=${pageSize}`;
+        let url = `/api/auth/search/friend?page=${page}&size=${pageSize}`;
 
         // 검색어가 존재하는 경우
         if (debouncedSearch) {
@@ -211,7 +211,8 @@ const Search = () => {
     // 멤버 검색 요청
     const searchMember = async (page) => {
         setIsLoading(true); // 데이터 로딩 시작
-        let url = `/api/member/search?page=${page}&size=${pageSize}`;
+        let url = `/api/search/member?page=${page}&size=${pageSize}`;
+        const token = getToken();
 
         // 검색어가 존재하는 경우
         if (debouncedSearch) {
@@ -219,7 +220,11 @@ const Search = () => {
         }
 
         try {
-            const response = await axios.get(url);
+            const response = await axios.get(url,{
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
             if (response.status === 200) {
                 console.log("url: ", url);
                 setMemberList(preData => [...preData, ...response.data.content]);
@@ -276,15 +281,6 @@ const Search = () => {
         }
     }, [debouncedSearch, tags, searchType]);
 
-    /*useEffect(() => {
-        console.log(currentPage);
-        console.log(isLoading);
-        console.log(hasMore);
-
-        if (currentPage > 0 && !isLoading && hasMore) {
-            searchData(currentPage);
-        }
-    }, [currentPage, isLoading, hasMore]);*/
     useEffect(() => {
         console.log(currentPage);
         console.log(isLoading);
@@ -337,7 +333,7 @@ const Search = () => {
                         <div className="friendList-body">
                             {friendList.length > 0 && friendList.map((friend, index) => {
                                 return <div ref={friendList.length === index + 1 ? lastElementRef : null} key={friend.id}>
-                                    <SearchUserCard user={friend} />
+                                    <SearchUserCard user={friend} type='friend' />
                                 </div>
                                 
                             })}
