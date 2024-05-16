@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { GiMale, GiFemale } from "react-icons/gi";
@@ -13,6 +13,7 @@ const { Meta } = Card;
 
 export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMessage}) {
     const navigate = useNavigate();
+    const [similarity, setSimilarity] = useState(userInfo.similarity);
     const [isFlipped, setIsFlipped] = useState(userInfo.isOpen); //Card 뒤집기
 
     // 로그인 후 저장된 토큰 가져오는 함수
@@ -74,6 +75,14 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMe
         sendMessage(userInfo);
     }
 
+    const handleSimilarity = () => {
+        if(similarity < 70) setSimilarity(70);
+    }
+
+    useEffect(()=> {
+        handleSimilarity();
+    },[])
+
     return (
         <div className={`${styles.card} ${isFlipped ? styles.flipped : ""}`} >
             <div className={styles.front} onClick={handleCardClick}>
@@ -87,13 +96,10 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMe
                 <Card
                     style={{width: "100%", height: "100%"}}
                     cover={
-                        // <div style={{width: "100%", textAlign: "center", marginTop: "10px"}}>
-                            <img
-                                // style={{width: "80%", borderRadius: "8px"}}
-                                alt="profileimg"
-                                src={userInfo?.profileImage ? userInfo.profileImage : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
-                            />
-                        // </div>
+                        <img
+                            alt="profileimg"
+                            src={userInfo?.profileImage ? userInfo.profileImage : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                        />
                     }
                     actions={[
                         <span onClick={handleSendFriendRequest}><IoMdPersonAdd size={22}/></span>,
@@ -103,7 +109,9 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMe
                 >
                     <Meta
                         title={
-                            <div style={{display: "flex"}}>
+                            <>
+                                <div className={styles.similarityText}>나랑 <span className={styles.similaritySpan}>{similarity}%</span> 잘 맞아요!</div>
+                                <div style={{display: "flex"}}>
                                 {/* 닉네임 */}
                                 <div onClick={handleProfile} style={{fontWeight : "bold", fontSize: "15px"}}>{userInfo.nickname}</div>
 
@@ -116,7 +124,8 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMe
                                     )}
                                     <div style={{fontSize:"13px", marginLeft:"3px"}}>{userInfo.age}</div>
                                 </div>
-                            </div>
+                                </div>
+                            </>
                         }
                         description={
                             <div style={{display: "flex", flexDirection: "column", color: "black"}}>
@@ -132,6 +141,21 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMe
                         }
                     />
                 </Card>
+                {/* <div className={styles.similarity}> */}
+                    {/* <div className={styles.heart}>
+                    <div className={styles.heart2} >
+                    <div className={styles.heart3} > */}
+                        {/* <div className={styles.text}> */}
+                            {/* {similarity}% */}
+                        {/* </div> */}
+                    {/* </div>
+                    </div>
+                    </div> */}
+                    
+                    {/* <div className={styles.text}> */}
+
+                    {/* </div> */}
+                {/* </div> */}
             </div>
         </div>
     )
