@@ -51,7 +51,6 @@ const ReplyInput = ({ parent_id, board_id, onReplySuccess}) => {
                 <div className="replyComments-header">
                     <TextField
                         className="replyComments-header-textarea"
-                        minRows={1.5}
                         maxRows={3}
                         onChange={(e) => {
                             setReplyContent(e.target.value)
@@ -60,9 +59,9 @@ const ReplyInput = ({ parent_id, board_id, onReplySuccess}) => {
                         multiline placeholder="답글을 입력해주세요"
                     />
                     {replyContent !== "" ? (
-                        <button onClick={replyComment}>등록하기</button>
+                        <button onClick={replyComment} className="replyComment-submit-Button">등록하기</button>
                     ) : (
-                        <button disabled={true}>
+                        <button disabled={true} className="replyComment-submit-Button">
                             등록하기
                         </button>
                     )}

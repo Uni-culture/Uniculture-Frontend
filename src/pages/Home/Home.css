@@ -1,5 +1,6 @@
 .home-layout {
     background-color: #FBFBF3;
+    overflow-x: hidden; /* 가로 스크롤 숨김 */
 }
 
 .home-nav-layout {
