@@ -67,10 +67,9 @@ const MyBoardList = ({memberId}) => {
             </div>
             <div className="boardList-footer">
                 <Pagination
-                    variant="outlined" color="primary" page={currentPage+1}
+                    page={currentPage+1}
                     count={pageCount} size="large"
                     onChange={(e, value) => {
-                        // window.location.href = `/?page=${value-1}`;
                         changePage(value-1);
                     }}
 
