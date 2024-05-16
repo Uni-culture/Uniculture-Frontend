@@ -20,17 +20,17 @@ export default function CreateChat({modal, createChat}) {
             console.log("채팅방 만들기 > 친구 검색");
             const token = getToken();
 
-            let Query= searchInput ? `name=${searchInput}&` : '';
+            let Query= searchInput ? `nickname=${searchInput}&` : '';
 
             if(Query){
-                const response = await axios.get(`/api/auth/friend/detail?${Query}page=0&size=8`, {
+                const response = await axios.get(`/api/auth/friend?${Query}`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 });
 
                 if(response.status === 200){
-                    setFriendList(response.data.content);
+                    setFriendList(response.data);
                 }
                 else if(response.status === 400){
                     console.log("친구 목록 불러오기 클라이언트 오류");
@@ -47,7 +47,13 @@ export default function CreateChat({modal, createChat}) {
 
     //검색 내용 바뀌면 실행
     useEffect(() => {
-        searchFriend();
+        const handler = setTimeout(() => {
+            searchFriend();
+        }, 500); // 사용자 입력이 멈춘 후 1초 뒤에 실행
+
+        return () => {
+            clearTimeout(handler); // timeout 취소
+        };
     }, [searchInput]);
 
     // FriendList 컴포넌트에서 사용자를 선택했을 때 호출될 함수
