@@ -57,9 +57,15 @@ export default function Friend() {
             console.log("친구 목록 불러오기");
             const token = getToken();
 
-            let Query= searchInput ? `&nickname=${searchInput}` : '';
+            let Query = '';
+            if(searchInput) Query += `&name=${searchInput}`;
+            if (selectGender !== 'ge') Query += `&ge=${selectGender}`;
+            if (selectMina !=='0' || selectMaxa !== '100' ) Query += `&mina=${selectMina}&maxa=${selectMaxa}`;
+            if (selectCL !== "cl") Query += `&cl=${selectCL}`;
+            if (selectWL !== "wl") Query += `&wl=${selectWL}`;
+            if (selectHb !== "hb") Query += `&hb=${selectHb}`;
 
-            const response = await axios.get(`/api/auth/friend/detail?page=${page}&size=6${Query}`, {
+            const response = await axios.get(`/api/auth/friend/search?page=${page}&size=6${Query}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -199,9 +205,7 @@ export default function Friend() {
     const changePage = (event) => {
         const page = event.target.outerText - 1;
         setCurrentPage(page); //현재 페이지
-
-        if(selectGender === 'ge' && selectMina ==='0' && selectMaxa === '100' && selectCL === "cl" && selectWL === "wl" && selectHb === "hb") fetchFriendList(page);
-        else fetchFriendFilter(page);
+        fetchFriendList(page);
     }
     
     //내 친구/추천 친구 선택
@@ -346,51 +350,11 @@ export default function Friend() {
         else if(select === "hobby") setSelectHb(value);
     }
 
-    //친구 필터링
-    const fetchFriendFilter = async (page) => {
-        try {
-            console.log("친구 필터링");
-            const token = getToken();
-
-            let Query= ''; 
-            if (selectGender !== 'ge') Query += `ge=${selectGender}&`;
-            if (selectMina !=='0' || selectMaxa !== '100' ) Query += `mina=${selectMina}&maxa=${selectMaxa}&`;
-            if (selectCL !== "cl") Query += `cl=${selectCL}&`;
-            if (selectWL !== "wl") Query += `wl=${selectWL}&`;
-            if (selectHb !== "hb") Query += `hb=${selectHb}&`;
-
-            
-            const response = await axios.get(`/api/auth/friend/search?${Query}page=${page}&size=6`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            
-            if(response.status === 200){
-                console.log("성공");
-                if(activeTab==="myFriends"){
-                    console.log("myFriends : " + JSON.stringify(response.data.content));
-                    setFriendList(response.data.content);
-                    setPageCount(response.data.totalPages);
-                } 
-                else { console.log("전체 친구 필터링 : " + JSON.stringify(response.data.content)); setRecommendFriendList(response.data.content); }
-            }
-            else if(response.status === 400){
-                console.log("친구 필터링 클라이언트 오류");
-            }
-            else if(response.status === 500){
-                console.log("친구 필터링 서버 오류");
-            }
-        } catch (error) {
-            console.log("친구 필터링 오류 :" + error);
-        }
-    };
-
     //필터내용 바뀌면 실행
     useEffect(() => {
         if(showFilter){
             setCurrentPage(0);
-            fetchFriendFilter(0);
+            fetchFriendList(0);
         }
     }, [selectGender, selectMina, selectMaxa, selectCL, selectWL, selectHb]);
 
