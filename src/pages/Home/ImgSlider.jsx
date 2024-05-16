@@ -4,14 +4,15 @@ import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useNavigate } from 'react-router-dom'
+import img1 from './images/img1.jpg'
 
 export default function ImgSlider() {
     const navigate = useNavigate();
 
     const images = [
-        // {src: img1, link: "/board/1"},
-        // {src: img2, link: "/board/2"},
-        // {src: img3, link: "/board/3"},
+        {src: img1, link: "/board/1"},
+        {src: img1, link: "/board/2"},
+        {src: img1, link: "/board/3"},
     ];
 
     var settings = {
@@ -23,7 +24,7 @@ export default function ImgSlider() {
         autoplay: true,
         autoplaySpeed: 5000,
         cssEase: "linear",
-        slidesToScroll: 1
+        slidesToScroll: 1,
     };
 
     const handleNavigate = (link) => {

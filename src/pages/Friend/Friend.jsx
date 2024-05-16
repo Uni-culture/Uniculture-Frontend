@@ -57,9 +57,9 @@ export default function Friend() {
             console.log("친구 목록 불러오기");
             const token = getToken();
 
-            let Query= searchInput ? `name=${searchInput}&` : '';
+            let Query= searchInput ? `&nickname=${searchInput}` : '';
 
-            const response = await axios.get(`/api/auth/friend/detail?${Query}page=${page}&size=6`, {
+            const response = await axios.get(`/api/auth/friend/detail?page=${page}&size=6${Query}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -67,7 +67,7 @@ export default function Friend() {
             
             if(response.status === 200){
                 setFriendList(response.data.content);
-                setPageCount(response.data.totalPages);
+                setPageCount(Math.ceil(response.data.totalElements / 6));
             }
             else if(response.status === 400){
                 console.log("친구 목록 불러오기 클라이언트 오류");
@@ -359,21 +359,12 @@ export default function Friend() {
             if (selectWL !== "wl") Query += `wl=${selectWL}&`;
             if (selectHb !== "hb") Query += `hb=${selectHb}&`;
 
-            let response;
-            if(activeTab==="myFriends"){
-                response = await axios.get(`/api/auth/friend/search?${Query}page=${page}&size=6`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-            }
-            else {
-                response = await axios.get(`/api/auth/friend/search2?${Query}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-            }
+            
+            const response = await axios.get(`/api/auth/friend/search?${Query}page=${page}&size=6`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
             
             if(response.status === 200){
                 console.log("성공");
