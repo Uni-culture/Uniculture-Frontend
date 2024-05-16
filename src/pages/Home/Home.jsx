@@ -25,37 +25,41 @@ const Home = () => {
         setIsLogin(!!token); // 토큰이 존재하면 true, 없으면 false로 설정
     }, []);
 
+    useEffect(()=>{
+        console.log("전환");
+    },[activeTab])
+
     // 전체/일상/도움 선택
-    const renderTabContent = () => {
-        switch (activeTab) {
-            case 'total':
-                return (
-                    <div>
-                        <TotalBoardList />
-                    </div>
-                );
-            case 'daily':
-                return (
-                    <div>
-                        <DailyBoardList />
-                    </div>
-                );
-            case 'help':
-                return (
-                    <div>
-                        <HelpBoardList />
-                    </div>
-                );
-            case 'friend':
-                return (
-                    <div>
-                        <FriendBoardList/>
-                    </div>
-                )
-            default:
-                return null;
-        }
-    };
+    // const renderTabContent = () => {
+    //     switch (activeTab) {
+    //         case 'total':
+    //             return (
+    //                 <div>
+    //                     <TotalBoardList />
+    //                 </div>
+    //             );
+    //         case 'daily':
+    //             return (
+    //                 <div>
+    //                     <DailyBoardList />
+    //                 </div>
+    //             );
+    //         case 'help':
+    //             return (
+    //                 <div>
+    //                     <HelpBoardList />
+    //                 </div>
+    //             );
+    //         case 'friend':
+    //             return (
+    //                 <div>
+    //                     <FriendBoardList/>
+    //                 </div>
+    //             )
+    //         default:
+    //             return null;
+    //     }
+    // };
 
     return (
         <div className="home-layout">
@@ -126,7 +130,8 @@ const Home = () => {
                 </div>
             </div>
             <div className="home-content-layout">
-                {renderTabContent()}
+                <TotalBoardList activeTab={activeTab}/>
+                {/* {renderTabContent()} */}
             </div>
         </div>
     );

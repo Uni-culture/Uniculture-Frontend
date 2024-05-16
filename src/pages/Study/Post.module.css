@@ -13,6 +13,7 @@
   align-items: center;
   width: 100%;
   max-width: 1000px;
+  min-width: 800px;
 }
 .post_content{
   display: flex;
@@ -43,6 +44,7 @@
 .title_input{
   width: 100%;
   border: none;
+  background-color: inherit;
 }
 
 
@@ -92,4 +94,25 @@
   border-color: #007bff;
   background-color: #007bff;
   color: white;
+}
+
+.catNTags{
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width :1000px){
+  .post_content{
+    flex-direction: column;
+  }
+  .left {
+    margin-right: 0;
+  }
+  .right{
+    margin-top: 20px;
+    display: flex;
+  }
+  .tags{
+    margin-top: 0;
+  }
 }
