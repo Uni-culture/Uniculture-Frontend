@@ -25,6 +25,72 @@
 .back {
     background: linear-gradient(rgb(127, 106, 83), rgb(156, 132, 104));
     transform: rotateY(180deg);
+    position: relative;
+}
+
+.similarity {
+    background-color: red;
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* border: 1px solid #737373; */
+
+    padding: 3px;
+    font-weight: bold;
+    font-size: 13px;
+    color: white;
+    
+}
+
+.similarityText {
+    font-weight: bold;
+    font-size: 11px;
+}
+
+.similaritySpan {
+    color: red;
+}
+
+/* .heart {
+    width: 20px;
+    height: 20px;
+    background: #ea2027;
+    position: relative;
+    transform: rotate(45deg);
+}
+.heart2 {
+    content: "";
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: -50%;
+    border-radius: 50%;
+    background: #ea2027;
+}
+.heart3 {
+    content: "";
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: -50%;
+    left: 50%;
+    border-radius: 50%;
+    background: #ea2027;
+} */
+
+.text {
+    /* transform: rotate(-45deg); */
+    position: absolute;
+    font-size: 15px;
+    top: 4px;
+    right: 3px;
+    /* color: #FFFFFF; */
 }
 
 /* .profileimg{

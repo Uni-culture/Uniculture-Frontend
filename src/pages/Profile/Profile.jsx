@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import MyProfile from "./MyProfile";
 import OtherProfile from "./OtherProfile";
+import Layout from "../../components/Layout";
 
 const Profile = () => {
     const { nickname } = useParams(); // 타인 조회를 위한 url param
@@ -79,9 +80,9 @@ const Profile = () => {
     },[nickname]);
 
     return (
-        <>
+        <Layout>
            {myProfile ? <MyProfile myInfo={myInfo} /> : (otherInfo && <OtherProfile myInformation={myInfo} otherInformation={otherInfo} />)} 
-        </>
+        </Layout>
     );
 };
 
