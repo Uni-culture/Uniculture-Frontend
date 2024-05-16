@@ -14,7 +14,8 @@ const Comments = ({board_id}) => {
     const [commentList, setCommentList] = useState([]);
     const [content, setContent] = useState(""); // 입력한 댓글 내용
     const [page, setPage] = useState(0); // 현재 페이지
-    const [pageCount, setPageCount] = useState(0); // 총 페이지 갯수
+    const [totalComments, setTotalComments] = useState(0); // 총 댓글 개수
+    const [pageCount, setPageCount] = useState(0); // 총 페이지 개수
     const { t } = useTranslation();
 
     const getToken = () => {
@@ -118,6 +119,7 @@ const Comments = ({board_id}) => {
         // 페이지 카운트 구하기: (전체 comment 갯수) / (한 페이지 갯수) 결과 올림
         getTotalBoard().then((response) => {
             const totalComments = response.data;
+            setTotalComments(response.data);
             const calculatedPageCount = Math.ceil(totalComments / 5);
             setPageCount(calculatedPageCount);
 
@@ -154,6 +156,7 @@ const Comments = ({board_id}) => {
 
     return (
         <div className="comments-wrapper">
+            <div>{totalComments}개의 댓글</div>
             <div className="comments-header">
                 <TextField
                     className="comments-header-textarea"
