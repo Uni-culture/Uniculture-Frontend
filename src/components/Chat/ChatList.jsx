@@ -33,13 +33,20 @@ const ChatList = ({onSelectedChatRoom, user}) => {
         updatedRooms = [...prev];
         updatedRooms[roomIndex] = {
           ...updatedRooms[roomIndex],
-          latestMessage : receivedMessage.messageType === "TALK" ? receivedMessage.message : '[수정됨]',
+          //latestMessage : receivedMessage.message,
+          latestMessage : receivedMessage.type === "TALK" ? receivedMessage.message : '[수정됨]',
           latestMessageTime: receivedMessage.createdDate,
           unreadCount: receivedMessage.roomId.toString() === chatId? 0: prev[roomIndex].unreadCount+1,
         };
         // return updatedRooms;
       } else {
-        updatedRooms = [{id:receivedMessage.roomId,username: receivedMessage.sender, latestMessage: receivedMessage.message, latestMessageTime: receivedMessage.createdTime, unreadCount: receivedMessage.roomId.toString() === chatId? 0 : 1},...prev, ];
+        updatedRooms = [{
+          id:receivedMessage.roomId,
+          username: receivedMessage.sender,
+          //latestMessage : receivedMessage.message,
+          latestMessage : receivedMessage.type === "TALK" ? receivedMessage.message : '[수정됨]',
+          latestMessageTime: receivedMessage.createdTime,
+          unreadCount: receivedMessage.roomId.toString() === chatId? 0 : 1},...prev, ];
         
       } 
       return updatedRooms.sort((a,b) => new Date(b.latestMessageTime) - new Date(a.latestMessageTime));

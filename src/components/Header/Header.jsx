@@ -52,8 +52,27 @@ const Header = () => {
     };
 
     useEffect(() => {
-        loginCheck(); // 컴포넌트가 마운트될 때 로그인 상태 확인
+        loginCheck();
+
+        const interval = setInterval(() => {
+            loginCheck();
+        }, 10000); // 5초마다 API 호출
+
+        return () => clearInterval(interval); // 컴포넌트가 unmount될 때 interval을 정리
     }, []);
+
+    /*useEffect(() => {
+        interval(); // 컴포넌트가 마운트될 때 로그인 상태 확인
+    }, []);*/
+
+
+    const longPolling = async () => {
+        while (true) {
+            await loginCheck();
+            // 재요청 전에 짧은 지연을 추가할 수 있습니다.
+            await new Promise(resolve => setTimeout(resolve, 100000)); // 5초 후에 재요청
+        }
+    };
 
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 로컬 스토리지에서 토큰 가져옴
