@@ -281,15 +281,6 @@ const Search = () => {
         }
     }, [debouncedSearch, tags, searchType]);
 
-    /*useEffect(() => {
-        console.log(currentPage);
-        console.log(isLoading);
-        console.log(hasMore);
-
-        if (currentPage > 0 && !isLoading && hasMore) {
-            searchData(currentPage);
-        }
-    }, [currentPage, isLoading, hasMore]);*/
     useEffect(() => {
         console.log(currentPage);
         console.log(isLoading);
@@ -342,7 +333,7 @@ const Search = () => {
                         <div className="friendList-body">
                             {friendList.length > 0 && friendList.map((friend, index) => {
                                 return <div ref={friendList.length === index + 1 ? lastElementRef : null} key={friend.id}>
-                                    <SearchUserCard user={friend} />
+                                    <SearchUserCard user={friend} type='friend' />
                                 </div>
                                 
                             })}
