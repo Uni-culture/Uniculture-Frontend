@@ -14,6 +14,7 @@ import {useTranslation} from "react-i18next";
 
 export default function OtherProfile({otherInformation}) {
     const [otherInfo, setOtherInfo] = useState(otherInformation);
+    const [countryImg, setCountryImg] = useState('/korea.png');
     const navigate = useNavigate();
 
     const [friendNum, setFriendNum] = useState(otherInfo?.friendnum) // 친구수락, 삭제시 친구수 관리를 위해
@@ -36,6 +37,8 @@ export default function OtherProfile({otherInformation}) {
     };
 
     useEffect(() => {
+        handleCountryImg();
+
         // 사용 언어 배열로 변환하여 업데이트한 후 능숙도가 높은 순으로 정렬
         const canLanguagesArray = Object.entries(otherInfo.canlanguages).map(([language, level]) => ({ language, level }));
         setCanLanguages(canLanguagesArray);
@@ -290,6 +293,26 @@ export default function OtherProfile({otherInformation}) {
         }
     };
 
+    const handleCountryImg = () => {
+        switch (otherInfo?.country) {
+            case 'Korea':
+                setCountryImg('/korea.png');
+                break;
+            case 'USA':
+                setCountryImg('/united-states.png');
+                break;
+            case 'Japan':
+                setCountryImg('/japan.png');
+                break;
+            case 'China':
+                setCountryImg('/china.png');
+                break;
+            default:
+                setCountryImg('/korea.png');
+                break;
+        }
+    }
+
     return (
         <div className={styles.container}>
             <div className={styles.top}>
@@ -300,6 +323,10 @@ export default function OtherProfile({otherInformation}) {
                         alt="profile"
                         className={styles.image}
                     />
+
+                    <div className={styles.countryImageWrapper}>
+                        <img className={styles.country} alt='country' src={countryImg} />
+                    </div>
                 </div>
 
                 <div className={styles.info}>
