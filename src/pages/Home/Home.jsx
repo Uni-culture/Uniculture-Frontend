@@ -13,7 +13,7 @@ import ImgSlider from "./ImgSlider";
 const Home = () => {
     const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(false);
-    const [activeTab, setActiveTab] = useState('total'); //컴포넌트 선택
+    const [activeTab, setActiveTab] = useState('live'); //컴포넌트 선택
     const { t} = useTranslation();
 
     const getToken = () => {
@@ -69,27 +69,46 @@ const Home = () => {
                 <div className="navbar">
                     <span>
                         <ul className="nav nav-underline nav-tab">
-                            <li className="nav-item">
-                                <button className={`nav-link ${activeTab === 'total' ? 'active' : ''}`} style={{color: "black"}}
-                                        onClick={() => setActiveTab('total')}>{t(`nav.전체`)}</button>
+                            <li className="nav-item"> {/*실시간*/}
+                                <button className={`nav-link ${activeTab === 'live' ? 'active' : ''}`} style={{color: "black"}}
+                                        onClick={() => setActiveTab('live')}>
+                                    <img src={activeTab === 'live' ? '/uptrend_active.png' : '/uptrend.png'} alt="Trend Icon" className="nav-icon-style"/>
+                                    {t(`nav.실시간`)}
+                                </button>
                             </li>
-                            <li className="nav-item">
+                            <li className="nav-item"> {/*최신*/}
+                                <button className={`nav-link ${activeTab === 'new' ? 'active' : ''}`} style={{color: "black"}}
+                                        onClick={() => setActiveTab('new')}>
+                                    <img src={activeTab === 'new' ? '/new_active.png' : '/new.png'} alt="New Icon" className="nav-icon-style" style={{marginRight: "5px"}}/>
+                                    {t(`nav.최신`)}
+                                </button>
+                            </li>
+                            {/*<li className="nav-item"> 일상
                                 <button className={`nav-link ${activeTab === 'daily' ? 'active' : ''}`} style={{color: "black"}}
-                                        onClick={() => setActiveTab('daily')}>{t(`nav.일상`)}</button>
-                            </li>
-                            <li className="nav-item">
+                                        onClick={() => setActiveTab('daily')}>
+                                    <img src={activeTab === 'daily' ? '/list_active.png' : '/list.png'} alt="List Icon" className="nav-icon-style"/>
+                                    {t(`nav.일상`)}
+                                </button>
+                            </li>*/}
+                            <li className="nav-item"> {/*도움*/}
                                 <button className={`nav-link ${activeTab === 'help' ? 'active' : ''}`} style={{color: "black"}}
-                                        onClick={() => setActiveTab('help')}>{t(`nav.도움`)}</button>
+                                        onClick={() => setActiveTab('help')}>
+                                    <img src={activeTab === 'help' ? '/help_active.png' : '/help.png'} alt="Help Icon" className="nav-icon-style"/>
+                                    {t(`nav.도움`)}
+                                </button>
                             </li>
-                            <li className="nav-item">
+                            <li className="nav-item"> {/*피드*/}
                                 <button className={`nav-link ${activeTab === 'friend' ? 'active' : ''}`} style={{color: "black"}}
-                                        onClick={() => setActiveTab('friend')}>{t(`nav.친구`)}</button>
+                                        onClick={() => setActiveTab('friend')}>
+                                    <img src={activeTab === 'friend' ? '/friend_active.png' : '/friend.png'} alt="friend Icon" className="nav-icon-style" style={{marginRight: "3px"}}/>
+                                    {t(`nav.피드`)}
+                                </button>
                             </li>
                         </ul>
                     </span>
 
                     <span>
-                        <span className="select-style">
+                        {/*<span className="select-style">
                             <Select
                                 defaultValue="default"
                                 style={{
@@ -114,7 +133,7 @@ const Home = () => {
                                     },
                                 ]}
                             />
-                        </span>
+                        </span>*/}
 
                         {isLogin ? (
                             <button className="write-button" onClick={() => {

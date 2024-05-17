@@ -15,10 +15,11 @@
     "select": "Select"
   },
   "nav": {
-    "전체": "All",
+    "실시간": "Live",
+    "최신": "New",
     "일상": "Daily",
     "도움": "Help",
-    "친구": "Friends",
+    "피드": "Feed",
     "글쓰기": "Writing"
   },
   "sort": {

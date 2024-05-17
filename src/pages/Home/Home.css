@@ -22,6 +22,23 @@
     /*background-color: yellow;*/
 }
 
+/* 기본 nav-link 스타일 */
+.nav-link {
+    /*font-size: 17px !important;*/
+    color: grey !important; /* 비활성화된 탭에 대한 색상 */
+}
+
+/* 활성화된 탭에 대한 스타일 */
+.nav-link.active {
+    color: black !important; /* 활성화된 탭에 대한 색상 */
+}
+
+.nav-icon-style {
+    width: 23px;
+    height: auto;
+    margin-right: 7px;
+}
+
 .write-button {
     margin-top: 15px;
     font-size: 15px;
