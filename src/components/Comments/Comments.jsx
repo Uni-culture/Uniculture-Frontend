@@ -94,7 +94,14 @@ const Comments = ({board_id}) => {
                 const commentList = response.data;
                 console.log(`data : `, commentList);
                 setCommentList(commentList.content);
-                console.log("200 성공~~~~");
+
+                // 두 번째 API 호출: 총 댓글 수 가져오기 (대댓글 실시간 반영을 위함)
+                const countResponse = await axios.get(`/api/comment/count?postId=${board_id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                setTotalComments(countResponse.data[1]);
             }
         } catch (error) { // 실패 시
             if (error.response) { // error.response가 존재하는지 확인
