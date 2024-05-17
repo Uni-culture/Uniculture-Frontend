@@ -64,6 +64,7 @@ const Comments = ({board_id}) => {
             const calculatedPageCount = Math.ceil(totalComments / 5);
             setPageCount(calculatedPageCount);
             setPage(calculatedPageCount - 1); // 새 댓글이 추가된 마지막 페이지로 설정
+            setTotalComments(response.data[1]); // 새 댓글이 추가되면 다시 총 댓글 수 받아옴
             getCommentList(); // 변경된 페이지로 댓글 목록 갱신
         } catch (error) {
             if(error.response.status === 401) {
