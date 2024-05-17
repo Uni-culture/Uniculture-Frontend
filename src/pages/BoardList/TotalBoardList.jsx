@@ -22,9 +22,10 @@ const TotalBoardList = ({activeTab}) => {
         try {
             const token = getToken(); // 토큰 가져오기
             // const page_number = searchParams.get("page");
-            let apiUrl = `/api/post?ca=NORMAL&page=${page}&size=8`;
+            let apiUrl = `/api/post?ca=NORMAL&page=${page}&size=8&sort=likeCount,DESC`;
             console.log(activeTab);
-            if(activeTab==="total") apiUrl = `/api/post?ca=NORMAL&page=${page}&size=8`;
+            if(activeTab==="live") apiUrl = `/api/post?ca=NORMAL&page=${page}&size=8&sort=likeCount,DESC`;
+            else if(activeTab==="new") apiUrl = `/api/post?ca=NORMAL&page=${page}&size=8`;
             else if(activeTab==="daily") apiUrl = `/api/post?ca=NORMAL&pt=DAILY&page=${page}&size=8`;
             else if(activeTab==="help") apiUrl = `/api/post?ca=NORMAL&pt=HELP&page=${page}&size=8`;
             else if(activeTab==="friend") apiUrl = `/api/auth/post/friend?page=${page}&size=8`;

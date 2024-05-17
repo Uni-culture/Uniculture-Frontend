@@ -156,6 +156,11 @@
     background-color: #B3C693;
 }
 
+.nickNameButton:disabled {
+    background-color: #dadada;
+    color: #878787;
+}
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -228,11 +233,10 @@
 
 
 select.box {
-    width: 95%;
-    height: 45px;
+    width: 99%;
+    height: 55px;
     box-sizing: border-box;
-    margin-left: 5px;
-    padding: 5px 0 5px 10px;
+    padding: 8px 0 8px 10px;
     border-radius: 8px;
     border: 1px solid #d9d6d6;
     color: #383838;

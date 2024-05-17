@@ -14,7 +14,8 @@ const Comments = ({board_id}) => {
     const [commentList, setCommentList] = useState([]);
     const [content, setContent] = useState(""); // 입력한 댓글 내용
     const [page, setPage] = useState(0); // 현재 페이지
-    const [pageCount, setPageCount] = useState(0); // 총 페이지 갯수
+    const [totalComments, setTotalComments] = useState(0); // 총 댓글 개수
+    const [pageCount, setPageCount] = useState(0); // 총 페이지 개수
     const { t } = useTranslation();
 
     const getToken = () => {
@@ -59,7 +60,7 @@ const Comments = ({board_id}) => {
     const updateTotalCommentsAndPage = async () => {
         try {
             const response = await axios.get(`/api/comment/count?postId=${board_id}`);
-            const totalComments = response.data; // 새로운 총 댓글 수
+            const totalComments = response.data[0]; // 새로운 총 댓글 수
             const calculatedPageCount = Math.ceil(totalComments / 5);
             setPageCount(calculatedPageCount);
             setPage(calculatedPageCount - 1); // 새 댓글이 추가된 마지막 페이지로 설정
@@ -117,7 +118,8 @@ const Comments = ({board_id}) => {
         }
         // 페이지 카운트 구하기: (전체 comment 갯수) / (한 페이지 갯수) 결과 올림
         getTotalBoard().then((response) => {
-            const totalComments = response.data;
+            const totalComments = response.data[0];
+            setTotalComments(response.data[1]);
             const calculatedPageCount = Math.ceil(totalComments / 5);
             setPageCount(calculatedPageCount);
 
@@ -154,6 +156,7 @@ const Comments = ({board_id}) => {
 
     return (
         <div className="comments-wrapper">
+            <div className="totalComments">{totalComments}개의 댓글</div>
             <div className="comments-header">
                 <TextField
                     className="comments-header-textarea"
@@ -166,9 +169,9 @@ const Comments = ({board_id}) => {
                     multiline placeholder={t('comments.Placeholder')}
                 />
                 {content !== "" ? (
-                    <button onClick={submitComment}>{t('comments.SubmitButton')}</button>
+                    <button onClick={submitComment} className="comment-submit-Button">{t('comments.SubmitButton')}</button>
                 ) : (
-                    <button disabled={true}>
+                    <button disabled={true} className="comment-submit-Button">
                         {t('comments.SubmitButton')}
                     </button>
                 )}

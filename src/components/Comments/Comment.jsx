@@ -251,12 +251,16 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                             <div className="postMine-style">{t('comments.Author')}</div>
                         )}
                     </div>
-                    <HiOutlineDotsVertical className="HiOutlineDotsVertical" onClick={() => setCommentMenuVisible(!commentMenuVisible)} />
-                    {commentMenuVisible && (
-                        <div className="comment-options">
-                            <button className="option-button" onClick={() => commentEdit()}>{t('comments.Edit')}</button>
-                            <button className="option-button" onClick={() => deleteComment(comment.id)}>{t('comments.Delete')}</button>
-                        </div>
+                    {comment.isMine && (
+                        <>
+                            <HiOutlineDotsVertical className="HiOutlineDotsVertical" onClick={() => setCommentMenuVisible(!commentMenuVisible)} />
+                            {commentMenuVisible && (
+                                <div className="comment-options">
+                                    <button className="option-button" onClick={() => commentEdit()}>{t('comments.Edit')}</button>
+                                    <button className="option-button" onClick={() => deleteComment(comment.id)}>{t('comments.Delete')}</button>
+                                </div>
+                            )}
+                        </>
                     )}
                 </div>
                 {commentEditMode ? (
@@ -316,12 +320,16 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                                                 <div className="postMine-style">{t('comments.Author')}</div>
                                             )}
                                         </div>
-                                        <HiOutlineDotsVertical className="HiOutlineDotsVertical" onClick={() => {toggleReplyMenu(child.id); console.log(this)}} />
-                                        {replyMenuVisible[child.id] && (
-                                            <div className="replyComment-options">
-                                                <button className="option-button" onClick={() => replyEdit(child.id, child.content)}>{t('comments.Edit')}</button>
-                                                <button className="option-button" onClick={() => deleteComment(child.id)}>{t('comments.Delete')}</button>
-                                            </div>
+                                        {child.isMine && (
+                                            <>
+                                                <HiOutlineDotsVertical className="HiOutlineDotsVertical" onClick={() => {toggleReplyMenu(child.id); console.log(this)}} />
+                                                {replyMenuVisible[child.id] && (
+                                                    <div className="replyComment-options">
+                                                        <button className="option-button" onClick={() => replyEdit(child.id, child.content)}>{t('comments.Edit')}</button>
+                                                        <button className="option-button" onClick={() => deleteComment(child.id)}>{t('comments.Delete')}</button>
+                                                    </div>
+                                                )}
+                                            </>
                                         )}
                                     </div>
                                     {replyEditMode[child.id] ? (

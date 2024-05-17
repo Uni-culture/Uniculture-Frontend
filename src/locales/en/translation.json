@@ -15,10 +15,11 @@
     "select": "Select"
   },
   "nav": {
-    "전체": "All",
+    "실시간": "Live",
+    "최신": "New",
     "일상": "Daily",
     "도움": "Help",
-    "친구": "Friends",
+    "피드": "Feed",
     "글쓰기": "Writing"
   },
   "sort": {
@@ -46,7 +47,7 @@
     "subTitle": "A language exchange platform to support your growth",
     "email": "Email",
     "requestAuth": "Req Auth",
-    "emailError": "Invalid email format.",
+    "emailError": "The email address must end with @hansung.ac.kr.",
     "enterAuthCode": "Please enter the authentication code",
     "confirmAuth": "Conf Auth",
     "password": "Password",

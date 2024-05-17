@@ -1,5 +1,6 @@
 .home-layout {
     background-color: #FBFBF3;
+    overflow-x: hidden; /* 가로 스크롤 숨김 */
 }
 
 .home-nav-layout {
@@ -19,6 +20,22 @@
 .nav-tab {
     margin-top: 20px;
     /*background-color: yellow;*/
+}
+
+/* 기본 nav-link 스타일 */
+.home-nav-layout .nav-link {
+    color: grey !important;
+}
+
+/* 활성화된 탭에 대한 스타일 */
+.nav-link.active {
+    color: black !important;
+}
+
+.nav-icon-style {
+    width: 23px;
+    height: auto;
+    margin-right: 7px;
 }
 
 .write-button {

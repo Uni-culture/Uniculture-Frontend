@@ -15,11 +15,9 @@
   }
 
   .replyComments-header {
-    /*margin: 1rem 0;
-    display: flex;*/
+    margin: 0.8rem 0;
     display: flex;
     flex: 1;
-    margin-bottom: 13px;
 
     .replyComments-header-textarea {
       flex: 1;
@@ -30,9 +28,28 @@
       }
     }
 
-    button {
+    .replyComment-submit-Button {
       margin-left: 0.5rem;
-      font-size: 1.1rem;
+      font-size: 1.02rem;
+      font-weight: 550;
+      border: none;
+      border-radius: 5px;
+      background-color: #8BC765;
+      padding: 5px 13px;
+      color: white;
+    }
+
+    .replyComment-submit-Button:hover {
+      background-color: #89DE55;
+    }
+
+    .replyComment-submit-Button:active {
+      background-color: #8BC765;
+    }
+
+    .replyComment-submit-Button:disabled {
+      background-color: #dadada;
+      color: white;
     }
   }
 }
