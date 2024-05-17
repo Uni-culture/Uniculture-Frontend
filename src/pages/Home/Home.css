@@ -23,14 +23,13 @@
 }
 
 /* 기본 nav-link 스타일 */
-.nav-link {
-    /*font-size: 17px !important;*/
-    color: grey !important; /* 비활성화된 탭에 대한 색상 */
+.home-nav-layout .nav-link {
+    color: grey !important;
 }
 
 /* 활성화된 탭에 대한 스타일 */
 .nav-link.active {
-    color: black !important; /* 활성화된 탭에 대한 색상 */
+    color: black !important;
 }
 
 .nav-icon-style {
