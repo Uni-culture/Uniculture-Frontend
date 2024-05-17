@@ -33,7 +33,7 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMe
         try {
             const token = getToken(); // 토큰 가져오기
 
-            const response = await axios.post('/api/auth/friend/open', {
+            const response = await axios.post('/api/auth/friend/recommend/open', {
                 targetId: userInfo.id
             }, {
                 headers: {

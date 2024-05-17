@@ -96,7 +96,7 @@ export default function RequestModal({ modal, handleReceivedRequestsNum, handleF
         try {
             const token = getToken();
 
-            const response = await axios.get('/api/auth/friend/checkMyRequest', {
+            const response = await axios.get('/api/auth/friend-request/sent', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -122,7 +122,7 @@ export default function RequestModal({ modal, handleReceivedRequestsNum, handleF
         try {
             const token = getToken();
 
-            const response = await axios.get('/api/auth/friend/checkRequest', {
+            const response = await axios.get('/api/auth/friend-request/receive', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -148,7 +148,7 @@ export default function RequestModal({ modal, handleReceivedRequestsNum, handleF
         try {
             const token = getToken();
 
-            const response = await axios.delete('/api/auth/friend', {
+            const response = await axios.delete('/api/auth/friend-requests', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
@@ -178,8 +178,8 @@ export default function RequestModal({ modal, handleReceivedRequestsNum, handleF
         try {
             const token = getToken();
 
-            const response = await axios.post('/api/auth/friend/accept', {
-                targetId: userInfo.id
+            const response = await axios.put(`/api/auth/friend-requests/${userInfo.id}`, {
+                status: 'accepted'
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -210,8 +210,8 @@ export default function RequestModal({ modal, handleReceivedRequestsNum, handleF
         try {
             const token = getToken();
 
-            const response = await axios.post('/api/auth/friend/reject', {
-                targetId: userInfo.id
+            const response = await axios.put(`/api/auth/friend-requests/${userInfo.id}`, {
+                status: 'rejected'
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -240,7 +240,7 @@ export default function RequestModal({ modal, handleReceivedRequestsNum, handleF
         try {
             const token = getToken();
 
-            const response = await axios.delete('/api/auth/friend/deleteFriend', {
+            const response = await axios.delete('/api/auth/friend', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },

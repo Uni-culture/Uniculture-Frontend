@@ -111,10 +111,6 @@ const ChatList = ({onSelectedChatRoom, user}) => {
         connectHeaders: {
           Authorization: getToken(),
         },
-        onStompError:(frame)=>{
-          console.error('Broker reported error: ' + frame.headers['message']);
-          console.error('Additional details: ' + frame.body);
-        },
         onStompError: (frame) => {
           console.error('STOMP Error:', frame.headers['message'], 'Details:', frame.body);
         },
@@ -147,6 +143,9 @@ const ChatList = ({onSelectedChatRoom, user}) => {
                         alt="profileimg"
                         src={room?.profileImage ? room.profileImage : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
                     />
+                    <div className={styles.countryImageWrapper}>
+                      <img className={styles.country} alt='country' src={`/${room.country}.png`} />
+                    </div>
                   </div>
                   <div className={styles.profileText}>
                     <div className={styles.userInfo}>
@@ -155,9 +154,9 @@ const ChatList = ({onSelectedChatRoom, user}) => {
                         {room?.gender === "MAN" ? (<GiMale color='blue' size={20} />):(<GiFemale color='red' size={20}/>)}
                     </span>
                       <span className={styles.ageText}>{room?.age}</span>
-                      <Badge className={styles.badge} count={room.unreadCount} size="large" overflowCount={99}/>
                     </div>
                   </div>
+                  <div className={styles.badge}><Badge count={room.unreadCount} size="large" overflowCount={99}/></div>
                   <div className={styles.introduce}>{room.latestMessage ? room.latestMessage : "채팅 없음" }</div>
                   <div className={styles.time}> {room.latestMessageTime ? moment(room.latestMessageTime).fromNow() : " " }</div>
                 </div>
