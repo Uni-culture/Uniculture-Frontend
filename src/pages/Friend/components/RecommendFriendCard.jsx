@@ -97,6 +97,7 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMe
                     style={{width: "100%", height: "100%"}}
                     cover={
                         <img
+                            className={styles.profileImg}
                             alt="profileimg"
                             src={userInfo?.profileUrl ? userInfo.profileUrl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
                         />
@@ -135,27 +136,12 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMe
                                         {userInfo?.introduce}
                                     </div>
                                 ) : (
-                                    <div style={{height: "20px", textAlign: "left", marginBottom: "5px", color: "#00000073"}}>설정한 소개가 없습니다.</div>
+                                    <div style={{height: "30px", textAlign: "left", color: "#00000073", fontSize: "13px"}}>설정한 소개가 없습니다.</div>
                                 )}
                             </div>
                         }
                     />
                 </Card>
-                {/* <div className={styles.similarity}> */}
-                    {/* <div className={styles.heart}>
-                    <div className={styles.heart2} >
-                    <div className={styles.heart3} > */}
-                        {/* <div className={styles.text}> */}
-                            {/* {similarity}% */}
-                        {/* </div> */}
-                    {/* </div>
-                    </div>
-                    </div> */}
-                    
-                    {/* <div className={styles.text}> */}
-
-                    {/* </div> */}
-                {/* </div> */}
             </div>
         </div>
     )
