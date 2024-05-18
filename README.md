@@ -1,1 +1,0 @@
-[2024 HSU Capstone] 언어교류 플랫폼 UniCulture의 프론트엔드 페이지입니다.
