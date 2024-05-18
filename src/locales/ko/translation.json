@@ -31,6 +31,20 @@
     "title": "로그인 후 이용해 주세요.",
     "confirmButton": "확인"
   },
+  "serverError": {
+    "title": "잠시 후 이용해 주세요",
+    "confirmButton": "확인"
+  },
+  "friendSuccess": {
+    "title": "친구 신청이 완료되었습니다.",
+    "confirmButton": "확인"
+  },
+  "friendDelete": {
+    "title": "정말 이 친구를 삭제하시겠어요?",
+    "text": "삭제 시 해당 친구가 친구 목록에서 사라집니다.",
+    "deleteButton": "삭제",
+    "cancelButton": "취소"
+  },
   "signIn": {
     "subTitle": "나의 성장을 돕는 언어교류 플랫폼",
     "emailInput": "✉️ 이메일",
@@ -184,7 +198,7 @@
     "스터디": "스터디",
     "removeFriend": "친구 끊기",
     "addFriend": "친구 걸기",
-    "cancelRequest": "신청 취소",
+    "cancelRequest": "신청 중",
     "acceptFriend": "친구 수락",
     "sendMessage": "채팅 보내기",
     "friendRequestSuccess": "친구 신청 성공"
