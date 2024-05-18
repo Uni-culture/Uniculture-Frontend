@@ -48,6 +48,8 @@
     "requestAuth": "인증요청",
     "emailError": "이메일 주소는 @hansung.ac.kr로 끝나야 합니다.",
     "enterAuthCode": "인증번호를 입력해주세요",
+    "emailSuccess": "인증에 성공하였습니다.",
+    "emailFailure": "인증에 실패하였습니다.",
     "confirmAuth": "인증확인",
     "password": "비밀번호",
     "passwordPlaceholder": "영문, 숫자, 특수문자 포함 8자 이상",

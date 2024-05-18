@@ -49,6 +49,8 @@
     "requestAuth": "Req Auth",
     "emailError": "The email address must end with @hansung.ac.kr.",
     "enterAuthCode": "Please enter the authentication code",
+    "emailSuccess": "Authentication successful.",
+    "emailFailure": "Authentication failed.",
     "confirmAuth": "Conf Auth",
     "password": "Password",
     "passwordPlaceholder": "Min 8 chars with letters, numbers, special chars",
