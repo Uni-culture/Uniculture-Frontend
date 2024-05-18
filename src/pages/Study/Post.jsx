@@ -183,7 +183,12 @@ const imageHandler = () => {
     console.log('response.status:', res.status);
     if(res.status === 200) {
       alert("글 작성 완료");
-      navigate("/",{});
+      if(type ==='post'){
+        navigate("/",{});
+      } else{
+        navigate("/study");
+      }
+      
     }
     else {alert("글 작성 실패")}
 
