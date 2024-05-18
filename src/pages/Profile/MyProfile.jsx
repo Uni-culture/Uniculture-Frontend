@@ -99,7 +99,7 @@ export default function MyProfile({myInfo}) {
                 setCountryImg('/korea.png');
                 break;
             case 'USA':
-                setCountryImg('/united-states.png');
+                setCountryImg('/USA.png');
                 break;
             case 'Japan':
                 setCountryImg('/japan.png');

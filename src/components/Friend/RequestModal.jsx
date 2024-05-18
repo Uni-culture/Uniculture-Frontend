@@ -96,7 +96,7 @@ export default function RequestModal({ modal, handleReceivedRequestsNum, handleF
         try {
             const token = getToken();
 
-            const response = await axios.get('/api/auth/friend-request/sent', {
+            const response = await axios.get('/api/auth/friend-requests/sent', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -122,7 +122,7 @@ export default function RequestModal({ modal, handleReceivedRequestsNum, handleF
         try {
             const token = getToken();
 
-            const response = await axios.get('/api/auth/friend-request/receive', {
+            const response = await axios.get('/api/auth/friend-requests/receive', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
