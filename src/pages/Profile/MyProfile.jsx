@@ -99,7 +99,7 @@ export default function MyProfile({myInfo}) {
                 setCountryImg('/korea.png');
                 break;
             case 'USA':
-                setCountryImg('/united-states.png');
+                setCountryImg('/USA.png');
                 break;
             case 'Japan':
                 setCountryImg('/japan.png');
@@ -125,7 +125,7 @@ export default function MyProfile({myInfo}) {
                     />
 
                     <div className={styles.countryImageWrapper}>
-                        <img className={styles.country} alt='country' src={countryImg} />
+                        <img className={styles.country} alt='country' src={`/${myInfo.country}.png`} />
                     </div>
                 </div>
 

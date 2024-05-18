@@ -63,7 +63,7 @@ export default function SearchUserCard({user, type}) {
             const token = getToken(); // 토큰 가져오기
 
             if(token){ //로그인 O
-                const response = await axios.post('/api/auth/friend', {
+                const response = await axios.post('/api/auth/friend-requests', {
                     targetId: user.id
                 }, {
                     headers: {
@@ -107,7 +107,7 @@ export default function SearchUserCard({user, type}) {
                 try {
                     const token = getToken();
 
-                    const response = await axios.delete('/api/auth/friend/deleteFriend', {
+                    const response = await axios.delete('/api/auth/friend', {
                         headers: {
                             Authorization: `Bearer ${token}`
                         },
@@ -140,7 +140,7 @@ export default function SearchUserCard({user, type}) {
         try {
             const token = getToken();
 
-            const response = await axios.delete('/api/auth/friend', {
+            const response = await axios.delete('/api/auth/friend-requests', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
@@ -170,8 +170,8 @@ export default function SearchUserCard({user, type}) {
         try {
             const token = getToken();
 
-            const response = await axios.post('/api/auth/friend/accept', {
-                targetId: user.id
+            const response = await axios.put(`/api/auth/friend-requests/${user.id}`, {
+                status: 'accepted'
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`

@@ -38,7 +38,7 @@ export default function Recommend({recommendFriendList, sendMessage}) {
         try {
             const token = getToken(); // 토큰 가져오기
 
-            const response = await axios.post('/api/auth/friend', {
+            const response = await axios.post('/api/auth/friend-requests', {
                 targetId: userInfo.id
             }, {
                 headers: {
