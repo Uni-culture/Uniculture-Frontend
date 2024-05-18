@@ -109,7 +109,7 @@ export default function OtherProfile({otherInformation}) {
             const token = getToken(); // 토큰 가져오기
 
             if(token){ //로그인 O
-                const response = await axios.post('/api/auth/friend', {
+                const response = await axios.post('/api/auth/friend-requests', {
                     targetId: otherInfo.id
                 }, {
                     headers: {
@@ -153,7 +153,7 @@ export default function OtherProfile({otherInformation}) {
                 try {
                     const token = getToken();
 
-                    const response = await axios.delete('/api/auth/friend/deleteFriend', {
+                    const response = await axios.delete('/api/auth/friend', {
                         headers: {
                             Authorization: `Bearer ${token}`
                         },
@@ -187,7 +187,7 @@ export default function OtherProfile({otherInformation}) {
         try {
             const token = getToken();
 
-            const response = await axios.delete('/api/auth/friend', {
+            const response = await axios.delete('/api/auth/friend-requests', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
@@ -217,8 +217,8 @@ export default function OtherProfile({otherInformation}) {
         try {
             const token = getToken();
 
-            const response = await axios.post('/api/auth/friend/accept', {
-                targetId: otherInfo.id
+            const response = await axios.put(`/api/auth/friend-requests/${otherInfo.id}`, {
+                status: 'accepted'
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -299,7 +299,7 @@ export default function OtherProfile({otherInformation}) {
                 setCountryImg('/korea.png');
                 break;
             case 'USA':
-                setCountryImg('/united-states.png');
+                setCountryImg('/USA.png');
                 break;
             case 'Japan':
                 setCountryImg('/japan.png');

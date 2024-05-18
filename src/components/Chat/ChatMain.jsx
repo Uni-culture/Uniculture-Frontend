@@ -28,7 +28,7 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
         const loadChatHistory = async () => {
             try {
                 const token = getToken(); // 토큰 가져오기
-                const response = await axios.get(`/api/auth/chat/${selectedChatRoom.id}`, {
+                const response = await axios.get(`/api/auth/room/${selectedChatRoom.id}`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -127,7 +127,7 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
         {selectedChatRoom ? (
                 <>
                     <div className="chat-name">
-                        <h3>{selectedChatRoom.username}</h3>
+                        <h4>"{selectedChatRoom.username}"님과의 채팅방</h4>
                     </div>
                     <div className="chats">
                         {chats.map(chat =>(

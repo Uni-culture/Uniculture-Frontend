@@ -1,7 +1,3 @@
-.chat-list {
-  padding: 20px;
-}
-
 .chat-room {
   display: flex;
   flex-direction: column;

@@ -121,7 +121,7 @@ const Chat = () => {
             <Header />
             <div className={styles.page_layout}>
                 <aside className={styles.aside}>
-                    <div className={styles.asideTitle}> <h3>{t('chat.chat')}</h3> <div onClick={handleCreateChatModal}><LuMessageSquarePlus size={25}/></div></div>
+                    <div className={styles.asideTitle}> <h4 style={{ fontWeight: 'lighter' }}>{t('chat.chat')}</h4> <div onClick={handleCreateChatModal}><LuMessageSquarePlus size={25}/></div></div>
                     {userInfo ? (<ChatList onSelectedChatRoom={handleSelectChatRoom} user={userInfo}/>) : (<div>Loading</div>)}
                     
                 </aside>

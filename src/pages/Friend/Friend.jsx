@@ -122,7 +122,7 @@ export default function Friend() {
             console.log("추천 친구 목록 다시 불러오기");
             const token = getToken();
 
-            const response = await axios.get(`/api/auth/friend/recommend/reload`, {
+            const response = await axios.post(`/api/auth/friend/recommend`, null,{
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -141,7 +141,7 @@ export default function Friend() {
                 console.log("친구 목록 다시 불러오기 서버 오류");
             }
             
-        } catch (error) {
+           } catch (error) {
             console.log(error);
         }
     };
@@ -276,7 +276,7 @@ export default function Friend() {
         try {
             const token = getToken();
 
-            const response = await axios.delete('/api/auth/friend/deleteFriend', {
+            const response = await axios.delete('/api/auth/friend', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
@@ -307,7 +307,7 @@ export default function Friend() {
         try {
             const token = getToken();
 
-            const response = await axios.get('/api/auth/friend/checkRequest', {
+            const response = await axios.get('/api/auth/friend-requests/receive', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
