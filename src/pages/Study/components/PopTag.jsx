@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styles from './PopTag.module.css'
 import axios from 'axios'
 import {useTranslation} from "react-i18next";
+import { Api } from '../../../components/Api';
 
 export const PopTag = () => {
   const [data, setData] = useState([]);
@@ -15,16 +16,8 @@ export const PopTag = () => {
   useEffect(()=>{
     const token = getToken(); // 토큰 가져오기
     async function fetchData(){
-      const res = await axios.get(`/api/post/tag`,{
-        headers:{
-          Authorization:`Bearer ${token}`
-        }
-      })
-      console.log("태그 서버 응답 : ", res);
-      if(res.status===200){
-        console.log(res.data);
-        setData(res.data);
-      }
+      const res = await Api.GET_API('/api/post/tag');
+      setData(res);
     }
     fetchData();
   },[])

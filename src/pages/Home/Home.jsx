@@ -3,9 +3,6 @@ import React, {useEffect, useState} from "react"
 import {useNavigate} from "react-router-dom";
 import './Home.css';
 import TotalBoardList from "../BoardList/TotalBoardList";
-import DailyBoardList from "../BoardList/DailyBoardList";
-import HelpBoardList from "../BoardList/HelpBoardList";
-import FriendBoardList from "../BoardList/FriendBoardList";
 import { Select, Space } from 'antd';
 import {useTranslation} from "react-i18next";
 import ImgSlider from "./ImgSlider";
@@ -29,38 +26,6 @@ const Home = () => {
         console.log("전환");
     },[activeTab])
 
-    // 전체/일상/도움 선택
-    // const renderTabContent = () => {
-    //     switch (activeTab) {
-    //         case 'total':
-    //             return (
-    //                 <div>
-    //                     <TotalBoardList />
-    //                 </div>
-    //             );
-    //         case 'daily':
-    //             return (
-    //                 <div>
-    //                     <DailyBoardList />
-    //                 </div>
-    //             );
-    //         case 'help':
-    //             return (
-    //                 <div>
-    //                     <HelpBoardList />
-    //                 </div>
-    //             );
-    //         case 'friend':
-    //             return (
-    //                 <div>
-    //                     <FriendBoardList/>
-    //                 </div>
-    //             )
-    //         default:
-    //             return null;
-    //     }
-    // };
-
     return (
         <div className="home-layout">
             <Header />
@@ -83,13 +48,7 @@ const Home = () => {
                                     {t(`nav.최신`)}
                                 </button>
                             </li>
-                            {/*<li className="nav-item"> 일상
-                                <button className={`nav-link ${activeTab === 'daily' ? 'active' : ''}`} style={{color: "black"}}
-                                        onClick={() => setActiveTab('daily')}>
-                                    <img src={activeTab === 'daily' ? '/list_active.png' : '/list.png'} alt="List Icon" className="nav-icon-style"/>
-                                    {t(`nav.일상`)}
-                                </button>
-                            </li>*/}
+
                             <li className="nav-item"> {/*도움*/}
                                 <button className={`nav-link ${activeTab === 'help' ? 'active' : ''}`} style={{color: "black"}}
                                         onClick={() => setActiveTab('help')}>
@@ -108,33 +67,6 @@ const Home = () => {
                     </span>
 
                     <span>
-                        {/*<span className="select-style">
-                            <Select
-                                defaultValue="default"
-                                style={{
-                                    width: 100,
-                                }}
-                                options={[
-                                    {
-                                        value: 'default',
-                                        label: t('sort.최신순'),
-                                    },
-                                    {
-                                        value: 'viewCount',
-                                        label: t('sort.조회순'),
-                                    },
-                                    {
-                                        value: 'likeCount',
-                                        label: t('sort.좋아요순')
-                                    },
-                                    {
-                                        value: 'commentCount',
-                                        label: t('sort.댓글순')
-                                    },
-                                ]}
-                            />
-                        </span>*/}
-
                         {isLogin ? (
                             <button className="write-button" onClick={() => {
                                 // navigate("/add-board", {state : {from : location.pathname}});
