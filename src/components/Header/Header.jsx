@@ -366,7 +366,7 @@ const Header = () => {
         {
             label: (
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <img src="/united-states.png" alt="united-states" className="national-flag"/>
+                    <img src="/USA.png" alt="united-states" className="national-flag"/>
                     {t('header.영어')}
                 </div>
             ),
