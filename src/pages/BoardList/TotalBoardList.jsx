@@ -50,6 +50,7 @@ const TotalBoardList = ({activeTab}) => {
         } catch (error) { // 실패 시
             if(error.response.status === 401) {
                 console.log("401 오류");
+                
             }
             else {
                 console.log("서버 오류 입니다.");

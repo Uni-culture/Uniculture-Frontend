@@ -2,7 +2,7 @@
   /* margin-top: 40px; */
   display: flex;
   justify-content: center;
-  align-items: center;
+
 }
 .menu{
   display: flex;
@@ -12,6 +12,7 @@
 
 .right_side{
   margin-left: 20px;
+  margin-top: 30px;
 }
 
 .pop_tags{
@@ -47,6 +48,10 @@
   border-radius: 15px;
   width: 70px;
   text-align: center;
+}
+
+.search_box{
+  width: 800px;
 }
 
 .searchBar{
@@ -159,4 +164,16 @@
   align-items: center;
   margin: 0;
   margin-right: 12px;
+}
+
+@media(max-width: 1000px){
+  .background{
+    /* margin-top: 40px; */
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .right_side{
+    visibility: hidden;
+  }
 }
