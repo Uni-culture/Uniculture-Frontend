@@ -299,7 +299,9 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                         <div className={`comment-content ${comment.isDeleted ? 'comment-deleted' : ''}`}>
                             {comment.isDeleted ? t('comments.CommentDeleted') : (isTranslated ? translatedContent : comment.content)}
                         </div>
-                        <div className="ComentTranslate" onClick={toggleTranslate}>{t('comments.Translate')}</div>
+                        <div className="ComentTranslate" onClick={toggleTranslate}>
+                            {isTranslated ? t('comments.Revert') : t('comments.Translate')}
+                        </div>
                         <div className="comment-bottom">
                             <button className="reply-button" onClick={replyComponent}>{t('comments.Reply')}</button>
                             <div className="comment-date">
@@ -374,7 +376,9 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                                             <div className="replyComment-content">
                                                 {replyIsTranslated[child.id] ? replyTranslations[child.id] : child.content}
                                             </div>
-                                            <div className="ComentTranslate" onClick={() => toggleReplyTranslate(child.id, child.content)}>{t('comments.Translate')}</div>
+                                            <div className="ComentTranslate" onClick={() => toggleReplyTranslate(child.id, child.content)}>
+                                                {replyIsTranslated[child.id] ? t('comments.Revert') : t('comments.Translate')}
+                                            </div>
                                             <div className="replyComment-bottom">
                                                 <div className="replyComment-date">
                                                     {moment(child.createdDate).fromNow()}
