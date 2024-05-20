@@ -329,7 +329,7 @@ const Search = () => {
                                         content={post.content}
                                         hashtag={post.tags}
                                         username={post.writerName}
-                                        date={moment(post.createDate).add(9, "hours").format('YYYY년 MM월 DD일')}
+                                        date={moment(post.createDate).add(9, "hours").format(t('board.dateFormat'))}
                                         likeCount={post.likeCount}
                                         commentCount={post.commentCount}
                                     />
@@ -391,9 +391,9 @@ const Search = () => {
                 <div className="search-container">
                     <div className="searchWrap">
                         <IoSearch className="input-icon" />
-                        <input className="search-input" type="text" value={search} onChange={handleSearchChange} placeholder="검색어를 입력하세요"/>
+                        <input className="search-input" type="text" value={search} onChange={handleSearchChange} placeholder={t('search.enterSearchTerm')}/>
                     </div>
-                    <button className="search-button" onClick={handleSearchButton}>검색</button>
+                    <button className="search-button" onClick={handleSearchButton}>{t('search.search')}</button>
                 </div>
 
                 <div className="tag-container">
@@ -407,26 +407,27 @@ const Search = () => {
                                 </span>
                             ))}
                         </div>
-                        <input className="tag-input" type="text" value={tag} onChange={handleTagChange} onKeyUp={handleKeyDown} placeholder="태그로 검색해보세요!"/>
+                        <input className="tag-input" type="text" value={tag} onChange={handleTagChange} onKeyUp={handleKeyDown} placeholder={t('search.searchByTag')}/>
                     </div>
-                    <button className="reset-button" onClick={handleReset}><GrPowerReset className="reset-icon"/>초기화</button>
+                    <button className="reset-button" onClick={handleReset}><GrPowerReset className="reset-icon"/>{t('search.reset')}</button>
                 </div>
                 
-                <div className="total-elements">총 <b>{totalElements}개</b>의 검색 결과를 찾았습니다.</div>
+                <div className="total-elements"
+                     dangerouslySetInnerHTML={{ __html: t('search.totalResults', { count: totalElements }) }}></div>
 
                 <div className="navDiv">
                     <ul className="nav nav-underline nav-tab">
                         <li className="search-nav-item">
                             <button className={`nav-link ${searchType === 'post' ? 'active' : ''}`} style={{color: "black"}}
-                                    onClick={() => setSearchType('post')}>게시물 <span className="elements">{postElements}</span></button>
+                                    onClick={() => setSearchType('post')}>{t('search.posts')} <span className="elements">{postElements}</span></button>
                         </li>
                         <li className="search-nav-item">
                             <button className={`nav-link ${searchType === 'friend' ? 'active' : ''}`} style={{color: "black"}}
-                                    onClick={() => setSearchType('friend')}>친구 <span className="elements">{friendElements}</span></button>
+                                    onClick={() => setSearchType('friend')}>{t('search.friends')} <span className="elements">{friendElements}</span></button>
                         </li>
                         <li className="search-nav-item">
                             <button className={`nav-link ${searchType === 'member' ? 'active' : ''}`} style={{color: "black"}}
-                                    onClick={() => setSearchType('member')}>전체 사용자 <span className="elements">{memberElements}</span></button>
+                                    onClick={() => setSearchType('member')}>{t('search.allUsers')} <span className="elements">{memberElements}</span></button>
                         </li>
 
                         {searchType === 'post' && (

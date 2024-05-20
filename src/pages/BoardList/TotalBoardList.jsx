@@ -5,13 +5,13 @@ import axios from "axios";
 import {useSearchParams} from "react-router-dom";
 import "./boardList.scss";
 import moment from "moment";
+import {useTranslation} from "react-i18next";
 
 const TotalBoardList = ({activeTab}) => {
     const [pageCount, setPageCount] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
     const [boardList, setBoardList] = useState([]);
-
-    // const [searchParams, setSearchParams] = useSearchParams();
+    const { t } = useTranslation();
 
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
@@ -73,7 +73,7 @@ const TotalBoardList = ({activeTab}) => {
             <div className="boardList-body">
                 {boardList.map(post => (
                     <Card key={post.postId} board_id={post.postId} img={post.imageUrl} title={post.title} content={post.content} username={post.writerName}
-                          date={moment(post.createDate).add(9, "hour").format('YYYY년 MM월 DD일')} commentCount={post.commentCount} likeCount={post.likeCount}></Card>
+                          date={moment(post.createDate).add(9, "hour").format(t('board.dateFormat'))} commentCount={post.commentCount} likeCount={post.likeCount}></Card>
                 ))}
             </div>
             <div className="boardList-footer">

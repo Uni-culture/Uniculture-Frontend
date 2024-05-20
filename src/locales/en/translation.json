@@ -12,6 +12,8 @@
     "logoutMessage": "You have been logged out.",
     "한국어": "Korean",
     "영어": "English",
+    "일본어": "Japanese",
+    "중국어": "Chinese",
     "select": "Select"
   },
   "nav": {
@@ -280,6 +282,7 @@
     "EditButton": "Edit"
   },
   "comments": {
+    "count": "{{count}} comments",
     "Placeholder": "Please enter a comment",
     "SubmitButton": "Submit",
     "Author": "Author",
@@ -304,5 +307,15 @@
     "FR": "French",
     "IT": "Italian",
     "Translate": "Translate"
+  },
+  "search": {
+    "search": "Search",
+    "enterSearchTerm": "Enter search term",
+    "searchByTag": "Search by tag!",
+    "reset": "Reset",
+    "totalResults": "Found a total of <b>{{count}}</b> search results.",
+    "posts": "Posts",
+    "friends": "Friends",
+    "allUsers": "All Users"
   }
 }

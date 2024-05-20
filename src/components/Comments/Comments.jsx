@@ -164,7 +164,7 @@ const Comments = ({board_id}) => {
 
     return (
         <div className="comments-wrapper">
-            <div className="totalComments">{totalComments}개의 댓글</div>
+            <div className="totalComments">{t('comments.count', { count: totalComments })}</div>
             <div className="comments-header">
                 <TextField
                     className="comments-header-textarea"
