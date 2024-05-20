@@ -130,7 +130,7 @@ const imageHandler = () => {
     return {
       toolbar: {
         container: [
-          [{header: [1,2,3, false]}],
+          [{size: ["small", false, "large", "huge"]}],
           ["bold", "italic", "underline","strike"],
           ["blockquote"],
           [{list:"ordered"},{list:"bullet"}],
@@ -183,7 +183,12 @@ const imageHandler = () => {
     console.log('response.status:', res.status);
     if(res.status === 200) {
       alert("글 작성 완료");
-      navigate("/",{});
+      if(type ==='post'){
+        navigate("/",{});
+      } else{
+        navigate("/study");
+      }
+      
     }
     else {alert("글 작성 실패")}
 
@@ -225,7 +230,7 @@ const imageHandler = () => {
           <div className={styles.content_body}>
             <span>{t('post.content')}</span>
             <ReactQuill
-              style={{ width: "800px", height: "500px" }}
+              style={{ width:"100%", height: "500px" }}
               placeholder={t('post.contentPlaceholder')}
               theme="snow"
               ref={quillRef}

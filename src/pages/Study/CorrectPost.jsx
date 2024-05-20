@@ -162,7 +162,7 @@ export const CorrectPost = () => {
     console.log('response.status:', res.status);
     if(res.status === 200) {
       alert("글 수정 완료");
-      navigate("/",{});
+      navigate(`/board/${board_id}`,{});
     }
     else {alert("글 작성 실패")}
 

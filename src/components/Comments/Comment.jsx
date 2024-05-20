@@ -257,7 +257,10 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
             <div className="comments-comment">
                 <div className="comment-username-wrap">
                     <div className="postMine-wrap">
-                        <div className="comment-username">{comment.commentWriterName}</div>
+                        <div className="comment-username">
+                            <img src={"/default_profile_image.jpg"} alt="User Image" className="comment-img"/>
+                            {comment.commentWriterName}
+                        </div>
                         {comment.postMine && (
                             <div className="postMine-style">{t('comments.Author')}</div>
                         )}

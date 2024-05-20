@@ -20,10 +20,11 @@ const SignUp = () => {
     const [emailValid, setEmailValid] = useState(false);
     const [emailAuthValid, setEmailAuthValid] = useState(false);
     const [isAuthSuccess, setIsAuthSuccess] = useState(false); // 인증 성공 상태 관리
+    const [authMessage, setAuthMessage] = useState(''); // 인증 메시지 상태
     const [pwValid, setPwValid] = useState(false);
     const [showPassword, setShowPassword] = useState(false); // 비밀번호를 텍스트 형태로 보여줄지 여부 결정
     const [showPassword2, setShowPassword2] = useState(false); // 비밀번호2를 텍스트 형태로 보여줄지 여부 결정
-    const [passwordsMatch, setPasswordsMatch] = useState(true);
+    const [passwordsMatch, setPasswordsMatch] = useState(false); // 비밀번호1과 비밀번호2가 일치해야 true
     const [nickNameValid, setNickNameValid] = useState(false);
     const [isTooLong, setIsTooLong] = useState(false); // 닉네임 길이 초과 상태
     const [notAllow, setNotAllow] = useState(true);
@@ -173,25 +174,11 @@ const SignUp = () => {
     const emailAuthFun2 = () => {
         // emailNum과 emailAuth를 비교하여 일치할 경우에만 인증에 성공하였다는 메시지를 표시
         if (emailNum === emailAuth) {
-            // alert('인증에 성공하였습니다.');
-            Swal.fire({
-                icon: "warning",
-                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('AuthenticationSuccessful.title')}</div>`,
-                confirmButtonColor: "#8BC765",
-                confirmButtonText: "확인",
-            })
             setIsAuthSuccess(true);
-            // 여기에 인증에 성공한 후의 추가 동작을 넣으시면 됩니다.
+            setAuthMessage('인증에 성공하였습니다.');
         } else {
-            // alert('인증에 실패하였습니다.');
-            Swal.fire({
-                icon: "warning",
-                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('AuthenticationFailed.title')}</div>`,
-                confirmButtonColor: "#8BC765",
-                confirmButtonText: "확인",
-            })
             setIsAuthSuccess(false);
-            // 여기에 인증에 실패한 경우의 처리를 넣으시면 됩니다.
+            setAuthMessage('인증에 실패하였습니다.');
         }
     };
 
@@ -314,13 +301,13 @@ const SignUp = () => {
     };
 
     useEffect(() => {
-        if(emailValid && pwValid && nickNameValid && gender && nationality && selectedYear && selectedMonth && selectedDay) {
+        if(emailValid && isAuthSuccess && pwValid && passwordsMatch && nickNameValid && gender && nationality && selectedYear && selectedMonth && selectedDay) {
             setNotAllow(false); // 버튼 비활성화 해제
             return;
         }
         setNotAllow(true); // 기본적인 상황: 비활성화
 
-    }, [emailValid, pwValid, nickNameValid, gender, nationality, selectedYear, selectedMonth, selectedDay]); // 이메일, 비밀번호 등 state 값이 변경될 때마다 useEffect 실행
+    }, [emailValid, isAuthSuccess, pwValid, passwordsMatch, nickNameValid, gender, nationality, selectedYear, selectedMonth, selectedDay]); // 이메일, 비밀번호 등 state 값이 변경될 때마다 useEffect 실행
 
     //나이 계산
     useEffect(()=> {
@@ -388,9 +375,7 @@ const SignUp = () => {
                     </div>
                 )}
                 <div className="nickNameMessageWrap">
-                    {isAuthSuccess && (
-                        <div>인증에 성공하였습니다.</div>
-                    )}
+                    <div style={{color: isAuthSuccess ? '#469536' : 'red'}}>{authMessage}</div>
                 </div>
 
                 <div className="inputTitle">{t('signUp.password')}</div>

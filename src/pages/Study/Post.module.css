@@ -13,7 +13,7 @@
   align-items: center;
   width: 100%;
   max-width: 1000px;
-  min-width: 800px;
+  min-width: 570px;
 }
 .post_content{
   display: flex;
@@ -34,6 +34,10 @@
   margin-right: 20px;
 }
 
+.right{
+  min-width: 200px;
+}
+
 .title_box{
   border: 1px solid gray;
   border-radius: 5px;
@@ -47,6 +51,9 @@
   background-color: inherit;
 }
 
+.content_body{
+  width: 800px;
+}
 
 .category_box{
   display: flex;
@@ -114,5 +121,13 @@
   }
   .tags{
     margin-top: 0;
+  }
+  .content_body{
+    width: 650px;
+  }
+  .catNTags{
+    display: flex;
+    flex-direction: column;
+    margin-top: 25px;
   }
 }

@@ -15,7 +15,7 @@ import { HiOutlineHashtag } from "react-icons/hi";
 import { IoIosClose } from "react-icons/io";
 import { GrPowerReset } from "react-icons/gr";
 import {useTranslation} from "react-i18next";
-import Swal from 'sweetalert2';
+import { Api } from '../../components/Api';
 
 export const Study = () => {
   const navigate = useNavigate();
@@ -39,31 +39,8 @@ export const Study = () => {
 
   const token = getToken(); // 토큰 가져오기
 
-  const errorModal = (error) => {
-    if(error.response.status === 401) {
-        Swal.fire({
-            icon: "warning",
-            title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
-            confirmButtonColor: "#8BC765",
-            confirmButtonText: t('loginWarning.confirmButton'),
-        }).then(() => {
-            navigate("/sign-in");
-        })
-    }
-    else {
-        Swal.fire({
-            icon: "warning",
-            title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
-            confirmButtonColor: "#8BC765",
-            confirmButtonText: t('serverError.confirmButton'),
-        })
-    }
-  };
-
   const fetchBoardData = async (page) => {
     console.log('fetchBoardData start');
-    try {
-        // const page_number = searchParams.get("page");
         let url = `/api/post?page=${page}&size=10&ca=STUDY`; // 기본 URL
         if (status === '모집중') {
           url += '&ps=START';
@@ -75,27 +52,9 @@ export const Study = () => {
           url+= `&sort=${sort},DESC`;
         }
           
-
-        const response = await axios.get(url, {
-            headers: {
-                Authorization: `Bearer ${token}` // 헤더에 토큰 추가
-            }
-        });
-        console.log('서버 응답: ', response);
-        console.log('response.status: ', response.status);
-        // 게시물 등록 성공
-        if (response.status === 200) {
-            console.log(response.data);
-            console.log(response.data.content);
-            setBoardList(response.data.content);
-            console.log(`totalElements : ${response.data.totalElements}`);
-            setPageCount(Math.ceil( response.data.totalElements / 10));
-            console.log("200 성공");
-        }
-
-      } catch (error) { // 실패 시
-          errorModal(error);
-      }
+        const response = await Api.GET_API(url,navigate,t);
+        setBoardList(response.content);
+        setPageCount(Math.ceil( response.totalElements / 10));
   };
 
   useEffect(() => {
@@ -159,23 +118,12 @@ useEffect(() => {
         url += `&${tagsQuery}`;
     }
 
-    try {
-        const response = await axios.get(url);
-        if (response.status === 200) {
-            console.log("태그 배열 내용: ", newTags);
-            console.log("tags.length: ", newTags.length);
-            console.log("url: ", url);
-            console.log("받아온 게시물: ", response.data);
-            // setBoardList(prevBoardList => [...prevBoardList, ...response.data.content]); // 기존 목록에 추가
-            setBoardList(response.data.content);
-        }
-    } catch (error) {
-        errorModal(error);
-    }
+    const response = await Api.GET_API(url, navigate, t);
+    setBoardList(response.content);
   };
 
-  const handleSortChange = (e) =>{
-    setSort(e.target.value);
+  const handleSortChange = (value) =>{
+    setSort(value);
   }
 
   const handleKeyDown = (e) => {
@@ -207,9 +155,6 @@ useEffect(() => {
       <div className={styles.background}>
         <div className={styles.body_content}>
           <div className={styles.menu}>
-            {/* <button className={status==='전체' ? styles.statusbtn_selected : styles.statusbtn} onClick={handleMenuClick('전체')}>{t('study.전체')}</button>
-            <button className={status==='모집중' ? styles.statusbtn_selected : styles.statusbtn} onClick={handleMenuClick('모집중')}>{t('study.모집중')}</button>
-            <button className={status==='모집완료' ? styles.statusbtn_selected : styles.statusbtn} onClick={handleMenuClick('모집완료')}>{t('study.모집완료')}</button> */}
             <ul className="nav nav-underline nav-tab">
               <li className="nav-item">
                   <button className={`nav-link ${status==='전체' ? 'active' : ''}`} style={{color: "black"}}
@@ -231,40 +176,60 @@ useEffect(() => {
               </li>
             </ul>   
           </div>
-          <div>
-          <div className="search-container">
-            <div className="searchWrap">
-              <IoSearch className="input-icon" />
-              <input className="search-input" type="text" value={search} onChange={handleSearchChange} placeholder={t('study.searchPlaceholder')}/>
-              </div>
-              <button className="search-button" onClick={() => searchData(0)}>{t('study.searchButton')}</button>
-          </div>
-
-          <div className="tag-container">
-            <div className="tag-search-wrap">
-              <HiOutlineHashtag className="tag-icon"/>
-              <div className="tags-display">
-                {tags && tags.map((tag, index) => (
-                  <span key={index} className="tag-item">
-                    {tag}
-                    <IoIosClose className="remove-tag-icon" onClick={() => removeTag(index)} />
-                  </span>
-                ))}
-              </div>
-              <input className="tag-input" type="text" value={tag} onChange={handleTagChange} onKeyDown={handleKeyDown} placeholder={t('study.tagSearchPlaceholder')}/>
+          <div className={styles.search_box}>
+            <div className="search-container">
+              <div className="searchWrap">
+                <IoSearch className="input-icon" />
+                <input className="search-input" type="text" value={search} onChange={handleSearchChange} placeholder={t('study.searchPlaceholder')}/>
+                </div>
+                <button className="search-button" onClick={() => searchData(0)}>{t('study.searchButton')}</button>
             </div>
-            <button className="reset-button" onClick={handleReset}><GrPowerReset className="reset-icon"/>{t('study.resetButton')}</button>
-          </div>
+
+            <div className="tag-container">
+              <div className="tag-search-wrap">
+                <HiOutlineHashtag className="tag-icon"/>
+                <div className="tags-display">
+                  {tags && tags.map((tag, index) => (
+                    <span key={index} className="tag-item">
+                      {tag}
+                      <IoIosClose className="remove-tag-icon" onClick={() => removeTag(index)} />
+                    </span>
+                  ))}
+                </div>
+                <input className="tag-input" type="text" value={tag} onChange={handleTagChange} onKeyDown={handleKeyDown} placeholder={t('study.tagSearchPlaceholder')}/>
+              </div>
+              <button className="reset-button" onClick={handleReset}><GrPowerReset className="reset-icon"/>{t('study.resetButton')}</button>
+            </div>
 
           </div>
           <div className={styles.study_container_header}>
             <div className={styles.sortBtn}>
-              <select name="sort" id="sort" onChange={handleSortChange}>
-                <option value="recent">최신순</option>
-                <option value="commentCount">댓글많은순</option>
-                <option value="likeCount">좋아요순</option>
-                <option value="viewCount">눈팅</option>
-              </select>
+              <ul className="nav nav-underline nav-tab">
+                <li className="nav-item">
+                    <button className={`nav-link ${sort==='recent' ? 'active' : ''}`} style={{color: "black"}}
+                      onClick={() => setSort("recent")}>
+                      {t('study.최신순')}
+                    </button>
+                </li>
+                <li className="nav-item">
+                    <button className={`nav-link ${sort==='commentCount' ? 'active' : ''}`} style={{color: "black"}}
+                      onClick={() => setSort("commentCount")}>
+                      {t('study.댓글순')}
+                    </button>
+                </li>
+                <li className="nav-item">
+                    <button className={`nav-link ${sort==='likeCount' ? 'active' : ''}`} style={{color: "black"}}
+                      onClick={() => setSort("likeCount")}>
+                        {t('study.좋아요순')}
+                    </button>
+                </li>
+                <li className="nav-item">
+                    <button className={`nav-link ${sort==='모집완료' ? 'viewCount' : ''}`} style={{color: "black"}}
+                      onClick={() => setSort("viewCount")}>
+                        {t('study.조회수순')}
+                    </button>
+                </li>
+              </ul>   
     
               {token && (
                 <button onClick={() => navigate("/post/new?type=study")} className={styles.write}>
@@ -294,7 +259,8 @@ useEffect(() => {
           </div>
         </div>
 
-        <div className={styles.right_side}>
+        
+        <div className={styles.right_side} >
           <div className={styles.pop_tags}>
             <PopTag/>
           </div>

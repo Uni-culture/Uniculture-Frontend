@@ -32,6 +32,20 @@
     "title": "Please log in to continue.",
     "confirmButton": "Confirm"
   },
+  "serverError": {
+    "title": "Please try again later",
+    "confirmButton": "Confirm"
+  },
+  "friendSuccess": {
+    "title": "Friend request has been sent successfully.",
+    "confirmButton": "Confirm"
+  },
+  "friendDelete": {
+    "title": "Are you sure you want to delete this friend?",
+    "text": "Deleting will remove this friend from your friend list.",
+    "deleteButton": "Delete",
+    "cancelButton": "Cancel"
+  },
   "signIn": {
     "subTitle": "A language exchange platform to support your growth",
     "emailInput": "✉️ Email",
@@ -162,6 +176,10 @@
     "전체": "All",
     "모집중": "Recruiting",
     "모집완료": "Recruitment Completed",
+    "최신순": "Latest",
+    "댓글순": "Most Commented",
+    "좋아요순": "Most Liked",
+    "조회수순": "Most Viewed",
     "searchPlaceholder": "Enter search keywords",
     "searchButton": "Search",
     "tagSearchPlaceholder": "Search by tags!",

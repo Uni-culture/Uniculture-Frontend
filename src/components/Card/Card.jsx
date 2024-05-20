@@ -13,7 +13,6 @@ export const Card = ({board_id, title, content, username, date, img, likeCount,c
     return (
         <div className="card-wrapper" style={style}>
             <div className="card-body-img">
-                
                 <img src={img? img:"/default_image.jpg"} alt="Card Image" onClick={() => {navigate(`/board/${board_id}`)}}/>
             </div>
             <div className="card-body-text" onClick={() => {navigate(`/board/${board_id}`)}}>
