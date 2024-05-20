@@ -82,7 +82,9 @@
     "nicknameButton": "Check",
     "nicknameTooLong": "Please enter no more than 15 characters.",
     "nicknameValid": "This nickname is available.",
-    "signupButton": "Sign Up"
+    "signupButton": "Sign Up",
+    "AuthenticationSuccessful": "Authentication Successful",
+    "AuthenticationFailed": "Authentication failed"
   },
   "signUpOption": {
     "signUpCompleted": "Sign Up Completed!",

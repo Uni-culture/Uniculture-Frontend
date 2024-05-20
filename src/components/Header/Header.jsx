@@ -102,6 +102,27 @@ const Header = () => {
         setIsLogin(false);
     };
 
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in");
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
+        }
+    };
+
     const loginCheck = async () => {
         console.log('loginCheck');
         try {
@@ -123,7 +144,7 @@ const Header = () => {
                 localStorage.removeItem('accessToken');
                 console.log("401 오류");
             }
-            else console.error('Login Error:', error);
+            else errorModal(error);
         }
     };
 
@@ -144,10 +165,7 @@ const Header = () => {
                 }
             }
         } catch (error) {
-            if(error.response.status === 401) {
-                console.log("401 오류");
-            }
-            else console.error('Login Error:', error);
+            errorModal(error);
         }
     };
 
@@ -168,10 +186,7 @@ const Header = () => {
                 }
             }
         } catch (error) {
-            if(error.response.status === 401) {
-                console.log("401 오류");
-            }
-            else console.error('Login Error:', error);
+            errorModal(error);
         }
     };
 
@@ -192,10 +207,7 @@ const Header = () => {
                 }
             }
         } catch (error) {
-            if(error.response.status === 401) {
-                console.log("401 오류");
-            }
-            else console.error('Login Error:', error);
+            errorModal(error);
         }
     };
 
@@ -216,10 +228,7 @@ const Header = () => {
                 }
             }
         } catch (error) {
-            if(error.response.status === 401) {
-                console.log("401 오류");
-            }
-            else console.error('notification Error:', error);
+            errorModal(error);
         }
     };
 
@@ -240,10 +249,7 @@ const Header = () => {
                 }
             }
         } catch (error) {
-            if(error.response.status === 401) {
-                console.log("401 오류");
-            }
-            else console.error('notification Error:', error);
+            errorModal(error);
         }
     };
 

@@ -13,9 +13,12 @@ import RequestModal from '../../components/Friend/RequestModal';
 import Filter from './components/Filter';
 import {useTranslation} from "react-i18next";
 import Recommend from './Recommend';
+import Swal from 'sweetalert2';
 
 export default function Friend() {
     const navigate = useNavigate();
+    const { t } = useTranslation();
+
     const [activeTab, setActiveTab] = useState('myFriends'); //컴포넌트 선택
     const [friendList, setFriendList] = useState([]); //친구 목록
     const [recommendFriendList, setRecommendFriendList] = useState([]); //추천 친구 목록
@@ -45,12 +48,31 @@ export default function Friend() {
     const [showRequests, setShowRequests] = useState(false);
     const initialRender = useRef(true);
 
-    const { t } = useTranslation();
-
     // 로그인 후 저장된 토큰 가져오는 함수
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
     };
+
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in");
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
+        }
+    }
 
     // 친구 목록 불러오기, 검색
     const fetchFriendList = async (page) => {
@@ -76,15 +98,8 @@ export default function Friend() {
                 setFriendList(response.data.content);
                 setPageCount(Math.ceil(response.data.totalElements / 6));
             }
-            else if(response.status === 400){
-                console.log("친구 목록 불러오기 클라이언트 오류");
-            }
-            else if(response.status === 500){
-                console.log("친구 목록 불러오기 서버 오류");
-            }
-            
         } catch (error) {
-            navigate("/");
+            errorModal(error);
         }
     };
 
@@ -105,22 +120,14 @@ export default function Friend() {
                 console.log("추천 친구 : " + JSON.stringify(response.data));
                 console.log("추천 친구 수: " + response.data.length);
             }
-            else if(response.status === 400){
-                console.log("친구 목록 불러오기 클라이언트 오류");
-            }
-            else if(response.status === 500){
-                console.log("친구 목록 불러오기 서버 오류");
-            }
-            
         } catch (error) {
-            console.log(error);
+            errorModal(error);
         }
     };
 
     // 추천 친구 목록 다시 불러오기
     const recommendFriendReload = async () => {
         try {
-            console.log("추천 친구 목록 다시 불러오기");
             const token = getToken();
 
             const response = await axios.post(`/api/auth/friend/recommend`, null,{
@@ -133,24 +140,15 @@ export default function Friend() {
                 setRecommendFriendList(response.data);
                 recommendFriendCount();
                 console.log("추천 친구 : " + JSON.stringify(response.data));
-                console.log("추천 친구 수: " + response.data.length);
             }
-            else if(response.status === 400){
-                console.log("친구 목록 다시 불러오기 클라이언트 오류");
-            }
-            else if(response.status === 500){
-                console.log("친구 목록 다시 불러오기 서버 오류");
-            }
-            
-           } catch (error) {
-            console.log(error);
+        } catch (error) {
+            errorModal(error);
         }
     };
 
     // 추천 친구 새로고침 잔여 횟수
     const recommendFriendCount = async () => {
         try {
-            console.log("추천 친구 목록 새로고침 잔여 횟수");
             const token = getToken();
 
             const response = await axios.get(`/api/auth/friend/recommend/count`, {
@@ -161,18 +159,9 @@ export default function Friend() {
             
             if(response.status === 200){
                 setRecommendCount(response.data);
-                console.log("추천 친구 목록 새로고침 잔여 횟수" + response.data);
-
             }
-            else if(response.status === 400){
-                console.log("추천 친구 목록 새로고침 잔여 횟수 클라이언트 오류");
-            }
-            else if(response.status === 500){
-                console.log("추천 친구 목록 새로고침 잔여 횟수 서버 오류");
-            }
-            
         } catch (error) {
-            console.log(error);
+            errorModal(error);
         }
     };
 
@@ -245,29 +234,17 @@ export default function Friend() {
         try {
             const token = getToken(); // 토큰 가져오기
 
-            if(token){ //로그인 O
-                const response = await axios.get(`/api/auth/room/duo?toId=${otherInfo.id}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                if(response.status === 200){
-                    console.log(response);
-                    navigate(`/chat/${response.data.chatRoomId}`);
+            const response = await axios.get(`/api/auth/room/duo?toId=${otherInfo.id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
                 }
-                else if(response.status === 400){
-                    console.log("채팅 보내기 클라이언트 에러");
-                }
-                else if(response.status ===  500){
-                    console.log("채팅 보내기 서버 에러");
-                }
-            }
-            else {
-                alert("로그인 해주세요.");
-                navigate("/sign-in");
+            });
+            if(response.status === 200){
+                console.log(response);
+                navigate(`/chat/${response.data.chatRoomId}`);
             }
         } catch (error) {
-            console.error('채팅 보내기 오류 발생:', error);
+            errorModal(error);
         }
     }
 
@@ -286,19 +263,11 @@ export default function Friend() {
             });
             
             if(response.status === 200){
-                console.log("친구 삭제 : " + friendInfo.nickname);
                 setCurrentPage(0);
                 fetchFriendList(0);
             }
-            else if(response.status === 400){
-                console.log("클라이언트 오류");
-            }
-            else if(response.status === 500){
-                console.log("서버 오류");
-            }
-            
         } catch (error) {
-            console.error('친구 삭제 중 에러 발생:', error);
+            errorModal(error);
         }
     };
 
@@ -316,15 +285,8 @@ export default function Friend() {
             if(response.status === 200){
                 setReceivedRequestsNum(response.data.length);
             }
-            else if(response.status === 400){
-                console.log("클라이언트 오류");
-            }
-            else if(response.status === 500){
-                console.log("서버 오류");
-            }
-        
         } catch (error) {
-            console.error('친구 신청 받은 목록을 불러오는 중 에러 발생:', error);
+            errorModal(error);
         }
     };
 

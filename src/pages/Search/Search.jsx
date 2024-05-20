@@ -11,10 +11,14 @@ import { SearchCard } from "../../components/SearchCard/SearchCard";
 import moment from "moment";
 import SearchUserCard from '../../components/SearchCard/SearchUserCard';
 import Layout from "../../components/Layout";
+import Swal from "sweetalert2";
+import { useTranslation } from "react-i18next";
 
 const Search = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const location = useLocation();
+
     const [search, setSearch] = useState(""); // 사용자 입력 검색어
     const [debouncedSearch, setDebouncedSearch] = useState(""); // API 호출에 사용될 검색어
     const [tag, setTag] = useState(""); // 사용자 입력 태그
@@ -86,6 +90,27 @@ const Search = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
     };
 
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in");
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
+        }
+    };
+
     //검색 결과 개수
     const getResultCount = async (newTags = tags) => {
         try {
@@ -113,16 +138,9 @@ const Search = () => {
                 setPostElements(response.data.post);
                 setFriendElements(response.data.friend);
                 setMemberElements(response.data.member);
-            }
-            else if(response.status === 400){
-                console.log("검색 결과 개수 얻기 클라이언트 오류");
-            }
-            else if(response.status === 500){
-                console.log("검색 결과 개수 얻기 서버 오류");
-            }
-            
+            }  
         } catch (error) {
-            navigate("/");
+            errorModal(error);
         }
     }; 
 
@@ -157,14 +175,8 @@ const Search = () => {
                 console.log("api 요청하였습니다.");
             }
         } catch (error) {
-            if(error.response.status === 401) {
-                console.log("401 오류");
-                setIsLoading(false); // 에러 발생 시 로딩 상태 해제
-            }
-            else {
-                console.log("서버 오류 입니다.");
-                setIsLoading(false); // 에러 발생 시 로딩 상태 해제
-            }
+            errorModal(error);
+            setIsLoading(false); // 에러 발생 시 로딩 상태 해제
         }
     };
 
@@ -195,15 +207,8 @@ const Search = () => {
                 setHasMore(((page+1) * pageSize) < response.data.totalElements);
             }
         } catch (error) {
-            if(error.response.status === 401) {
-                console.log("401 오류");
-                setIsLoading(false); // 에러 발생 시 로딩 상태 해제
-                navigate("/sign-in");
-            }
-            else {
-                console.log("서버 오류 입니다.");
-                setIsLoading(false); // 에러 발생 시 로딩 상태 해제
-            }
+            errorModal(error);
+            setIsLoading(false);
         }
     };
 
@@ -233,14 +238,8 @@ const Search = () => {
                 setHasMore(((page+1) * pageSize) < response.data.totalElements);
             }
         } catch (error) {
-            if(error.response.status === 401) {
-                console.log("401 오류");
-                setIsLoading(false); // 에러 발생 시 로딩 상태 해제
-            }
-            else {
-                console.log("서버 오류 입니다.");
-                setIsLoading(false); // 에러 발생 시 로딩 상태 해제
-            }
+            errorModal(error);
+            setIsLoading(false);
         }
     };
     

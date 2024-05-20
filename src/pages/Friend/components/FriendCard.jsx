@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { Card } from "antd";
 import { SlBubbles, SlClose } from "react-icons/sl";
 import { GiMale, GiFemale } from "react-icons/gi";
+import styles from './FriendCard.module.css'
 
 export default function FriendCard({userInfo, deleteFriend, cl, wl, hb, sendMessage}) {
     const navigate = useNavigate();
@@ -112,16 +113,22 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb, sendMess
                 <div style={{ display: 'flex', alignItems:"center", justifyContent: "space-between"}}>
                     <div style={{ display: 'flex', alignItems:"center"}}>
                         {/* 프로필 사진 */}
-                        <div style={{marginRight:"10px"}} onClick={handleProfile}>
-                            <img
-                                src={userInfo?.profileImage ? userInfo.profileImage : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
-                                alt="profile"
-                                style={{width:"40px", borderRadius: "50%"}}
-                            />
+                        <div className={styles.imageWrapper} onClick={handleProfile}>
+                            <div className={styles.profileImageWrapper}>
+                                <img
+                                    src={userInfo?.profileurl ? userInfo.profileurl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                                    alt="profile"
+                                    className={styles.image}
+                                />
+                            </div>
+
+                            <div className={styles.countryImageWrapper}>
+                                <img className={styles.country} alt='country' src={`/${userInfo.country}.png`} />
+                            </div>
                         </div>
 
                         {/* 닉네임 */}
-                        <div style={{whiteSpace: "pre-wrap"}} onClick={handleProfile}>{userInfo.nickname}</div>
+                        <div style={{whiteSpace: "pre-wrap", overflow: "hidden", maxWidth: "110px", textOverflow: "ellipsis"}} onClick={handleProfile}>{userInfo.nickname}</div>
 
                         {/* 성별, 나이 */}
                         <div style={{fontWeight:"normal", display:"flex", marginLeft:"5px"}}>

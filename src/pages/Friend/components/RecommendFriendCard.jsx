@@ -9,10 +9,14 @@ import styles from './RecommendFriendCard.module.css';
 import cardImg from '../../../assets/cardImg.png';
 import cardOpenSound from '../../../assets/cardOpen.mp3';
 import { Card } from 'antd';
+import { useTranslation } from 'react-i18next';
+import Swal from 'sweetalert2';
 const { Meta } = Card;
 
 export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMessage}) {
     const navigate = useNavigate();
+    const { t } = useTranslation();
+
     const [similarity, setSimilarity] = useState(userInfo.similarity);
     const [isFlipped, setIsFlipped] = useState(userInfo.isOpen); //Card 뒤집기
 
@@ -20,6 +24,27 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMe
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
     };
+
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in");
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
+        }
+    }
 
     //카드 뒤집기(추천 친구 보이게)
     const handleCardClick = () => {
@@ -42,21 +67,14 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMe
             });
 
             if(response.status === 200){
-                console.log(userInfo.nickname + "님 카드 오픈");
                 setIsFlipped(true);
 
                 // 소리 재생
                 const flipSound = new Audio(cardOpenSound);
                 flipSound.play();
             }
-            else if(response.status === 400){
-                console.log("카드 뒤집기 클라이언트 에러");
-            }
-            else if(response.status === 500){
-                console.log("카드 뒤집기 서버 에러");
-            }
         } catch (error) {
-            console.error('카드 뒤집기 오류 발생:', error);
+            errorModal(error);
         }
     }
 
@@ -96,10 +114,19 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMe
                 <Card
                     style={{width: "100%", height: "100%"}}
                     cover={
-                        <img
-                            alt="profileimg"
-                            src={userInfo?.profileUrl ? userInfo.profileUrl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
-                        />
+                        <div className={styles.imageWrapper} onClick={handleProfile}>
+                            <div className={styles.profileImageWrapper}>
+                                <img
+                                    src={userInfo?.profileurl ? userInfo.profileurl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                                    alt="profile"
+                                    className={styles.image}
+                                />
+                            </div>
+
+                            <div className={styles.countryImageWrapper}>
+                                <img className={styles.country} alt='country' src={`/${userInfo.country}.png`} />
+                            </div>
+                        </div>
                     }
                     actions={[
                         <span onClick={handleSendFriendRequest}><IoMdPersonAdd size={22}/></span>,
@@ -113,7 +140,7 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMe
                                 <div className={styles.similarityText}>나랑 <span className={styles.similaritySpan}>{similarity}%</span> 잘 맞아요!</div>
                                 <div style={{display: "flex"}}>
                                 {/* 닉네임 */}
-                                <div onClick={handleProfile} style={{fontWeight : "bold", fontSize: "15px"}}>{userInfo.nickname}</div>
+                                <div onClick={handleProfile} style={{fontWeight : "bold", fontSize: "15px", overflow: "hidden", maxWidth: "90px", textOverflow: "ellipsis"}}>{userInfo.nickname}</div>
 
                                 {/* 성별, 나이 */}
                                 <div style={{fontWeight:"normal", display:"flex", marginLeft:"10px"}}>
@@ -135,27 +162,12 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMe
                                         {userInfo?.introduce}
                                     </div>
                                 ) : (
-                                    <div style={{height: "20px", textAlign: "left", marginBottom: "5px", color: "#00000073"}}>설정한 소개가 없습니다.</div>
+                                    <div style={{height: "30px", textAlign: "left", color: "#00000073", fontSize: "13px"}}>설정한 소개가 없습니다.</div>
                                 )}
                             </div>
                         }
                     />
                 </Card>
-                {/* <div className={styles.similarity}> */}
-                    {/* <div className={styles.heart}>
-                    <div className={styles.heart2} >
-                    <div className={styles.heart3} > */}
-                        {/* <div className={styles.text}> */}
-                            {/* {similarity}% */}
-                        {/* </div> */}
-                    {/* </div>
-                    </div>
-                    </div> */}
-                    
-                    {/* <div className={styles.text}> */}
-
-                    {/* </div> */}
-                {/* </div> */}
             </div>
         </div>
     )

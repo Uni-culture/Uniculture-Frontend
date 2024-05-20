@@ -6,8 +6,11 @@ import "../AddBoard/addBoard.scss";
 import axios from "axios";
 import Header from "../../components/Header/Header";
 import {IoArrowBack} from "react-icons/io5";
+import Swal from "sweetalert2";
+import { useTranslation } from "react-i18next";
 
 const EditBoard = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const location = useLocation();
     const {board_id} = useParams();
@@ -22,6 +25,27 @@ const EditBoard = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
     };
     const token = getToken();
+
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in");
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
+        }
+    }
 
     useEffect(() => {
         console.log(`Edit 게시글 아이디: ${board_id}`);
@@ -45,13 +69,7 @@ const EditBoard = () => {
                     console.log("200 성공~~~~");
                 }
             } catch (error) { // 실패 시
-                if(error.response.status === 401) {
-                    console.log("401 오류");
-                }
-                else {
-                    console.log("서버 오류 입니다.");
-                    alert(error.response.data);
-                }
+                errorModal(error);
             }
         };
         getBoard();
@@ -88,13 +106,7 @@ const EditBoard = () => {
                 }
             }
         } catch (error) { // 실패 시
-            if(error.response.status === 401) {
-                console.log("401 오류");
-            }
-            else {
-                console.log("서버 오류 입니다.");
-                alert(error.response.data);
-            }
+            errorModal(error);
         }
     };
 

@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import FriendList from '../../pages/Profile/components/FriendList';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 export default function RequestModal({ modal, handleReceivedRequestsNum, handleFriendNum, type }) {
+    const { t } = useTranslation();
+    const navigate = useNavigate();
+
     const [activeTab, setActiveTab] = useState('receivedRequests');
     const [friendList, setFriendList] = useState([]); //친구 목록
     const [sentRequests, setSentRequests] = useState([]); //보낸 친구 신청
@@ -12,6 +18,27 @@ export default function RequestModal({ modal, handleReceivedRequestsNum, handleF
         setActiveTab('receivedRequests'); //다시 모달창 켰을때 가장 먼저 받은 친구신청이 보이도록 설정
         modal(false); //모달창 닫기
     }
+
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in");
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
+        }
+    };
     
     useEffect(() => {
         if(type === "includeFriendList") { fetchFriendList(); setActiveTab('receivedRequests'); }
@@ -79,15 +106,8 @@ export default function RequestModal({ modal, handleReceivedRequestsNum, handleF
             if(response.status === 200){
                 setFriendList(response.data);
             }
-            else if(response.status === 400){
-                console.log("클라이언트 오류");
-            }
-            else if(response.status === 500){
-                console.log("서버 오류");
-            }
-            
         } catch (error) {
-            console.error('친구 목록을 불러오는 중 에러 발생:', error);
+            errorModal(error);
         }
     };
 
@@ -105,15 +125,8 @@ export default function RequestModal({ modal, handleReceivedRequestsNum, handleF
             if(response.status === 200){
                 setSentRequests(response.data);
             }
-            else if(response.status === 400){
-                console.log("클라이언트 오류");
-            }
-            else if(response.status === 500){
-                console.log("서버 오류");
-            }
-            
         } catch (error) {
-            console.error('친구 신청 보낸 목록을 불러오는 중 에러 발생:', error);
+            errorModal(error);
         }
     };
 
@@ -131,15 +144,8 @@ export default function RequestModal({ modal, handleReceivedRequestsNum, handleF
             if(response.status === 200){
                 setReceivedRequests(response.data);
             }
-            else if(response.status === 400){
-                console.log("클라이언트 오류");
-            }
-            else if(response.status === 500){
-                console.log("서버 오류");
-            }
-        
         } catch (error) {
-            console.error('친구 신청 받은 목록을 불러오는 중 에러 발생:', error);
+            errorModal(error);
         }
     };
 
@@ -158,18 +164,10 @@ export default function RequestModal({ modal, handleReceivedRequestsNum, handleF
             });
             
             if(response.status === 200){
-                console.log(userInfo.nickname + "님에게 보낸 친구 신청을 취소합니다.");
                 setSentRequests(sentRequests.filter(request => request.id !== userInfo.id)); //보낸 친구 신청 목록에서 삭제
             }
-            else if(response.status === 400){
-                console.log("클라이언트 오류");
-            }
-            else if(response.status === 500){
-                console.log("서버 오류");
-            }
-            
         } catch (error) {
-            console.error('보낸 친구 신청 취소 중 에러 발생:', error);
+            errorModal(error);
         }
     };
 
@@ -193,15 +191,8 @@ export default function RequestModal({ modal, handleReceivedRequestsNum, handleF
                 handleReceivedRequestsNum("subtract");
                 handleFriendNum("add") //친구 수 + 1
             }
-            else if(response.status === 400){
-                console.log("클라이언트 오류");
-            }
-            else if(response.status === 500){
-                console.log("서버 오류");
-            }
-            
         } catch (error) {
-            console.error('친구 신청 수락 중 에러 발생:', error);
+            errorModal(error);
         }
     };
 
@@ -223,15 +214,8 @@ export default function RequestModal({ modal, handleReceivedRequestsNum, handleF
                 setReceivedRequests(receivedRequests.filter(request => request.id !== userInfo.id)); //받은 친구 신청 목록에서 삭제
                 handleReceivedRequestsNum("subtract");
             }
-            else if(response.status === 400){
-                console.log("클라이언트 오류");
-            }
-            else if(response.status === 500){
-                console.log("서버 오류");
-            }
-            
         } catch (error) {
-            console.error('친구 신청 거절 중 에러 발생:', error);
+            errorModal(error);
         }
     };
 
@@ -254,15 +238,8 @@ export default function RequestModal({ modal, handleReceivedRequestsNum, handleF
                 setFriendList(friendList.filter(request => request.id !== userInfo.id)); //친구 목록에서 삭제
                 handleFriendNum("subtract") //친구 수 -1
             }
-            else if(response.status === 400){
-                console.log("클라이언트 오류");
-            }
-            else if(response.status === 500){
-                console.log("서버 오류");
-            }
-            
         } catch (error) {
-            console.error('친구 삭제 중 에러 발생:', error);
+            errorModal(error);
         }
     };
 

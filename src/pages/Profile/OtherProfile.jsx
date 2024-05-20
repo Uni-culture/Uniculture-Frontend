@@ -11,10 +11,8 @@ import ShowAllLanguage from './Modal/ShowAllLanguage';
 import OtherStudyList from "./OtherStudyList";
 import {useTranslation} from "react-i18next";
 
-
 export default function OtherProfile({otherInformation}) {
     const [otherInfo, setOtherInfo] = useState(otherInformation);
-    const [countryImg, setCountryImg] = useState('/korea.png');
     const navigate = useNavigate();
 
     const [friendNum, setFriendNum] = useState(otherInfo?.friendnum) // 친구수락, 삭제시 친구수 관리를 위해
@@ -35,10 +33,29 @@ export default function OtherProfile({otherInformation}) {
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
     };
+    
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in");
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
+        }
+    }
 
     useEffect(() => {
-        handleCountryImg();
-
         // 사용 언어 배열로 변환하여 업데이트한 후 능숙도가 높은 순으로 정렬
         const canLanguagesArray = Object.entries(otherInfo.canlanguages).map(([language, level]) => ({ language, level }));
         setCanLanguages(canLanguagesArray);
@@ -108,32 +125,19 @@ export default function OtherProfile({otherInformation}) {
         try {
             const token = getToken(); // 토큰 가져오기
 
-            if(token){ //로그인 O
-                const response = await axios.post('/api/auth/friend-requests', {
-                    targetId: otherInfo.id
-                }, {
-                    headers: {
-                        Authorization: `Bearer ${token}` // 헤더에 토큰 추가
-                    }
-                });
-                if(response.status === 200){
-                    alert(t("profile.friendRequestSuccess"));
-                    setFriendStatus(3); //친구 신청 중으로 변경
-
+            const response = await axios.post('/api/auth/friend-requests', {
+                targetId: otherInfo.id
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                 }
-                else if(response.status === 400){
-                    console.log("친구 신청 클라이언트 에러");
-                }
-                else if(response.status === 500){
-                    console.log("친구 신청 서버 에러");
-                }
-            }
-            else {
-                alert("로그인 해주세요.");
-                navigate("/sign-in");
+            });
+            if(response.status === 200){
+                alert(t("profile.friendRequestSuccess"));
+                setFriendStatus(3); //친구 신청 중으로 변경
             }
         } catch (error) {
-            console.error('친구 걸기 오류 발생:', error);
+            errorModal(error);
         }
     }
 
@@ -163,19 +167,11 @@ export default function OtherProfile({otherInformation}) {
                     });
                     
                     if(response.status === 200){
-                        console.log("친구 삭제 : " + otherInfo.nickname);
                         setFriendStatus(2);
                         setFriendNum(friendNum-1);
                     }
-                    else if(response.status === 400){
-                        console.log("클라이언트 오류");
-                    }
-                    else if(response.status === 500){
-                        console.log("서버 오류");
-                    }
-                    
                 } catch (error) {
-                    console.error('친구 삭제 중 에러 발생:', error);
+                    errorModal(error);
                 }      
             }
         });
@@ -197,18 +193,10 @@ export default function OtherProfile({otherInformation}) {
             });
             
             if(response.status === 200){
-                console.log(otherInfo.nickname + "님에게 보낸 친구 신청을 취소합니다.");
                 setFriendStatus(2); 
             }
-            else if(response.status === 400){
-                console.log("클라이언트 오류");
-            }
-            else if(response.status === 500){
-                console.log("서버 오류");
-            }
-            
         } catch (error) {
-            console.error('보낸 친구 신청 취소 중 에러 발생:', error);
+            errorModal(error);
         }
     };
 
@@ -226,19 +214,11 @@ export default function OtherProfile({otherInformation}) {
             });
             
             if(response.status === 200){
-                console.log(otherInfo.nickname + "님의 친구 요청을 수락했습니다.");
                 setFriendStatus(1); //친구 상태로 변경
                 setFriendNum(friendNum+1);
             }
-            else if(response.status === 400){
-                console.log("클라이언트 오류");
-            }
-            else if(response.status === 500){
-                console.log("서버 오류");
-            }
-            
         } catch (error) {
-            console.error('친구 신청 수락 중 에러 발생:', error);
+            errorModal(error);
         }
     };
 
@@ -247,29 +227,18 @@ export default function OtherProfile({otherInformation}) {
         try {
             const token = getToken(); // 토큰 가져오기
 
-            if(token){ //로그인 O
-                const response = await axios.get(`/api/auth/room/duo?toId=${otherInfo.id}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                if(response.status === 200){
-                    console.log(response);
-                    navigate(`/chat/${response.data.chatRoomId}`);
+            const response = await axios.get(`/api/auth/room/duo?toId=${otherInfo.id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
                 }
-                else if(response.status === 400){
-                    console.log("채팅 보내기 클라이언트 에러");
-                }
-                else if(response.status ===  500){
-                    console.log("채팅 보내기 서버 에러");
-                }
-            }
-            else {
-                alert("로그인 해주세요.");
-                navigate("/sign-in");
+            });
+
+            if(response.status === 200){
+                console.log(response);
+                navigate(`/chat/${response.data.chatRoomId}`);
             }
         } catch (error) {
-            console.error('채팅 보내기 오류 발생:', error);
+            errorModal(error);
         }
     }
 
@@ -293,39 +262,21 @@ export default function OtherProfile({otherInformation}) {
         }
     };
 
-    const handleCountryImg = () => {
-        switch (otherInfo?.country) {
-            case 'Korea':
-                setCountryImg('/korea.png');
-                break;
-            case 'USA':
-                setCountryImg('/USA.png');
-                break;
-            case 'Japan':
-                setCountryImg('/japan.png');
-                break;
-            case 'China':
-                setCountryImg('/china.png');
-                break;
-            default:
-                setCountryImg('/korea.png');
-                break;
-        }
-    }
-
     return (
         <div className={styles.container}>
             <div className={styles.top}>
                 {/* 프로필 사진 */}
                 <div className={styles.imageWrapper}>
-                    <img
-                        src={otherInfo?.profileurl ? otherInfo.profileurl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
-                        alt="profile"
-                        className={styles.image}
-                    />
-
+                    <div className={styles.profileImageWrapper}>
+                        <img
+                            src={otherInfo?.profileurl ? otherInfo.profileurl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                            alt="profile"
+                            className={styles.image}
+                        />
+                    </div>
+                    
                     <div className={styles.countryImageWrapper}>
-                        <img className={styles.country} alt='country' src={countryImg} />
+                        <img className={styles.country} alt='country' src={`/${otherInfo.country}.png`} />
                     </div>
                 </div>
 

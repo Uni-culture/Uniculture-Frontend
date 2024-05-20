@@ -79,6 +79,27 @@ const ProfileEdit = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
     };
 
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in");
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
+        }
+    };
+
     // 서버에 정보를 요청하는 함수
     const fetchUserInfo = async () => {
         console.log('profileEdit');
@@ -93,15 +114,8 @@ const ProfileEdit = () => {
                 setUserInfo(response.data); // 서버에서 받은 사용자 정보 반환
                 if(response.data.introduce) setInputCount(response.data.introduce.length);
             }
-            else if(response.status === 400) {
-                console.log('클라이언트 에러(입력 형식 불량)');
-            }
-            else if(response.status === 500) {
-                console.log('서버에러');
-            }
         } catch (error) {
-            navigate("/");
-            console.log(error);
+            errorModal(error);
         }
     };
 
@@ -140,20 +154,12 @@ const ProfileEdit = () => {
                     }
                 );
                 alert(JSON.stringify(userInfo));
-                console.log('서버 응답: ', response);
-                console.log('response.status: ', response.status);
                 if (response.status === 200) {
                     alert("수정 완료");
                     window.location.reload();
                 }
-                else if (response.status === 400) {
-                    console.error("클라이언트에러");
-                }
-                else {
-                    console.error("서버에러");
-                }
-            } catch (error) { // 네트워크 오류 등 예외 처리
-                console.error(error);
+            } catch (error) { 
+                errorModal(error);
             }
         }
     };

@@ -3,14 +3,40 @@ import React, {useState} from "react";
 import "./replyInput.scss";
 import { RxCornerBottomLeft } from "react-icons/rx";
 import axios from "axios";
+import Swal from "sweetalert2";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const ReplyInput = ({ parent_id, board_id, onReplySuccess}) => {
     const [replyContent, setReplyContent] = useState('');
+    const { t } = useTranslation();
+    const navigate = useNavigate();
 
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 로컬 스토리지에서 토큰 가져옴
     };
     const token = getToken();
+
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in");
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
+        }
+    };
 
     const replyComment = async () => { // 대댓글 등록
         console.log('replyComment start');
@@ -32,13 +58,7 @@ const ReplyInput = ({ parent_id, board_id, onReplySuccess}) => {
                 onReplySuccess();
             }
         } catch (error) { // 실패 시
-            if(error.response.status === 401) {
-                console.log("401 오류");
-            }
-            else {
-                console.log("서버 오류 입니다.");
-                alert(error.response.data);
-            }
+            errorModal(error);
         }
     };
 
