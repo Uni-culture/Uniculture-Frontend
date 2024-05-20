@@ -9,10 +9,14 @@ import styles from './RecommendFriendCard.module.css';
 import cardImg from '../../../assets/cardImg.png';
 import cardOpenSound from '../../../assets/cardOpen.mp3';
 import { Card } from 'antd';
+import { useTranslation } from 'react-i18next';
+import Swal from 'sweetalert2';
 const { Meta } = Card;
 
 export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMessage}) {
     const navigate = useNavigate();
+    const { t } = useTranslation();
+
     const [similarity, setSimilarity] = useState(userInfo.similarity);
     const [isFlipped, setIsFlipped] = useState(userInfo.isOpen); //Card 뒤집기
 
@@ -20,6 +24,27 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMe
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
     };
+
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in");
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
+        }
+    }
 
     //카드 뒤집기(추천 친구 보이게)
     const handleCardClick = () => {
@@ -42,21 +67,14 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMe
             });
 
             if(response.status === 200){
-                console.log(userInfo.nickname + "님 카드 오픈");
                 setIsFlipped(true);
 
                 // 소리 재생
                 const flipSound = new Audio(cardOpenSound);
                 flipSound.play();
             }
-            else if(response.status === 400){
-                console.log("카드 뒤집기 클라이언트 에러");
-            }
-            else if(response.status === 500){
-                console.log("카드 뒤집기 서버 에러");
-            }
         } catch (error) {
-            console.error('카드 뒤집기 오류 발생:', error);
+            errorModal(error);
         }
     }
 

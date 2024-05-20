@@ -6,6 +6,7 @@ import AddLanuageModal from "../Profile/Modal/AddLanuageModal";
 import PercentBar from "../../components/PercentBar/PercentBar";
 import axios from "axios";
 import {useTranslation} from "react-i18next";
+import Swal from "sweetalert2";
 
 const SignUpOption = () => {
     const navigate = useNavigate(); // 다른 component 로 이동할 때 사용
@@ -145,6 +146,27 @@ const SignUpOption = () => {
         setLearningLanguages(updatedWantLanguages);
     };
 
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in");
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
+        }
+    }
+
     const handleComplete = async () => {
         try {
             const response = await axios.patch(`/api/member/editProfile`, {
@@ -159,17 +181,17 @@ const SignUpOption = () => {
             console.log('response.status: ', response.status);
             // 등록 성공
             if (response.status === 200) {
-                alert(t("signUpOption.successMessage"));
-                navigate("/"); // 성공 후 이전 페이지로 이동
+                Swal.fire({
+                    icon: "success",
+                    title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t("signUpOption.successMessage")}</div>`,
+                    confirmButtonColor: "#8BC765",
+                    confirmButtonText: "확인",
+                }).then(() => {
+                    navigate("/");
+                })
             }
         } catch (error) { // 실패 시
-            if(error.response.status === 401) {
-                console.log("401 오류");
-            }
-            else {
-                console.log("서버 오류 입니다.");
-                alert(error.response.data);
-            }
+            errorModal(error);
         }
     };
 

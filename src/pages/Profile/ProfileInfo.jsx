@@ -8,6 +8,7 @@ import {useTranslation} from "react-i18next";
 
 const ProfileInfo = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const [userInfo, setUserInfo] = useState(null);
     const [originalNickname, setOriginalNickname] = useState(null);
@@ -28,11 +29,31 @@ const ProfileInfo = () => {
     const [selectedMonth, setSelectedMonth] = useState(null);
     const [selectedDay, setSelectedDay] = useState(null);
     const [age, setAge] = useState(null); // 선택한 생년월일 계산한 나이
-    const { t } = useTranslation();
 
     // 로그인 후 저장된 토큰 가져오는 함수
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
+    };
+
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in");
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
+        }
     };
 
     // 서버에 정보를 요청하는 함수
@@ -54,22 +75,8 @@ const ProfileInfo = () => {
                 setSelectedMonth(response.data.month);
                 setSelectedDay(response.data.day);
             }
-            else if(response.status === 400) {
-                console.log('클라이언트 에러(입력 형식 불량)');
-            }
-            else if(response.status === 500) {
-                console.log('서버에러');
-            }
         } catch (error) {
-            Swal.fire({
-                title: "로그인 해주세요.",
-                text: "로그인 창으로 이동합니다.",
-                icon: "warning",
-                confirmButtonColor: "#dc3545",
-                confirmButtonText: "확인"
-            }).then(() => {
-                navigate("/sign-in");
-            });
+            errorModal(error);
         }
     };
 
@@ -134,11 +141,8 @@ const ProfileInfo = () => {
             if (err.response.status === 400) {
                 alert("죄송합니다, 입력하신 현재 비밀번호가 일치하지 않습니다.\n올바른 비밀번호를 입력해주세요.")
             }
-            else if (err.response.status === 500){
-                alert("죄송합니다, 현재 서버에 문제가 있어 처리할 수 없습니다.\n잠시 후에 다시 시도해주세요.");
-            }
-            else{
-                console.log(err);
+            else {
+                errorModal(err);
             }
         }
     };

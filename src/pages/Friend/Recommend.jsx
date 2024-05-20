@@ -6,8 +6,11 @@ import RecommendFriendCard from './components/RecommendFriendCard';
 import presentImg from '../../assets/presentImg.png';
 import openImg from '../../assets/openimg.png'
 import {useTranslation} from "react-i18next";
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 export default function Recommend({recommendFriendList, sendMessage}) {
+    const navigate = useNavigate();
     const { t } = useTranslation();
     const [showPresent, setShowpresent] = useState(null); //모든 추천친구 isOpen === false인지 아닌지
     const [presentOpen, setPresentOpen] = useState(false); //선물상자를 열었는지 아닌지
@@ -33,6 +36,27 @@ export default function Recommend({recommendFriendList, sendMessage}) {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
     };
 
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in");
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
+        }
+    }
+
     //친구 신청
     const sendFriendRequest = async (userInfo) => {
         try {
@@ -50,14 +74,8 @@ export default function Recommend({recommendFriendList, sendMessage}) {
                 alert("친구 신청 성공");
                 console.log(userInfo.nickname + "님에게 친구 신청");
             }
-            else if(response.status === 400){
-                console.log("친구 신청 클라이언트 에러");
-            }
-            else if(response.status === 500){
-                console.log("친구 신청 서버 에러");
-            }
         } catch (error) {
-            console.error('친구 걸기 오류 발생:', error);
+            errorModal(error);
         }
     }
 

@@ -32,6 +32,27 @@ const Board = () => {
     };
     const token = getToken();
 
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in");
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
+        }
+    }
+
     const getBoard = async () => {
         console.log('getBoard start');
         try {
@@ -52,13 +73,7 @@ const Board = () => {
                 console.log("200 성공~~~~");
             }
         } catch (error) { // 실패 시
-            if(error.response.status === 401) {
-                console.log("401 오류");
-            }
-            else {
-                console.log("서버 오류 입니다.");
-                alert(error.response.data);
-            }
+            errorModal(error);
         }
     };
 
@@ -101,7 +116,7 @@ const Board = () => {
                 setTranslatedTitle(titleResponse.data.text); // 번역된 제목
             }
         } catch (e) {
-            console.log(e);
+            errorModal(e);
         }
     }
 
@@ -135,13 +150,7 @@ const Board = () => {
                 console.log("좋아요 취소");
             }
         } catch (error) {
-            if(error.response.status === 401) {
-                console.log("토큰이 만료되었습니다.");
-            }
-            else {
-                console.log("서버 오류 입니다.");
-                alert(error.response.data);
-            }
+            errorModal(error);
         }
     };
 
@@ -184,13 +193,7 @@ const Board = () => {
                         navigate("/", {});
                     })
                     .catch((error) => {
-                        if(error.response.status === 401) {
-                            console.log("401 오류");
-                        }
-                        else {
-                            console.log("서버 오류 입니다.");
-                            alert(error.response.data);
-                        }
+                        errorModal(error);
                     });
             }
         });
@@ -229,13 +232,7 @@ const Board = () => {
                 console.log("모집중~");
             }
         } catch (error) {
-            if(error.response.status === 401) {
-                console.log("토큰이 만료되었습니다.");
-            }
-            else {
-                console.log("서버 오류 입니다.");
-                alert(error.response.data);
-            }
+            errorModal(error);
         }
     }
 

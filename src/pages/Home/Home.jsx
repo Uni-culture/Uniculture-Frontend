@@ -14,7 +14,7 @@ const Home = () => {
     const navigate = useNavigate();
     const [isLogin, setIsLogin] = useState(false);
     const [activeTab, setActiveTab] = useState('live'); //컴포넌트 선택
-    const { t} = useTranslation();
+    const { t } = useTranslation();
 
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 로컬 스토리지에서 토큰 가져옴

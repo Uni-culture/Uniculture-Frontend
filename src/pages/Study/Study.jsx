@@ -15,6 +15,7 @@ import { HiOutlineHashtag } from "react-icons/hi";
 import { IoIosClose } from "react-icons/io";
 import { GrPowerReset } from "react-icons/gr";
 import {useTranslation} from "react-i18next";
+import Swal from 'sweetalert2';
 
 export const Study = () => {
   const navigate = useNavigate();
@@ -37,6 +38,27 @@ export const Study = () => {
   };
 
   const token = getToken(); // 토큰 가져오기
+
+  const errorModal = (error) => {
+    if(error.response.status === 401) {
+        Swal.fire({
+            icon: "warning",
+            title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+            confirmButtonColor: "#8BC765",
+            confirmButtonText: t('loginWarning.confirmButton'),
+        }).then(() => {
+            navigate("/sign-in");
+        })
+    }
+    else {
+        Swal.fire({
+            icon: "warning",
+            title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+            confirmButtonColor: "#8BC765",
+            confirmButtonText: t('serverError.confirmButton'),
+        })
+    }
+  };
 
   const fetchBoardData = async (page) => {
     console.log('fetchBoardData start');
@@ -72,13 +94,7 @@ export const Study = () => {
         }
 
       } catch (error) { // 실패 시
-          if(error.response.status === 401) {
-              console.log("401 오류");
-          }
-          else {
-              console.log("서버 오류 입니다.");
-              alert(error.response.data);
-          }
+          errorModal(error);
       }
   };
 
@@ -154,12 +170,7 @@ useEffect(() => {
             setBoardList(response.data.content);
         }
     } catch (error) {
-        if(error.response.status === 401) {
-            console.log("401 오류");
-        }
-        else {
-            console.log("서버 오류 입니다.");
-        }
+        errorModal(error);
     }
   };
 

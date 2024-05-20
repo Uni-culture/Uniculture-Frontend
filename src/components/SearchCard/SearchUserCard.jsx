@@ -16,6 +16,27 @@ export default function SearchUserCard({user, type}) {
         navigate(`/profile/${user.nickname}`);
     }
 
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in");
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
+        }
+    };
+
     const friendButton = () => {
         switch (friendStatus){
             case 1 :
@@ -62,32 +83,20 @@ export default function SearchUserCard({user, type}) {
         try {
             const token = getToken(); // 토큰 가져오기
 
-            if(token){ //로그인 O
-                const response = await axios.post('/api/auth/friend-requests', {
-                    targetId: user.id
-                }, {
-                    headers: {
-                        Authorization: `Bearer ${token}` // 헤더에 토큰 추가
-                    }
-                });
-                if(response.status === 200){
-                    alert(t("profile.friendRequestSuccess"));
-                    setFriendStatus(3); //친구 신청 중으로 변경
+            const response = await axios.post('/api/auth/friend-requests', {
+                targetId: user.id
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}` // 헤더에 토큰 추가
+                }
+            });
+            if(response.status === 200){
+                alert(t("profile.friendRequestSuccess"));
+                setFriendStatus(3); //친구 신청 중으로 변경
 
-                }
-                else if(response.status === 400){
-                    console.log("친구 신청 클라이언트 에러");
-                }
-                else if(response.status === 500){
-                    console.log("친구 신청 서버 에러");
-                }
-            }
-            else {
-                alert("로그인 해주세요.");
-                navigate("/sign-in");
             }
         } catch (error) {
-            console.error('친구 걸기 오류 발생:', error);
+            errorModal(error);
         }
     }
 
@@ -120,15 +129,8 @@ export default function SearchUserCard({user, type}) {
                         console.log("친구 삭제 : " + user.nickname);
                         setFriendStatus(2);
                     }
-                    else if(response.status === 400){
-                        console.log("클라이언트 오류");
-                    }
-                    else if(response.status === 500){
-                        console.log("서버 오류");
-                    }
-                    
                 } catch (error) {
-                    console.error('친구 삭제 중 에러 발생:', error);
+                    errorModal(error);
                 }      
             }
         });
@@ -153,15 +155,8 @@ export default function SearchUserCard({user, type}) {
                 console.log(user.nickname + "님에게 보낸 친구 신청을 취소합니다.");
                 setFriendStatus(2); 
             }
-            else if(response.status === 400){
-                console.log("클라이언트 오류");
-            }
-            else if(response.status === 500){
-                console.log("서버 오류");
-            }
-            
         } catch (error) {
-            console.error('보낸 친구 신청 취소 중 에러 발생:', error);
+            errorModal(error);
         }
     };
 
@@ -182,15 +177,8 @@ export default function SearchUserCard({user, type}) {
                 console.log(user.nickname + "님의 친구 요청을 수락했습니다.");
                 setFriendStatus(1); //친구 상태로 변경
             }
-            else if(response.status === 400){
-                console.log("클라이언트 오류");
-            }
-            else if(response.status === 500){
-                console.log("서버 오류");
-            }
-            
         } catch (error) {
-            console.error('친구 신청 수락 중 에러 발생:', error);
+            errorModal(error);
         }
     };
 

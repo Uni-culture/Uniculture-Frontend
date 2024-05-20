@@ -4,8 +4,11 @@ import axios from 'axios';
 import MyProfile from "./MyProfile";
 import OtherProfile from "./OtherProfile";
 import Layout from "../../components/Layout";
+import { useTranslation } from "react-i18next";
+import Swal from "sweetalert2";
 
 const Profile = () => {
+    const { t } = useTranslation();
     const { nickname } = useParams(); // 타인 조회를 위한 url param
     const [myProfile, setMyProfile] = useState(false); // 내 프로필인지 확인해주는 State (True, False)
     const [myInfo, setMyInfo] = useState(null); // 나의 정보가 들어가는 State
@@ -16,6 +19,27 @@ const Profile = () => {
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
     };
+
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in");
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
+        }
+    }
 
     // 서버에 정보를 요청하는 함수
     const fetchUserInfo = async () => {
@@ -70,8 +94,7 @@ const Profile = () => {
             }
 
         } catch (error) {
-            navigate("/");
-            console.error('사용자 정보를 가져오는 도중 오류 발생:', error);
+            errorModal(error);
         }
     };
 

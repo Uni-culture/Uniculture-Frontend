@@ -10,9 +10,11 @@ import 'moment/locale/ko'
 import * as StompJs from "@stomp/stompjs";
 import {GiFemale, GiMale} from "react-icons/gi";
 import styles from './ChatList.module.css';
-
+import Swal from "sweetalert2";
+import { useTranslation } from "react-i18next";
 
 const ChatList = ({onSelectedChatRoom, user}) => {
+  const { t } = useTranslation();
     const [chatRooms, setChatRooms] = useState([]);
     const navigate = useNavigate(); // 페이지 이동을 위한 navigate 함수
 
@@ -23,6 +25,27 @@ const ChatList = ({onSelectedChatRoom, user}) => {
     // 로그인 후 저장된 토큰 가져오는 함수
     const getToken = () => {
       return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
+  };
+
+  const errorModal = (error) => {
+    if(error.response.status === 401) {
+        Swal.fire({
+            icon: "warning",
+            title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+            confirmButtonColor: "#8BC765",
+            confirmButtonText: t('loginWarning.confirmButton'),
+        }).then(() => {
+            navigate("/sign-in");
+        })
+    }
+    else {
+        Swal.fire({
+            icon: "warning",
+            title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+            confirmButtonColor: "#8BC765",
+            confirmButtonText: t('serverError.confirmButton'),
+        })
+    }
   };
 
   const updateChatRooms = (receivedMessage) =>{
@@ -83,10 +106,8 @@ const ChatList = ({onSelectedChatRoom, user}) => {
               }
             }
           }
-          else {console.log("서버 응답 오류");}
-
         } catch (error) {
-          console.error("Error fetching chat rooms:", error);
+            errorModal(error);
         }
       };
       fetchChatRooms();
@@ -131,10 +152,7 @@ const ChatList = ({onSelectedChatRoom, user}) => {
       // navigate('/chat');
     }, [navigate]);
     
-
-
     return (
-
         <div className="chat-list">
             {chatRooms.map((room) => (
                 <div className={styles.cardWrapper} key={room.id} onClick={() => onSelectedChatRoom(room)}>

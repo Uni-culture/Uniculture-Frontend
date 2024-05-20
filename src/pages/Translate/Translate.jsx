@@ -44,55 +44,53 @@ export default function Translate() {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
     };
 
-    // 번역 함수 
-    const performTranslation = async () => {
-        try {
-            console.log("번역하기");
-            const token = getToken();
-
-            if(token) {
-                console.log("text : " + inputText + "\n" + "target_lang : " + outputLanguage.code + "\n");
-
-                const response = await axios.post(`/api/auth/translate`, 
-                {
-                    text: inputText,
-                    target_lang: outputLanguage.code
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                
-                if(response.status === 200){
-                    setOutputText(response.data.text);
-                    console.log(response.data.text);
-                }
-                else if(response.status === 400){
-                    console.log("번역하기 클라이언트 오류");
-                }
-                else if(response.status === 500){
-                    console.log("번역하기 서버 오류");
-                }
-            } else {
-                LoginWarning();
-            }
-        } catch (error) {
-            console.log(error);
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in", {state: {from: location.pathname}});
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
         }
     };
 
-    const LoginWarning = () => {
-        Swal.fire({
-            icon: "warning",
-            title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
-            confirmButtonColor: "#8BC765",
-            confirmButtonText: t('loginWarning.confirmButton'),
-        }).then(() => {
-            navigate("/sign-in", {state: {from: location.pathname}});
-        });
-    };
+    // 번역 함수 
+    const performTranslation = async () => {
+        try {
+            const token = getToken();
 
+            console.log("text : " + inputText + "\n" + "target_lang : " + outputLanguage.code + "\n");
+
+            const response = await axios.post(`/api/auth/translate`, 
+            {
+                text: inputText,
+                target_lang: outputLanguage.code
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            
+            if(response.status === 200){
+                setOutputText(response.data.text);
+                console.log(response.data.text);
+            }
+        } catch (error) {
+            errorModal(error);
+        }
+    };
 
     useEffect(() => { // textareaContainer border 색 변경을 위한 함수
         function handleClickOutside(event) {

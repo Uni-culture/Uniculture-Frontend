@@ -26,61 +26,64 @@ const ProfileDelete = () => {
         localStorage.removeItem('accessToken'); // 로컬 스토리지에서 토큰 가져옴
     };
 
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in");
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
+        }
+    };
+
     const loginCheck = async () => {
         console.log('loginCheck');
         try {
             const token = getToken(); // 토큰 가져오기
-            if(token){
-                const response = await axios.get('/api/auth/sec/home', {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
 
-               if(response.status === 200){
-                    setIsModalOpened(!isModalOpened);
+            const response = await axios.get('/api/auth/sec/home', {
+                headers: {
+                    Authorization: `Bearer ${token}`
                 }
-            }
-            else{
-                Swal.fire({
-                    title: "로그인 해주세요.",
-                    text: "로그인 창으로 이동합니다.",
-                    icon: "warning",
-                    confirmButtonColor: "#dc3545",
-                    confirmButtonText: "확인"
-                }).then(() => {
-                    navigate("/sign-in");
-                });
+            });
+
+            if(response.status === 200){
+                setIsModalOpened(!isModalOpened);
             }
         } catch (error) {
-            console.error("회원 탈퇴 중 오류 : ", error);
+            errorModal(error);
         }
     };
 
     // 회원 삭제
     const deleteUser = async () => {
-        console.log('deleteUser');
         try {
             const token = getToken(); // 토큰 가져오기
+
             const response = await axios.delete('/api/auth/member', {
             headers: {
                 Authorization: `Bearer ${token}` // 헤더에 토큰 추가
             }
             });
+
             if(response.status === 200) {
                 alert("회원이 삭제되었습니다.");
                 removeToken();
                 navigate('/');
             }
-            else if(response.status === 400) {
-                console.log('클라이언트 에러(입력 형식 불량)');
-            }
-            else if(response.status === 500) {
-                console.log('서버에러');
-            }
         } catch (error) {
-            console.error('Error fetching user info:', error);
-            throw error;
+            errorModal(error);
         }
     };
 

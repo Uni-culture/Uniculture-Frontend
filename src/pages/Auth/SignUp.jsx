@@ -112,10 +112,19 @@ const SignUp = () => {
             }
             else {
                 console.log("서버 오류 입니다.");
-                alert(err.response.data);
+                serverError();
                 resetInput();
             }
         }
+    }
+
+    const serverError = () => {
+        Swal.fire({
+            icon: "warning",
+            title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+            confirmButtonColor: "#8BC765",
+            confirmButtonText: t('serverError.confirmButton'),
+        })
     }
 
     const emailWarning = () => {
@@ -157,18 +166,30 @@ const SignUp = () => {
                 setEmailAuth(response.data.number);
             }
         } catch (err) {
-            console.log("오류발생");
+            serverError();
         }
     };
 
     const emailAuthFun2 = () => {
         // emailNum과 emailAuth를 비교하여 일치할 경우에만 인증에 성공하였다는 메시지를 표시
         if (emailNum === emailAuth) {
-            alert('인증에 성공하였습니다.');
+            // alert('인증에 성공하였습니다.');
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('AuthenticationSuccessful.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: "확인",
+            })
             setIsAuthSuccess(true);
             // 여기에 인증에 성공한 후의 추가 동작을 넣으시면 됩니다.
         } else {
-            alert('인증에 실패하였습니다.');
+            // alert('인증에 실패하였습니다.');
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('AuthenticationFailed.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: "확인",
+            })
             setIsAuthSuccess(false);
             // 여기에 인증에 실패한 경우의 처리를 넣으시면 됩니다.
         }
@@ -197,7 +218,8 @@ const SignUp = () => {
                 }
                 else {
                     console.log("서버 오류 입니다.");
-                    alert(err.response.data);
+                    // alert(err.response.data);
+                    serverError();
                     resetInput();
                 }
             }
