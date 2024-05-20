@@ -240,13 +240,17 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
         };
     }, []);
 
+    //해당 게시물의 프로필로 이동
+    const handleProfile = (username) => {
+        navigate(`/profile/${username}`);
+    }
 
     return (
         <div style={{ width: '100%' }}>
             <div className="comments-comment">
                 <div className="comment-username-wrap">
                     <div className="postMine-wrap">
-                        <div className="comment-username">
+                        <div className="comment-username" onClick={() => handleProfile(comment.commentWriterName)}>
                             <img src={"/default_profile_image.jpg"} alt="User Image" className="comment-img"/>
                             {comment.commentWriterName}
                         </div>
@@ -318,7 +322,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                                 <div className="comments-replyComment">
                                     <div className="replyComment-username-wrap">
                                         <div className="postMine-wrap">
-                                            <div className="replyComment-username">
+                                            <div className="replyComment-username" onClick={() => handleProfile(child.commentWriterName)}>
                                                 <img src={"/default_profile_image.jpg"} alt="User Image" className="comment-img"/>
                                                 {child.commentWriterName}
                                             </div>

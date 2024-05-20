@@ -11,6 +11,8 @@ import { SearchCard } from "../../components/SearchCard/SearchCard";
 import moment from "moment";
 import SearchUserCard from '../../components/SearchCard/SearchUserCard';
 import Layout from "../../components/Layout";
+import { Select } from "antd";
+import {useTranslation} from "react-i18next";
 
 const Search = () => {
     const navigate = useNavigate();
@@ -30,8 +32,10 @@ const Search = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [isLoading, setIsLoading] = useState(false); // 데이터 로딩 상태
     const [hasMore, setHasMore] = useState(true); // 데이터가 더 있는지 여부
+    const [sort, setSort] = useState('default');
     const observer = useRef();
     const pageSize = 10; // 페이지 당 항목 수
+    const { t } = useTranslation();
 
     // 사용자 입력 처리
     const handleSearchChange = (e) => {
@@ -141,6 +145,12 @@ const Search = () => {
             const tagsQuery = newTags.map(tag => `tag=${(tag)}`).join('&');
             console.log("tagsQuery:", tagsQuery);
             url += `&${tagsQuery}`;
+        }
+
+        // 게시물 검색 최신순, 조회순, 좋아요순, 댓글순 정렬
+        if (sort !== 'default') {
+            console.log("sort: ", sort);
+            url += `&sort=${sort},DESC`;
         }
 
         try {
@@ -279,7 +289,7 @@ const Search = () => {
             else if(searchType === 'friend') setFriendList([]);
             else setMemberList([]);
         }
-    }, [debouncedSearch, tags, searchType]);
+    }, [debouncedSearch, tags, searchType, sort]);
 
     useEffect(() => {
         console.log(currentPage);
@@ -321,6 +331,7 @@ const Search = () => {
                                         username={post.writerName}
                                         date={moment(post.createDate).add(9, "hours").format('YYYY년 MM월 DD일')}
                                         likeCount={post.likeCount}
+                                        commentCount={post.commentCount}
                                     />
                                 </div>
                             })}
@@ -401,7 +412,6 @@ const Search = () => {
                     <button className="reset-button" onClick={handleReset}><GrPowerReset className="reset-icon"/>초기화</button>
                 </div>
                 
-                
                 <div className="total-elements">총 <b>{totalElements}개</b>의 검색 결과를 찾았습니다.</div>
 
                 <div className="navDiv">
@@ -418,7 +428,35 @@ const Search = () => {
                             <button className={`nav-link ${searchType === 'member' ? 'active' : ''}`} style={{color: "black"}}
                                     onClick={() => setSearchType('member')}>전체 사용자 <span className="elements">{memberElements}</span></button>
                         </li>
-                    </ul>   
+
+                        {searchType === 'post' && (
+                            <span className="select-style">
+                                <Select
+                                    defaultValue="default"
+                                    style={{ width: 100 }}
+                                    onChange={(value) => setSort(value)}
+                                    options={[
+                                        {
+                                            value: 'default',
+                                            label: t('sort.최신순'),
+                                        },
+                                        {
+                                            value: 'viewCount',
+                                            label: t('sort.조회순'),
+                                        },
+                                        {
+                                            value: 'likeCount',
+                                            label: t('sort.좋아요순')
+                                        },
+                                        {
+                                            value: 'commentCount',
+                                            label: t('sort.댓글순')
+                                        },
+                                    ]}
+                                />
+                            </span>
+                        )}
+                    </ul>
                 </div>
                 
                 {renderContent()}
