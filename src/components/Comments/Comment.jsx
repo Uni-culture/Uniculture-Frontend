@@ -63,8 +63,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
         }
         try {
             const response = await axios.post('/api/auth/translate', {
-                text: content,
-                target_lang: "KO"
+                text: content
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`

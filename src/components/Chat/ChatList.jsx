@@ -175,7 +175,8 @@ const ChatList = ({onSelectedChatRoom, user}) => {
                     </div>
                   </div>
                   <div className={styles.badge}><Badge count={room.unreadCount} size="large" overflowCount={99}/></div>
-                  <div className={styles.introduce}>{room.latestMessage ? room.latestMessage : "채팅 없음" }</div>
+                  <div className={styles.introduce}>
+                    {room?.messageType === "TALK" ? room.latestMessage : room?.messageType === "ENTER" ? '[수정됨]' : " "}</div>
                   <div className={styles.time}> {room.latestMessageTime ? moment(room.latestMessageTime).fromNow() : " " }</div>
                 </div>
               /*

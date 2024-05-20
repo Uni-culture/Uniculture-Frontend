@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import axios from 'axios';
 import Layout from '../../components/Layout'
 import { TbAdjustmentsHorizontal, TbSearch } from "react-icons/tb";
@@ -46,6 +46,7 @@ export default function Friend() {
 
     //친구 신청 모달창
     const [showRequests, setShowRequests] = useState(false);
+    const initialRender = useRef(true);
 
     // 로그인 후 저장된 토큰 가져오는 함수
     const getToken = () => {
@@ -183,7 +184,6 @@ export default function Friend() {
                     setIsLoading(false); // fetchFriendList가 완료되면 로딩 상태를 비활성화합니다.
                 });
             }, 800);
-    
             return () => {
                 clearTimeout(timerId);
             };
@@ -290,12 +290,14 @@ export default function Friend() {
         }
     };
 
-    // 모달이 표시될 때 친구 목록을 불러옴
     useEffect(() => {
-        if(!showRequests) { //모달창 닫을 때 요청
-            fetchFriendList(currentPage); 
+        if (initialRender.current) {
+            initialRender.current = false;
+        } else if (!showRequests) {
+            fetchFriendList(currentPage);
         }
     }, [showRequests]);
+
 
     const handleReceivedRequestsNum = (type) => {
         if(type === "add") setReceivedRequestsNum(receivedRequestsNum + 1);
