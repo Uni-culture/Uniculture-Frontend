@@ -29,6 +29,27 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
     const [replyTranslations, setReplyTranslations] = useState({}); // 대댓글 번역된 내용
     const { t } = useTranslation();
 
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in");
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
+        }
+    };
+
     useEffect(() => {
         setIsTranslated(false);
     }, [comment]);
@@ -42,8 +63,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
         }
         try {
             const response = await axios.post('/api/auth/translate', {
-                text: content,
-                target_lang: "KO"
+                text: content
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -68,7 +88,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                 }
             }
         } catch (e) {
-            console.log(e);
+            errorModal(e);
         }
     }
 
@@ -172,12 +192,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                 getCommentList();
             }
         } catch (error) { // 실패 시
-            if(error.response.status === 401) {
-                console.log("401 오류");
-            }
-            else {
-                alert(error.response.data);
-            }
+            errorModal(error);
         }
     };
 
@@ -203,12 +218,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                 updateTotalCommentsAndPage(); // 새로운 댓글이 추가되면 총 댓글 수를 업데이트하고, 해당하는 페이지로 로드
             }
         } catch (error) { // 실패 시
-            if(error.response.status === 401) {
-                console.log("401 오류");
-            }
-            else {
-                alert(error.response.data);
-            }
+            errorModal(error);
         }
     };
 

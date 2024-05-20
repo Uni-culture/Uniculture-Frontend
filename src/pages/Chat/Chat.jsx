@@ -25,14 +25,25 @@ const Chat = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
     };
 
-    const logInWarning = () => {
-        Swal.fire({
-            icon: "warning",
-            title: "주의",
-            text: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
-            confirmButtonColor: "#8BC765",
-            confirmButtonText: t('loginWarning.confirmButton'),
-        });
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in", {})
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
+        }
     };
 
     // 서버에 정보를 요청하는 함수
@@ -52,17 +63,9 @@ const Chat = () => {
             if (response.status === 200) {
                 setUserInfo(response.data); // 서버에서 받은 사용자 정보 저장
                 console.log(JSON.stringify(response.data));
-            } else {
-                console.log('서버 응답 오류:', response.status);
-            }
+            } 
         } catch (error) {
-            if(error.response.status === 500) {
-                console.log('500 start');
-                logInWarning();
-                navigate("/sign-in", {}) // 로그인하지 않은 사용자가 프로필 조회 시 로그인 페이지로 이동
-                console.log('500 end');
-            }
-            console.error('사용자 정보를 가져오는 도중 오류 발생:', error);
+            errorModal(error);
         }
     };
 
@@ -102,17 +105,9 @@ const Chat = () => {
                 // console.log(JSON.stringify(response.data));
                 console.log(response.data);
                 navigate(`/chat/${response.data.chatRoomId}`)
-            } else {
-                console.log('서버 응답 오류:', response.status);
             }
         } catch (error) {
-            if(error.response.status === 500) {
-                console.log('500 start');
-                // logInWarning();
-                // navigate("/sign-in", {}) // 로그인하지 않은 사용자가 프로필 조회 시 로그인 페이지로 이동
-                console.log('500 end');
-            }
-            console.error('사용자 정보를 가져오는 도중 오류 발생:', error);
+            errorModal(error);
         }
     }
 

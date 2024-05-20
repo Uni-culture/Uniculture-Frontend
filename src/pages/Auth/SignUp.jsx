@@ -113,10 +113,19 @@ const SignUp = () => {
             }
             else {
                 console.log("서버 오류 입니다.");
-                alert(err.response.data);
+                serverError();
                 resetInput();
             }
         }
+    }
+
+    const serverError = () => {
+        Swal.fire({
+            icon: "warning",
+            title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+            confirmButtonColor: "#8BC765",
+            confirmButtonText: t('serverError.confirmButton'),
+        })
     }
 
     const emailWarning = () => {
@@ -158,7 +167,7 @@ const SignUp = () => {
                 setEmailAuth(response.data.number);
             }
         } catch (err) {
-            console.log("오류발생");
+            serverError();
         }
     };
 
@@ -196,7 +205,8 @@ const SignUp = () => {
                 }
                 else {
                     console.log("서버 오류 입니다.");
-                    alert(err.response.data);
+                    // alert(err.response.data);
+                    serverError();
                     resetInput();
                 }
             }

@@ -5,6 +5,8 @@ import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 
 import { ChatMessage } from "./ChatMessage";
+import { useTranslation } from "react-i18next";
+import Swal from "sweetalert2";
 
 const ChatMain = ({selectedChatRoom, userInfo}) => {
     const [chats, setChats] = useState([]);
@@ -13,16 +15,35 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
 
     const messageEndRef = useRef(null);
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     // 로그인 후 저장된 토큰 가져오는 함수
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
     };
 
-    
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in");
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
+        }
+    };
 
     useEffect(()=>{
-
         const token = getToken();
 
         const loadChatHistory = async () => {
@@ -38,7 +59,7 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
                     setChats(response.data);
                 }
             } catch (error) {
-                console.error("채팅 내역 로드 실패", error);
+                errorModal(error);
             }
         };
 
