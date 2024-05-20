@@ -184,13 +184,20 @@ export default function SearchUserCard({user, type}) {
 
     return (
         <div className={styles.cardWrapper}>
-            <div className={styles.profileImage} onClick={handleProfile}>
-                <img
-                    className={styles.image}
-                    alt="profileimg"
-                    src={user?.profileImage ? user.profileImage : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
-                />
+            <div className={styles.imageWrapper} onClick={handleProfile}>
+                <div className={styles.profileImageWrapper}>
+                    <img
+                        src={user?.profileurl ? user.profileurl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                        alt="profile"
+                        className={styles.image}
+                    />
+                </div>
+
+                <div className={styles.countryImageWrapper}>
+                    <img className={styles.country} alt='country' src={`/${user.country}.png`} />
+                </div>
             </div>
+
             <div className={styles.profileText}>
                 <div className={styles.userInfo}>
                     <span className={styles.nicknameText} onClick={handleProfile} >{user?.nickname}</span>

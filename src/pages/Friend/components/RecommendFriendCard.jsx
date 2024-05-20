@@ -114,11 +114,19 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMe
                 <Card
                     style={{width: "100%", height: "100%"}}
                     cover={
-                        <img
-                            className={styles.profileImg}
-                            alt="profileimg"
-                            src={userInfo?.profileUrl ? userInfo.profileUrl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
-                        />
+                        <div className={styles.imageWrapper} onClick={handleProfile}>
+                            <div className={styles.profileImageWrapper}>
+                                <img
+                                    src={userInfo?.profileurl ? userInfo.profileurl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                                    alt="profile"
+                                    className={styles.image}
+                                />
+                            </div>
+
+                            <div className={styles.countryImageWrapper}>
+                                <img className={styles.country} alt='country' src={`/${userInfo.country}.png`} />
+                            </div>
+                        </div>
                     }
                     actions={[
                         <span onClick={handleSendFriendRequest}><IoMdPersonAdd size={22}/></span>,
@@ -132,7 +140,7 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMe
                                 <div className={styles.similarityText}>나랑 <span className={styles.similaritySpan}>{similarity}%</span> 잘 맞아요!</div>
                                 <div style={{display: "flex"}}>
                                 {/* 닉네임 */}
-                                <div onClick={handleProfile} style={{fontWeight : "bold", fontSize: "15px"}}>{userInfo.nickname}</div>
+                                <div onClick={handleProfile} style={{fontWeight : "bold", fontSize: "15px", overflow: "hidden", maxWidth: "90px", textOverflow: "ellipsis"}}>{userInfo.nickname}</div>
 
                                 {/* 성별, 나이 */}
                                 <div style={{fontWeight:"normal", display:"flex", marginLeft:"10px"}}>

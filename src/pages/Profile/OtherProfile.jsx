@@ -267,12 +267,14 @@ export default function OtherProfile({otherInformation}) {
             <div className={styles.top}>
                 {/* 프로필 사진 */}
                 <div className={styles.imageWrapper}>
-                    <img
-                        src={otherInfo?.profileurl ? otherInfo.profileurl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
-                        alt="profile"
-                        className={styles.image}
-                    />
-
+                    <div className={styles.profileImageWrapper}>
+                        <img
+                            src={otherInfo?.profileurl ? otherInfo.profileurl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                            alt="profile"
+                            className={styles.image}
+                        />
+                    </div>
+                    
                     <div className={styles.countryImageWrapper}>
                         <img className={styles.country} alt='country' src={`/${otherInfo.country}.png`} />
                     </div>
