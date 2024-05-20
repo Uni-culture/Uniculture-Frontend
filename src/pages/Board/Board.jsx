@@ -77,8 +77,7 @@ const Board = () => {
         try {
             // 내용 번역
             const response = await axios.post('/api/auth/translate', {
-                text : content,
-                target_lang : "KO"
+                text : content
             },{
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -87,8 +86,7 @@ const Board = () => {
 
             // 제목 변역
             let titleResponse = await axios.post('/api/auth/translate', {
-                text: "Translated Content", // 여기서 "번역된 내용"이라는 문자열을 영어로 설정했습니다. 필요에 따라 수정하세요.
-                target_lang: "KO"
+                text: "Translated Content" // 여기서 "번역된 내용"이라는 문자열을 영어로 설정했습니다. 필요에 따라 수정하세요.
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
