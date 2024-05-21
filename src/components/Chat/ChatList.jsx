@@ -113,8 +113,8 @@ const ChatList = ({onSelectedChatRoom, user}) => {
       fetchChatRooms();
 
       const clientdata = new StompJs.Client({
-        brokerURL:"ws://localhost:8080/ws",
-        //brokerURL:"ws://54.180.29.40:8080/ws",
+        // brokerURL:"ws://localhost:8080/ws",
+        brokerURL:"ws://54.180.29.40:8080/ws",
         debug: function (str) {
           console.log('STOMP' + str);
         },

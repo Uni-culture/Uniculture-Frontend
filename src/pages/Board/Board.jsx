@@ -274,7 +274,7 @@ const Board = () => {
                                     )}
                                 </div>
                                 <div className="board-likeCount">{board.likeCount}</div>
-                                { board.isMine &&(board.postType === 'HOBBY' || board.postType === 'LANGUAGE') ? (<button className="board-buttons" onClick={recruitedComplete}>{board.postStatus === 'START' ? ('모집종료') : ('다시모집')}</button>): ''}
+                                { board.isMine &&(board.postType === 'HOBBY' || board.postType === 'LANGUAGE') ? (<button className="board-buttons" onClick={recruitedComplete}>{board.postStatus === 'START' ? (`${t('board.모집종료')}`) : (`${t('board.다시모집')}`)}</button>): ''}
                             </div>
                             <div className="board-postType">{board.postType}</div>
                         </div>

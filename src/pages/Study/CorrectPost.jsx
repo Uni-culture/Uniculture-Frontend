@@ -11,7 +11,6 @@ import Swal from 'sweetalert2';
 
 export const CorrectPost = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
   const location = useLocation();
 
   console.log(location);
