@@ -322,14 +322,15 @@ const Search = () => {
                             {boardList && boardList.map((post, index) => {
                                 return <div ref={boardList.length === index + 1 ? lastElementRef : null} key={post.postId}> {/* 마지막 요소에 ref 할당 */}
                                     <SearchCard
-                                        board_id={post.postId}
-                                        title={post.title}
-                                        content={post.content}
-                                        hashtag={post.tags}
-                                        username={post.writerName}
-                                        date={moment(post.createDate).add(9, "hours").format(t('board.dateFormat'))}
-                                        likeCount={post.likeCount}
-                                        commentCount={post.commentCount}
+                                        // board_id={post.postId}
+                                        // title={post.title}
+                                        // content={post.content}
+                                        // hashtag={post.tags}
+                                        // username={post.writerName}
+                                        // date={moment(post.createDate).add(9, "hours").format(t('board.dateFormat'))}
+                                        // likeCount={post.likeCount}
+                                        // commentCount={post.commentCount}
+                                        post={post}
                                     />
                                 </div>
                             })}
