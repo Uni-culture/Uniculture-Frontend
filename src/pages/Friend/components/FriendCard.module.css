@@ -2,7 +2,9 @@
     min-width: 40px;
     max-width: 40px;
     position: relative;
-    margin-right: 10px;
+    margin-right: 20px;
+    /* margin-left: 20px; */
+    padding: 10px;
 }
  
 .profileImageWrapper {
@@ -20,16 +22,16 @@
 }
 
 .countryImageWrapper {
-    min-width: 15px;
-    max-width: 15px;
-    height: 15px;
+    min-width: 25px;
+    max-width: 25px;
+    height: 25px;
     border-radius: 50%;
     overflow: hidden;
     margin: auto 0px;
 
     position: absolute;
-    top: 20px;
-    left: -4px;
+    top: 23px;
+    left: 0px;
 }
 
 .country {
