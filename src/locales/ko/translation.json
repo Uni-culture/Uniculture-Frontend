@@ -11,7 +11,9 @@
     "로그아웃": "로그아웃",
     "logoutMessage": "로그아웃 되었습니다.",
     "한국어": "한국어",
-    "영어": "영어"
+    "영어": "영어",
+    "일본어": "일본어",
+    "중국어": "중국어"
   },
   "nav": {
     "실시간": "실시간",
@@ -62,6 +64,8 @@
     "requestAuth": "인증요청",
     "emailError": "이메일 주소는 @hansung.ac.kr로 끝나야 합니다.",
     "enterAuthCode": "인증번호를 입력해주세요",
+    "emailSuccess": "인증에 성공하였습니다.",
+    "emailFailure": "인증에 실패하였습니다.",
     "confirmAuth": "인증확인",
     "password": "비밀번호",
     "passwordPlaceholder": "영문, 숫자, 특수문자 포함 8자 이상",
@@ -280,6 +284,7 @@
     "EditButton": "수정"
   },
   "comments": {
+    "count": "{{count}}개의 댓글",
     "Placeholder": "댓글을 입력해주세요",
     "SubmitButton": "등록하기",
     "Author": "작성자",
@@ -290,6 +295,7 @@
     "Modify": "수정하기",
     "CommentDeleted": "댓글이 삭제되었습니다",
     "Translate": "번역하기",
+    "Revert": "되돌리기",
     "Reply": "답글",
     "ConfirmDelete": "댓글을 삭제하시겠습니까?"
   },
@@ -303,5 +309,15 @@
     "FR": "프랑스어",
     "IT": "이탈리아어",
     "Translate": "번역하기"
+  },
+  "search": {
+    "search": "검색",
+    "enterSearchTerm": "검색어를 입력하세요",
+    "searchByTag": "태그로 검색해보세요!",
+    "reset": "초기화",
+    "totalResults": "총 <b>{{count}}개</b>의 검색 결과를 찾았습니다.",
+    "posts": "게시물",
+    "friends": "친구",
+    "allUsers": "전체 사용자"
   }
 }

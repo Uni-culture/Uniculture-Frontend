@@ -12,6 +12,8 @@
     "logoutMessage": "You have been logged out.",
     "한국어": "Korean",
     "영어": "English",
+    "일본어": "Japanese",
+    "중국어": "Chinese",
     "select": "Select"
   },
   "nav": {
@@ -63,6 +65,8 @@
     "requestAuth": "Req Auth",
     "emailError": "The email address must end with @hansung.ac.kr.",
     "enterAuthCode": "Please enter the authentication code",
+    "emailSuccess": "Authentication successful.",
+    "emailFailure": "Authentication failed.",
     "confirmAuth": "Conf Auth",
     "password": "Password",
     "passwordPlaceholder": "Min 8 chars with letters, numbers, special chars",
@@ -280,6 +284,7 @@
     "EditButton": "Edit"
   },
   "comments": {
+    "count": "{{count}} comments",
     "Placeholder": "Please enter a comment",
     "SubmitButton": "Submit",
     "Author": "Author",
@@ -290,6 +295,7 @@
     "Modify": "Modify",
     "CommentDeleted": "The comment has been deleted",
     "Translate": "Translate",
+    "Revert": "Revert",
     "Reply": "Reply",
     "ConfirmDelete": "Are you sure you want to delete this comment?"
   },
@@ -303,5 +309,15 @@
     "FR": "French",
     "IT": "Italian",
     "Translate": "Translate"
+  },
+  "search": {
+    "search": "Search",
+    "enterSearchTerm": "Enter search term",
+    "searchByTag": "Search by tag!",
+    "reset": "Reset",
+    "totalResults": "Found a total of <b>{{count}}</b> search results.",
+    "posts": "Posts",
+    "friends": "Friends",
+    "allUsers": "All Users"
   }
 }

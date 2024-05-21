@@ -250,13 +250,17 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
         };
     }, []);
 
+    //해당 게시물의 프로필로 이동
+    const handleProfile = (username) => {
+        navigate(`/profile/${username}`);
+    }
 
     return (
         <div style={{ width: '100%' }}>
             <div className="comments-comment">
                 <div className="comment-username-wrap">
                     <div className="postMine-wrap">
-                        <div className="comment-username">
+                        <div className="comment-username" onClick={() => handleProfile(comment.commentWriterName)}>
                             <img src={"/default_profile_image.jpg"} alt="User Image" className="comment-img"/>
                             {comment.commentWriterName}
                         </div>
@@ -305,7 +309,9 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                         <div className={`comment-content ${comment.isDeleted ? 'comment-deleted' : ''}`}>
                             {comment.isDeleted ? t('comments.CommentDeleted') : (isTranslated ? translatedContent : comment.content)}
                         </div>
-                        <div className="ComentTranslate" onClick={toggleTranslate}>{t('comments.Translate')}</div>
+                        <div className="ComentTranslate" onClick={toggleTranslate}>
+                            {isTranslated ? t('comments.Revert') : t('comments.Translate')}
+                        </div>
                         <div className="comment-bottom">
                             <button className="reply-button" onClick={replyComponent}>{t('comments.Reply')}</button>
                             <div className="comment-date">
@@ -328,7 +334,10 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                                 <div className="comments-replyComment">
                                     <div className="replyComment-username-wrap">
                                         <div className="postMine-wrap">
-                                            <div className="replyComment-username">{child.commentWriterName}</div>
+                                            <div className="replyComment-username" onClick={() => handleProfile(child.commentWriterName)}>
+                                                <img src={"/default_profile_image.jpg"} alt="User Image" className="comment-img"/>
+                                                {child.commentWriterName}
+                                            </div>
                                             {child.postMine && (
                                                 <div className="postMine-style">{t('comments.Author')}</div>
                                             )}
@@ -377,7 +386,9 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                                             <div className="replyComment-content">
                                                 {replyIsTranslated[child.id] ? replyTranslations[child.id] : child.content}
                                             </div>
-                                            <div className="ComentTranslate" onClick={() => toggleReplyTranslate(child.id, child.content)}>{t('comments.Translate')}</div>
+                                            <div className="ComentTranslate" onClick={() => toggleReplyTranslate(child.id, child.content)}>
+                                                {replyIsTranslated[child.id] ? t('comments.Revert') : t('comments.Translate')}
+                                            </div>
                                             <div className="replyComment-bottom">
                                                 <div className="replyComment-date">
                                                     {moment(child.createdDate).fromNow()}
