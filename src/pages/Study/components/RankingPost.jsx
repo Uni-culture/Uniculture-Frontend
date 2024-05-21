@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import styles from './RankingPost.module.css'
 import {useTranslation} from "react-i18next";
+import api from "../../api";
 
 export const RankingPost = () => {
   const [data, setData] = useState([]);
@@ -17,7 +17,7 @@ export const RankingPost = () => {
   useEffect(()=>{
     const token = getToken(); // 토큰 가져오기
     async function fetchData(){
-    const res = await axios.get(`/api/post/hot`,{
+    const res = await api.get(`/api/post/hot`,{
       headers:{
         Authorization: `Bearer ${token}`
       }

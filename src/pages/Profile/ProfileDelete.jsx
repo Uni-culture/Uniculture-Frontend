@@ -1,10 +1,10 @@
 import Layout from "../../components/Layout";
 import Sidebar from "../../components/ProfileSidebar/Sidebar";
 import { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
+import api from "../api";
 
 const ProfileDelete = () => {
     const [deleteInput, setDeleteInput] = useState('');
@@ -52,7 +52,7 @@ const ProfileDelete = () => {
         try {
             const token = getToken(); // 토큰 가져오기
 
-            const response = await axios.get('/api/auth/sec/home', {
+            const response = await api.get('/api/auth/sec/home', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -71,7 +71,7 @@ const ProfileDelete = () => {
         try {
             const token = getToken(); // 토큰 가져오기
 
-            const response = await axios.delete('/api/auth/member', {
+            const response = await api.delete('/api/auth/member', {
             headers: {
                 Authorization: `Bearer ${token}` // 헤더에 토큰 추가
             }

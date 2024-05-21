@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import axios from "axios";
 import {Pagination, TextField} from "@mui/material";
 import {useLocation, useNavigate} from "react-router-dom";
 import "./comments.scss";
@@ -7,6 +6,7 @@ import Swal from "sweetalert2";
 import "./replyInput.scss";
 import Comment from "./Comment";
 import {useTranslation} from "react-i18next";
+import api from "../../pages/api";
 
 const Comments = ({board_id}) => {
     const location = useLocation();
@@ -48,7 +48,7 @@ const Comments = ({board_id}) => {
     const submitComment = async () => {
         console.log('submitComment start');
         try {
-            const response = await axios.post(`/api/auth/comment?postId=${board_id}`,
+            const response = await api.post(`/api/auth/comment?postId=${board_id}`,
                 {
                     postId: board_id,
                     content: content
@@ -74,7 +74,7 @@ const Comments = ({board_id}) => {
     // 새 댓글이 추가된 마지막 페이지로 설정
     const updateTotalCommentsAndPage = async () => {
         try {
-            const response = await axios.get(`/api/comment/count?postId=${board_id}`);
+            const response = await api.get(`/api/comment/count?postId=${board_id}`);
             const totalComments = response.data[0]; // 새로운 총 댓글 수
             const calculatedPageCount = Math.ceil(totalComments / 5);
             setPageCount(calculatedPageCount);
@@ -91,7 +91,7 @@ const Comments = ({board_id}) => {
         console.log("board_id: ", board_id);
         console.log("token: ", token);
         try {
-            const response = await axios.get(`/api/comment?page=${page}&size=5&postId=${board_id}`, {
+            const response = await api.get(`/api/comment?page=${page}&size=5&postId=${board_id}`, {
                 headers: {
                     Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                 }
@@ -105,7 +105,7 @@ const Comments = ({board_id}) => {
                 setCommentList(commentList.content);
 
                 // 두 번째 API 호출: 총 댓글 수 가져오기 (대댓글 실시간 반영을 위함)
-                const countResponse = await axios.get(`/api/comment/count?postId=${board_id}`, {
+                const countResponse = await api.get(`/api/comment/count?postId=${board_id}`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -121,7 +121,7 @@ const Comments = ({board_id}) => {
     useEffect(() => {
         // 댓글 전체 갯수 구하기
         const getTotalBoard = async () => {
-            return await axios.get(`/api/comment/count?postId=${board_id}`);
+            return await api.get(`/api/comment/count?postId=${board_id}`);
         }
         // 페이지 카운트 구하기: (전체 comment 갯수) / (한 페이지 갯수) 결과 올림
         getTotalBoard().then((response) => {

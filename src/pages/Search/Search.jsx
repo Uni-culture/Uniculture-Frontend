@@ -6,7 +6,6 @@ import { IoSearch, IoArrowBack } from "react-icons/io5";
 import { HiOutlineHashtag } from "react-icons/hi";
 import { IoIosClose } from "react-icons/io";
 import { GrPowerReset } from "react-icons/gr";
-import axios from "axios";
 import { SearchCard } from "../../components/SearchCard/SearchCard";
 import moment from "moment";
 import SearchUserCard from '../../components/SearchCard/SearchUserCard';
@@ -14,6 +13,8 @@ import Layout from "../../components/Layout";
 import Swal from "sweetalert2";
 import { Select } from "antd";
 import { useTranslation } from "react-i18next";
+import axios from "axios";
+import api from "../api";
 
 const Search = () => {
     const navigate = useNavigate();
@@ -129,7 +130,7 @@ const Search = () => {
                 url += `&${tagsQuery}`;
             }
 
-            const response = await axios.get(url, {
+            const response = await api.get(url, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -170,7 +171,7 @@ const Search = () => {
         }
 
         try {
-            const response = await axios.get(url);
+            const response = await api.get(url);
             if (response.status === 200) {
                 console.log("태그 배열 내용: ", newTags);
                 console.log("tags.length: ", newTags.length);
@@ -202,7 +203,7 @@ const Search = () => {
         }
 
         try {
-            const response = await axios.get(url,  {
+            const response = await api.get(url,  {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -233,7 +234,7 @@ const Search = () => {
         }
 
         try {
-            const response = await axios.get(url,{
+            const response = await api.get(url,{
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

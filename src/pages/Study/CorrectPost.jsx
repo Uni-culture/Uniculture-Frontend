@@ -3,11 +3,11 @@ import styles from './Post.module.css'
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import "react-quill/dist/quill.snow.css"
-import axios from 'axios';
 import { Select, Button} from 'antd';
 import Layout from '../../components/Layout';
 import { useTranslation } from 'react-i18next';
 import Swal from 'sweetalert2';
+import api from "../api";
 
 export const CorrectPost = () => {
   const navigate = useNavigate();
@@ -66,7 +66,7 @@ export const CorrectPost = () => {
     const getBoard = async () => {
         console.log('getBoard start');
         try {
-            const response = await axios.get(`/api/post/${board_id}`, {
+            const response = await api.get(`/api/post/${board_id}`, {
                 headers: {
                     Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                 }
@@ -148,7 +148,7 @@ export const CorrectPost = () => {
     // console.log({ title, tags: tags.split(',').map(tag => tag.trim()), content, category });
     // 실제 전송 로직 추가 예정
     const apiUrl = preset === "post" ? `/api/auth/post/${board_id}` : '/api/auth/post/study' ;
-    const res = await axios.patch(apiUrl,{
+    const res = await api.patch(apiUrl,{
       title: title,
       contents: content,
       posttype: category,

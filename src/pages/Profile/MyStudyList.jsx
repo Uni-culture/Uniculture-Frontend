@@ -1,13 +1,14 @@
 import {Pagination} from "@mui/material";
 import {Card} from "../../components/Card/Card";
 import React, {useEffect, useState} from "react";
-import axios from "axios";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import "../BoardList/boardList.scss";
 import moment from "moment";
 import {StudyListCard} from "../Study/components/StudyListCard";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
+import axios from "axios";
+import api from "../api";
 
 const MyBoardList = () => {
     const navigate = useNavigate();
@@ -47,7 +48,7 @@ const MyBoardList = () => {
         try {
             const token = getToken(); // 토큰 가져오기
             // const page_number = searchParams.get("page");
-            const response = await axios.get(`/api/auth/post?category=STUDY&page=${page}&size=8`, {
+            const response = await api.get(`/api/auth/post?category=STUDY&page=${page}&size=8`, {
                 headers: {
                     Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                 }

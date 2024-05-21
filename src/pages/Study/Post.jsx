@@ -3,10 +3,10 @@ import styles from './Post.module.css'
 import { useLocation, useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import "react-quill/dist/quill.snow.css"
-import axios from 'axios';
 import { Select, Button} from 'antd';
 import Layout from '../../components/Layout';
 import {useTranslation} from "react-i18next";
+import api from "../api";
 
 export const Post = () => {
   const location = useLocation();
@@ -96,7 +96,7 @@ const imageHandler = () => {
     formData.append('files', file); // formData는 키-밸류 구조
     // 백엔드 multer라우터에 이미지를 보낸다.
     try {
-      const result = await axios.post('/api/file', formData);
+      const result = await api.post('/api/file', formData);
       console.log('성공 시, 백엔드가 보내주는 데이터');
       console.log(result.data);
       const IMG_URL = result.data;
@@ -168,7 +168,7 @@ const imageHandler = () => {
     // console.log({ title, tags: tags.split(',').map(tag => tag.trim()), content, category });
     // 실제 전송 로직 추가 예정
     // const apiUrl = preset === "study" ? '/api/auth/post/study' : '/api/auth/post';
-    const res = await axios.post('/api/auth/post',{
+    const res = await api.post('/api/auth/post',{
       title: title,
       contents: content,
       posttype: category,

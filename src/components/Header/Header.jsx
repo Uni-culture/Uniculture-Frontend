@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import logoImg from "../../assets/logo.png";
-import axios from "axios";
 import "../PageLayout/PageLayout.css"
 import Swal from "sweetalert2";
 import "./Header.css";
@@ -13,6 +12,7 @@ import { AiOutlineBell } from "react-icons/ai";
 import NotificationModal from "../Notification/NotificationModal";
 import { useTranslation } from "react-i18next";
 import i18n from "../../locales/i18n";
+import api from "../../pages/api";
 
 const Header = () => {
     const navigate = useNavigate(); // 다른 component 로 이동할 때 사용
@@ -132,7 +132,7 @@ const Header = () => {
         try {
             const token = getToken(); // 토큰 가져오기
             if(token){
-                const response = await axios.get('/api/auth/sec/home', {
+                const response = await api.get('/api/auth/sec/home', {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -158,7 +158,7 @@ const Header = () => {
         try {
             const token = getToken(); // 토큰 가져오기
             if(token){
-                const response = await axios.get('/api/auth/notification/count', {
+                const response = await api.get('/api/auth/notification/count', {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -179,7 +179,7 @@ const Header = () => {
         try {
             const token = getToken(); // 토큰 가져오기
             if(token){
-                const response = await axios.get('/api/auth/notification', {
+                const response = await api.get('/api/auth/notification', {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -200,7 +200,7 @@ const Header = () => {
         try {
             const token = getToken(); // 토큰 가져오기
             if(token){
-                const response = await axios.get('/api/auth/chat/count', {
+                const response = await api.get('/api/auth/chat/count', {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -220,7 +220,7 @@ const Header = () => {
         try {
             const token = getToken(); // 토큰 가져오기
             if(token){
-                const response = await axios.post(`/api/auth/notification/${id}`, {
+                const response = await api.post(`/api/auth/notification/${id}`, {
                     id: id
                 }, {
                     headers: {
@@ -241,7 +241,7 @@ const Header = () => {
         try {
             const token = getToken(); // 토큰 가져오기
             if(token){
-                const response = await axios.post(`/api/auth/notification/all`, {}, {
+                const response = await api.post(`/api/auth/notification/all`, {}, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { IoMdAlert } from "react-icons/io";
 import styles from './Recommend.module.css';
 import RecommendFriendCard from './components/RecommendFriendCard';
@@ -8,6 +7,8 @@ import openImg from '../../assets/openimg.png'
 import {useTranslation} from "react-i18next";
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import api from "../api";
 
 export default function Recommend({recommendFriendList, sendMessage}) {
     const navigate = useNavigate();
@@ -62,7 +63,7 @@ export default function Recommend({recommendFriendList, sendMessage}) {
         try {
             const token = getToken(); // 토큰 가져오기
 
-            const response = await axios.post('/api/auth/friend-requests', {
+            const response = await api.post('/api/auth/friend-requests', {
                 targetId: userInfo.id
             }, {
                 headers: {
