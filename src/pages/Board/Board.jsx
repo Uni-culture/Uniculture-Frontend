@@ -274,7 +274,7 @@ const Board = () => {
                                     )}
                                 </div>
                                 <div className="board-likeCount">{board.likeCount}</div>
-                                { board.isMine &&(board.postType === 'HOBBY' || board.postType === 'LANGUAGE') ? (<button className="board-buttons" onClick={recruitedComplete}>{board.postStatus === 'START' ? ('모집종료') : ('다시모집')}</button>): ''}
+                                { board.isMine &&(board.postType === 'HOBBY' || board.postType === 'LANGUAGE') ? (<button className="board-buttons" onClick={recruitedComplete}>{board.postStatus === 'START' ? (`${t('board.모집종료')}`) : (`${t('board.다시모집')}`)}</button>): ''}
                             </div>
                             <div className="board-postType">{board.postType}</div>
                         </div>
@@ -309,7 +309,7 @@ const Board = () => {
                             {board.isMine && // 자신의 게시물이면 활성화
                                 <span className="edit-delete-button">
                                     <button className="board-buttons" onClick={boardDelete}> {t('board.DeleteButton')} </button>
-                                    <button className="board-buttons" onClick={() => {navigate(`/${board_id}?type=post`, {state : {from : location.pathname}});}}> {t('board.EditButton')} </button>
+                                    <button className="board-buttons" onClick={() => {navigate(`/${board_id}?type=${(board.postType === 'HOBBY' || board.postType === 'LANGUAGE') ?"study":"post"}`, {state : {from : location.pathname}});}}> {t('board.EditButton')} </button>
                                 </span>
                             }
                         </div>

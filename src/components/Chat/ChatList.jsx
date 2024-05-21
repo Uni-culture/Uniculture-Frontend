@@ -113,8 +113,8 @@ const ChatList = ({onSelectedChatRoom, user}) => {
       fetchChatRooms();
 
       const clientdata = new StompJs.Client({
-        brokerURL:"ws://localhost:8080/ws",
-        //brokerURL:"ws://54.180.29.40:8080/ws",
+        // brokerURL:"ws://localhost:8080/ws",
+        brokerURL:"ws://54.180.29.40:8080/ws",
         debug: function (str) {
           console.log('STOMP' + str);
         },
@@ -159,7 +159,7 @@ const ChatList = ({onSelectedChatRoom, user}) => {
                   <div className={styles.profileImage}>
                     <img className={styles.image}
                         alt="profileimg"
-                        src={room?.profileImage ? room.profileImage : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                        src={room?.profileurl ? room.profileurl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
                     />
                     <div className={styles.countryImageWrapper}>
                       <img className={styles.country} alt='country' src={`/${room.country}.png`} />

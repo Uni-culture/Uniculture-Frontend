@@ -89,7 +89,7 @@ const TotalBoardList = ({activeTab}) => {
         <div className="boardList-wrapper">
             <div className="boardList-body">
                 {boardList.map(post => (
-                    <Card key={post.postId} board_id={post.postId} img={post.imageUrl} title={post.title} content={post.content} username={post.writerName}
+                    <Card key={post.postId} board_id={post.postId} img={post.imageurl} title={post.title} content={post.content} username={post.writerName}
                           date={moment(post.createDate).add(9, "hour").format(t('board.dateFormat'))} commentCount={post.commentCount} likeCount={post.likeCount}></Card>
                 ))}
             </div>

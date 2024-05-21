@@ -182,6 +182,9 @@
     "댓글순":"コメント順",
     "좋아요순":"いいね順",
     "조회수순":"閲覧数順",
+    "좋아요": "いいね",
+    "조회수": "閲覧数",
+    "댓글": "コメント",
     "searchPlaceholder": "検索キーワードを入力してください",
     "searchButton": "検索",
     "tagSearchPlaceholder": "タグで検索してみてください！",
@@ -280,7 +283,9 @@
     "TranslateButton": "翻訳",
     "RevertButton": "元に戻す",
     "DeleteButton": "削除",
-    "EditButton": "修正"
+    "EditButton": "修正",
+    "모집종료": "募集終了",
+    "다시모집": "再募集"
   },
   "comments": {
     "count": "{{count}}件のコメント",
