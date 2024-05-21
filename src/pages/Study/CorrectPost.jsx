@@ -147,25 +147,28 @@ export const CorrectPost = () => {
     e.preventDefault(); // 폼 제출 시 페이지 리로드 방지
     // console.log({ title, tags: tags.split(',').map(tag => tag.trim()), content, category });
     // 실제 전송 로직 추가 예정
-    const apiUrl = preset === "post" ? `/api/auth/post/${board_id}` : '/api/auth/post/study' ;
-    const res = await axios.patch(apiUrl,{
-      title: title,
-      contents: content,
-      posttype: category,
-      postCategory: 'NORMAL',
-      tag: tags},{
-      headers:{
-        Authorization: `Bearer ${token}`
+    try{
+      const apiUrl = preset === "post" ? `/api/auth/post/${board_id}` : '/api/auth/post/study' ;
+      const res = await axios.patch(apiUrl,{
+        title: title,
+        contents: content,
+        posttype: category,
+        postCategory: 'NORMAL',
+        tag: tags},{
+        headers:{
+          Authorization: `Bearer ${token}`
+        }
+      })
+      console.log('서버 응답:', res);
+      console.log('response.status:', res.status);
+      if(res.status === 200) {
+        alert("글 수정 완료");
+        navigate(`/board/${board_id}`,{});
       }
-    })
-    console.log('서버 응답:', res);
-    console.log('response.status:', res.status);
-    if(res.status === 200) {
-      alert("글 수정 완료");
-      navigate(`/board/${board_id}`,{});
     }
-    else {alert("글 작성 실패")}
-
+    catch(error) {
+      errorModal(error);
+    }
   }
 
   const handleCancel = () =>{
