@@ -38,6 +38,10 @@ const Header = () => {
                 return '한국어';
             case 'en':
                 return 'English';
+            case 'jp':
+                return '日本語';
+            case 'cn':
+                return '中国人';
             default:
                 return '한국어'; // 기본값
         }
@@ -379,6 +383,28 @@ const Header = () => {
             text: t('header.영어'),
             langCode: 'en',
             key: '2',
+        },
+        {
+            label: (
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <img src="/japan.png" alt="japan" className="national-flag"/>
+                    {t('header.일본어')}
+                </div>
+            ),
+            text: t('header.일본어'),
+            langCode: 'jp',
+            key: '3',
+        },
+        {
+            label: (
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <img src="/china.png" alt="china" className="national-flag"/>
+                    {t('header.중국어')}
+                </div>
+            ),
+            text: t('header.중국어'),
+            langCode: 'cn',
+            key: '4',
         },
     ];
 
