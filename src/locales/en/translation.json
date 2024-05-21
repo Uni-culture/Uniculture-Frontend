@@ -216,6 +216,8 @@
   },
   "profileEdit": {
     "editProfile": "Edit Profile",
+    "delete": "delete",
+    "change": "change",
     "introduction": "Introduction",
     "enterIntroduction": "Enter Introduction",
     "charLimit": "characters",
