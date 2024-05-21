@@ -5,12 +5,12 @@ import ChatMain from "../../components/Chat/ChatMain";
 import Swal from "sweetalert2";
 import "../../components/PageLayout/PageLayout.css"
 import { useNavigate} from "react-router-dom";
-import axios from "axios";
 import styles from './Chat.module.css';
 import { LuMessageSquarePlus } from "react-icons/lu";
 import { BiMessageRoundedDots } from "react-icons/bi";
 import CreateChat from "../../components/Chat/CreateChat";
 import {useTranslation} from "react-i18next";
+import api from "../api";
 
 const Chat = () => {
     const navigate = useNavigate(); // 페이지 이동을 위한 navigate 함수
@@ -55,7 +55,7 @@ const Chat = () => {
                 navigate('/sign-in');
                 return;
             }
-            const response = await axios.get('/api/auth/member/myPage', {
+            const response = await api.get('/api/auth/member/myPage', {
                 headers: {
                     Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                 }
@@ -95,7 +95,7 @@ const Chat = () => {
                 return;
             }
 
-            const response = await axios.get(`/api/auth/room/duo?toId=${userInfo[0].id}`,{
+            const response = await api.get(`/api/auth/room/duo?toId=${userInfo[0].id}`,{
                 headers: {
                     Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                 }

@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import axios from "axios";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 import moment from "moment";
 import Header from "../../components/Header/Header";
@@ -11,6 +10,7 @@ import Comments from "../../components/Comments/Comments"
 import DOMPurify from "dompurify";
 import {useTranslation} from "react-i18next";
 import i18n from "i18next";
+import api from "../api";
 
 const Board = () => {
     const location = useLocation();
@@ -56,7 +56,7 @@ const Board = () => {
     const getBoard = async () => {
         console.log('getBoard start');
         try {
-            const response = await axios.get(`/api/post/${board_id}`, {
+            const response = await api.get(`/api/post/${board_id}`, {
                 headers: {
                     Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                 }
@@ -91,7 +91,7 @@ const Board = () => {
 
         try {
             // 내용 번역
-            const response = await axios.post('/api/auth/translate', {
+            const response = await api.post('/api/auth/translate', {
                 text : content
             },{
                 headers: {
@@ -100,7 +100,7 @@ const Board = () => {
             });
 
             // 제목 변역
-            let titleResponse = await axios.post('/api/auth/translate', {
+            let titleResponse = await api.post('/api/auth/translate', {
                 text: "Translated Content" // 여기서 "번역된 내용"이라는 문자열을 영어로 설정했습니다. 필요에 따라 수정하세요.
             }, {
                 headers: {
@@ -127,7 +127,7 @@ const Board = () => {
 
         try {
             if (!liked) {
-                const response = await axios.post(`/api/auth/post/${board_id}/like`, {}, {
+                const response = await api.post(`/api/auth/post/${board_id}/like`, {}, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     },
@@ -137,7 +137,7 @@ const Board = () => {
                 }
                 console.log("좋아요 누름");
             } else {
-                const response = await axios.delete(`/api/auth/post/${board_id}/like`, {
+                const response = await api.delete(`/api/auth/post/${board_id}/like`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -172,7 +172,7 @@ const Board = () => {
             }
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`/api/auth/post/${board_id}`, {
+                api.delete(`/api/auth/post/${board_id}`, {
                     headers: {
                         Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                     }
@@ -205,7 +205,7 @@ const Board = () => {
 
         try {
             if (board.postStatus === 'START') {
-                const response = await axios.post(`/api/auth/post/${board_id}/status`, {
+                const response = await api.post(`/api/auth/post/${board_id}/status`, {
                     status: 'FINISH'
                 }, {
                     headers: {
@@ -217,7 +217,7 @@ const Board = () => {
                 }
                 console.log("모집완료!!");
             } else {
-                const response = await axios.post(`/api/auth/post/${board_id}/status`, {
+                const response = await api.post(`/api/auth/post/${board_id}/status`, {
                     status:'START'
                 },{
                     headers: {

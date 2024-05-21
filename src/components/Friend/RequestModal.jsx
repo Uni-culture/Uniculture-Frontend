@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios';
 import FriendList from '../../pages/Profile/components/FriendList';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import api from "../../pages/api";
 
 export default function RequestModal({ modal, handleReceivedRequestsNum, handleFriendNum, type }) {
     const { t } = useTranslation();
@@ -97,7 +97,7 @@ export default function RequestModal({ modal, handleReceivedRequestsNum, handleF
         try {
             const token = getToken();
 
-            const response = await axios.get('/api/auth/friend', {
+            const response = await api.get('/api/auth/friend', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -116,7 +116,7 @@ export default function RequestModal({ modal, handleReceivedRequestsNum, handleF
         try {
             const token = getToken();
 
-            const response = await axios.get('/api/auth/friend-requests/sent', {
+            const response = await api.get('/api/auth/friend-requests/sent', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -135,7 +135,7 @@ export default function RequestModal({ modal, handleReceivedRequestsNum, handleF
         try {
             const token = getToken();
 
-            const response = await axios.get('/api/auth/friend-requests/receive', {
+            const response = await api.get('/api/auth/friend-requests/receive', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -154,7 +154,7 @@ export default function RequestModal({ modal, handleReceivedRequestsNum, handleF
         try {
             const token = getToken();
 
-            const response = await axios.delete('/api/auth/friend-requests', {
+            const response = await api.delete('/api/auth/friend-requests', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
@@ -176,7 +176,7 @@ export default function RequestModal({ modal, handleReceivedRequestsNum, handleF
         try {
             const token = getToken();
 
-            const response = await axios.put(`/api/auth/friend-requests/${userInfo.id}`, {
+            const response = await api.put(`/api/auth/friend-requests/${userInfo.id}`, {
                 status: 'accepted'
             }, {
                 headers: {
@@ -201,7 +201,7 @@ export default function RequestModal({ modal, handleReceivedRequestsNum, handleF
         try {
             const token = getToken();
 
-            const response = await axios.put(`/api/auth/friend-requests/${userInfo.id}`, {
+            const response = await api.put(`/api/auth/friend-requests/${userInfo.id}`, {
                 status: 'rejected'
             }, {
                 headers: {
@@ -224,7 +224,7 @@ export default function RequestModal({ modal, handleReceivedRequestsNum, handleF
         try {
             const token = getToken();
 
-            const response = await axios.delete('/api/auth/friend', {
+            const response = await api.delete('/api/auth/friend', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },

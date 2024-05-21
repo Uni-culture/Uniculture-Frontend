@@ -4,9 +4,9 @@ import {Link, useLocation, useNavigate} from "react-router-dom";
 import "./Auth.css";
 import AddLanuageModal from "../Profile/Modal/AddLanuageModal";
 import PercentBar from "../../components/PercentBar/PercentBar";
-import axios from "axios";
 import {useTranslation} from "react-i18next";
 import Swal from "sweetalert2";
+import api from "../api";
 
 const SignUpOption = () => {
     const navigate = useNavigate(); // 다른 component 로 이동할 때 사용
@@ -169,7 +169,7 @@ const SignUpOption = () => {
 
     const handleComplete = async () => {
         try {
-            const response = await axios.patch(`/api/member/editProfile`, {
+            const response = await api.patch(`/api/member/editProfile`, {
                 id: id,
                 purpose: selectedPurTags, // 가입 목적 태그
                 mainPurpose: finalPurpose, // 주 목적 태그

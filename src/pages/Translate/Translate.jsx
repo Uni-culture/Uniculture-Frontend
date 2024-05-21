@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react'
 import Layout from '../../components/Layout'
 import styles from './Translate.module.css';
@@ -7,6 +6,7 @@ import { FaExchangeAlt } from "react-icons/fa";
 import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import {useTranslation} from "react-i18next";
+import api from "../api";
 
 export default function Translate() {
     const navigate = useNavigate(); // 다른 component 로 이동할 때 사용
@@ -72,7 +72,7 @@ export default function Translate() {
 
             console.log("text : " + inputText + "\n" + "target_lang : " + outputLanguage.code + "\n");
 
-            const response = await axios.post(`/api/auth/translate`, 
+            const response = await api.post(`/api/auth/translate`,
             {
                 text: inputText,
                 target_lang: outputLanguage.code

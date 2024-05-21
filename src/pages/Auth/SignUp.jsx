@@ -1,11 +1,12 @@
 //회원 가입 페이지
 import React, {useEffect, useState} from "react"
-import axios from 'axios';
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import './Auth.css';
 import Swal from "sweetalert2";
 import { IoArrowBack } from "react-icons/io5";
 import {useTranslation} from "react-i18next";
+import axios from "axios";
+import api from "../api";
 
 const SignUp = () => {
     const navigate = useNavigate(); // 다른 component 로 이동할 때 사용
@@ -89,7 +90,7 @@ const SignUp = () => {
         };
         console.log('req_data: ', request_data);
         try{
-            let response = await axios({
+            let response = await api({
                 method: 'post',
                 url: '/api/sec/signup',
                 headers: {'Content-Type': 'application/json'},
@@ -155,7 +156,7 @@ const SignUp = () => {
             const request_data = {
                 email: email
             };
-            let response = await axios({
+            let response = await api({
                 method: 'post',
                 url: '/api/mailSend',
                 headers: {'Content-Type': 'application/json'},
@@ -188,7 +189,7 @@ const SignUp = () => {
         console.log("isTooLong: ", isTooLong);
         if (nickName.length <= 15 && !isTooLong) {
             try {
-                let response = await axios({
+                let response = await api({
                     method: 'get',
                     url: `/api/sec/check?nickname=${nickName}`,
                     headers: {'Content-Type': 'application/json'},

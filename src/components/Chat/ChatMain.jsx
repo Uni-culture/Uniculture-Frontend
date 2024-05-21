@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as StompJs from "@stomp/stompjs";
 import "./ChatMain.css";
-import axios from "axios";
 import {Link, useNavigate} from "react-router-dom";
 
 import { ChatMessage } from "./ChatMessage";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
+import api from "../../pages/api";
 
 const ChatMain = ({selectedChatRoom, userInfo}) => {
     const [chats, setChats] = useState([]);
@@ -49,7 +49,7 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
         const loadChatHistory = async () => {
             try {
                 const token = getToken(); // 토큰 가져오기
-                const response = await axios.get(`/api/auth/room/${selectedChatRoom.id}`, {
+                const response = await api.get(`/api/auth/room/${selectedChatRoom.id}`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -66,8 +66,8 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
         loadChatHistory();
 
         const clientdata = new StompJs.Client({
-            brokerURL: "ws://54.180.29.40:8080/ws",          //웹소켓 주소.
-            // brokerURL:"ws://localhost:8080/ws",
+            brokerURL: "ws://13.209.41.67:8080/ws",          //웹소켓 주소.
+            //brokerURL:"ws://localhost:8080/ws",
             debug: function (str) {
                 console.log('STOMP' + str);
             },

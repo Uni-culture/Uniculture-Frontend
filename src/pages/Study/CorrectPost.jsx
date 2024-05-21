@@ -3,11 +3,11 @@ import styles from './Post.module.css'
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import "react-quill/dist/quill.snow.css"
-import axios from 'axios';
 import { Select, Button} from 'antd';
 import Layout from '../../components/Layout';
 import { useTranslation } from 'react-i18next';
 import Swal from 'sweetalert2';
+import api from "../api";
 
 export const CorrectPost = () => {
   const navigate = useNavigate();
@@ -67,7 +67,7 @@ export const CorrectPost = () => {
     const getBoard = async () => {
         console.log('getBoard start');
         try {
-            const response = await axios.get(`/api/post/${board_id}`, {
+            const response = await api.get(`/api/post/${board_id}`, {
                 headers: {
                     Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                 }
@@ -114,7 +114,7 @@ export const CorrectPost = () => {
         tags: value,
       }))  
     };
-  
+
       // 이미지 처리를 하는 핸들러
   const imageHandler = () => {
     console.log('에디터에서 이미지 버튼을 클릭하면 이 핸들러가 시작됩니다!');
@@ -140,7 +140,7 @@ export const CorrectPost = () => {
         console.log('성공 시, 백엔드가 보내주는 데이터');
         console.log(result.data);
         const IMG_URL = result.data;
-        if(imgUrl===''){ 
+        if(imgUrl===''){
           setImgUrl(result.data);
           console.log("첫번째 이미지 저장~");
         }
@@ -204,7 +204,10 @@ export const CorrectPost = () => {
 
   const handleSubmit = async(e) =>{
     e.preventDefault(); // 폼 제출 시 페이지 리로드 방지
-    const res = await axios.patch(`/api/auth/post/${board_id}`,{
+    // console.log({ title, tags: tags.split(',').map(tag => tag.trim()), content, category });
+    // 실제 전송 로직 추가 예정
+    const apiUrl = preset === "post" ? `/api/auth/post/${board_id}` : '/api/auth/post/study' ;
+    const res = await api.patch(apiUrl,{
       title: title,
       contents: content,
       posttype: category,
@@ -266,7 +269,7 @@ export const CorrectPost = () => {
           <div className={styles.catNtags}>
             <div className={styles.category}>
             <label htmlFor="category"><span>{t('post.categoryLabel')}</span></label>
-              <Select          
+              <Select
                   value={category}
                   onChange={handleCategoryChange}
                   style={{
@@ -278,7 +281,7 @@ export const CorrectPost = () => {
             <div className={styles.tags}>
               <label htmlFor="tags"><span>{t('post.tagsLabel')}</span></label>
               <Select
-                mode="tags"              
+                mode="tags"
                 placeholder="태그를 작성해주세요"
                 value={tags}
                 onChange={handleTagChange}

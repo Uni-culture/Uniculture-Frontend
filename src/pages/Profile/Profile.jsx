@@ -1,11 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import MyProfile from "./MyProfile";
 import OtherProfile from "./OtherProfile";
 import Layout from "../../components/Layout";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
+import api from "../api";
 
 const Profile = () => {
     const { t } = useTranslation();
@@ -53,7 +53,7 @@ const Profile = () => {
 
                 if(!nickname){
                     console.log("닉네임 매개변수 없음 -> 자신조회");
-                    const response = await axios.get('/api/auth/member/myPage', {
+                    const response = await api.get('/api/auth/member/myPage', {
                         headers: {
                             Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                         }
@@ -66,7 +66,7 @@ const Profile = () => {
                 }
                 else{
                     console.log("닉네임 매개변수 있음 -> 상대조회");
-                    const response = await axios.get(`/api/member/otherPage/${nickname}`,{
+                    const response = await api.get(`/api/member/otherPage/${nickname}`,{
                         headers: {
                             Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                         }
@@ -85,7 +85,7 @@ const Profile = () => {
             else { //로그인 X
                 console.log("로그인 X일때 조회하는 경우");
 
-                const response = await axios.get(`/api/member/otherPage/${nickname}`);
+                const response = await api.get(`/api/member/otherPage/${nickname}`);
 
                 if (response.status === 200) {
                     setOtherInfo(response.data);
