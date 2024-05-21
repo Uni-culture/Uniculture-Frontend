@@ -37,9 +37,14 @@ export default function AddLanuageModal({handleModal, addLanguage}) {
                         <div style={{textAlign:"center", marginTop:"20px"}}>
                             <select className="form-select" defaultValue="language" value={language} onChange={handleLanguageChange} aria-label="Default select example" style={{marginTop:"30px", marginBottom:"20px"}}>
                                 <option value="language" disabled>{t('languageSelect.languageSelection')}</option>
-                                <option value="한국어">{t('languageSelect.한국어')}</option>
-                                <option value="중국어">{t('languageSelect.중국어')}</option>
-                                <option value="일본어">{t('languageSelect.일본어')}</option>
+                                <option value="한국어">한국어</option>
+                                <option value="영어">English</option>
+                                <option value="중국어">中文</option>
+                                <option value="일본어">日本語</option>
+                                {/* {t('languageSelect.한국어')} */}
+                                {/* {t('languageSelect.한국어')} */}
+                                {/* {t('languageSelect.한국어')} */}
+                                {/* {t('languageSelect.한국어')} */}
                             </select>
 
                             <select className="form-select" defaultValue="level" value={level} onChange={handleLevelChange} aria-label="Default select example" style={{marginTop:"30px", marginBottom:"20px"}}>

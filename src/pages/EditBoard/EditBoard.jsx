@@ -3,11 +3,11 @@ import React, {useCallback, useEffect, useState} from "react";
 import ImageUploader from "../../components/Board/ImageUploader";
 import TextArea from "../../components/Board/TextArea";
 import "../AddBoard/addBoard.scss";
-import axios from "axios";
 import Header from "../../components/Header/Header";
 import {IoArrowBack} from "react-icons/io5";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
+import api from "../api";
 
 const EditBoard = () => {
     const { t } = useTranslation();
@@ -52,7 +52,7 @@ const EditBoard = () => {
         const getBoard = async () => {
             console.log('getBoard start');
             try {
-                const response = await axios.get(`/api/post/${board_id}`, {
+                const response = await api.get(`/api/post/${board_id}`, {
                     headers: {
                         Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                     }
@@ -87,7 +87,7 @@ const EditBoard = () => {
             console.log(`posttype: ${postType}`);
             if(token) {
                 console.log("토큰 확인: ", token);
-                const response = await axios.patch(`/api/auth/post/${board_id}`, {
+                const response = await api.patch(`/api/auth/post/${board_id}`, {
                     title: title,
                     contents: content,
                     posttype: postType

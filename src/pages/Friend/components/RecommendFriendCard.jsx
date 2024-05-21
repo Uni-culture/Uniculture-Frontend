@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { GiMale, GiFemale } from "react-icons/gi";
 import { IoMdPersonAdd } from "react-icons/io";
@@ -11,6 +10,7 @@ import cardOpenSound from '../../../assets/cardOpen.mp3';
 import { Card } from 'antd';
 import { useTranslation } from 'react-i18next';
 import Swal from 'sweetalert2';
+import api from "../../api";
 const { Meta } = Card;
 
 export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMessage}) {
@@ -58,7 +58,7 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMe
         try {
             const token = getToken(); // 토큰 가져오기
 
-            const response = await axios.post('/api/auth/friend/recommend/open', {
+            const response = await api.post('/api/auth/friend/recommend/open', {
                 targetId: userInfo.id
             }, {
                 headers: {

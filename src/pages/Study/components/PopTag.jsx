@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import styles from './PopTag.module.css'
-import axios from 'axios'
 import {useTranslation} from "react-i18next";
 import { Api } from '../../../components/Api';
 

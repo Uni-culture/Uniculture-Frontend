@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios';
 import FriendList from '../../pages/Profile/components/FriendList';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import axios from "axios";
+import api from "../../pages/api";
 
 export default function CreateChat({modal, createChat}) {
     const navigate = useNavigate();
@@ -49,7 +50,7 @@ export default function CreateChat({modal, createChat}) {
             let Query= searchInput ? `nickname=${searchInput}&` : '';
 
             if(Query){
-                const response = await axios.get(`/api/auth/friend?${Query}`, {
+                const response = await api.get(`/api/auth/friend?${Query}`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }

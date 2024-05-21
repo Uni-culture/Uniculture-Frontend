@@ -6,7 +6,6 @@ import '../Search/search.css'
 // import { StudyCard } from './components/StudyCard'
 import { FaSearch,FaPencilAlt} from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { StudyListCard } from './components/StudyListCard';
 import { PopTag } from './components/PopTag';
 import { RankingPost } from './components/RankingPost';

@@ -183,6 +183,9 @@
     "댓글순":"댓글순",
     "좋아요순":"좋아요순",
     "조회수순":"조회수순",
+    "좋아요":"좋아요",
+    "조회수":"조회수",
+    "댓글":"댓글",
     "searchPlaceholder": "검색어를 입력하세요",
     "searchButton": "검색",
     "tagSearchPlaceholder": "태그로 검색해보세요!",
@@ -281,7 +284,9 @@
     "TranslateButton": "번역",
     "RevertButton": "되돌리기",
     "DeleteButton": "삭제",
-    "EditButton": "수정"
+    "EditButton": "수정",
+    "모집종료":"모집종료",
+    "다시모집":"다시모집"
   },
   "comments": {
     "count": "{{count}}개의 댓글",

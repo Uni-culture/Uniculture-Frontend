@@ -1,5 +1,7 @@
-import axios from 'axios';
+
 import Swal from 'sweetalert2';
+import axios from "axios";
+import api from "../pages/api";
 
 // API 유틸리티 함수 모듈로 정의
 export const Api = {
@@ -10,7 +12,7 @@ export const Api = {
   GET_API: async (reqUrl, navigate, t) => {
     try {
       const token = Api.getToken();
-      const response = await axios.get(reqUrl, {
+      const response = await api.get(reqUrl, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -36,7 +38,7 @@ export const Api = {
   POST_API: async (reqUrl, bodyData = {}, navigate, t) => {
     try {
       const token = Api.getToken();
-      const response = await axios.post(reqUrl, bodyData, {
+      const response = await api.post(reqUrl, bodyData, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -61,7 +63,7 @@ export const Api = {
   DELETE_API: async (reqUrl, navigate, t) => {
     try {
       const token = Api.getToken();
-      const response = await axios.delete(reqUrl, {
+      const response = await api.delete(reqUrl, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -86,7 +88,7 @@ export const Api = {
   FETCH_API: async (reqUrl, navigate, t) => {
     try {
       const token = Api.getToken();
-      const response = await axios.get(reqUrl, {
+      const response = await api.get(reqUrl, {
         headers: {
           Authorization: `Bearer ${token}`
         }

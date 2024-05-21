@@ -5,11 +5,11 @@ import ImageUploader from "../../components/Board/ImageUploader";
 import TextArea from "../../components/Board/TextArea";
 import "./addBoard.scss";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
 import Header from "../../components/Header/Header";
 import {IoArrowBack} from "react-icons/io5";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
+import api from "../api";
 
 const AddBoard = () => {
     // const token = useSelector(state => state.Auth.token);
@@ -60,7 +60,7 @@ const AddBoard = () => {
         try {
             const token = getToken(); // 토큰 가져오기
             if(token) {
-                const response = await axios.post('api/auth/post', {
+                const response = await api.post('api/auth/post', {
                     title: title,
                     contents: content,
                     posttype: postType

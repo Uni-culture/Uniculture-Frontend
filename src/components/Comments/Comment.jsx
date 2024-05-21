@@ -8,9 +8,9 @@ import Swal from "sweetalert2";
 import {useLocation, useNavigate} from "react-router-dom";
 import 'moment/locale/ko'
 import { HiOutlineDotsVertical } from "react-icons/hi";
-import axios from "axios";
 import {TextField} from "@mui/material";
 import {useTranslation} from "react-i18next";
+import api from "../../pages/api";
 
 moment.locale('ko');
 const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage}) => {
@@ -62,7 +62,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
             return;
         }
         try {
-            const response = await axios.post('/api/auth/translate', {
+            const response = await api.post('/api/auth/translate', {
                 text: content
             }, {
                 headers: {
@@ -171,7 +171,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
         const contentToSubmit = isReply ? replyContent[commentId] : content;
         console.log('content: ', contentToSubmit);
         try {
-            const response = await axios.patch(`/api/auth/comment?commentId=${commentId}`,{
+            const response = await api.patch(`/api/auth/comment?commentId=${commentId}`,{
                     content: contentToSubmit
                 }, {
                     headers: {
@@ -205,7 +205,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
 
         console.log('deleteComment start');
         try {
-            const response = await axios.delete(`/api/auth/comment?commentId=${commentId}`,
+            const response = await api.delete(`/api/auth/comment?commentId=${commentId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}` // 헤더에 토큰 추가

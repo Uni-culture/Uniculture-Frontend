@@ -1,12 +1,12 @@
 import {Pagination} from "@mui/material";
 import {Card} from "../../components/Card/Card";
 import {useEffect, useState} from "react";
-import axios from "axios";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import "./boardList.scss";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
+import api from "../api";
 
 const TotalBoardList = ({activeTab}) => {
     const navigate = useNavigate();
@@ -54,7 +54,7 @@ const TotalBoardList = ({activeTab}) => {
             else if(activeTab==="help") apiUrl = `/api/post?ca=NORMAL&pt=HELP&page=${page}&size=8`;
             else if(activeTab==="friend") apiUrl = `/api/auth/post/friend?page=${page}&size=8`;
             console.log(apiUrl);
-            const response = await axios.get(apiUrl, {
+            const response = await api.get(apiUrl, {
                 headers: {
                     Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                 }
@@ -89,7 +89,7 @@ const TotalBoardList = ({activeTab}) => {
         <div className="boardList-wrapper">
             <div className="boardList-body">
                 {boardList.map(post => (
-                    <Card key={post.postId} board_id={post.postId} img={post.imageUrl} title={post.title} content={post.content} username={post.writerName}
+                    <Card key={post.postId} board_id={post.postId} img={post.imageurl} title={post.title} content={post.content} username={post.writerName}
                           date={moment(post.createDate).add(9, "hour").format(t('board.dateFormat'))} commentCount={post.commentCount} likeCount={post.likeCount}></Card>
                 ))}
             </div>
