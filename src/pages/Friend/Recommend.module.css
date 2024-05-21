@@ -29,3 +29,9 @@
 .img {
     width: 200px;
 }
+
+@media (min-width: 1450px) {
+    .recommend {
+        grid-template-columns: repeat(5, minmax(220px, 1fr));
+    }
+}
