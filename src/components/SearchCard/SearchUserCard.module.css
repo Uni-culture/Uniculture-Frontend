@@ -36,11 +36,17 @@
 }
 
 .nicknameText {
-    max-width: 150px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    max-width: 200px;
     font-size: 25px;
     font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    word-break: normal;
+    word-wrap: break-word;
 }
 
 .genderText {
