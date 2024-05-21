@@ -82,6 +82,7 @@ export const CorrectPost = () => {
                   tags: boardData.tags, 
                   category: boardData.postType
                 })
+                setImgUrl(boardData.imageurl)
                 if(boardData.type === 'study'){
                   setPostType('스터디');
                 } else{
@@ -203,7 +204,7 @@ export const CorrectPost = () => {
 
   const handleSubmit = async(e) =>{
     e.preventDefault(); // 폼 제출 시 페이지 리로드 방지
-    const res = await axios.patch(`/api/auth/post${board_id}`,{
+    const res = await axios.patch(`/api/auth/post/${board_id}`,{
       title: title,
       contents: content,
       posttype: category,
@@ -262,33 +263,35 @@ export const CorrectPost = () => {
         </div>
 
         <div className={styles.right}>
-          <div className={styles.category}>
-            <label htmlFor="category"><span>카테고리 설정</span></label>
-            <Select          
-                value={category}
-                onChange={handleCategoryChange}
+          <div className={styles.catNtags}>
+            <div className={styles.category}>
+            <label htmlFor="category"><span>{t('post.categoryLabel')}</span></label>
+              <Select          
+                  value={category}
+                  onChange={handleCategoryChange}
+                  style={{
+                    width: "100%",
+                  }}
+                  options={type==="post" ? postOptions : studyOptions}
+                />
+            </div>
+            <div className={styles.tags}>
+              <label htmlFor="tags"><span>{t('post.tagsLabel')}</span></label>
+              <Select
+                mode="tags"              
+                placeholder="태그를 작성해주세요"
+                value={tags}
+                onChange={handleTagChange}
+                maxCount={5}
                 style={{
-                  width: 200,
+                  width: '100%',
                 }}
-                options={type==="post" ? postOptions : studyOptions}
               />
-          </div>
-          <div className={styles.tags}>
-            <label htmlFor="tags"><span>태그 설정 (최대 5 개)</span></label>
-            <Select
-              mode="tags"              
-              placeholder="태그를 작성해주세요"
-              value={tags}
-              onChange={handleTagChange}
-              maxCount={5}
-              style={{
-                width: '100%',
-              }}
-            />
-          </div>
-          <div className={styles.btns}>
-            <Button className={styles.btn} onClick={()=>navigate(-1)}>취소</Button>
-            <Button type="primary" onClick={handleSubmit} className={styles.btn} disabled={!title || !content || content==="<p><br></p>"}>글 수정</Button>
+            </div>
+            <div className={styles.btns}>
+              <Button className={styles.btn} onClick={()=>navigate(-1)}>{t('post.cancelButton')}</Button>
+              <Button type="primary" onClick={handleSubmit} className={styles.btn} disabled={!title || !content || content==="<p><br></p>"}>{t('post.submitButton')}</Button>
+            </div>
           </div>
         </div>
       </div>
