@@ -187,9 +187,11 @@ export default function RequestModal({ modal, handleReceivedRequestsNum, handleF
             if(response.status === 200){
                 console.log(userInfo.nickname + "님의 친구 요청을 수락했습니다.");
                 setReceivedRequests(receivedRequests.filter(request => request.id !== userInfo.id)); //받은 친구 신청 목록에서 삭제
-                setFriendList([...friendList, userInfo]); //친구 목록에 추가
-                handleReceivedRequestsNum("subtract");
-                handleFriendNum("add") //친구 수 + 1
+                if( type === 'includeFriendList' || type === 'showFriendList' ) {
+                    setFriendList([...friendList, userInfo]); //친구 목록에 추가
+                    handleReceivedRequestsNum("subtract");
+                    handleFriendNum("add") //친구 수 + 1
+                }
             }
         } catch (error) {
             errorModal(error);
@@ -212,7 +214,7 @@ export default function RequestModal({ modal, handleReceivedRequestsNum, handleF
             if(response.status === 200){
                 console.log(userInfo.nickname + "님의 친구 요청을 거절했습니다.");
                 setReceivedRequests(receivedRequests.filter(request => request.id !== userInfo.id)); //받은 친구 신청 목록에서 삭제
-                handleReceivedRequestsNum("subtract");
+                if( type === 'includeFriendList' || type === 'showFriendList' ) handleReceivedRequestsNum("subtract");
             }
         } catch (error) {
             errorModal(error);
