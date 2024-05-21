@@ -113,10 +113,19 @@ const SignUp = () => {
             }
             else {
                 console.log("서버 오류 입니다.");
-                alert(err.response.data);
+                serverError();
                 resetInput();
             }
         }
+    }
+
+    const serverError = () => {
+        Swal.fire({
+            icon: "warning",
+            title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+            confirmButtonColor: "#8BC765",
+            confirmButtonText: t('serverError.confirmButton'),
+        })
     }
 
     const emailWarning = () => {
@@ -158,7 +167,7 @@ const SignUp = () => {
                 setEmailAuth(response.data.number);
             }
         } catch (err) {
-            console.log("오류발생");
+            serverError();
         }
     };
 
@@ -166,10 +175,10 @@ const SignUp = () => {
         // emailNum과 emailAuth를 비교하여 일치할 경우에만 인증에 성공하였다는 메시지를 표시
         if (emailNum === emailAuth) {
             setIsAuthSuccess(true);
-            setAuthMessage('인증에 성공하였습니다.');
+            setAuthMessage(t('signUp.emailSuccess'));
         } else {
             setIsAuthSuccess(false);
-            setAuthMessage('인증에 실패하였습니다.');
+            setAuthMessage(t('signUp.emailFailure'));
         }
     };
 
@@ -196,7 +205,8 @@ const SignUp = () => {
                 }
                 else {
                     console.log("서버 오류 입니다.");
-                    alert(err.response.data);
+                    // alert(err.response.data);
+                    serverError();
                     resetInput();
                 }
             }
@@ -361,7 +371,7 @@ const SignUp = () => {
                 {emailAuthValid && (
                     <div className="inputWrap" style={{padding: '11px 13px 11px 17px', marginTop: '10px'}}>
                         <input className="input" type="text" placeholder={t('signUp.enterAuthCode')} style={{marginTop: '9px'}} value={emailNum} onChange={(e) => setEmailNum(e.target.value)} />
-                        <button className='nickNameButton' onClick={emailAuthFun2} disabled={emailNum.length !== 6} style={{width: '80px'}}>{t('signUp.confirmAuth')}</button>
+                        <button className='nickNameButton' onClick={emailAuthFun2} disabled={emailNum.length !== 6} style={{width: '90px'}}>{t('signUp.confirmAuth')}</button>
                     </div>
                 )}
                 <div className="nickNameMessageWrap">

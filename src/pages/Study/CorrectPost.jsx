@@ -7,9 +7,13 @@ import axios from 'axios';
 import { Select, Button} from 'antd';
 import Layout from '../../components/Layout';
 import { useTranslation } from 'react-i18next';
+import Swal from 'sweetalert2';
 
 export const CorrectPost = () => {
+  const navigate = useNavigate();
+  const { t } = useTranslation();
   const location = useLocation();
+
   console.log(location);
   const searchParams = new URLSearchParams(location.search);
   const type = searchParams.get('type');
@@ -35,8 +39,28 @@ export const CorrectPost = () => {
   })
   const {title, tags, category} = inputs;
   const [content, setContent] = useState("");
-  const navigate = useNavigate();
   const quillRef = useRef();
+
+  const errorModal = (error) => {
+    if(error.response.status === 401) {
+        Swal.fire({
+            icon: "warning",
+            title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+            confirmButtonColor: "#8BC765",
+            confirmButtonText: t('loginWarning.confirmButton'),
+        }).then(() => {
+            navigate("/sign-in");
+        })
+    }
+    else {
+        Swal.fire({
+            icon: "warning",
+            title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+            confirmButtonColor: "#8BC765",
+            confirmButtonText: t('serverError.confirmButton'),
+        })
+    }
+  };
 
   //post 인지 study인지 확인 후 api 주소 변경 해야함.
   useEffect(() => {
@@ -68,13 +92,7 @@ export const CorrectPost = () => {
                 console.log("200 성공~~~~");
             }
         } catch (error) { // 실패 시
-            if(error.response.status === 401) {
-                console.log("401 오류");
-            }
-            else {
-                console.log("서버 오류 입니다.");
-                alert(error.response.data);
-            }
+            errorModal(error);
         }
     };
     getBoard();

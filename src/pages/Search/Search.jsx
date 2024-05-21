@@ -11,10 +11,15 @@ import { SearchCard } from "../../components/SearchCard/SearchCard";
 import moment from "moment";
 import SearchUserCard from '../../components/SearchCard/SearchUserCard';
 import Layout from "../../components/Layout";
+import Swal from "sweetalert2";
+import { Select } from "antd";
+import { useTranslation } from "react-i18next";
 
 const Search = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const location = useLocation();
+
     const [search, setSearch] = useState(""); // 사용자 입력 검색어
     const [debouncedSearch, setDebouncedSearch] = useState(""); // API 호출에 사용될 검색어
     const [tag, setTag] = useState(""); // 사용자 입력 태그
@@ -30,6 +35,7 @@ const Search = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [isLoading, setIsLoading] = useState(false); // 데이터 로딩 상태
     const [hasMore, setHasMore] = useState(true); // 데이터가 더 있는지 여부
+    const [sort, setSort] = useState('default');
     const observer = useRef();
     const pageSize = 10; // 페이지 당 항목 수
 
@@ -86,6 +92,27 @@ const Search = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
     };
 
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in");
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
+        }
+    };
+
     //검색 결과 개수
     const getResultCount = async (newTags = tags) => {
         try {
@@ -114,15 +141,8 @@ const Search = () => {
                 setFriendElements(response.data.friend);
                 setMemberElements(response.data.member);
             }
-            else if(response.status === 400){
-                console.log("검색 결과 개수 얻기 클라이언트 오류");
-            }
-            else if(response.status === 500){
-                console.log("검색 결과 개수 얻기 서버 오류");
-            }
-            
         } catch (error) {
-            navigate("/");
+            errorModal(error);
         }
     }; 
 
@@ -143,6 +163,12 @@ const Search = () => {
             url += `&${tagsQuery}`;
         }
 
+        // 게시물 검색 최신순, 조회순, 좋아요순, 댓글순 정렬
+        if (sort !== 'default') {
+            console.log("sort: ", sort);
+            url += `&sort=${sort},DESC`;
+        }
+
         try {
             const response = await axios.get(url);
             if (response.status === 200) {
@@ -157,14 +183,8 @@ const Search = () => {
                 console.log("api 요청하였습니다.");
             }
         } catch (error) {
-            if(error.response.status === 401) {
-                console.log("401 오류");
-                setIsLoading(false); // 에러 발생 시 로딩 상태 해제
-            }
-            else {
-                console.log("서버 오류 입니다.");
-                setIsLoading(false); // 에러 발생 시 로딩 상태 해제
-            }
+            errorModal(error);
+            setIsLoading(false); // 에러 발생 시 로딩 상태 해제
         }
     };
 
@@ -195,15 +215,8 @@ const Search = () => {
                 setHasMore(((page+1) * pageSize) < response.data.totalElements);
             }
         } catch (error) {
-            if(error.response.status === 401) {
-                console.log("401 오류");
-                setIsLoading(false); // 에러 발생 시 로딩 상태 해제
-                navigate("/sign-in");
-            }
-            else {
-                console.log("서버 오류 입니다.");
-                setIsLoading(false); // 에러 발생 시 로딩 상태 해제
-            }
+            errorModal(error);
+            setIsLoading(false);
         }
     };
 
@@ -233,14 +246,8 @@ const Search = () => {
                 setHasMore(((page+1) * pageSize) < response.data.totalElements);
             }
         } catch (error) {
-            if(error.response.status === 401) {
-                console.log("401 오류");
-                setIsLoading(false); // 에러 발생 시 로딩 상태 해제
-            }
-            else {
-                console.log("서버 오류 입니다.");
-                setIsLoading(false); // 에러 발생 시 로딩 상태 해제
-            }
+            errorModal(error);
+            setIsLoading(false);
         }
     };
     
@@ -279,7 +286,7 @@ const Search = () => {
             else if(searchType === 'friend') setFriendList([]);
             else setMemberList([]);
         }
-    }, [debouncedSearch, tags, searchType]);
+    }, [debouncedSearch, tags, searchType, sort]);
 
     useEffect(() => {
         console.log(currentPage);
@@ -319,8 +326,9 @@ const Search = () => {
                                         content={post.content}
                                         hashtag={post.tags}
                                         username={post.writerName}
-                                        date={moment(post.createDate).add(9, "hours").format('YYYY년 MM월 DD일')}
+                                        date={moment(post.createDate).add(9, "hours").format(t('board.dateFormat'))}
                                         likeCount={post.likeCount}
+                                        commentCount={post.commentCount}
                                     />
                                 </div>
                             })}
@@ -380,9 +388,9 @@ const Search = () => {
                 <div className="search-container">
                     <div className="searchWrap">
                         <IoSearch className="input-icon" />
-                        <input className="search-input" type="text" value={search} onChange={handleSearchChange} placeholder="검색어를 입력하세요"/>
+                        <input className="search-input" type="text" value={search} onChange={handleSearchChange} placeholder={t('search.enterSearchTerm')}/>
                     </div>
-                    <button className="search-button" onClick={handleSearchButton}>검색</button>
+                    <button className="search-button" onClick={handleSearchButton}>{t('search.search')}</button>
                 </div>
 
                 <div className="tag-container">
@@ -396,29 +404,57 @@ const Search = () => {
                                 </span>
                             ))}
                         </div>
-                        <input className="tag-input" type="text" value={tag} onChange={handleTagChange} onKeyUp={handleKeyDown} placeholder="태그로 검색해보세요!"/>
+                        <input className="tag-input" type="text" value={tag} onChange={handleTagChange} onKeyUp={handleKeyDown} placeholder={t('search.searchByTag')}/>
                     </div>
-                    <button className="reset-button" onClick={handleReset}><GrPowerReset className="reset-icon"/>초기화</button>
+                    <button className="reset-button" onClick={handleReset}><GrPowerReset className="reset-icon"/>{t('search.reset')}</button>
                 </div>
                 
-                
-                <div className="total-elements">총 <b>{totalElements}개</b>의 검색 결과를 찾았습니다.</div>
+                <div className="total-elements"
+                     dangerouslySetInnerHTML={{ __html: t('search.totalResults', { count: totalElements }) }}></div>
 
                 <div className="navDiv">
                     <ul className="nav nav-underline nav-tab">
                         <li className="search-nav-item">
                             <button className={`nav-link ${searchType === 'post' ? 'active' : ''}`} style={{color: "black"}}
-                                    onClick={() => setSearchType('post')}>게시물 <span className="elements">{postElements}</span></button>
+                                    onClick={() => setSearchType('post')}>{t('search.posts')} <span className="elements">{postElements}</span></button>
                         </li>
                         <li className="search-nav-item">
                             <button className={`nav-link ${searchType === 'friend' ? 'active' : ''}`} style={{color: "black"}}
-                                    onClick={() => setSearchType('friend')}>친구 <span className="elements">{friendElements}</span></button>
+                                    onClick={() => setSearchType('friend')}>{t('search.friends')} <span className="elements">{friendElements}</span></button>
                         </li>
                         <li className="search-nav-item">
                             <button className={`nav-link ${searchType === 'member' ? 'active' : ''}`} style={{color: "black"}}
-                                    onClick={() => setSearchType('member')}>전체 사용자 <span className="elements">{memberElements}</span></button>
+                                    onClick={() => setSearchType('member')}>{t('search.allUsers')} <span className="elements">{memberElements}</span></button>
                         </li>
-                    </ul>   
+
+                        {searchType === 'post' && (
+                            <span className="select-style">
+                                <Select
+                                    defaultValue="default"
+                                    style={{ width: 100 }}
+                                    onChange={(value) => setSort(value)}
+                                    options={[
+                                        {
+                                            value: 'default',
+                                            label: t('sort.최신순'),
+                                        },
+                                        {
+                                            value: 'viewCount',
+                                            label: t('sort.조회순'),
+                                        },
+                                        {
+                                            value: 'likeCount',
+                                            label: t('sort.좋아요순')
+                                        },
+                                        {
+                                            value: 'commentCount',
+                                            label: t('sort.댓글순')
+                                        },
+                                    ]}
+                                />
+                            </span>
+                        )}
+                    </ul>
                 </div>
                 
                 {renderContent()}

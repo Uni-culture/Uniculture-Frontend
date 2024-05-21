@@ -54,19 +54,3 @@
 .write-button:active {
     background-color: #c8dca0;
 }
-
-.select-style {
-    margin-right: 15px;
-}
-
-.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector,
-.ant-select:hover .ant-select-selector {
-    border-color: #C8DCA0 !important;
-    box-shadow: none !important;
-    border-width: 2px;
-}
-
-/* 선택된 옵션의 배경색 변경 */
-.ant-select-dropdown .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
-    background-color: #C8DCA0 !important;
-}

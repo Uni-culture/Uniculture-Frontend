@@ -29,6 +29,27 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
     const [replyTranslations, setReplyTranslations] = useState({}); // 대댓글 번역된 내용
     const { t } = useTranslation();
 
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in");
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
+        }
+    };
+
     useEffect(() => {
         setIsTranslated(false);
     }, [comment]);
@@ -42,8 +63,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
         }
         try {
             const response = await axios.post('/api/auth/translate', {
-                text: content,
-                target_lang: "KO"
+                text: content
             }, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -68,7 +88,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                 }
             }
         } catch (e) {
-            console.log(e);
+            errorModal(e);
         }
     }
 
@@ -172,12 +192,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                 getCommentList();
             }
         } catch (error) { // 실패 시
-            if(error.response.status === 401) {
-                console.log("401 오류");
-            }
-            else {
-                alert(error.response.data);
-            }
+            errorModal(error);
         }
     };
 
@@ -203,12 +218,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                 updateTotalCommentsAndPage(); // 새로운 댓글이 추가되면 총 댓글 수를 업데이트하고, 해당하는 페이지로 로드
             }
         } catch (error) { // 실패 시
-            if(error.response.status === 401) {
-                console.log("401 오류");
-            }
-            else {
-                alert(error.response.data);
-            }
+            errorModal(error);
         }
     };
 
@@ -240,13 +250,17 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
         };
     }, []);
 
+    //해당 게시물의 프로필로 이동
+    const handleProfile = (username) => {
+        navigate(`/profile/${username}`);
+    }
 
     return (
         <div style={{ width: '100%' }}>
             <div className="comments-comment">
                 <div className="comment-username-wrap">
                     <div className="postMine-wrap">
-                        <div className="comment-username">
+                        <div className="comment-username" onClick={() => handleProfile(comment.commentWriterName)}>
                             <img src={"/default_profile_image.jpg"} alt="User Image" className="comment-img"/>
                             {comment.commentWriterName}
                         </div>
@@ -295,7 +309,9 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                         <div className={`comment-content ${comment.isDeleted ? 'comment-deleted' : ''}`}>
                             {comment.isDeleted ? t('comments.CommentDeleted') : (isTranslated ? translatedContent : comment.content)}
                         </div>
-                        <div className="ComentTranslate" onClick={toggleTranslate}>{t('comments.Translate')}</div>
+                        <div className="ComentTranslate" onClick={toggleTranslate}>
+                            {isTranslated ? t('comments.Revert') : t('comments.Translate')}
+                        </div>
                         <div className="comment-bottom">
                             <button className="reply-button" onClick={replyComponent}>{t('comments.Reply')}</button>
                             <div className="comment-date">
@@ -318,7 +334,10 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                                 <div className="comments-replyComment">
                                     <div className="replyComment-username-wrap">
                                         <div className="postMine-wrap">
-                                            <div className="replyComment-username">{child.commentWriterName}</div>
+                                            <div className="replyComment-username" onClick={() => handleProfile(child.commentWriterName)}>
+                                                <img src={"/default_profile_image.jpg"} alt="User Image" className="comment-img"/>
+                                                {child.commentWriterName}
+                                            </div>
                                             {child.postMine && (
                                                 <div className="postMine-style">{t('comments.Author')}</div>
                                             )}
@@ -367,7 +386,9 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                                             <div className="replyComment-content">
                                                 {replyIsTranslated[child.id] ? replyTranslations[child.id] : child.content}
                                             </div>
-                                            <div className="ComentTranslate" onClick={() => toggleReplyTranslate(child.id, child.content)}>{t('comments.Translate')}</div>
+                                            <div className="ComentTranslate" onClick={() => toggleReplyTranslate(child.id, child.content)}>
+                                                {replyIsTranslated[child.id] ? t('comments.Revert') : t('comments.Translate')}
+                                            </div>
                                             <div className="replyComment-bottom">
                                                 <div className="replyComment-date">
                                                     {moment(child.createdDate).fromNow()}

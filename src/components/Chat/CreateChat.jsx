@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import FriendList from '../../pages/Profile/components/FriendList';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function CreateChat({modal, createChat}) {
+    const navigate = useNavigate();
+    const { t } = useTranslation();
     //검색
     const [searchInput, setSearchInput] = useState(null); // 검색창 값
     const [friendList, setFriendList] = useState([]); //친구 목록
@@ -12,6 +17,27 @@ export default function CreateChat({modal, createChat}) {
     // 로그인 후 저장된 토큰 가져오는 함수
     const getToken = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
+    };
+
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in");
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
+        }
     };
 
     // 검색
@@ -32,16 +58,10 @@ export default function CreateChat({modal, createChat}) {
                 if(response.status === 200){
                     setFriendList(response.data);
                 }
-                else if(response.status === 400){
-                    console.log("친구 목록 불러오기 클라이언트 오류");
-                }
-                else if(response.status === 500){
-                    console.log("친구 목록 불러오기 서버 오류");
-                }
             }
             else {setFriendList(null);}
         } catch (error) {
-            console.log(error);
+            errorModal(error);
         }
     };
 

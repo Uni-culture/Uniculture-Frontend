@@ -35,6 +35,9 @@
 }
 
 .nicknameText {
+    max-width: 275px;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-size: 25px;
     font-weight: bold;
 }
@@ -87,4 +90,45 @@
 
 .introtext {
     color: #737373;
+}
+
+.imageWrapper {
+    margin-left: 15px;
+    min-width: 150px;
+    max-width: 150px;
+    position: relative;
+    margin-right: 20px;
+}
+ 
+.profileImageWrapper {
+    min-width: 150px;
+    max-width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.countryImageWrapper {
+    min-width: 50px;
+    max-width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: auto 0px;
+
+    position: absolute;
+    top: 90px;
+    left: -4px;
+}
+
+.country {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }

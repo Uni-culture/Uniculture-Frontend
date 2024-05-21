@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import styles from  './FriendList.module.css'
 
 export default function FriendList({action, userInfo, deleteFriend, cancelSentFriendRequest, acceptReceivedRequest, rejectReceivedRequest, onUserSelect}) {
     const navigate = useNavigate();
@@ -54,13 +55,20 @@ export default function FriendList({action, userInfo, deleteFriend, cancelSentFr
     return (
         <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid #E0E0E0', padding: '10px 0', alignItems:"center" }}>
             <div style={{ display: 'flex', alignItems:"center"}}>
-                <div style={{marginRight:"10px"}} onClick={handleProfile}>
-                    <img
-                    src={userInfo?.profileImage ? userInfo.profileImage : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
-                    alt="profile"
-                    style={{width:"40px", borderRadius: "50%"}}
-                    />
+                <div className={styles.imageWrapper} onClick={handleProfile}>
+                    <div className={styles.profileImageWrapper}>
+                        <img
+                            src={userInfo?.profileurl ? userInfo.profileurl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                            alt="profile"
+                            className={styles.image}
+                        />
+                    </div>
+
+                    <div className={styles.countryImageWrapper}>
+                        <img className={styles.country} alt='country' src={`/${userInfo.country}.png`} />
+                    </div>
                 </div>
+                
                 <div onClick={handleProfile}>
                     {userInfo?.nickname}
                 </div>

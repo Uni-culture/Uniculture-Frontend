@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import { IoMdHeart } from "react-icons/io";
 import React from "react";
 
-export const SearchCard = ({board_id, title, content, hashtag, username, date, likeCount, style}) => {
+export const SearchCard = ({board_id, title, content, hashtag, username, date, likeCount, commentCount, style}) => {
     const navigate = useNavigate();
 
     //해당 게시물의 프로필로 이동
@@ -28,7 +28,7 @@ export const SearchCard = ({board_id, title, content, hashtag, username, date, l
                 ))}</div>
                 <div className="search-card-body-text-bottom">
                     <span>{date}</span>
-                    <span> · 0개의 댓글</span>
+                    <span> · {commentCount}개의 댓글</span>
                     <span> · <IoMdHeart style={{marginRight: '5px', marginBottom: '3px'}}/>{likeCount}</span>
                 </div>
             </div>

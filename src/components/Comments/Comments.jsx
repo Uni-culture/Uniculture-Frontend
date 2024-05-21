@@ -23,6 +23,27 @@ const Comments = ({board_id}) => {
     };
     const token = getToken();
 
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in");
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
+        }
+    };
+
     // 댓글 추가하기
     const submitComment = async () => {
         console.log('submitComment start');
@@ -46,13 +67,7 @@ const Comments = ({board_id}) => {
                 updateTotalCommentsAndPage(); // 새로운 댓글이 추가되면 총 댓글 수를 업데이트하고, 해당하는 페이지로 로드
             }
         } catch (error) { // 실패 시
-            if(error.response.status === 401) {
-                console.log("401 오류");
-            }
-            else {
-                console.log("서버 오류 입니다.");
-                alert(error.response.data);
-            }
+            errorModal(error);
         }
     };
 
@@ -67,13 +82,7 @@ const Comments = ({board_id}) => {
             setTotalComments(response.data[1]); // 새 댓글이 추가되면 다시 총 댓글 수 받아옴
             getCommentList(); // 변경된 페이지로 댓글 목록 갱신
         } catch (error) {
-            if(error.response.status === 401) {
-                console.log("401 오류");
-            }
-            else {
-                console.log("서버 오류 입니다.");
-                alert(error.response.data);
-            }
+            errorModal(error);
         }
     };
 
@@ -104,17 +113,7 @@ const Comments = ({board_id}) => {
                 setTotalComments(countResponse.data[1]);
             }
         } catch (error) { // 실패 시
-            if (error.response) { // error.response가 존재하는지 확인
-                if (error.response.status === 401) {
-                    console.log("401 오류");
-                } else {
-                    console.log("서버 오류 입니다.");
-                    alert(error.response.data);
-                }
-            } else {
-                // error.response가 존재하지 않는 경우의 처리
-                console.log("응답을 받을 수 없습니다.");
-            }
+            errorModal(error);
         }
     };
 
@@ -164,7 +163,7 @@ const Comments = ({board_id}) => {
 
     return (
         <div className="comments-wrapper">
-            <div className="totalComments">{totalComments}개의 댓글</div>
+            <div className="totalComments">{t('comments.count', { count: totalComments })}</div>
             <div className="comments-header">
                 <TextField
                     className="comments-header-textarea"

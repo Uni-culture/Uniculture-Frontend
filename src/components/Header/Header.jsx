@@ -38,6 +38,10 @@ const Header = () => {
                 return '한국어';
             case 'en':
                 return 'English';
+            case 'jp':
+                return '日本語';
+            case 'cn':
+                return '中国人';
             default:
                 return '한국어'; // 기본값
         }
@@ -102,6 +106,27 @@ const Header = () => {
         setIsLogin(false);
     };
 
+    const errorModal = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in");
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('serverError.confirmButton'),
+            })
+        }
+    };
+
     const loginCheck = async () => {
         console.log('loginCheck');
         try {
@@ -123,7 +148,7 @@ const Header = () => {
                 localStorage.removeItem('accessToken');
                 console.log("401 오류");
             }
-            else console.error('Login Error:', error);
+            else errorModal(error);
         }
     };
 
@@ -144,10 +169,7 @@ const Header = () => {
                 }
             }
         } catch (error) {
-            if(error.response.status === 401) {
-                console.log("401 오류");
-            }
-            else console.error('Login Error:', error);
+            errorModal(error);
         }
     };
 
@@ -168,10 +190,7 @@ const Header = () => {
                 }
             }
         } catch (error) {
-            if(error.response.status === 401) {
-                console.log("401 오류");
-            }
-            else console.error('Login Error:', error);
+            errorModal(error);
         }
     };
 
@@ -192,10 +211,7 @@ const Header = () => {
                 }
             }
         } catch (error) {
-            if(error.response.status === 401) {
-                console.log("401 오류");
-            }
-            else console.error('Login Error:', error);
+            errorModal(error);
         }
     };
 
@@ -216,10 +232,7 @@ const Header = () => {
                 }
             }
         } catch (error) {
-            if(error.response.status === 401) {
-                console.log("401 오류");
-            }
-            else console.error('notification Error:', error);
+            errorModal(error);
         }
     };
 
@@ -240,10 +253,7 @@ const Header = () => {
                 }
             }
         } catch (error) {
-            if(error.response.status === 401) {
-                console.log("401 오류");
-            }
-            else console.error('notification Error:', error);
+            errorModal(error);
         }
     };
 
@@ -373,6 +383,28 @@ const Header = () => {
             text: t('header.영어'),
             langCode: 'en',
             key: '2',
+        },
+        {
+            label: (
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <img src="/japan.png" alt="japan" className="national-flag"/>
+                    {t('header.일본어')}
+                </div>
+            ),
+            text: t('header.일본어'),
+            langCode: 'jp',
+            key: '3',
+        },
+        {
+            label: (
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <img src="/china.png" alt="china" className="national-flag"/>
+                    {t('header.중국어')}
+                </div>
+            ),
+            text: t('header.중국어'),
+            langCode: 'cn',
+            key: '4',
         },
     ];
 
