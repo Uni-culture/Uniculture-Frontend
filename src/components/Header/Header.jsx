@@ -17,6 +17,7 @@ import api from "../../pages/api";
 const Header = () => {
     const navigate = useNavigate(); // 다른 component 로 이동할 때 사용
     const location = useLocation();
+    const decodedName = decodeURIComponent(location.pathname.split('/').pop());
     const [isNavOpen, setNavOpen] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
 
@@ -307,10 +308,12 @@ const Header = () => {
     const handleNavigation = (to) => {
         console.log("handleNavigation :", isLogin);
         if(isLogin) {
-            if(('/profile/'+ getUsername()) === to) window.location.reload();
-            else if (location.pathname === to) {
+            if (location.pathname === to) {
                 window.location.reload();
             } 
+            else if(`/profile/${decodedName}` === to) {
+                window.location.reload();
+            }
             else{
                 navigate(to);
             }
