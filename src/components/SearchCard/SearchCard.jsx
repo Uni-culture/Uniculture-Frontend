@@ -23,9 +23,11 @@ export const SearchCard = ({board_id, title, content, hashtag, username, date, l
             <div className="search-card-body-text" onClick={() => {navigate(`/board/${board_id}`)}}>
                 <div className="search-card-body-text-title">{title}</div>
                 <div className="search-card-body-text-content">{content.replace(/(<([^>]+)>)/gi, '')}</div>
-                <div className="search-card-hashtag-wrap">{hashtag.map((tag, index) => (
-                    <span key={index} className="search-card-hashtag"># {tag}</span>
-                ))}</div>
+                <div className="search-card-hashtag-wrap">
+                    {hashtag.map((tag, index) => (
+                        <span key={index} className="search-card-hashtag"># {tag}</span>
+                    ))}
+                </div>
                 <div className="search-card-body-text-bottom">
                     <span>{date}</span>
                     <span> · {commentCount}개의 댓글</span>
