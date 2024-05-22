@@ -199,24 +199,26 @@ export default function SearchUserCard({user, type}) {
                 </div>
             </div>
 
-            <div className={styles.profileText}>
-                <div className={styles.userInfo}>
-                    <span className={styles.nicknameText} onClick={handleProfile} >{user?.nickname}</span>
-                    <span className={styles.genderText}>
-                        {user?.gender === "MAN" ? (
-                                <GiMale color='blue' size={20} />
-                        ):(
-                            <GiFemale color='red' size={20}/>
-                        )}
-                    </span>
-                    <span className={styles.ageText}>{user?.age}</span>
-                    <span >
+            <div className={styles.right}>
+                <div className={styles.profileText}>
+                    <div className={styles.userInfo}>
+                        <div className={styles.nicknameText} onClick={handleProfile} >{user?.nickname}</div>
+                        <div className={styles.genderText}>
+                            {user?.gender === "MAN" ? (
+                                    <GiMale color='blue' size={20} />
+                            ):(
+                                <GiFemale color='red' size={20}/>
+                            )}
+                        </div>
+                        <div className={styles.ageText}>{user?.age}</div>
+                    </div>    
+                    <div >
                         {type !== 'friend' && friendButton()}
-                    </span>
+                    </div>
                 </div>
-                
+
+                <div className={styles.introduce}>{user?.introduce ? user.introduce : <span className={styles.introtext}>사용자가 설정한 소개가 없습니다.</span>}</div>
             </div>
-            <div className={styles.introduce}>{user?.introduce ? user.introduce : <span className={styles.introtext}>사용자가 설정한 소개가 없습니다.</span>}</div>
         </div>
     )
 }

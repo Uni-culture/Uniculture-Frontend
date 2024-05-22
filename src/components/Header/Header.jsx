@@ -17,6 +17,7 @@ import api from "../../pages/api";
 const Header = () => {
     const navigate = useNavigate(); // 다른 component 로 이동할 때 사용
     const location = useLocation();
+    const decodedName = decodeURIComponent(location.pathname.split('/').pop());
     const [isNavOpen, setNavOpen] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
 
@@ -294,17 +295,28 @@ const Header = () => {
         });
     };
 
+    const handleProfileURL = () => {
+        if (isLogin) {
+            const name = getUsername();
+            const profileURL = `/profile/${name}`;
+            handleNavigation(profileURL);
+        } else {
+            LoginWarning();
+        }
+    }
+
     const handleNavigation = (to) => {
         console.log("handleNavigation :", isLogin);
         if(isLogin) {
             if (location.pathname === to) {
                 window.location.reload();
             } 
-            else if (to===`/profile`) navigate(to + "/" + getUsername());
+            else if(`/profile/${decodedName}` === to) {
+                window.location.reload();
+            }
             else{
                 navigate(to);
             }
-
         }
         else {
             if(to==='/') { // to가 이동할 경로
@@ -488,7 +500,7 @@ const Header = () => {
                             </Badge>
                         </li>
                         <li className={`nav-item ${activePage(`/profile`)}`}>
-                            <button className={`btn nav-link ${activePage("/profile")}`} onClick={() => handleNavigation(`/profile`)}>{t(`header.프로필`)}</button>
+                            <button className={`btn nav-link ${activePage("/profile")}`} onClick={() => handleProfileURL() }>{t(`header.프로필`)}</button>
                         </li>
                         <li className={`nav-item ${activePage(`/translate`)}`}>
                             <button className={`btn nav-link ${activePage("/translate")}`} onClick={() => handleNavigation(`/translate`)}>{t(`header.번역`)}</button>

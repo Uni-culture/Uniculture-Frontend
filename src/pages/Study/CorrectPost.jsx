@@ -136,7 +136,7 @@ export const CorrectPost = () => {
       formData.append('files', file); // formData는 키-밸류 구조
       // 백엔드 multer라우터에 이미지를 보낸다.
       try {
-        const result = await axios.post('/api/file', formData);
+        const result = await api.post('/api/file', formData);
         console.log('성공 시, 백엔드가 보내주는 데이터');
         console.log(result.data);
         const IMG_URL = result.data;
@@ -161,7 +161,7 @@ export const CorrectPost = () => {
         // 가져온 위치에 이미지를 삽입한다
         editor.insertEmbed(range.index, 'image', IMG_URL);
       } catch (error) {
-        console.log('실패했어요ㅠ');
+        errorModal(error);
       }
     });
   };
@@ -206,26 +206,29 @@ export const CorrectPost = () => {
     e.preventDefault(); // 폼 제출 시 페이지 리로드 방지
     // console.log({ title, tags: tags.split(',').map(tag => tag.trim()), content, category });
     // 실제 전송 로직 추가 예정
-    const apiUrl = preset === "post" ? `/api/auth/post/${board_id}` : '/api/auth/post/study' ;
-    const res = await api.patch(apiUrl,{
-      title: title,
-      contents: content,
-      posttype: category,
-      postCategory: type==='post' ? 'NORMAL' : 'STUDY',
-      tag: tags,
-      imgUrl: imgUrl},{
-      headers:{
-        Authorization: `Bearer ${token}`
+    try{
+      const apiUrl = preset === "post" ? `/api/auth/post/${board_id}` : '/api/auth/post/study' ;
+      const res = await api.patch(apiUrl,{
+        title: title,
+        contents: content,
+        posttype: category,
+        postCategory: type==='post' ? 'NORMAL' : 'STUDY',
+        tag: tags,
+        imgUrl: imgUrl},{
+        headers:{
+          Authorization: `Bearer ${token}`
+        }
+      })
+      console.log('서버 응답:', res);
+      console.log('response.status:', res.status);
+      if(res.status === 200) {
+        alert("글 수정 완료");
+        navigate(`/board/${board_id}`,{});{}
       }
-    })
-    console.log('서버 응답:', res);
-    console.log('response.status:', res.status);
-    if(res.status === 200) {
-      alert("글 수정 완료");
-      navigate(`/board/${board_id}`,{});{}
     }
-    else {alert("글 작성 실패")}
-
+    catch(error) {
+      errorModal(error);
+    }
   }
 
   const handleCancel = () =>{

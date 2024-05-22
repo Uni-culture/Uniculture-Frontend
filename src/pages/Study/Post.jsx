@@ -6,6 +6,7 @@ import "react-quill/dist/quill.snow.css"
 import { Select, Button} from 'antd';
 import Layout from '../../components/Layout';
 import {useTranslation} from "react-i18next";
+import Swal from 'sweetalert2';
 import api from "../api";
 
 export const Post = () => {
@@ -18,6 +19,27 @@ export const Post = () => {
     return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
   };
   const token = getToken();
+
+  const errorModal = (error) => {
+    if(error.response.status === 401) {
+        Swal.fire({
+            icon: "warning",
+            title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+            confirmButtonColor: "#8BC765",
+            confirmButtonText: t('loginWarning.confirmButton'),
+        }).then(() => {
+            navigate("/sign-in");
+        })
+    }
+    else {
+        Swal.fire({
+            icon: "warning",
+            title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+            confirmButtonColor: "#8BC765",
+            confirmButtonText: t('serverError.confirmButton'),
+        })
+    }
+  };
 
   const postOptions = [{value: 'DAILY', label: t('post.DAILY')}, {value: 'HELP', label: t('post.HELP')}];
   const studyOptions = [{value: 'LANGUAGE', label: t('post.LANGUAGE')},{value: 'HOBBY', label: t('post.HOBBY')}]
@@ -75,7 +97,7 @@ export const Post = () => {
       }))  
     };
 
-      // 이미지 처리를 하는 핸들러
+  // 이미지 처리를 하는 핸들러
   const imageHandler = () => {
     console.log('에디터에서 이미지 버튼을 클릭하면 이 핸들러가 시작됩니다!');
 
@@ -121,7 +143,7 @@ export const Post = () => {
         // 가져온 위치에 이미지를 삽입한다
         editor.insertEmbed(range.index, 'image', IMG_URL);
       } catch (error) {
-        console.log('실패했어요ㅠ');
+        errorModal(error);
       }
     });
   };
@@ -167,30 +189,31 @@ export const Post = () => {
     // console.log({ title, tags: tags.split(',').map(tag => tag.trim()), content, category });
     // 실제 전송 로직 추가 예정
     // const apiUrl = preset === "study" ? '/api/auth/post/study' : '/api/auth/post';
-    const res = await api.post('/api/auth/post',{
-      title: title,
-      contents: content,
-      posttype: category,
-      postCategory: type==='post' ? 'NORMAL' : 'STUDY',
-      tag: tags,
-      imgUrl: imgUrl},{
-      headers:{
-        Authorization: `Bearer ${token}`
-      }
-    })
-    console.log('서버 응답:', res);
-    console.log('response.status:', res.status);
-    if(res.status === 200) {
-      alert("글 작성 완료");
-      if(type ==='post'){
-        navigate("/",{});
-      } else{
-        navigate("/study");
-      }
-      
+    try{
+      const res = await api.post('/api/auth/post',{
+        title: title,
+        contents: content,
+        posttype: category,
+        postCategory: type==='post' ? 'NORMAL' : 'STUDY',
+        tag: tags,
+        imgUrl: imgUrl},{
+        headers:{
+          Authorization: `Bearer ${token}`
+        }
+      })
+      console.log('서버 응답:', res);
+      console.log('response.status:', res.status);
+      if(res.status === 200) {
+        alert("글 작성 완료");
+        if(type ==='post'){
+          navigate("/",{});
+        } else{
+          navigate("/study");
+        }
+      }  
+    } catch(error){
+      errorModal(error);
     }
-    else {alert("글 작성 실패")}
-
   }
 
   const handleCancel = () =>{

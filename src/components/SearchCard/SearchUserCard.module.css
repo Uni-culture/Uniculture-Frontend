@@ -1,14 +1,13 @@
 .cardWrapper {
     padding: 15px 15px 15px 15px;
-    margin: 15px auto;
-    position: relative;
+    /* margin: 15px auto; */
+    /* position: relative; */
     flex-shrink: 0;
     font-family: 'Noto Sans KR', sans-serif;
     border-radius: 3px;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 1px -1px, rgba(0, 0, 0, 0.14) 0px 1px 1px 0px, rgba(0, 0, 0, 0.12) 0px 1px 3px 0px;
     background-color: #fff;
     display: flex;
-    justify-content: space-between;
     transition: width 1s, height 1s, box-shadow 1s;
     cursor: pointer;
 }
@@ -25,21 +24,29 @@
 }
 
 .profileText {
-    padding:  20px 20px 20px 20px;
+    padding:  20px 20px 10px 20px;
+    display: flex;
+    width: 370px;
+    justify-content: space-between;
+    position: relative;
 }
 
 .userInfo{
-    position: absolute;
-    top: 37px;
-    left: 200px;
+    display: flex;
 }
 
 .nicknameText {
-    max-width: 275px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    max-width: 200px;
     font-size: 25px;
     font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    word-break: normal;
+    word-wrap: break-word;
 }
 
 .genderText {
@@ -54,12 +61,7 @@
 }
 
 .btn {
-    position: absolute;
-    top: 0px;
-    left: 270px;
-    width: 80px;
     cursor: pointer;
-
     border-radius: 8px;
     background-color: #B7DAA1;
     border: 0;
@@ -69,15 +71,18 @@
     padding: 5px 10px;
 }
 
+.right {
+    display: flex;
+    flex-direction: column;
+}
+
 .introduce {
-    display: -webkit-box;
-    height: 52px;
+    padding-left: 20px;
+    height: 80px;
+    width: 350px;
     overflow: hidden;
-    position: absolute;
     text-overflow: ellipsis;
-    top: 85px;
-    left: 200px;
-    width: 344px;
+    display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     word-break: normal;
