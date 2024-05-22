@@ -1,6 +1,5 @@
 import Layout from "../../components/Layout";
 import Sidebar from "../../components/ProfileSidebar/Sidebar";
-import axios from 'axios';
 import { useState, useEffect, useRef } from 'react';
 import AddLanuageModal from "./Modal/AddLanuageModal";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +7,7 @@ import PercentBar from "../../components/PercentBar/PercentBar";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
 import styles from './ProfileEdit.module.css';
+import api from "../api";
 
 const ProfileEdit = () => {
     const { t } = useTranslation();
@@ -105,7 +105,7 @@ const ProfileEdit = () => {
         console.log('profileEdit');
         try {
             const token = getToken(); // 토큰 가져오기
-            const response = await axios.get('/api/auth/member/editProfile', {
+            const response = await api.get('/api/auth/member/editProfile', {
                 headers: {
                     Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                 }
@@ -136,7 +136,7 @@ const ProfileEdit = () => {
         else{
             try {
                 const token = getToken(); // 토큰 가져오기
-                const response = await axios.patch(
+                const response = await api.patch(
                     '/api/auth/member/editProfile',
                     {
                         introduce: userInfo.introduce,
@@ -177,7 +177,7 @@ const ProfileEdit = () => {
             formData.append('profileImg', file)
             event.target.value = ''; //같은 파일 올릴 수 있도록 초기화 해줌
 
-            axios.patch('/api/auth/member/editProfileImage', formData, {
+            api.patch('/api/auth/member/editProfileImage', formData, {
                 headers:{
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${token}`

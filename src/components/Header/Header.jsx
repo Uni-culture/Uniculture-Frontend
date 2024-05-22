@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import logoImg from "../../assets/logo.png";
-import axios from "axios";
 import "../PageLayout/PageLayout.css"
 import Swal from "sweetalert2";
 import "./Header.css";
@@ -13,10 +12,12 @@ import { AiOutlineBell } from "react-icons/ai";
 import NotificationModal from "../Notification/NotificationModal";
 import { useTranslation } from "react-i18next";
 import i18n from "../../locales/i18n";
+import api from "../../pages/api";
 
 const Header = () => {
     const navigate = useNavigate(); // 다른 component 로 이동할 때 사용
     const location = useLocation();
+    const decodedName = decodeURIComponent(location.pathname.split('/').pop());
     const [isNavOpen, setNavOpen] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
 
@@ -132,7 +133,7 @@ const Header = () => {
         try {
             const token = getToken(); // 토큰 가져오기
             if(token){
-                const response = await axios.get('/api/auth/sec/home', {
+                const response = await api.get('/api/auth/sec/home', {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -158,7 +159,7 @@ const Header = () => {
         try {
             const token = getToken(); // 토큰 가져오기
             if(token){
-                const response = await axios.get('/api/auth/notification/count', {
+                const response = await api.get('/api/auth/notification/count', {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -179,7 +180,7 @@ const Header = () => {
         try {
             const token = getToken(); // 토큰 가져오기
             if(token){
-                const response = await axios.get('/api/auth/notification', {
+                const response = await api.get('/api/auth/notification', {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -200,7 +201,7 @@ const Header = () => {
         try {
             const token = getToken(); // 토큰 가져오기
             if(token){
-                const response = await axios.get('/api/auth/chat/count', {
+                const response = await api.get('/api/auth/chat/count', {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -220,7 +221,7 @@ const Header = () => {
         try {
             const token = getToken(); // 토큰 가져오기
             if(token){
-                const response = await axios.post(`/api/auth/notification/${id}`, {
+                const response = await api.post(`/api/auth/notification/${id}`, {
                     id: id
                 }, {
                     headers: {
@@ -241,7 +242,7 @@ const Header = () => {
         try {
             const token = getToken(); // 토큰 가져오기
             if(token){
-                const response = await axios.post(`/api/auth/notification/all`, {}, {
+                const response = await api.post(`/api/auth/notification/all`, {}, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -294,17 +295,28 @@ const Header = () => {
         });
     };
 
+    const handleProfileURL = () => {
+        if (isLogin) {
+            const name = getUsername();
+            const profileURL = `/profile/${name}`;
+            handleNavigation(profileURL);
+        } else {
+            LoginWarning();
+        }
+    }
+
     const handleNavigation = (to) => {
         console.log("handleNavigation :", isLogin);
         if(isLogin) {
             if (location.pathname === to) {
                 window.location.reload();
             } 
-            else if (to===`/profile`) navigate(to + "/" + getUsername());
+            else if(`/profile/${decodedName}` === to) {
+                window.location.reload();
+            }
             else{
                 navigate(to);
             }
-
         }
         else {
             if(to==='/') { // to가 이동할 경로
@@ -488,7 +500,7 @@ const Header = () => {
                             </Badge>
                         </li>
                         <li className={`nav-item ${activePage(`/profile`)}`}>
-                            <button className={`btn nav-link ${activePage("/profile")}`} onClick={() => handleNavigation(`/profile`)}>{t(`header.프로필`)}</button>
+                            <button className={`btn nav-link ${activePage("/profile")}`} onClick={() => handleProfileURL() }>{t(`header.프로필`)}</button>
                         </li>
                         <li className={`nav-item ${activePage(`/translate`)}`}>
                             <button className={`btn nav-link ${activePage("/translate")}`} onClick={() => handleNavigation(`/translate`)}>{t(`header.번역`)}</button>

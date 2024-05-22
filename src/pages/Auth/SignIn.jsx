@@ -1,11 +1,11 @@
 //회원 가입 페이지
 import React, {useEffect, useState} from "react"
-import axios from 'axios';
 import {Link, useNavigate, useLocation} from "react-router-dom";
 import './Auth.css';
 import { IoArrowBack } from "react-icons/io5";
 import Swal from "sweetalert2";
 import {useTranslation} from "react-i18next";
+import api from "../api";
 
 const SignIn = () => {
     const navigate = useNavigate(); // 다른 component 로 이동할 때 사용
@@ -50,7 +50,7 @@ const SignIn = () => {
     const handleLogin = async () => {
         console.log('Login start');
         try {
-            const response = await axios.post(
+            const response = await api.post(
                 'api/sec/login',
                 {
                     email: email,

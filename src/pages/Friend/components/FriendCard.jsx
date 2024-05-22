@@ -128,7 +128,7 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb, sendMess
                         </div>
 
                         {/* 닉네임 */}
-                        <div style={{whiteSpace: "pre-wrap", overflow: "hidden", maxWidth: "110px", textOverflow: "ellipsis"}} onClick={handleProfile}>{userInfo.nickname}</div>
+                        <div className={styles.nickname} onClick={handleProfile}>{userInfo.nickname}</div>
 
                         {/* 성별, 나이 */}
                         <div style={{fontWeight:"normal", display:"flex", marginLeft:"5px"}}>

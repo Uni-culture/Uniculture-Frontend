@@ -3,13 +3,13 @@ import styles from './Profile.module.css';
 import PercentBar from "../../components/PercentBar/PercentBar";
 import { FaExchangeAlt } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { PiPlusCircleBold, PiPlusCircleFill } from "react-icons/pi";
 import Swal from 'sweetalert2';
 import OtherBoardList from "./OtherBoardList";
 import ShowAllLanguage from './Modal/ShowAllLanguage';
 import OtherStudyList from "./OtherStudyList";
 import {useTranslation} from "react-i18next";
+import api from "../api";
 
 export default function OtherProfile({otherInformation}) {
     const [otherInfo, setOtherInfo] = useState(otherInformation);
@@ -125,7 +125,7 @@ export default function OtherProfile({otherInformation}) {
         try {
             const token = getToken(); // 토큰 가져오기
 
-            const response = await axios.post('/api/auth/friend-requests', {
+            const response = await api.post('/api/auth/friend-requests', {
                 targetId: otherInfo.id
             }, {
                 headers: {
@@ -157,7 +157,7 @@ export default function OtherProfile({otherInformation}) {
                 try {
                     const token = getToken();
 
-                    const response = await axios.delete('/api/auth/friend', {
+                    const response = await api.delete('/api/auth/friend', {
                         headers: {
                             Authorization: `Bearer ${token}`
                         },
@@ -183,7 +183,7 @@ export default function OtherProfile({otherInformation}) {
         try {
             const token = getToken();
 
-            const response = await axios.delete('/api/auth/friend-requests', {
+            const response = await api.delete('/api/auth/friend-requests', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
@@ -205,7 +205,7 @@ export default function OtherProfile({otherInformation}) {
         try {
             const token = getToken();
 
-            const response = await axios.put(`/api/auth/friend-requests/${otherInfo.id}`, {
+            const response = await api.put(`/api/auth/friend-requests/${otherInfo.id}`, {
                 status: 'accepted'
             }, {
                 headers: {
@@ -227,7 +227,7 @@ export default function OtherProfile({otherInformation}) {
         try {
             const token = getToken(); // 토큰 가져오기
 
-            const response = await axios.get(`/api/auth/room/duo?toId=${otherInfo.id}`, {
+            const response = await api.get(`/api/auth/room/duo?toId=${otherInfo.id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

@@ -1,37 +1,56 @@
 import "./searchCard.scss";
 import {useNavigate} from "react-router-dom";
 import { IoMdHeart } from "react-icons/io";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import moment from "moment";
+import { useTranslation } from "react-i18next";
 
-export const SearchCard = ({board_id, title, content, hashtag, username, date, likeCount, commentCount, style}) => {
+export const SearchCard = ({post}) => {
+    const [date, setDate] = useState('');
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     //해당 게시물의 프로필로 이동
     const handleProfile = () => {
-        navigate(`/profile/${username}`);
+        navigate(`/profile/${post.writerName}`);
     }
 
+    useEffect(()=>{
+        setDate(moment(post.createDate).add(9, "hours").format(t('board.dateFormat')));
+    }, [])
+
     return (
-        <div className="search-card-wrapper" style={style} >
+        <div className="search-card-wrapper" >
             <div className="search-card-header">
-                <img src={"default_profile_image.jpg"} alt="User Image" onClick={handleProfile}/>
-                <b style={{marginLeft: '5px'}} onClick={handleProfile}>{username}</b>
-            </div>
-            <div className="search-card-body-img" onClick={() => {navigate(`/board/${board_id}`)}}>
-                <img src={"default_image.jpg"} alt="Card Image" />
-            </div>
-            <div className="search-card-body-text" onClick={() => {navigate(`/board/${board_id}`)}}>
-                <div className="search-card-body-text-title">{title}</div>
-                <div className="search-card-body-text-content">{content.replace(/(<([^>]+)>)/gi, '')}</div>
-                <div className="search-card-hashtag-wrap">
-                    {hashtag.map((tag, index) => (
-                        <span key={index} className="search-card-hashtag"># {tag}</span>
-                    ))}
+                {/* <img src={"default_profile_image.jpg"} alt="User Image" onClick={handleProfile}/> */}
+                <div className='imageWrapper' onClick={handleProfile}>
+                    <div className='profileImageWrapper'>
+                        <img
+                            src={post?.profileurl ? post.profileurl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                            alt="profile"
+                            className='image'
+                        />
+                    </div>
+
+                    <div className='countryImageWrapper'>
+                        <img className='country' alt='country' src={`/${post.country}.png`} />
+                    </div>
                 </div>
+                <b style={{marginLeft: '5px'}} onClick={handleProfile}>{post.writerName}</b>
+            </div>
+            <div className="search-card-body-img" onClick={() => {navigate(`/board/${post.postId}`)}}>
+                <img src={post?.imageurl ? post.imageurl : "default_image.jpg"} alt="Card Image" />
+            </div>
+            <div className="search-card-body-text" onClick={() => {navigate(`/board/${post.postId}`)}}>
+                <div className="search-card-body-text-title">{post.title}</div>
+                <div className="search-card-body-text-content">{post.content.replace(/(<([^>]+)>)/gi, '')}</div>
+                <div className="search-card-hashtag-wrap">{post.tags.map((tag, index) => (
+                    <span key={index} className="search-card-hashtag"># {tag}</span>
+                ))}</div>
                 <div className="search-card-body-text-bottom">
                     <span>{date}</span>
-                    <span> · {commentCount}개의 댓글</span>
-                    <span> · <IoMdHeart style={{marginRight: '5px', marginBottom: '3px'}}/>{likeCount}</span>
+                    <span> · {post.commentCount}개의 댓글</span>
+                    <span> · <IoMdHeart style={{marginRight: '5px', marginBottom: '3px'}}/>{post.likeCount}</span>
                 </div>
             </div>
         </div>

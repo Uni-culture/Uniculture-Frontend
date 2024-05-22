@@ -4,7 +4,6 @@ import "./ChatList.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { AiOutlineBell } from "react-icons/ai";
 import { Badge} from "antd";
-import axios from "axios";
 import moment from "moment";
 import 'moment/locale/ko'
 import * as StompJs from "@stomp/stompjs";
@@ -12,6 +11,7 @@ import {GiFemale, GiMale} from "react-icons/gi";
 import styles from './ChatList.module.css';
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
+import api from "../../pages/api";
 
 const ChatList = ({onSelectedChatRoom, user}) => {
   const { t } = useTranslation();
@@ -88,7 +88,7 @@ const ChatList = ({onSelectedChatRoom, user}) => {
       }
       const fetchChatRooms = async () => {
         try {
-          const response = await axios.get('/api/auth/room', {
+          const response = await api.get('/api/auth/room', {
             headers: {
             Authorization: `Bearer ${token}` // 헤더에 토큰 추가
             }
@@ -113,8 +113,8 @@ const ChatList = ({onSelectedChatRoom, user}) => {
       fetchChatRooms();
 
       const clientdata = new StompJs.Client({
-        // brokerURL:"ws://localhost:8080/ws",
-        brokerURL:"ws://54.180.29.40:8080/ws",
+        //brokerURL:"ws://localhost:8080/ws",
+        brokerURL:"ws://13.209.41.67:8080/ws",
         debug: function (str) {
           console.log('STOMP' + str);
         },

@@ -1,5 +1,4 @@
 import React, {useEffect, useRef, useState} from 'react'
-import axios from 'axios';
 import Layout from '../../components/Layout'
 import { TbAdjustmentsHorizontal, TbSearch } from "react-icons/tb";
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +13,7 @@ import Filter from './components/Filter';
 import {useTranslation} from "react-i18next";
 import Recommend from './Recommend';
 import Swal from 'sweetalert2';
+import api from "../api";
 
 export default function Friend() {
     const navigate = useNavigate();
@@ -47,6 +47,10 @@ export default function Friend() {
     //친구 신청 모달창
     const [showRequests, setShowRequests] = useState(false);
     const initialRender = useRef(true);
+
+    useEffect(()=> {
+
+    }, [showRequests])
 
     // 로그인 후 저장된 토큰 가져오는 함수
     const getToken = () => {
@@ -88,7 +92,7 @@ export default function Friend() {
             if (selectWL !== "wl") Query += `&wl=${selectWL}`;
             if (selectHb !== "hb") Query += `&hb=${selectHb}`;
 
-            const response = await axios.get(`/api/auth/friend/search?page=${page}&size=6${Query}`, {
+            const response = await api.get(`/api/auth/friend/search?page=${page}&size=6${Query}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -109,7 +113,7 @@ export default function Friend() {
             console.log("추천 친구 목록 불러오기");
             const token = getToken();
 
-            const response = await axios.get(`/api/auth/friend/recommend`, {
+            const response = await api.get(`/api/auth/friend/recommend`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -130,7 +134,7 @@ export default function Friend() {
         try {
             const token = getToken();
 
-            const response = await axios.post(`/api/auth/friend/recommend`, null,{
+            const response = await api.post(`/api/auth/friend/recommend`, null,{
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -151,7 +155,7 @@ export default function Friend() {
         try {
             const token = getToken();
 
-            const response = await axios.get(`/api/auth/friend/recommend/count`, {
+            const response = await api.get(`/api/auth/friend/recommend/count`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -234,7 +238,7 @@ export default function Friend() {
         try {
             const token = getToken(); // 토큰 가져오기
 
-            const response = await axios.get(`/api/auth/room/duo?toId=${otherInfo.id}`, {
+            const response = await api.get(`/api/auth/room/duo?toId=${otherInfo.id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -253,7 +257,7 @@ export default function Friend() {
         try {
             const token = getToken();
 
-            const response = await axios.delete('/api/auth/friend', {
+            const response = await api.delete('/api/auth/friend', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
@@ -276,7 +280,7 @@ export default function Friend() {
         try {
             const token = getToken();
 
-            const response = await axios.get('/api/auth/friend-requests/receive', {
+            const response = await api.get('/api/auth/friend-requests/receive', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -295,6 +299,7 @@ export default function Friend() {
             initialRender.current = false;
         } else if (!showRequests) {
             fetchFriendList(currentPage);
+            fetchReceivedRequests();
         }
     }, [showRequests]);
 

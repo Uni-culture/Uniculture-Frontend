@@ -2,10 +2,11 @@ import {TextField} from "@mui/material";
 import React, {useState} from "react";
 import "./replyInput.scss";
 import { RxCornerBottomLeft } from "react-icons/rx";
-import axios from "axios";
 import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import api from "../../pages/api";
 
 const ReplyInput = ({ parent_id, board_id, onReplySuccess}) => {
     const [replyContent, setReplyContent] = useState('');
@@ -41,7 +42,7 @@ const ReplyInput = ({ parent_id, board_id, onReplySuccess}) => {
     const replyComment = async () => { // 대댓글 등록
         console.log('replyComment start');
         try {
-            const response = await axios.post(`/api/auth/comment?postId=${board_id}`,
+            const response = await api.post(`/api/auth/comment?postId=${board_id}`,
                 {
                     postId: board_id,
                     parentId: parent_id,

@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { ChatOption } from './ChatOption';
 import { FaArrowDown, FaArrowUp } from "react-icons/fa";
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+import api from "../../pages/api";
 
 export const ChatMessage = ({chat, userInfo, modify}) => {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ export const ChatMessage = ({chat, userInfo, modify}) => {
   const translateComment = async (content) =>{
     const token = getToken();
 
-    const response = await axios.post(`/api/auth/translate`, {
+    const response = await api.post(`/api/auth/translate`, {
       text: chat.messageType === 'TALK' ? chat.message : modifiedMessage,
       target_lang:'KO'
     },{

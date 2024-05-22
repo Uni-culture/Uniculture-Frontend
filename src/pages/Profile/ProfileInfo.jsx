@@ -1,10 +1,10 @@
 import Swal from "sweetalert2";
 import Layout from "../../components/Layout";
 import Sidebar from "../../components/ProfileSidebar/Sidebar";
-import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import {useTranslation} from "react-i18next";
+import api from "../api";
 
 const ProfileInfo = () => {
     const navigate = useNavigate();
@@ -61,7 +61,7 @@ const ProfileInfo = () => {
         console.log('myPage');
         try {
             const token = getToken(); // 토큰 가져오기
-            const response = await axios.get('/api/auth/member/editInformation', {
+            const response = await api.get('/api/auth/member/editInformation', {
                 headers: {
                     Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                 }
@@ -123,7 +123,7 @@ const ProfileInfo = () => {
             }
 
             const token = getToken(); // 토큰 가져오기
-            const response = await axios.patch(
+            const response = await api.patch(
                 '/api/auth/member/editInformation',
                 requestData,
                 {
@@ -152,7 +152,7 @@ const ProfileInfo = () => {
         console.log(`handleNickName: ${userInfo.nickname}`);
 
         try {
-            let response = await axios({
+            let response = await api({
                 method: 'get',
                 url: `/api/sec/check?nickname=${userInfo.nickname}`,
                 headers: {'Content-Type': 'application/json'},

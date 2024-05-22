@@ -182,6 +182,9 @@
     "댓글순":"评论数排序",
     "좋아요순":"点赞数排序",
     "조회수순":"查看数排序",
+    "좋아요": "点赞",
+    "조회수": "浏览数",
+    "댓글": "评论",
     "searchPlaceholder": "请输入搜索词",
     "searchButton": "搜索",
     "tagSearchPlaceholder": "尝试按标签搜索！",
@@ -280,7 +283,9 @@
     "TranslateButton": "翻译",
     "RevertButton": "还原",
     "DeleteButton": "删除",
-    "EditButton": "编辑"
+    "EditButton": "编辑",
+    "모집종료": "募集结束",
+    "다시모집": "重新募集"
   },
   "comments": {
     "count": "{{count}}条评论",

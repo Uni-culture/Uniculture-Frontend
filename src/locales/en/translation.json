@@ -184,6 +184,9 @@
     "댓글순": "Most Commented",
     "좋아요순": "Most Liked",
     "조회수순": "Most Viewed",
+    "좋아요": "Like",
+    "조회수": "Views",
+    "댓글": "Comments",
     "searchPlaceholder": "Enter search keywords",
     "searchButton": "Search",
     "tagSearchPlaceholder": "Search by tags!",
@@ -283,7 +286,9 @@
     "TranslateButton": "Translate",
     "RevertButton": "Revert",
     "DeleteButton": "Delete",
-    "EditButton": "Edit"
+    "EditButton": "Edit",
+    "모집종료": "Recruitment Closed",
+    "다시모집": "Re-recruitment"
   },
   "comments": {
     "count": "{{count}} comments",
