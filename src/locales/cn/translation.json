@@ -34,6 +34,11 @@
     "title": "请登录后使用。",
     "confirmButton": "确认"
   },
+  "loginFail": {
+    "title": "登录失败",
+    "content": "请输入正确的电子邮件和密码。",
+    "confirmButton": "确认"
+  },
   "serverError": {
     "title": "请稍后再试",
     "confirmButton": "确认"
@@ -156,6 +161,7 @@
     "한국어": "韩语",
     "중국어": "中文",
     "일본어": "日语",
+    "영어": "英语",
     "proficiencySelection": "选择熟练程度。",
     "최상": "最高",
     "상": "高",

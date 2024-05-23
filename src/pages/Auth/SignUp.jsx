@@ -372,7 +372,7 @@ const SignUp = () => {
                 {emailAuthValid && (
                     <div className="inputWrap" style={{padding: '11px 13px 11px 17px', marginTop: '10px'}}>
                         <input className="input" type="text" placeholder={t('signUp.enterAuthCode')} style={{marginTop: '9px'}} value={emailNum} onChange={(e) => setEmailNum(e.target.value)} />
-                        <button className='nickNameButton' onClick={emailAuthFun2} disabled={emailNum.length !== 6} style={{width: '90px'}}>{t('signUp.confirmAuth')}</button>
+                        <button className='nickNameButton' onClick={emailAuthFun2} disabled={emailNum.length !== 6} style={{width: '80px'}}>{t('signUp.confirmAuth')}</button>
                     </div>
                 )}
                 <div className="nickNameMessageWrap">
@@ -431,6 +431,7 @@ const SignUp = () => {
                 <select className="box" id="birth-year" onChange={handleNationalityChange} defaultValue="">
                     <option value="" disabled>{t('signUpOption.selectNationality')}</option>
                     <option value="Korea">Republic of Korea</option>
+                    <option value="USA">United States of America(USA)</option>
                     <option value="China">People's Republic of China</option>
                     <option value="Japan">Japan</option>
                 </select>

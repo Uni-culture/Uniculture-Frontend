@@ -34,6 +34,11 @@
     "title": "Please log in to continue.",
     "confirmButton": "Confirm"
   },
+  "loginFail": {
+    "title": "Login Failed",
+    "content": "Please enter the correct email and password.",
+    "confirmButton": "Confirm"
+  },
   "serverError": {
     "title": "Please try again later",
     "confirmButton": "Confirm"
@@ -158,6 +163,7 @@
     "한국어": "Korean",
     "중국어": "Chinese",
     "일본어": "Japanese",
+    "영어": "English",
     "proficiencySelection": "Select proficiency level.",
     "최상": "Expert",
     "상": "Advanced",

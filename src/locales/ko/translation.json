@@ -33,6 +33,11 @@
     "title": "로그인 후 이용해 주세요.",
     "confirmButton": "확인"
   },
+  "loginFail": {
+    "title": "로그인 실패",
+    "content": "올바른 이메일과 비밀번호를 입력해주세요.",
+    "confirmButton": "확인"
+  },
   "serverError": {
     "title": "잠시 후 이용해 주세요",
     "confirmButton": "확인"
@@ -157,6 +162,7 @@
     "한국어": "한국어",
     "중국어": "중국어",
     "일본어": "일본어",
+    "영어": "영어",
     "proficiencySelection": "능숙도를 선택하세요.",
     "최상": "최상",
     "상": "상",
