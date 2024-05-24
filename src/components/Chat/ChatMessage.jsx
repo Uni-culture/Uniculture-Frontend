@@ -71,42 +71,49 @@ export const ChatMessage = ({chat, userInfo, modify}) => {
       style={{ 
         alignItems: isSender ? ("flex-end") : ("flex-start"),
         flexDirection: isSender ? ('row-reverse') : ('row'),
-        flexWrap:'wrap',
+        // flexWrap:'wrap',
         justifyItems: 'center',
       }}
       onMouseEnter={() => isEditing ? '' : setIsMenuVisible(true)}
       onMouseLeave={() =>  isEditing ? '' : setIsMenuVisible(false)}
     >
-      {userInfo.nickname === chat.sender? '' :  <div className="chat-sender" style={{width:"100%", paddingLeft:"5px" ,fontSize:"12px"}} onClick={() => clickProfile(chat.sender)}>{chat.sender}</div>}
-      <div className="chat-text" style={{backgroundColor: isSender ? ("#E7F3FF") : ("FFFFFF")}}> 
-        {/* {chat.sender} : */}
-        {originalMessage}
-        {modifiedMessage && (
-          <>
-            <br/><hr/>
-            <span>[수정됨] : {modifiedMessage}</span>
-          </>
-        )}
-        {translation && (
-          <>
-          {/* <div className="hr-sect"/> */}
-          <hr/>
-            {/* {transStatus ? (<><FaArrowUp onClick={ChangeTransStatus} /><span>[번역] : {translation}</span></>) : (<><FaArrowDown onClick={ChangeTransStatus} /></>)} */}
-            <span>[번역] {translation}</span>
-          </>
-        )}
-        
-      </div>
-      {isMenuVisible ? (<ChatOption chat={chat} userInfo={userInfo} option={[handleEdit, translateComment]} />) : ('')}
-
-      {isEditing ? (
-        <div className='modify-message'>
-          <input type="text" value={newMessage} onChange={(e)=> setNewMessage(e.target.value)}/>
-          <button onClick={() => handleModify(newMessage)}>저장</button>
-          <button onClick={handleCancelEdit}>취소</button>
-        </div>
-      ): ''}
+      {userInfo.nickname === chat.sender? '' :  <div style={{width:"50px",height:"50px", margin:"5px"}}>
+        <img src={chat.profileurl ? chat.profileurl:"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"} alt="profileImg" style={{width:"100%"}} onClick={() => clickProfile(chat.sender)} />
+      </div>}
       
+      <div style={{width:"100%"}}>
+      {userInfo.nickname === chat.sender? '' :  <div className="chat-sender" style={{width:"100%", paddingLeft:"5px" ,fontSize:"12px"}} onClick={() => clickProfile(chat.sender)}>{chat.sender}</div>}
+      <div style={{display:"flex",flexDirection: isSender ? ('row-reverse') : ('row')}}>
+        <div className="chat-text" style={{backgroundColor: isSender ? ("#E7F3FF") : ("FFFFFF")}}> 
+          {/* {chat.sender} : */}
+          {originalMessage}
+          {modifiedMessage && (
+            <>
+              <br/><hr/>
+              <span>[수정됨] : {modifiedMessage}</span>
+            </>
+          )}
+          {translation && (
+            <>
+            {/* <div className="hr-sect"/> */}
+            <hr/>
+              {/* {transStatus ? (<><FaArrowUp onClick={ChangeTransStatus} /><span>[번역] : {translation}</span></>) : (<><FaArrowDown onClick={ChangeTransStatus} /></>)} */}
+              <span>[번역] {translation}</span>
+            </>
+          )}
+          
+        </div>
+        {isMenuVisible ? (<ChatOption chat={chat} userInfo={userInfo} option={[handleEdit, translateComment]}/>) : ('')}
+
+        {isEditing ? (
+          <div className='modify-message'>
+            <input type="text" value={newMessage} onChange={(e)=> setNewMessage(e.target.value)}/>
+            <button onClick={() => handleModify(newMessage)}>저장</button>
+            <button onClick={handleCancelEdit}>취소</button>
+          </div>
+        ): ''}
+        </div>
+      </div>
     </div>
   )
 }
