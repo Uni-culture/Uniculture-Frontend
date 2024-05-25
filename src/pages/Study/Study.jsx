@@ -15,6 +15,7 @@ import { IoIosClose } from "react-icons/io";
 import { GrPowerReset } from "react-icons/gr";
 import {useTranslation} from "react-i18next";
 import { Api } from '../../components/Api';
+import Swal from 'sweetalert2';
 
 export const Study = () => {
   const navigate = useNavigate();
@@ -37,6 +38,27 @@ export const Study = () => {
   };
 
   const token = getToken(); // 토큰 가져오기
+
+  const errorModal = (error) => {
+    if(error.response.status === 401) {
+        Swal.fire({
+            icon: "warning",
+            title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+            confirmButtonColor: "#8BC765",
+            confirmButtonText: t('loginWarning.confirmButton'),
+        }).then(() => {
+            navigate("/sign-in");
+        })
+    }
+    else {
+        Swal.fire({
+            icon: "warning",
+            title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+            confirmButtonColor: "#8BC765",
+            confirmButtonText: t('serverError.confirmButton'),
+        })
+    }
+};
 
   const fetchBoardData = async (page) => {
     console.log('fetchBoardData start');
@@ -232,7 +254,7 @@ useEffect(() => {
     
               {token && (
                 <button onClick={() => navigate("/post/new?type=study")} className={styles.write}>
-                  <FaPencilAlt />
+                  {/* <FaPencilAlt /> */}
                     {t('study.writePost')}
                 </button>
               )}
