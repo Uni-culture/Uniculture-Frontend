@@ -16,31 +16,38 @@ export const StudyListCard = ({data}) => {
           <div className={styles.question_info}>
             <div className={styles.question_title}>
               <div>{data.postStatus==="START" ? <span className='badge rounded-pill bg-success'>{t('study.모집중')}</span>: <span className='badge rounded-pill bg-secondary'>{t('study.모집완료')}</span>}</div>
-              <h3 className={styles.title_text}>{data.title}</h3>
+              <div className={styles.title_text}>{data.title}</div>
             </div>
             <p className={styles.question_body}>{data.content.replace(/(<([^>]+)>)/gi, '')}</p>
             <div className={styles.question_info_footer}>
               <div className={styles.question_info_detail}>
+                <div className={styles.profileImageWrapper}>
+                    <img
+                        src={data?.profileurl ? data.profileurl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                        alt="profile"
+                        className={styles.image}
+                    />
+                </div>
                 <span className={styles.writer}>{data.writerName}</span>
                 <span>&nbsp;·&nbsp;</span>
                 <span>{moment(data.createDate).fromNow()}</span>
               </div>
               <div className={styles.question_info_data}>
               <dl>
-                <dt>{t('study.좋아요')}</dt>
+                <dt className={styles.question_dt}>{t('study.좋아요')}</dt>
                   <dd>
                     <FaRegHeart/>
-                    <span>{data.likeCount}</span>
+                    <span className={styles.question_span}>{data.likeCount}</span>
                   </dd>
-                <dt>{t('study.조회수')}</dt>
+                <dt className={styles.question_dt}>{t('study.조회수')}</dt>
                   <dd>
                     <FaRegEye />
-                    <span>{data.viewCount}</span>
+                    <span className={styles.question_span}>{data.viewCount}</span>
                   </dd>
-                <dt>{t('study.댓글')}</dt>
+                <dt className={styles.question_dt}>{t('study.댓글')}</dt>
                 <dd>
                   <FaRegComment />
-                  <span>{data.commentCount}</span>
+                  <span className={styles.question_span}>{data.commentCount}</span>
                 </dd>
               </dl>
               </div>

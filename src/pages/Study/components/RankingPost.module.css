@@ -9,10 +9,12 @@
 
 .header{
   padding: 10px 12px;
+  font-weight: bold;
+  font-size: 15px;
 }
 
 .list{
-  font-size: 14px;
+  font-size: 15px;
   list-style: none;
   padding: 10px 12px;
   -webkit-line-clamp: 2; /* 최대 1줄까지만 표시 */
@@ -29,3 +31,32 @@
   text-decoration: none;
   color: black;
 } 
+
+.profileImageWrapper {
+  display: flex;
+  align-items: center;
+  min-width: 20px;
+  max-width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 5px;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.writerInfo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 14px;
+}
+
+.postTitle {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
