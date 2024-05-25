@@ -174,8 +174,7 @@ useEffect(() => {
   }
 
   return (
-    // <Layout>
-    <>
+    <div style={{backgroundColor: "#FBFBF3", height: "100vh"}}>
       <Header />
       <Banner />
       <div className={styles.background}>
@@ -295,7 +294,6 @@ useEffect(() => {
           </div>
         </div>
       </div>
-    {/* </Layout> */}
-    </>
+    </div>
   )
 }
