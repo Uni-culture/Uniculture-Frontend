@@ -434,6 +434,11 @@ const SignUp = () => {
                     <option value="USA">United States of America(USA)</option>
                     <option value="China">People's Republic of China</option>
                     <option value="Japan">Japan</option>
+                    <option value="Vietnam">Socialist Republic of Vietnam</option>
+                    <option value="Thailand">Kingdom of Thailand</option>
+                    <option value="Singapore">Republic of Singapore</option>
+                    <option value="Spain">Kingdom of Spain</option>
+                    <option value="Portuguese">Portuguese Republic</option>
                 </select>
 
                 <div className="inputTitle">{t('signUp.birthdateTitle')}</div>
