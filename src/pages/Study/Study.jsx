@@ -16,6 +16,8 @@ import { GrPowerReset } from "react-icons/gr";
 import {useTranslation} from "react-i18next";
 import { Api } from '../../components/Api';
 import Swal from 'sweetalert2';
+import Banner from './components/Banner';
+import Header from '../../components/Header/Header';
 
 export const Study = () => {
   const navigate = useNavigate();
@@ -172,7 +174,10 @@ useEffect(() => {
   }
 
   return (
-    <Layout>
+    // <Layout>
+    <>
+      <Header />
+      <Banner />
       <div className={styles.background}>
         <div className={styles.body_content}>
           <div className={styles.menu}>
@@ -290,8 +295,7 @@ useEffect(() => {
           </div>
         </div>
       </div>
-    </Layout>
-
-    
+    {/* </Layout> */}
+    </>
   )
 }

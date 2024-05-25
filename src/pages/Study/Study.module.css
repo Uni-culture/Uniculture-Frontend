@@ -2,8 +2,10 @@
   /* margin-top: 40px; */
   display: flex;
   justify-content: center;
-
+  background-color: #FBFBF3;
+  padding: 15px 100px 100px;
 }
+
 .menu{
   display: flex;
   /* gap: 42px; */
@@ -186,7 +188,7 @@
   margin-right: 12px;
 }
 
-@media(max-width: 1000px){
+@media(max-width: 1100px){
   .background{
     /* margin-top: 40px; */
     display: flex;
@@ -194,11 +196,12 @@
     flex-direction: column;
   }
   .right_side{
+    display: none;
     visibility: hidden;
   }
 }
 
-@media(min-width: 1001px) {
+@media(min-width: 1101px) {
   .search_box {
     min-width: 600px;
     width: 800px;
