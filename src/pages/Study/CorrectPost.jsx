@@ -67,6 +67,7 @@ export const CorrectPost = () => {
     const getBoard = async () => {
         console.log('getBoard start');
         try {
+          const token = getToken();
             const response = await api.get(`/api/post/${board_id}`, {
                 headers: {
                     Authorization: `Bearer ${token}` // 헤더에 토큰 추가

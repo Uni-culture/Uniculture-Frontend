@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import { IoMdHeart } from "react-icons/io";
 import {useTranslation} from "react-i18next";
 
-export const Card = ({board_id, title, content, username, date, img, likeCount,commentCount, style}) => {
+export const Card = ({board_id, title, content, username, date, img, likeCount,commentCount, style,profileImg}) => {
     const navigate = useNavigate();
     const { t } = useTranslation();
 
@@ -28,7 +28,7 @@ export const Card = ({board_id, title, content, username, date, img, likeCount,c
 
             <div className="card-footer">
                 <div className="username" onClick={handleProfile}>
-                    <img src={"/default_profile_image.jpg"} alt="User Image" />by {username}
+                    <img src={profileImg ? profileImg :"/default_profile_image.jpg"} alt="User Image" />by {username}
                 </div>
                 <div className="likeCount">
                     <IoMdHeart style={{marginRight: '5px', marginBottom: '3px'}}/>
