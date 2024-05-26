@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import api from "../../pages/api";
 
-export const ChatMessage = ({chat, userInfo, modify}) => {
+export const ChatMessage = ({chat, userInfo, modify, chatroom}) => {
   const navigate = useNavigate();
   const [originalMessage, modifiedMessage] = chat.message.split("*#%");
   const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -78,7 +78,7 @@ export const ChatMessage = ({chat, userInfo, modify}) => {
       onMouseLeave={() =>  isEditing ? '' : setIsMenuVisible(false)}
     >
       {userInfo.nickname === chat.sender? '' :  <div style={{width:"50px",height:"50px", margin:"5px"}}>
-        <img src={chat.profileurl ? chat.profileurl:"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"} alt="profileImg" style={{width:"100%"}} onClick={() => clickProfile(chat.sender)} />
+        <img src={chatroom.profileurl ? chatroom.profileurl:"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"} alt="profileImg" style={{width:"100%",height:"100%"}} onClick={() => clickProfile(chat.sender)} />
       </div>}
       
       <div style={{width:"100%"}}>
@@ -86,6 +86,7 @@ export const ChatMessage = ({chat, userInfo, modify}) => {
       <div style={{display:"flex",flexDirection: isSender ? ('row-reverse') : ('row')}}>
         <div className="chat-text" style={{backgroundColor: isSender ? ("#E7F3FF") : ("FFFFFF")}}> 
           {/* {chat.sender} : */}
+          
           {originalMessage}
           {modifiedMessage && (
             <>

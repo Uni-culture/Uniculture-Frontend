@@ -113,9 +113,11 @@ export const Post = () => {
     input.addEventListener('change', async () => {
       console.log('온체인지');
       const file = input.files[0];
+      console.log(file);
       // multer에 맞는 형식으로 데이터 만들어준다.
       const formData = new FormData();
       formData.append('files', file); // formData는 키-밸류 구조
+      console.log(formData);
       // 백엔드 multer라우터에 이미지를 보낸다.
       try {
         const result = await api.post('/api/file', formData);
