@@ -2,21 +2,23 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import styles from  './FriendList.module.css'
+import {useTranslation} from "react-i18next";
 
 export default function FriendList({action, userInfo, deleteFriend, cancelSentFriendRequest, acceptReceivedRequest, rejectReceivedRequest, onUserSelect}) {
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     //친구 삭제
     const handleDeleteFriend = () => {
         Swal.fire({
-            title: "정말 이 친구를 삭제하시겠어요?",
-            text: "삭제 시 해당 친구가 친구 목록에서 사라집니다.",
+            title: t('friendDelete.title'),
+            text: t('friendDelete.text'),
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#dc3545",
             cancelButtonColor: "#6c757d",
-            confirmButtonText: "삭제",
-            cancelButtonText: "취소"
+            confirmButtonText: t('friendDelete.deleteButton'),
+            cancelButtonText: t('friendDelete.cancelButton')
         }).then((result) => {
             if (result.isConfirmed) {
                 // 친구 삭제하는 함수 호출

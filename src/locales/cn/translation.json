@@ -14,6 +14,7 @@
     "영어": "英语",
     "일본어": "日语",
     "중국어": "汉语",
+    "스페인어": "西班牙语",
     "select": "选择"
   },
   "nav": {
@@ -34,6 +35,11 @@
     "title": "请登录后使用。",
     "confirmButton": "确认"
   },
+  "loginFail": {
+    "title": "登录失败",
+    "content": "请输入正确的电子邮件和密码。",
+    "confirmButton": "确认"
+  },
   "serverError": {
     "title": "请稍后再试",
     "confirmButton": "确认"
@@ -47,6 +53,17 @@
     "text": "删除后该朋友将从好友列表中消失。",
     "deleteButton": "删除",
     "cancelButton": "取消"
+  },
+  "changeInfo": {
+    "title": "プロファイル編集エラー！",
+    "text": "興味は10個以下にしてください。",
+    "confirmButton": "確認"
+  },
+  "boardDelete": {
+    "title": "您确定要删除吗？",
+    "confirmButton": "是",
+    "cancelButton": "否",
+    "deleteSuccess": "帖子已被删除。"
   },
   "signIn": {
     "subTitle": "帮助我成长的语言交流平台",
@@ -156,6 +173,11 @@
     "한국어": "韩语",
     "중국어": "中文",
     "일본어": "日语",
+    "영어": "英语",
+    "베트남어": "越南语",
+    "태국어": "泰语",
+    "스페인어": "西班牙语",
+    "포르투갈어": "葡萄牙语",
     "proficiencySelection": "选择熟练程度。",
     "최상": "最高",
     "상": "高",

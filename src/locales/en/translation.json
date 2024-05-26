@@ -14,6 +14,7 @@
     "영어": "English",
     "일본어": "Japanese",
     "중국어": "Chinese",
+    "스페인어": "Spanish",
     "select": "Select"
   },
   "nav": {
@@ -34,6 +35,11 @@
     "title": "Please log in to continue.",
     "confirmButton": "Confirm"
   },
+  "loginFail": {
+    "title": "Login Failed",
+    "content": "Please enter the correct email and password.",
+    "confirmButton": "Confirm"
+  },
   "serverError": {
     "title": "Please try again later",
     "confirmButton": "Confirm"
@@ -47,6 +53,17 @@
     "text": "Deleting will remove this friend from your friend list.",
     "deleteButton": "Delete",
     "cancelButton": "Cancel"
+  },
+  "changeInfo": {
+    "title": "Profile Edit Error!",
+    "text": "Please select no more than 10 interests.",
+    "confirmButton": "Confirm"
+  },
+  "boardDelete": {
+    "title": "Are you sure you want to delete?",
+    "confirmButton": "Yes",
+    "cancelButton": "No",
+    "deleteSuccess": "The post has been deleted."
   },
   "signIn": {
     "subTitle": "A language exchange platform to support your growth",
@@ -158,6 +175,11 @@
     "한국어": "Korean",
     "중국어": "Chinese",
     "일본어": "Japanese",
+    "영어": "English",
+    "베트남어": "Vietnamese",
+    "태국어": "Thai",
+    "스페인어": "Spanish",
+    "포르투갈어": "Portuguese",
     "proficiencySelection": "Select proficiency level.",
     "최상": "Expert",
     "상": "Advanced",
@@ -219,6 +241,8 @@
   },
   "profileEdit": {
     "editProfile": "Edit Profile",
+    "delete": "delete",
+    "change": "change",
     "introduction": "Introduction",
     "enterIntroduction": "Enter Introduction",
     "charLimit": "characters",

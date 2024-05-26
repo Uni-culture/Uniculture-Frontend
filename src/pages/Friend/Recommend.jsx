@@ -72,7 +72,12 @@ export default function Recommend({recommendFriendList, sendMessage}) {
             });
 
             if(response.status === 200){
-                alert("친구 신청 성공");
+                Swal.fire({
+                    icon: "success",
+                    title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t("friendSuccess.title\"")}</div>`,
+                    confirmButtonColor: "#8BC765",
+                    confirmButtonText: t('friendSuccess.confirmButton'),
+                });
                 console.log(userInfo.nickname + "님에게 친구 신청");
             }
         } catch (error) {

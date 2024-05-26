@@ -43,6 +43,8 @@ const Header = () => {
                 return '日本語';
             case 'cn':
                 return '中国人';
+            case 'sp':
+                return 'español';
             default:
                 return '한국어'; // 기본값
         }
@@ -418,6 +420,17 @@ const Header = () => {
             langCode: 'cn',
             key: '4',
         },
+        {
+            label: (
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <img src="/spain.png" alt="spain" className="national-flag"/>
+                    {t('header.스페인어')}
+                </div>
+            ),
+            text: t('header.스페인어'),
+            langCode: 'sp',
+            key: '5',
+        }
     ];
 
     return (

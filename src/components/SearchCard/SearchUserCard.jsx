@@ -104,14 +104,14 @@ export default function SearchUserCard({user, type}) {
     // 친구 삭제
     const deleteFriend = () => {
         Swal.fire({
-            title: "정말 이 친구를 삭제하시겠어요?",
-            text: "삭제 시 해당 친구가 친구 목록에서 사라집니다.",
+            title: t('friendDelete.title'),
+            text: t('friendDelete.text'),
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#dc3545",
             cancelButtonColor: "#6c757d",
-            confirmButtonText: "삭제",
-            cancelButtonText: "취소"
+            confirmButtonText: t('friendDelete.deleteButton'),
+            cancelButtonText: t('friendDelete.cancelButton')
         }).then(async (result) => { // async 키워드를 사용하여 비동기 함수로 변환
             if (result.isConfirmed) {
                 try {

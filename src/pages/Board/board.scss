@@ -171,8 +171,10 @@
 }
 
 .custom-popup {
-    width: 300px !important;
-    height: 150px !important;
+    min-width: 300px !important;
+    min-height: 150px !important;
+    max-width: 400px !important;
+    max-height: 150px !important;
 }
 
 .custom-confirm-button {
