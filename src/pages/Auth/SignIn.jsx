@@ -22,10 +22,10 @@ const SignIn = () => {
         if(error.response.status === 401) {
             Swal.fire({
                 icon: "warning",
-                title: "로그인 실패",
-                html: "올바른 이메일과 비밀번호를 입력해주세요.",
+                title: t('loginFail.title'),
+                html: t('loginFail.content'),
                 confirmButtonColor: "#8BC765",
-                confirmButtonText: "확인",
+                confirmButtonText: t('serverError.confirmButton'),
             });
             resetInput();
         }

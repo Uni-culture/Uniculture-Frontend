@@ -160,10 +160,10 @@ const Board = () => {
 
     const boardDelete = () => {
         Swal.fire({
-            title: "<span style='font-size: 17px;'>정말 삭제하시겠습니까?</span>",
+            title: `<span style='font-size: 17px;'>${t('boardDelete.title')}</span>`,
             showCancelButton: true,
-            confirmButtonText: "예",
-            cancelButtonText: "아니오",
+            confirmButtonText: t('boardDelete.confirmButton'),
+            cancelButtonText: t('boardDelete.cancelButton'),
             confirmButtonColor: "#8BC765",
             customClass: {
                 popup: 'custom-popup',
@@ -179,7 +179,7 @@ const Board = () => {
                 })
                     .then(() => {
                         Swal.fire({
-                            title: "<span style='font-size: 17px;'>게시물이 삭제되었습니다.</span>",
+                            title: `<span style='font-size: 17px;'>${t('boardDelete.deleteSuccess')}</span>`,
                             icon: "success",
                             confirmButtonColor: "#8BC765",
                             customClass: {

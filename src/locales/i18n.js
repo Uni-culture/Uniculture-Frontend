@@ -7,6 +7,7 @@ import translationEN from "./en/translation.json";
 import translationKO from "./ko/translation.json";
 import translationJP from "./jp/translation.json";
 import translationCN from "./cn/translation.json";
+import translationSP from "./sp/translation.json";
 
 const resources = {
     ko: {
@@ -20,6 +21,9 @@ const resources = {
     },
     cn: {
         translation: translationCN
+    },
+    sp: {
+        translation: translationSP
     }
 };
 

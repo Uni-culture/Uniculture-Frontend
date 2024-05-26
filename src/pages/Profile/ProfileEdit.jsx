@@ -124,11 +124,11 @@ const ProfileEdit = () => {
         console.log('changeInfo');
         if(isOverSelectedIntTags===true) {
             Swal.fire({
-                title: "프로필 편집 오류!",
-                text: "관심사를 10개 이하로 선택해주세요.",
+                title: t('changeInfo.title'),
+                text: t('changeInfo.text'),
                 icon: "warning",
                 confirmButtonColor: "#dc3545",
-                confirmButtonText: "확인"
+                confirmButtonText: t('changeInfo.confirmButton')
             }).then(() => {
                 return;
             });
