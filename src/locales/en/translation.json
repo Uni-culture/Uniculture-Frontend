@@ -53,6 +53,17 @@
     "deleteButton": "Delete",
     "cancelButton": "Cancel"
   },
+  "changeInfo": {
+    "title": "Profile Edit Error!",
+    "text": "Please select no more than 10 interests.",
+    "confirmButton": "Confirm"
+  },
+  "boardDelete": {
+    "title": "Are you sure you want to delete?",
+    "confirmButton": "Yes",
+    "cancelButton": "No",
+    "deleteSuccess": "The post has been deleted."
+  },
   "signIn": {
     "subTitle": "A language exchange platform to support your growth",
     "emailInput": "✉️ Email",

@@ -6,6 +6,7 @@ import { Card } from "antd";
 import { SlBubbles, SlClose } from "react-icons/sl";
 import { GiMale, GiFemale } from "react-icons/gi";
 import styles from './FriendCard.module.css'
+import {useTranslation} from "react-i18next";
 
 export default function FriendCard({userInfo, deleteFriend, cl, wl, hb, sendMessage}) {
     const navigate = useNavigate();
@@ -17,6 +18,8 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb, sendMess
     const [showAllInfo, setShowAllInfo] = useState(false); // 모든 정보 보기 여부
     const [showAllLanguage, setShowAllLanguage] = useState(false);
     const [activeTab2, setActiveTab2] = useState('can');
+
+    const { t } = useTranslation();
 
     //친구 프로필로 이동
     const handleProfile = () => {
@@ -91,14 +94,14 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb, sendMess
     //친구 삭제
     const handleDeleteFriend = () => {
         Swal.fire({
-            title: "정말 이 친구를 삭제하시겠어요?",
-            text: "삭제 시 해당 친구가 친구 목록에서 사라집니다.",
+            title: t('friendDelete.title'),
+            text: t('friendDelete.text'),
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#dc3545",
             cancelButtonColor: "#6c757d",
-            confirmButtonText: "삭제",
-            cancelButtonText: "취소"
+            confirmButtonText: t('friendDelete.deleteButton'),
+            cancelButtonText: t('friendDelete.cancelButton')
         }).then((result) => {
             if (result.isConfirmed) {
                 // 친구 삭제하는 함수 호출

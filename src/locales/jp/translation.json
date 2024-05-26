@@ -53,6 +53,17 @@
     "deleteButton": "削除",
     "cancelButton": "キャンセル"
   },
+  "changeInfo": {
+    "title": "プロファイル編集エラー！",
+    "text": "興味は10個以下にしてください。",
+    "confirmButton": "確認"
+  },
+  "boardDelete": {
+    "title": "本当に削除しますか？",
+    "confirmButton": "はい",
+    "cancelButton": "いいえ",
+    "deleteSuccess": "投稿が削除されました。"
+  },
   "signIn": {
     "subTitle": "私の成長を助ける言語交流プラットフォーム",
     "emailInput": "✉️ メールアドレス",
