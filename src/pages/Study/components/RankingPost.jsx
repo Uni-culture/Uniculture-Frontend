@@ -39,7 +39,7 @@ export const RankingPost = () => {
     const token = getToken(); // 토큰 가져오기
     async function fetchData(){
       try{
-        const res = await api.get(`/api/post/hot`,{
+        const res = await api.get(`/api/post/hot?ca=STUDY`,{
           headers:{
             Authorization: `Bearer ${token}`
           }
@@ -47,7 +47,7 @@ export const RankingPost = () => {
         console.log('인기글 서버 응답: ', res);
         if(res.status===200){
           console.log(res.data);
-          setData(res.data);
+          setData(res.data.content);
         }
       } catch (error) {
         errorModal(error);
