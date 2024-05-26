@@ -4,6 +4,7 @@ import { FaArrowDown, FaArrowUp } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import api from "../../pages/api";
+import styles from './ChatMessage.module.css';
 
 export const ChatMessage = ({chat, userInfo, modify, chatroom}) => {
   const navigate = useNavigate();
@@ -74,20 +75,24 @@ export const ChatMessage = ({chat, userInfo, modify, chatroom}) => {
         // flexWrap:'wrap',
         justifyItems: 'center',
       }}
-      onMouseEnter={() => isEditing ? '' : setIsMenuVisible(true)}
+      onMouseEnter={() => isEditing ? '' : setIsMenuVisible(true)} 
       onMouseLeave={() =>  isEditing ? '' : setIsMenuVisible(false)}
     >
-      {userInfo.nickname === chat.sender? '' :  <div style={{width:"50px",height:"50px", margin:"5px"}}>
-        <img src={chatroom.profileurl ? chatroom.profileurl:"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"} alt="profileImg" style={{width:"100%",height:"100%"}} onClick={() => clickProfile(chat.sender)} />
+      {userInfo.nickname === chat.sender? '' :  
+      <div className={styles.profileImage}>
+        <img src={chatroom.profileurl ? chatroom.profileurl:"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"} alt="profileImg" className={styles.image} onClick={() => clickProfile(chat.sender)} />
+        <div className={styles.countryImageWrapper}>
+          <img className={styles.country} alt='country' src={`/${chatroom.country}.png`} />
+        </div>
       </div>}
       
       <div style={{width:"100%"}}>
-      {userInfo.nickname === chat.sender? '' :  <div className="chat-sender" style={{width:"100%", paddingLeft:"5px" ,fontSize:"12px"}} onClick={() => clickProfile(chat.sender)}>{chat.sender}</div>}
+      {userInfo.nickname === chat.sender? '' :  <div className="chat-sender" style={{width:"100%", paddingLeft:"5px" ,fontSize:"12px",cursor:"pointer"}} onClick={() => clickProfile(chat.sender)}>{chat.sender}</div>}
       <div style={{display:"flex",flexDirection: isSender ? ('row-reverse') : ('row')}}>
         <div className="chat-text" style={{backgroundColor: isSender ? ("#E7F3FF") : ("FFFFFF")}}> 
           {/* {chat.sender} : */}
+          {chat.messageType==='TALK'? originalMessage : chat.messageType==="IMAGE"?<img src={chat.message} alt="image" className={styles.imageMessage}/> : ''}
           
-          {originalMessage}
           {modifiedMessage && (
             <>
               <br/><hr/>

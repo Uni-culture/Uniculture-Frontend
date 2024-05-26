@@ -112,6 +112,7 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
                 roomId: selectedChatRoom.id,
                 message: currentChat,
             };
+            console.log(message);
             stompClient.publish({
                 destination: `/pub/chat/${selectedChatRoom.id}`,
                 body: JSON.stringify(message),
@@ -150,6 +151,7 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
                 const response = await api.post('/api/file', formData);
 
                 if (response.status === 200) {
+                    if(stompClient && stompClient.connected){
                     const fileUrl = response.data;
                     const message = {
                         type:"IMAGE",
@@ -162,10 +164,12 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
                         body: JSON.stringify(message)
                     });
                     setCurrentChat('');
-                }
+                }}
             } catch (error) {
                 errorModal(error);
             }
+            // 파일 입력 요소 초기화
+            fileInputRef.current.value = null;
         }
     };
 
