@@ -490,7 +490,7 @@ const SignUp = () => {
                     )}
                 </div>
                 <button disabled={notAllow} className="authButton" onClick={handleInputClick}>{t('signUp.signupButton')}</button>
-                <button onClick={testClick}>test</button>
+                {/*<button onClick={testClick}>test</button>*/}
             </div>
         </div>
     )
