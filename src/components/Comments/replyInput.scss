@@ -10,8 +10,17 @@
   }
 
   .reply-style {
-    margin-left: 20px;
-    margin-right: 10px;
+    margin-left: 10px;
+    margin-right: 8px;
+  }
+
+  .replyIcon {
+    margin-top: 15px;
+    width: 12px; /* 원하는 너비 */
+    height: 12px; /* 원하는 높이 */
+    border-width: 0 0 1px 1px;
+    border-style: solid;
+    border-color: #8C8C8C;
   }
 
   .replyComments-header {

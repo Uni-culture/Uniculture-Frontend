@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import ReplyInput from "./replyInput";
 import moment from "moment/moment";
-import {RxCornerBottomLeft} from "react-icons/rx";
 import "./comments.scss";
 import "./comment.scss";
 import Swal from "sweetalert2";
@@ -321,7 +320,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                     </div>
                 )}
             </div>
-            <hr style={{marginTop: '7px', marginBottom: '10px'}}/>
+            <hr style={{marginTop: '7px', marginBottom: '12px'}}/>
             {isReplyFormVisible && <ReplyInput parent_id={comment.id} board_id={board_id} onReplySuccess={handleReplySuccess}/>}
             {comment.children && (
                 <div>
@@ -329,7 +328,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                         <div key={child.id}>
                             <div className="replyWrap">
                                 <div  className="iconWrap">
-                                    <RxCornerBottomLeft />
+                                    <div className="replyIcon"></div>
                                 </div>
                                 <div className="comments-replyComment">
                                     <div className="replyComment-username-wrap">
