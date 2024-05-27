@@ -197,7 +197,7 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
                         <div ref={messageEndRef}></div>
                     </div>
                     <div className="chat-input">
-                        <FiPlusCircle onClick={handlePlusIconClick} />
+                        <FiPlusCircle onClick={handlePlusIconClick} style={{alignSelf:"center", marginRight:"5px"}} />
                         <input 
                             type="file"
                             ref={fileInputRef}
