@@ -1,0 +1,35 @@
+.profileImage {
+  margin: 5px;
+  width: 50px;
+  height: 50px;
+  position: relative;
+  cursor: pointer;
+}
+
+.countryImageWrapper {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  overflow: hidden;
+  bottom: -5px; /* 7시 방향을 위해 위치 조정 */
+  left: -5px;  /* 7시 방향을 위해 위치 조정 */
+}
+
+.country {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.imageMessage{
+  max-width: 300px;
+  max-height: 300px;
+}

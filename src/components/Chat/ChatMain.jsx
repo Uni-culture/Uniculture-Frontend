@@ -2,11 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import * as StompJs from "@stomp/stompjs";
 import "./ChatMain.css";
 import {Link, useNavigate} from "react-router-dom";
-
+import { FiPlusCircle } from "react-icons/fi";
 import { ChatMessage } from "./ChatMessage";
 import { useTranslation } from "react-i18next";
 import Swal from "sweetalert2";
 import api from "../../pages/api";
+import { ConstructionOutlined } from "@mui/icons-material";
 
 const ChatMain = ({selectedChatRoom, userInfo}) => {
     const [chats, setChats] = useState([]);
@@ -14,6 +15,7 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
     const [stompClient, setStompClient] = useState(null);
 
     const messageEndRef = useRef(null);
+    const fileInputRef = useRef(null);
     const navigate = useNavigate();
     const { t } = useTranslation();
 
@@ -110,6 +112,7 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
                 roomId: selectedChatRoom.id,
                 message: currentChat,
             };
+            console.log(message);
             stompClient.publish({
                 destination: `/pub/chat/${selectedChatRoom.id}`,
                 body: JSON.stringify(message),
@@ -136,6 +139,43 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
         }
     }
 
+    const handleFileUpload = async (event) => {
+        const file = event.target.files[0];
+        console.log(file);
+        if (file) {
+            const formData = new FormData();
+            console.log(formData);
+            formData.append('files', file);
+
+            try {
+                const response = await api.post('/api/file', formData);
+
+                if (response.status === 200) {
+                    if(stompClient && stompClient.connected){
+                    const fileUrl = response.data;
+                    const message = {
+                        type:"IMAGE",
+                        roomId: selectedChatRoom.id,
+                        message: fileUrl,
+                    };
+                    console.log(message);
+                    stompClient.publish({
+                        destination: `/pub/chat/${selectedChatRoom.id}`,
+                        body: JSON.stringify(message)
+                    });
+                    setCurrentChat('');
+                }}
+            } catch (error) {
+                errorModal(error);
+            }
+            // 파일 입력 요소 초기화
+            fileInputRef.current.value = null;
+        }
+    };
+
+    const handlePlusIconClick = () => {
+        fileInputRef.current.click();
+    };
 
     
     //채팅 맨 아래로 이동
@@ -152,11 +192,18 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
                     </div>
                     <div className="chats">
                         {chats.map(chat =>(
-                            <ChatMessage chat={chat} userInfo={userInfo} key={chat.id} modify={modify}/>
+                            <ChatMessage chat={chat} userInfo={userInfo} key={chat.id} chatroom={selectedChatRoom} modify={modify}/>
                         ))}
                         <div ref={messageEndRef}></div>
                     </div>
                     <div className="chat-input">
+                        <FiPlusCircle onClick={handlePlusIconClick} style={{alignSelf:"center", marginRight:"5px"}} />
+                        <input 
+                            type="file"
+                            ref={fileInputRef}
+                            className="file-input"
+                            onChange={handleFileUpload}
+                        />
                         <input 
                             type="text"
                             value={currentChat}
