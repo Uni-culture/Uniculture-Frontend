@@ -59,7 +59,7 @@ const ChatList = ({onSelectedChatRoom, user}) => {
         updatedRooms[roomIndex] = {
           ...updatedRooms[roomIndex],
           //latestMessage : receivedMessage.message,
-          latestMessage : receivedMessage.type === "TALK" ? receivedMessage.message : '[수정됨]',
+          latestMessage : receivedMessage.type === "TALK" ? receivedMessage.message : receivedMessage.type === "ENTER" ? '[수정됨]' : '[이미지]',
           latestMessageTime: receivedMessage.createdDate,
           unreadCount: receivedMessage.roomId.toString() === chatId? 0: prev[roomIndex].unreadCount+1,
         };
@@ -69,7 +69,7 @@ const ChatList = ({onSelectedChatRoom, user}) => {
           id:receivedMessage.roomId,
           username: receivedMessage.sender,
           //latestMessage : receivedMessage.message,
-          latestMessage : receivedMessage.type === "TALK" ? receivedMessage.message : '[수정됨]',
+          latestMessage : receivedMessage.type === "TALK" ? receivedMessage.message : receivedMessage.type === "ENTER" ? '[수정됨]' : '[이미지]',
           latestMessageTime: receivedMessage.createdTime,
           unreadCount: receivedMessage.roomId.toString() === chatId? 0 : 1},...prev, ];
         
@@ -159,7 +159,7 @@ const ChatList = ({onSelectedChatRoom, user}) => {
                   <div className={styles.profileImage}>
                     <img className={styles.image}
                         alt="profileimg"
-                        src={room?.profileImage ? room.profileImage : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                        src={room?.profileurl ? room.profileurl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
                     />
                     <div className={styles.countryImageWrapper}>
                       <img className={styles.country} alt='country' src={`/${room.country}.png`} />
@@ -176,7 +176,7 @@ const ChatList = ({onSelectedChatRoom, user}) => {
                   </div>
                   <div className={styles.badge}><Badge count={room.unreadCount} size="large" overflowCount={99}/></div>
                   <div className={styles.introduce}>
-                    {room?.messageType === "TALK" ? room.latestMessage : room?.messageType === "ENTER" ? '[수정됨]' : " "}</div>
+                    {room?.messageType === "TALK" ? room.latestMessage : room?.messageType === "ENTER" ? '[수정됨]' : room?.messageType === "IMAGE" ? '[이미지]' : ''}</div>
                   <div className={styles.time}> {room.latestMessageTime ? moment(room.latestMessageTime).fromNow() : " " }</div>
                 </div>
               /*
