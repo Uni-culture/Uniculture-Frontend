@@ -22,7 +22,6 @@ export const SearchCard = ({post}) => {
     return (
         <div className="search-card-wrapper" >
             <div className="search-card-header">
-                {/* <img src={"default_profile_image.jpg"} alt="User Image" onClick={handleProfile}/> */}
                 <div className='imageWrapper' onClick={handleProfile}>
                     <div className='profileImageWrapper'>
                         <img

@@ -260,7 +260,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                 <div className="comment-username-wrap">
                     <div className="postMine-wrap">
                         <div className="comment-username" onClick={() => handleProfile(comment.commentWriterName)}>
-                            <img src={comment.profileurl? comment.profileurl : "/default_profile_image.jpg"} alt="User Image" className="comment-img"/>
+                            <img src={comment.profileurl? comment.profileurl : "/default_profile_image.png"} alt="User Image" className="comment-img"/>
                             {comment.commentWriterName}
                         </div>
                         {comment.postMine && (
@@ -334,7 +334,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                                     <div className="replyComment-username-wrap">
                                         <div className="postMine-wrap">
                                             <div className="replyComment-username" onClick={() => handleProfile(child.commentWriterName)}>
-                                                <img src={child.profileurl ? child.profileurl : "/default_profile_image.jpg"} alt="User Image" className="comment-img"/>
+                                                <img src={child.profileurl ? child.profileurl : "/default_profile_image.png"} alt="User Image" className="comment-img"/>
                                                 {child.commentWriterName}
                                             </div>
                                             {child.postMine && (

@@ -28,7 +28,7 @@ export const Card = ({board_id, title, content, username, date, img, likeCount,c
 
             <div className="card-footer">
                 <div className="username" onClick={handleProfile}>
-                    <img src={profileImg ? profileImg :"/default_profile_image.jpg"} alt="User Image" />by {username}
+                    <img src={profileImg ? profileImg :"/default_profile_image.png"} alt="User Image" />by {username}
                 </div>
                 <div className="likeCount">
                     <IoMdHeart style={{marginRight: '5px', marginBottom: '3px'}}/>
