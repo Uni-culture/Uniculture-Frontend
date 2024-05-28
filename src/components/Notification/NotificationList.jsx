@@ -1,11 +1,28 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next';
 import { BiSolidEdit } from "react-icons/bi";
 import { IoPersonAddSharp } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
 
 export default function NotificationList({notification, readNotification}) {
     const type = notification?.notificationType;
+    const [message, setMessage] = useState(''); 
     const navigate = useNavigate();
+    const { t } = useTranslation();
+
+    useEffect(() => {
+        switch (type) {
+            case "COMMENT":
+                setMessage(t('Notification.comment'));
+                break;
+            case "FRIEND":
+                setMessage(t('Notification.friend'));
+                break;
+            default:
+                setMessage('');
+                break;
+        }
+    }, [type]);
 
     const renderContent = () => {
         switch (type) {
@@ -44,7 +61,7 @@ export default function NotificationList({notification, readNotification}) {
                     {renderContent()}
                 </div>
                 <div >
-                    {notification?.content}
+                    {notification?.content}{message}
                 </div>
             </div>
         </div>

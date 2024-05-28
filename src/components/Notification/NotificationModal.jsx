@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
 import NotificationList from './NotificationList';
+import { useTranslation } from 'react-i18next';
 
 export default function NotificationModal({handleModal, myNotification, readNotification, readAllNotification}) {
+    const { t } = useTranslation();
     const renderContent = () => {
         switch (myNotification.length > 0) {
             case true:
@@ -33,17 +35,17 @@ export default function NotificationModal({handleModal, myNotification, readNoti
                 <div className="modal-content" style={{height:"450px"}}>
                     <div className="modal-header" style={{width: "100%", justifyContent: "center"}}>
                         <div className="modal-title" style={{ fontSize: "20px", fontWeight: "bold", textAlign: "center"}}>
-                            알림창
+                            {t('Notification.noti')}
                         </div>
                         {/* <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={handleModal}></button> */}
                     </div>
-                    {myNotification.length > 0 && <div style={{ width: "90%", textAlign: "right", fontSize: "15px", fontWeight: "bold", padding: "8px 0px 3px 0px"}} onClick={readAllNotification}>모두 읽기</div>}
+                    {myNotification.length > 0 && <div style={{ width: "90%", textAlign: "right", fontSize: "15px", fontWeight: "bold", padding: "8px 0px 3px 0px"}} onClick={readAllNotification}>{t('Notification.read')}</div>}
                     <div className="modal-body" style={{width: "90%"}}>
                         {renderContent()}
                     </div>
                     
                     <div className="modal-footer" style={{width: "100%"}}>
-                        <button type="button" className="btn btn-primary" data-bs-dismiss="modal" style={{width: "100%"}} onClick={handleModal}>닫기</button>
+                        <button type="button" className="btn btn-primary" data-bs-dismiss="modal" style={{width: "100%"}} onClick={handleModal}>{t('Notification.close')}</button>
                     </div>
                 </div>
             </div>
