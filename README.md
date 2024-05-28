@@ -33,7 +33,7 @@
 <br>
 -->
 ## 🔖 목차
-
+<!--
 - [개요](https://github.com/2E2I/mamomo-client#-개요)
 - [실행 및 설치 방법](https://github.com/2E2I/mamomo-client#-실행-및-설치-방법)
 - [핵심 기능](https://github.com/2E2I/mamomo-client#-핵심-기능)
@@ -44,7 +44,7 @@
 - [시스템 구조도](https://github.com/2E2I/mamomo-client#시스템-구조도)
 - [주요 화면](https://github.com/2E2I/mamomo-client#-주요-화면)
 - [팀 정보](https://github.com/2E2I/mamomo-client#-팀-정보)
-
+-->
 
 ## 📍 개요
 
