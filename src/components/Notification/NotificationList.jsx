@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { BiSolidEdit } from "react-icons/bi";
 import { IoPersonAddSharp } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
+import { BiCommentDetail } from "react-icons/bi";
 
 export default function NotificationList({notification, readNotification}) {
     const type = notification?.notificationType;
@@ -12,6 +13,9 @@ export default function NotificationList({notification, readNotification}) {
 
     useEffect(() => {
         switch (type) {
+            case "POST":
+                setMessage(t('Notification.post'));
+                break;
             case "COMMENT":
                 setMessage(t('Notification.comment'));
                 break;
@@ -26,9 +30,13 @@ export default function NotificationList({notification, readNotification}) {
 
     const renderContent = () => {
         switch (type) {
-            case "COMMENT":
+            case "POST":
                 return (
                     <BiSolidEdit size={20} />
+                );
+            case "COMMENT":
+                return (
+                    <BiCommentDetail size={20} />
                 );
             case "FRIEND":
                 return (
@@ -41,6 +49,10 @@ export default function NotificationList({notification, readNotification}) {
 
     const handleNavigate = () => {
         switch (type) {
+            case "POST":
+                readNotification(notification.id);
+                navigate(`/board/${notification.relatedNum}`);
+                break;
             case "COMMENT":
                 readNotification(notification.id);
                 navigate(`/board/${notification.relatedNum}`);
