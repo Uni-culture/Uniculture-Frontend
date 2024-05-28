@@ -135,6 +135,7 @@ const ProfileInfo = () => {
             );
             if (response.status === 200) {
                 alert("수정 완료");
+                localStorage.setItem('username', requestData.nickname);
                 window.location.reload();
             }
         } catch (err) {

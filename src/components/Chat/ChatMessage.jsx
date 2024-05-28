@@ -73,8 +73,7 @@ export const ChatMessage = ({chat, userInfo, modify, chatroom}) => {
 
       const response = await api.post(`/api/auth/translate`, {
         text: chat.messageType === 'TALK' ? chat.message : modifiedMessage,
-        target_lang:'KO'
-      },{
+        },{
         headers:{
           Authorization: `Bearer ${token}`
         }
