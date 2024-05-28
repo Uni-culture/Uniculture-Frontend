@@ -5,9 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 import api from "../../pages/api";
 import styles from './ChatMessage.module.css';
+import { TrySharp } from '@mui/icons-material';
+import Swal from 'sweetalert2';
+import { useTranslation } from 'react-i18next';
 
 export const ChatMessage = ({chat, userInfo, modify, chatroom}) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [originalMessage, modifiedMessage] = chat.message.split("*#%");
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   
@@ -21,8 +25,7 @@ export const ChatMessage = ({chat, userInfo, modify, chatroom}) => {
 
   const getToken = () => {
     return localStorage.getItem('accessToken'); // 로컬 스토리지에서 토큰 가져옴
-};
-
+  };
 
   const handleEdit = () =>{
     setIsEditing(true);
@@ -43,22 +46,48 @@ export const ChatMessage = ({chat, userInfo, modify, chatroom}) => {
     navigate(`/profile/${nickname}`);
   }
 
-  const translateComment = async (content) =>{
-    const token = getToken();
-
-    const response = await api.post(`/api/auth/translate`, {
-      text: chat.messageType === 'TALK' ? chat.message : modifiedMessage,
-      target_lang:'KO'
-    },{
-      headers:{
-        Authorization: `Bearer ${token}`
-      }
-    })
-    if(response.status ===200){
-      console.log(response);
-      setTranslation(response.data.text);
-      setTransStatus(true);
+  const errorModal = (error) => {
+    if(error.response.status === 401) {
+        Swal.fire({
+            icon: "warning",
+            title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+            confirmButtonColor: "#8BC765",
+            confirmButtonText: t('loginWarning.confirmButton'),
+        }).then(() => {
+            navigate("/sign-in");
+        })
     }
+    else {
+        Swal.fire({
+            icon: "warning",
+            title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('serverError.title')}</div>`,
+            confirmButtonColor: "#8BC765",
+            confirmButtonText: t('serverError.confirmButton'),
+        })
+    }
+  };
+
+  const translateComment = async (content) =>{
+    try{
+      const token = getToken();
+
+      const response = await api.post(`/api/auth/translate`, {
+        text: chat.messageType === 'TALK' ? chat.message : modifiedMessage,
+        target_lang:'KO'
+      },{
+        headers:{
+          Authorization: `Bearer ${token}`
+        }
+      })
+      if(response.status ===200){
+        console.log(response);
+        setTranslation(response.data.text);
+        setTransStatus(true);
+      }
+    } catch(error){
+      errorModal(error);
+    }
+
   }
   //번역했을때 번역문 숨기거나 나오게 할려고 만든거  
   // const ChangeTransStatus = () =>{

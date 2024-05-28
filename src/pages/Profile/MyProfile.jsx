@@ -15,7 +15,6 @@ import {useTranslation} from "react-i18next";
 
 export default function MyProfile({myInfo}) {
     const navigate = useNavigate();
-    const [countryImg, setCountryImg] = useState('/korea.png');
     const [friendNum, setFriendNum] = useState(myInfo.friendnum) // 친구 수 (친구수락, 삭제시 친구수 관리를 위해)
     const [receivedRequestsNum, setReceivedRequestsNum] = useState(myInfo.receiverequestnum); //받은 친구 신청 수
     const [maxCanLanguage, setMaxCanLanguage] = useState(); // 능숙도가 가장 높은 사용 언어
@@ -35,8 +34,6 @@ export default function MyProfile({myInfo}) {
     const { t } = useTranslation();
 
     useEffect(() => {
-        handleCountryImg();
-
         // 사용 언어 배열로 변환하여 업데이트한 후 능숙도가 높은 순으로 정렬
         const canLanguagesArray = Object.entries(myInfo.canlanguages).map(([language, level]) => ({ language, level }));
         setCanLanguages(canLanguagesArray);
@@ -92,26 +89,6 @@ export default function MyProfile({myInfo}) {
             setShowFriend(false);
         }
     }, [showFriendModal])
-
-    const handleCountryImg = () => {
-        switch (myInfo?.country) {
-            case 'Korea':
-                setCountryImg('/korea.png');
-                break;
-            case 'USA':
-                setCountryImg('/USA.png');
-                break;
-            case 'Japan':
-                setCountryImg('/japan.png');
-                break;
-            case 'China':
-                setCountryImg('/china.png');
-                break;
-            default:
-                setCountryImg('/korea.png');
-                break;
-        }
-    }
 
     return (
         <div className={styles.container}>

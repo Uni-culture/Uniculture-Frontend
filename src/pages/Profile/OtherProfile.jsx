@@ -135,7 +135,7 @@ export default function OtherProfile({otherInformation}) {
             if(response.status === 200){
                 Swal.fire({
                     icon: "success",
-                    title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t("friendSuccess.title\"")}</div>`,
+                    title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('friendSuccess.title')}</div>`,
                     confirmButtonColor: "#8BC765",
                     confirmButtonText: t('friendSuccess.confirmButton'),
                 });

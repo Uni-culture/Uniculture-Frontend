@@ -11,8 +11,8 @@ export default function ImgSlider() {
 
     const images = [
         {src: img1, link: "/board/1"},
-        {src: img1, link: "/board/2"},
-        {src: img1, link: "/board/3"},
+        {src: img1, link: null},
+        {src: img1, link: null},
     ];
 
     var settings = {
@@ -28,7 +28,7 @@ export default function ImgSlider() {
     };
 
     const handleNavigate = (link) => {
-        navigate(link);
+        if(link !== null) navigate(link);
     }
 
     return (
