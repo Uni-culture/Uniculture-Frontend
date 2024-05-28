@@ -7,6 +7,16 @@ export const Card = ({board_id, title, content, username, date, img, likeCount,c
     const navigate = useNavigate();
     const { t } = useTranslation();
 
+        // content에서 첫 번째 이미지 태그의 src 추출
+        const extractFirstImageSrc = (htmlContent) => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(htmlContent, 'text/html');
+            const imgTag = doc.querySelector('img');
+            return imgTag ? imgTag.src : null;
+        }
+    
+        const firstImageSrc = extractFirstImageSrc(content);
+
     //해당 게시물의 프로필로 이동
     const handleProfile = () => {
         navigate(`/profile/${username}`);
@@ -14,12 +24,20 @@ export const Card = ({board_id, title, content, username, date, img, likeCount,c
  
     return (
         <div className="card-wrapper" style={style}>
-            <div className="card-body-img">
-                <img src={img? img:"/default_image.jpg"} alt="Card Image" onClick={() => {navigate(`/board/${board_id}`)}}/>
+            {firstImageSrc ? 
+            <div className="card-body-img"> 
+                <img 
+                    src={firstImageSrc ? firstImageSrc : "/default_image.jpg"} 
+                    alt="Card Image" 
+                    onClick={() => { navigate(`/board/${board_id}`) }} 
+                />
             </div>
+            : ''}
+                {/* <img src={img? img:"/default_image.jpg"} alt="Card Image" onClick={() => {navigate(`/board/${board_id}`)}}/> */}
+                
             <div className="card-body-text" onClick={() => {navigate(`/board/${board_id}`)}}>
                 <div className="card-body-text-title">{title}</div>
-                <div className="card-body-text-content">{content.replace(/(<([^>]+)>)/gi, '')}</div>
+                <div className={`card-body-text-content ${firstImageSrc? '':'nonImg'}`}>{content.replace(/(<([^>]+)>)/gi, '')}</div>
                 <div className="card-body-text-bottom">
                     <span>{date}</span>
                     <span> · {t('comments.count', { count: commentCount })}</span>
