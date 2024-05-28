@@ -155,7 +155,16 @@ const ProfileEdit = () => {
                 );
                 alert(JSON.stringify(userInfo));
                 if (response.status === 200) {
-                    alert("수정 완료");
+                    Swal.fire({ // 수정 완료
+                        title: `<span style='font-size: 17px;'>${t('profileEdit.update')}</span>`,
+                        icon: "success",
+                        confirmButtonColor: "#8BC765",
+                        customClass: {
+                            popup: 'custom-ok-popup',
+                            confirmButton: 'custom-ok-button',
+                            title: 'custom-title'
+                        }
+                    });
                     window.location.reload();
                 }
             } catch (error) { 

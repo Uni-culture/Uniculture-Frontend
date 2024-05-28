@@ -239,6 +239,7 @@
     "friendRequestSuccess": "友達リクエスト成功"
   },
   "profileEdit": {
+    "update": "修正完了",
     "editProfile": "プロフィールを編集",
     "delete": "削除",
     "change": "変更",
@@ -284,6 +285,8 @@
   },
   "post": {
     "createPost": "投稿を作成",
+    "complete": "文の作成完了",
+    "update": "文の修正完了",
     "createStudy": "勉強を作成",
     "postButton": "投稿",
     "studyButton": "勉強",
@@ -355,5 +358,12 @@
     "read": "すべて読む",
     "close": "閉じる",
     "noNoti": "通知がありません。"
+  },
+  "createChat": {
+    "title": "新しいメッセージ",
+    "subTitle": "受信者:",
+    "searchPlaceholder": "検索...",
+    "noAccount": "アカウントが見つかりません。",
+    "chatting": "チャット"
   }
 }

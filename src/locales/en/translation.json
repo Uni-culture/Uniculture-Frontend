@@ -241,6 +241,7 @@
     "friendRequestSuccess": "Friend Request Sent Successfully"
   },
   "profileEdit": {
+    "update": "Modification complete",
     "editProfile": "Edit Profile",
     "delete": "delete",
     "change": "change",
@@ -287,6 +288,8 @@
   },
   "post": {
     "createPost": "Create Post",
+    "complete": "Writing is complete",
+    "update": "Writing Modification Completed",
     "createStudy": "Create Study",
     "postButton": "Post",
     "studyButton": "Study",
@@ -358,5 +361,12 @@
     "read": "Read All",
     "close": "Close",
     "noNoti": "No notifications."
+  },
+  "createChat": {
+    "title": "New Message",
+    "subTitle": "Recipient:",
+    "searchPlaceholder": "Search...",
+    "noAccount": "Account not found.",
+    "chatting": "Chatting"
   }
 }

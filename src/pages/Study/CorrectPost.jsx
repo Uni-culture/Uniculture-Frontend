@@ -224,7 +224,16 @@ export const CorrectPost = () => {
       console.log('서버 응답:', res);
       console.log('response.status:', res.status);
       if(res.status === 200) {
-        alert("글 수정 완료");
+        Swal.fire({ // 글 수정 완료
+          title: `<span style='font-size: 17px;'>${t('post.update')}</span>`,
+          icon: "success",
+          confirmButtonColor: "#8BC765",
+          customClass: {
+            popup: 'custom-ok-popup',
+            confirmButton: 'custom-ok-button',
+            title: 'custom-title'
+          }
+        });
         navigate(`/board/${board_id}`,{});{}
       }
     }

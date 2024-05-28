@@ -119,7 +119,8 @@
     "learningLanguages": "학습 언어",
     "completeSelection": "선택 완료",
     "doItNextTime": "다음에 할래요😅",
-    "successMessage": "성공적으로 저장되었습니다."
+    "successMessage": "성공적으로 저장되었습니다.",
+    "confirmButton": "확인"
   },
   "purposeTag": {
     "언어 교류": "언어 교류",
@@ -240,6 +241,7 @@
     "friendRequestSuccess": "친구 신청 성공"
   },
   "profileEdit": {
+    "update": "수정 완료",
     "editProfile": "프로필 편집",
     "delete": "삭제",
     "change": "변경",
@@ -285,6 +287,8 @@
   },
   "post": {
     "createPost": "게시글 작성",
+    "complete": "글 작성 완료",
+    "update": "글 수정 완료",
     "createStudy": "스터디 작성",
     "postButton": "게시글",
     "studyButton": "스터디",
@@ -356,5 +360,12 @@
     "read": "모두 읽기",
     "close": "닫기",
     "noNoti": "알림이 없습니다."
+  },
+  "createChat": {
+    "title": "새로운 메시지",
+    "subTitle": "받는 사람:",
+    "searchPlaceholder": "검색...",
+    "noAccount": "계정을 찾을 수 없습니다.",
+    "chatting": "채팅"
   }
 }

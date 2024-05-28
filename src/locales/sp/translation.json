@@ -241,6 +241,7 @@
     "friendRequestSuccess": "Solicitud de amistad enviada con éxito"
   },
   "profileEdit": {
+    "update": "modificación completa",
     "editProfile": "Editar perfil",
     "delete": "Eliminar",
     "change": "Cambiar",
@@ -286,6 +287,8 @@
   },
   "post": {
     "createPost": "Crear publicación",
+    "complete": "escritura completa",
+    "update": "modificación completa de los textos",
     "createStudy": "Crear estudio",
     "postButton": "Publicación",
     "studyButton": "Estudio",
@@ -357,5 +360,12 @@
     "read": "Leer Todo",
     "close": "Cerrar",
     "noNoti": "No hay notificaciones."
+  },
+  "createChat": {
+    "title": "Nuevo mensaje",
+    "subTitle": "Destinatario:",
+    "searchPlaceholder": "Buscar...",
+    "noAccount": "No se pudo encontrar la cuenta.",
+    "chatting": "Chateando"
   }
 }

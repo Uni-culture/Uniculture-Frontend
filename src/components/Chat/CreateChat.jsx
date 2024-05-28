@@ -108,14 +108,14 @@ export default function CreateChat({modal, createChat}) {
             <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div className="modal-content" style={{height:"450px"}}>
                     <div className="modal-header" style={{width: "100%", justifyContent: "normal"}}>
-                        <div className="modal-title" style={{fontWeight: "bold"}}>새로운 메시지</div>
+                        <div className="modal-title" style={{fontWeight: "bold"}}>{t('createChat.title')}</div>
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={modal}></button>
                     </div>
                     <div style={{display: "flex", width: "100%", borderBottom: "1px solid #E0E0E0", padding: "10px"}}>
-                        <span style={{fontWeight: "bold"}}>받는 사람:</span>
+                        <span style={{fontWeight: "bold"}}>{t('createChat.subTitle')}</span>
                         <input 
                             style={{flex: 1, border: 0, padding: "0px 10px 0px 10px", outline: 'none'}}
-                            placeholder='검색...'
+                            placeholder={t('createChat.searchPlaceholder')}
                             onChange={(e) => setSearchInput(e.target.value)}
                         />
                     </div>
@@ -125,12 +125,12 @@ export default function CreateChat({modal, createChat}) {
                                 <FriendList key={friend.id} userInfo={friend} action="createChat" onUserSelect={handleUserSelect}/>
                             ))
                         ) : (
-                            <div style={{fontSize: "14px", color: "#737373"}}>계정을 찾을 수 없습니다.</div>
+                            <div style={{fontSize: "14px", color: "#737373"}}>{t('createChat.noAccount')}</div>
                         )}
                     </div>
                     
                     <div className="modal-footer" style={{width: "100%"}}>
-                        <button type="button" className="btn btn-primary" data-bs-dismiss="modal" style={{width: "100%"}} disabled={isChatButtonDisabled} onClick={()=>{createChat(selectedUser); modal();}}>채팅</button>
+                        <button type="button" className="btn btn-primary" data-bs-dismiss="modal" style={{width: "100%"}} disabled={isChatButtonDisabled} onClick={()=>{createChat(selectedUser); modal();}}>{t('createChat.chatting')}</button>
                     </div>
                 </div>
             </div>

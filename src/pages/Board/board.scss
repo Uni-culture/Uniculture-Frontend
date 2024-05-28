@@ -192,7 +192,8 @@
 
 .custom-ok-popup {
     width: 300px !important;
-    height: 275px !important;
+    min-height: 275px !important;
+    max-height: 300px !important;
 }
 
 .custom-ok-button {
