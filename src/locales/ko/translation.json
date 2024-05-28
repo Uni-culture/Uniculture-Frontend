@@ -346,5 +346,12 @@
     "posts": "게시물",
     "friends": "친구",
     "allUsers": "전체 사용자"
+  },
+  "Notification": {
+    "comment": "님이 나의 게시글에 댓글을 달았습니다.",
+    "friend": "님이 나에게 친구 신청을 보냈습니다.",
+    "noti": "알림창",
+    "read": "모두 읽기",
+    "close": "닫기"
   }
 }

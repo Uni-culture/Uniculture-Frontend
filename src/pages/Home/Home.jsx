@@ -69,7 +69,6 @@ const Home = () => {
                     <span>
                         {isLogin ? (
                             <button className="write-button" onClick={() => {
-                                // navigate("/add-board", {state : {from : location.pathname}});
                                 navigate("/post/new?type=post")
                             }}>
                                 {t(`nav.글쓰기`)}
@@ -82,7 +81,6 @@ const Home = () => {
             </div>
             <div className="home-content-layout">
                 <TotalBoardList activeTab={activeTab}/>
-                {/* {renderTabContent()} */}
             </div>
         </div>
     );
