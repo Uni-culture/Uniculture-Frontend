@@ -3,7 +3,7 @@
   width: 50px;
   height: 50px;
   position: relative;
-  cursor: pointer;
+  cursor: pointer
 }
 
 .countryImageWrapper {
@@ -23,8 +23,10 @@
 }
 
 .image {
-  width: 100%;
-  height: 100%;
+  /* width: 100%;
+  height: 100%; */
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -32,4 +34,18 @@
 .imageMessage{
   max-width: 300px;
   max-height: 300px;
+}
+
+.messageRight{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.chatTime{
+  font-size: 10px; /* 작은 글씨 크기로 고정 */
+  align-self: flex-start; /* 텍스트를 아래로 정렬 */
+  margin:5px;
+  justify-self: flex-end;
+
 }

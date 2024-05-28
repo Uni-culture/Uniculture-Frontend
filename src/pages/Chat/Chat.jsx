@@ -8,6 +8,7 @@ import { useNavigate} from "react-router-dom";
 import styles from './Chat.module.css';
 import { LuMessageSquarePlus } from "react-icons/lu";
 import { BiMessageRoundedDots } from "react-icons/bi";
+import { GiPerspectiveDiceSixFacesRandom } from "react-icons/gi";
 import CreateChat from "../../components/Chat/CreateChat";
 import {useTranslation} from "react-i18next";
 import api from "../api";
@@ -116,7 +117,10 @@ const Chat = () => {
             <Header />
             <div className={styles.page_layout}>
                 <aside className={styles.aside}>
-                    <div className={styles.asideTitle}> <h4 style={{ fontWeight: 'lighter' }}>{t('chat.chat')}</h4> <div onClick={handleCreateChatModal}><LuMessageSquarePlus size={25}/></div></div>
+                    <div className={styles.asideTitle}> 
+                        <h4 style={{ fontWeight: 'lighter' }}>{t('chat.chat')}</h4>
+                        <div><GiPerspectiveDiceSixFacesRandom size={25} /><LuMessageSquarePlus size={25} onClick={handleCreateChatModal}/></div>
+                    </div>
                     {userInfo ? (<ChatList onSelectedChatRoom={handleSelectChatRoom} user={userInfo}/>) : (<div>Loading</div>)}
                     
                 </aside>

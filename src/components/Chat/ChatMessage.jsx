@@ -8,6 +8,7 @@ import styles from './ChatMessage.module.css';
 import { TrySharp } from '@mui/icons-material';
 import Swal from 'sweetalert2';
 import { useTranslation } from 'react-i18next';
+import moment from 'moment';
 
 export const ChatMessage = ({chat, userInfo, modify, chatroom}) => {
   const navigate = useNavigate();
@@ -103,6 +104,7 @@ export const ChatMessage = ({chat, userInfo, modify, chatroom}) => {
         // flexWrap:'wrap',
         justifyItems: 'center',
       }}
+      
       onMouseEnter={() => isEditing ? '' : setIsMenuVisible(true)} 
       onMouseLeave={() =>  isEditing ? '' : setIsMenuVisible(false)}
     >
@@ -115,7 +117,7 @@ export const ChatMessage = ({chat, userInfo, modify, chatroom}) => {
       </div>}
       
       <div style={{width:"100%"}}>
-      {userInfo.nickname === chat.sender? '' :  <div className="chat-sender" style={{width:"100%", paddingLeft:"5px" ,fontSize:"12px",cursor:"pointer"}} onClick={() => clickProfile(chat.sender)}>{chat.sender}</div>}
+      {userInfo.nickname === chat.sender? '' :  <div className="chat-sender" style={{width:"100%", paddingLeft:"5px" ,fontSize:"12px"}}>{chat.sender}</div>}
       <div style={{display:"flex",flexDirection: isSender ? ('row-reverse') : ('row')}}>
         <div className="chat-text" style={{backgroundColor: isSender ? ("#E7F3FF") : ("FFFFFF")}}> 
           {/* {chat.sender} : */}
@@ -137,16 +139,21 @@ export const ChatMessage = ({chat, userInfo, modify, chatroom}) => {
           )}
           
         </div>
+        <div className={styles.messageRight}>
         {isMenuVisible ? (<ChatOption chat={chat} userInfo={userInfo} option={[handleEdit, translateComment]}/>) : ('')}
-
-        {isEditing ? (
-          <div className='modify-message'>
-            <input type="text" value={newMessage} onChange={(e)=> setNewMessage(e.target.value)}/>
-            <button onClick={() => handleModify(newMessage)}>저장</button>
-            <button onClick={handleCancelEdit}>취소</button>
-          </div>
-        ): ''}
+          <div className={styles.chatTime}>
+            {moment(chat.createDate).add(9, "hour").fromNow()}
+          </div>  
         </div>
+        
+      </div>
+      {isEditing ? (
+        <div className='modify-message'>
+          <input type="text" value={newMessage} onChange={(e)=> setNewMessage(e.target.value)}/>
+          <button onClick={() => handleModify(newMessage)}>저장</button>
+          <button onClick={handleCancelEdit}>취소</button>
+        </div>
+      ): ''}
       </div>
     </div>
   )
