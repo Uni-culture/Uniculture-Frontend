@@ -194,7 +194,8 @@
     "addFriendsPrompt": "请添加朋友。",
     "noResults": "对不起，没有符合条件的结果。",
     "noRecommendedFriends": "遗憾的是，当前系统没有找到推荐的朋友。",
-    "moreInputPrompt": "如果您输入更多的活动或兴趣，系统将提供更准确的推荐。"
+    "moreInputPrompt": "如果您输入更多的活动或兴趣，系统将提供更准确的推荐。",
+    "recommend": "以下是基于会员信息提取的大数据推荐的朋友列表。"
   },
   "study": {
     "전체": "全部",
@@ -352,6 +353,7 @@
     "friend": "向您发送了好友请求。",
     "noti": "通知",
     "read": "全部阅读",
-    "close": "关闭"
+    "close": "关闭",
+    "noNoti": "没有通知。"
   }
 }

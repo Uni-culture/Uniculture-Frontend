@@ -98,7 +98,7 @@ export default function Recommend({recommendFriendList, sendMessage}) {
     
     return (
         <>
-            <div style={{marginBottom: "30px", fontSize: "14px", fontWeight: "bold"}}> <IoMdAlert size={20}/> 다음은 회원 정보를 바탕으로 추출된 빅데이터 기반 추천 친구 목록입니다.</div>
+            <div style={{marginBottom: "30px", fontSize: "14px", fontWeight: "bold"}}> <IoMdAlert size={20}/> {t('friend.recommend')}</div>
             {showPresent ? (
                 <div>
                     {recommendFriendList.length > 0 ? (

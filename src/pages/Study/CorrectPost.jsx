@@ -85,9 +85,9 @@ export const CorrectPost = () => {
                 })
                 setImgUrl(boardData.imageurl)
                 if(boardData.type === 'study'){
-                  setPostType('스터디');
+                  setPostType(t('post.createStudy'));
                 } else{
-                  setPostType('게시글');
+                  setPostType(t('post.createPost'));
                 }
                 setContent(boardData.content);
                 console.log("200 성공~~~~");
@@ -241,25 +241,25 @@ export const CorrectPost = () => {
     <Layout>
     <div className={styles.root}>
       <div className={styles.post_name}>
-        <h2>{t(postType)} 수정</h2>
+        <h2>{t(postType)}</h2>
       </div>
       <form action="post" onSubmit={handleSubmit} className={styles.form}>
       <div className={styles.post_content}>
         <div className={styles.left}>
           <div className={styles.title}>
             <label htmlFor="title">
-              <span>제목</span>
+              <span>{t('post.title')}</span>
             </label>
             <div className={styles.title_box}>
-              <input type="text" name='title' id='title' value={title} onChange={onChange} placeholder='제목에 핵심 내용을 요약해보세요.' className={styles.title_input}/>
+              <input type="text" name='title' id='title' value={title} onChange={onChange} placeholder={t('post.titlePlaceholder')} className={styles.title_input}/>
             </div>
             
           </div>
           <div className={styles.content_body}>
-            <span>내용</span>
+            <span>{t('post.content')}</span>
             <ReactQuill
               style={{ width:"100%", height: "500px" }}
-              placeholder="내용 작성 바랍니다~ 야호~"
+              placeholder={t('post.contentPlaceholder')}
               theme="snow"
               ref={quillRef}
               value={content}
@@ -286,7 +286,7 @@ export const CorrectPost = () => {
               <label htmlFor="tags"><span>{t('post.tagsLabel')}</span></label>
               <Select
                 mode="tags"
-                placeholder="태그를 작성해주세요"
+                placeholder="Please select"
                 value={tags}
                 onChange={handleTagChange}
                 maxCount={5}

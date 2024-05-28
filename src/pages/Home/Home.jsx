@@ -6,6 +6,7 @@ import TotalBoardList from "../BoardList/TotalBoardList";
 import { Select, Space } from 'antd';
 import {useTranslation} from "react-i18next";
 import ImgSlider from "./ImgSlider";
+import {IoMdAlert} from "react-icons/io";
 
 const Home = () => {
     const navigate = useNavigate();
@@ -25,6 +26,21 @@ const Home = () => {
     useEffect(()=>{
         console.log("전환");
     },[activeTab])
+
+    const renderActiveTabText = () => {
+        switch (activeTab) {
+            case 'live':
+                return '일주일 동안 좋아요를 가장 많이 받은 게시글 입니다.';
+            case 'new':
+                return '가장 최신으로 올라온 게시물 입니다.';
+            case 'help':
+                return '도움을 필요로 하는 게시물 입니다.';
+            case 'friend':
+                return '내 친구들이 올린 게시물 입니다.';
+            default:
+                return '';
+        }
+    };
 
     return (
         <div className="home-layout">
@@ -78,6 +94,7 @@ const Home = () => {
                         )}
                     </span>
                 </div>
+                <div className="infoText"><IoMdAlert size={16} style={{marginBottom: '4px', marginRight: '5px'}}/>{renderActiveTabText()}</div>
             </div>
             <div className="home-content-layout">
                 <TotalBoardList activeTab={activeTab}/>

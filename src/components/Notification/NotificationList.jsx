@@ -59,7 +59,7 @@ export default function NotificationList({notification, readNotification}) {
                 break;
             case "FRIEND":
                 readNotification(notification.id);
-                navigate(`/profile/${notification.relatedNum}`);
+                navigate(`/profile/${notification.content}`);
                 break;
             default:
                 return null;

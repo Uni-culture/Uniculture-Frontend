@@ -196,7 +196,8 @@
     "addFriendsPrompt": "Please add friends.",
     "noResults": "Sorry, there are no results matching the criteria.",
     "noRecommendedFriends": "Unfortunately, we couldn't find any friends to recommend at the moment.",
-    "moreInputPrompt": "Providing more details about your activities or interests can help us make more accurate recommendations."
+    "moreInputPrompt": "Providing more details about your activities or interests can help us make more accurate recommendations.",
+    "recommend": "Below is a list of recommended friends based on big data extracted from member information."
   },
   "study": {
     "전체": "All",
@@ -292,7 +293,7 @@
     "title": "Title",
     "titlePlaceholder": "Summarize the key content in the title.",
     "content": "Content",
-    "contentPlaceholder": "Please start writing content~ Yay~",
+    "contentPlaceholder": "Please start writing content.",
     "categoryLabel": "Set Category",
     "DAILY": "Daily",
     "HELP": "Help",
@@ -350,11 +351,12 @@
     "allUsers": "All Users"
   },
   "Notification": {
-    "post": "commented on your post.",
-    "comment": "replied to your comment.",
-    "friend": "sent you a friend request.",
+    "post": " commented on your post.",
+    "comment": " replied to your comment.",
+    "friend": " sent you a friend request.",
     "noti": "Notification",
     "read": "Read All",
-    "close": "Close"
+    "close": "Close",
+    "noNoti": "No notifications."
   }
 }
