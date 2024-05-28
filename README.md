@@ -3,7 +3,7 @@
 <h1 align="center">UniCulture</h1>
 
 <div align="center">
-  :heartpulse::heartpulse::heartpulse::heartpulse::heartpulse:
+  🗣️👂📝🌍🤝
 </div>
 
 <div align="center">
