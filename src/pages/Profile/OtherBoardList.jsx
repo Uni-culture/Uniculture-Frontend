@@ -85,7 +85,7 @@ const OtherBoardList = ({memberId}) => {
             <div className="boardList-body">
                 {boardList.map(post => (
                     <Card key={post.postId} board_id={post.postId} title={post.title} content={post.content} username={post.writerName}
-                          img={post.imageUrl} date={moment(post.createDate).add(9, "hour").format('YYYY-MM-DD')} style={{margin: '5px'}} commentCount={post.commentCount} likeCount={post.likeCount}></Card>
+                          img={post.imageUrl} date={moment(post.createDate).add(9, "hour").format('YYYY-MM-DD')} style={{margin: '5px'}} commentCount={post.commentCount} likeCount={post.likeCount} profileImg={post.profileurl}></Card>
                 ))}
             </div>
             <div className="boardList-footer">

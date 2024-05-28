@@ -208,7 +208,8 @@ export const CorrectPost = () => {
     // console.log({ title, tags: tags.split(',').map(tag => tag.trim()), content, category });
     // 실제 전송 로직 추가 예정
     try{
-      const apiUrl = preset === "post" ? `/api/auth/post/${board_id}` : '/api/auth/post/study' ;
+      // const apiUrl = preset === "post" ? `/api/auth/post/${board_id}` : '/api/auth/post/study' ;
+      const apiUrl = `/api/auth/post/${board_id}`;
       const res = await api.patch(apiUrl,{
         title: title,
         contents: content,
