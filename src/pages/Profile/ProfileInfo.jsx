@@ -136,7 +136,7 @@ const ProfileInfo = () => {
             if (response.status === 200) {
                 alert("수정 완료");
                 localStorage.setItem('username', requestData.nickname);
-                window.location.reload();
+                navigate(`/profile/${requestData.nickname}`)
             }
         } catch (err) {
             if (err.response.status === 400) {

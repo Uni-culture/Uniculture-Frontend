@@ -5,14 +5,16 @@ import "slick-carousel/slick/slick.css";
 import './slick-theme.css'
 import { useNavigate } from 'react-router-dom'
 import img1 from './images/img1.jpg'
+import img2 from './images/img2.png'
+import img3 from './images/img3.png'
 
 export default function ImgSlider() {
     const navigate = useNavigate();
 
     const images = [
         {src: img1, link: "/board/1"},
-        {src: img1, link: null},
-        {src: img1, link: null},
+        {src: img2, link: null},
+        {src: img3, link: null},
     ];
 
     var settings = {
