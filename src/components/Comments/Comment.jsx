@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import ReplyInput from "./replyInput";
 import moment from "moment/moment";
-import {RxCornerBottomLeft} from "react-icons/rx";
 import "./comments.scss";
 import "./comment.scss";
 import Swal from "sweetalert2";
@@ -261,7 +260,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                 <div className="comment-username-wrap">
                     <div className="postMine-wrap">
                         <div className="comment-username" onClick={() => handleProfile(comment.commentWriterName)}>
-                            <img src={comment.profileurl? comment.profileurl : "/default_profile_image.jpg"} alt="User Image" className="comment-img"/>
+                            <img src={comment.profileurl? comment.profileurl : "/default_profile_image.png"} alt="User Image" className="comment-img"/>
                             {comment.commentWriterName}
                         </div>
                         {comment.postMine && (
@@ -321,7 +320,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                     </div>
                 )}
             </div>
-            <hr style={{marginTop: '7px', marginBottom: '10px'}}/>
+            <hr style={{marginTop: '7px', marginBottom: '12px'}}/>
             {isReplyFormVisible && <ReplyInput parent_id={comment.id} board_id={board_id} onReplySuccess={handleReplySuccess}/>}
             {comment.children && (
                 <div>
@@ -329,13 +328,13 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                         <div key={child.id}>
                             <div className="replyWrap">
                                 <div  className="iconWrap">
-                                    <RxCornerBottomLeft />
+                                    <div className="replyIcon"></div>
                                 </div>
                                 <div className="comments-replyComment">
                                     <div className="replyComment-username-wrap">
                                         <div className="postMine-wrap">
                                             <div className="replyComment-username" onClick={() => handleProfile(child.commentWriterName)}>
-                                                <img src={child.profileurl ? child.profileurl : "/default_profile_image.jpg"} alt="User Image" className="comment-img"/>
+                                                <img src={child.profileurl ? child.profileurl : "/default_profile_image.png"} alt="User Image" className="comment-img"/>
                                                 {child.commentWriterName}
                                             </div>
                                             {child.postMine && (

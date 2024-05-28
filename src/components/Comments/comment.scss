@@ -52,7 +52,8 @@
     // \n(엔터)를 태그 안의 텍스트에 적용
     white-space: pre-wrap;
     word-break: break-all;
-    margin: 0.4rem auto;
+    margin-top: 0.45rem;
+    margin-bottom: 0.3rem;
     font-size: 0.95rem;
   }
 
@@ -67,7 +68,7 @@
   border-radius: 50%; // 이미지를 원형으로 만들기
   object-fit: cover; // 이미지 비율 유지하면서 컨테이너에 맞춤
   margin-right: 7px;
-  margin-left: 3px;
+  //margin-left: 3px;
   margin-top: -4px;
 }
 
@@ -162,15 +163,24 @@
 
 
   .iconWrap {
-    margin-right: 10px; /* comments-comment와의 간격을 조정 */
+    margin-right: 13px; /* comments-comment와의 간격을 조정 */
     margin-left: 20px;
     display: flex;
     align-items: flex-start; /* 아이콘이 상단에 위치하도록 */
     margin-top: 10px;
   }
 
+  .replyIcon {
+    margin-top: 2px;
+    width: 12px; /* 원하는 너비 */
+    height: 12px; /* 원하는 높이 */
+    border-width: 0 0 1px 1px;
+    border-style: solid;
+    border-color: #8C8C8C;
+  }
+
   .comments-replyComment {
-    padding: 0.5rem 0.3rem;
+    padding: 0.6rem 0.3rem 0.5rem 0.3rem;
     width: 100%;
 
     .replyComment-username-wrap {
@@ -223,7 +233,8 @@
       // \n(엔터)를 태그 안의 텍스트에 적용
       white-space: pre-wrap;
       word-break: break-all;
-      margin: 0.4rem auto;
+      margin-top: 0.45rem;
+      margin-bottom: 0.27rem;
       font-size: 0.95rem;
     }
   }

@@ -67,7 +67,7 @@ const ReplyInput = ({ parent_id, board_id, onReplySuccess}) => {
         <div className="replyComments-wrapper">
             <div className="header-with-icon">
                 <div className="reply-style">
-                    <RxCornerBottomLeft />
+                    <div className="replyIcon"></div>
                 </div>
                 <div className="replyComments-header">
                     <TextField
