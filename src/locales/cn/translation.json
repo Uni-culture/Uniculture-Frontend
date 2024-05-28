@@ -345,5 +345,13 @@
     "posts": "文章",
     "friends": "朋友",
     "allUsers": "所有用户"
+  },
+  "Notification": {
+    "post": "评论了您的帖子。",
+    "comment": "回复了您的评论。",
+    "friend": "向您发送了好友请求。",
+    "noti": "通知",
+    "read": "全部阅读",
+    "close": "关闭"
   }
 }

@@ -347,5 +347,13 @@
     "posts": "Publicaciones",
     "friends": "Amigos",
     "allUsers": "Todos los usuarios"
+  },
+  "Notification": {
+    "post": "comentó en tu publicación.",
+    "comment": "respondió a tu comentario.",
+    "friend": "te ha enviado una solicitud de amistad.",
+    "noti": "Notificación",
+    "read": "Leer Todo",
+    "close": "Cerrar"
   }
 }

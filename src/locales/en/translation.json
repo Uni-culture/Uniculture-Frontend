@@ -348,5 +348,13 @@
     "posts": "Posts",
     "friends": "Friends",
     "allUsers": "All Users"
+  },
+  "Notification": {
+    "post": "commented on your post.",
+    "comment": "replied to your comment.",
+    "friend": "sent you a friend request.",
+    "noti": "Notification",
+    "read": "Read All",
+    "close": "Close"
   }
 }
