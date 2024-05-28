@@ -1,17 +1,42 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next';
 import { BiSolidEdit } from "react-icons/bi";
 import { IoPersonAddSharp } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
+import { BiCommentDetail } from "react-icons/bi";
 
 export default function NotificationList({notification, readNotification}) {
     const type = notification?.notificationType;
+    const [message, setMessage] = useState(''); 
     const navigate = useNavigate();
+    const { t } = useTranslation();
+
+    useEffect(() => {
+        switch (type) {
+            case "POST":
+                setMessage(t('Notification.post'));
+                break;
+            case "COMMENT":
+                setMessage(t('Notification.comment'));
+                break;
+            case "FRIEND":
+                setMessage(t('Notification.friend'));
+                break;
+            default:
+                setMessage('');
+                break;
+        }
+    }, [type]);
 
     const renderContent = () => {
         switch (type) {
-            case "COMMENT":
+            case "POST":
                 return (
                     <BiSolidEdit size={20} />
+                );
+            case "COMMENT":
+                return (
+                    <BiCommentDetail size={20} />
                 );
             case "FRIEND":
                 return (
@@ -24,6 +49,10 @@ export default function NotificationList({notification, readNotification}) {
 
     const handleNavigate = () => {
         switch (type) {
+            case "POST":
+                readNotification(notification.id);
+                navigate(`/board/${notification.relatedNum}`);
+                break;
             case "COMMENT":
                 readNotification(notification.id);
                 navigate(`/board/${notification.relatedNum}`);
@@ -44,7 +73,7 @@ export default function NotificationList({notification, readNotification}) {
                     {renderContent()}
                 </div>
                 <div >
-                    {notification?.content}
+                    {notification?.content}{message}
                 </div>
             </div>
         </div>
