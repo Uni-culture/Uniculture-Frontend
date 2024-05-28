@@ -274,7 +274,7 @@ export default function OtherProfile({otherInformation}) {
                 <div className={styles.imageWrapper}>
                     <div className={styles.profileImageWrapper}>
                         <img
-                            src={otherInfo?.profileurl ? otherInfo.profileurl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                            src={otherInfo?.profileurl ? otherInfo.profileurl : "/default_profile_image.png"}
                             alt="profile"
                             className={styles.image}
                         />

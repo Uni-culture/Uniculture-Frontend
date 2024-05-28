@@ -188,7 +188,7 @@ export default function SearchUserCard({user, type}) {
             <div className={styles.imageWrapper} onClick={handleProfile}>
                 <div className={styles.profileImageWrapper}>
                     <img
-                        src={user?.profileurl ? user.profileurl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                        src={user?.profileurl ? user.profileurl : "/default_profile_image.png"}
                         alt="profile"
                         className={styles.image}
                     />
