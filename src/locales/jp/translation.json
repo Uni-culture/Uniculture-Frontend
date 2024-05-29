@@ -365,5 +365,14 @@
     "searchPlaceholder": "検索...",
     "noAccount": "アカウントが見つかりません。",
     "chatting": "チャット"
+  },
+  "createRandomChat": {
+    "title": "ランダムチャット",
+    "body": "どの言語で相手とチャットしたいですか？",
+    "language": "言語を選択してください。",
+    "search": "検索",
+    "introduce": "設定された紹介がありません。",
+    "pass": "スキップ",
+    "chatting": "チャットする"
   }
 }

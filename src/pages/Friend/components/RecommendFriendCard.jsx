@@ -117,7 +117,7 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMe
                         <div className={styles.imageWrapper} onClick={handleProfile}>
                             <div className={styles.profileImageWrapper}>
                                 <img
-                                    src={userInfo?.profileurl ? userInfo.profileurl : "/default_profile_image.png"}
+                                    src={userInfo?.profileurl ? userInfo.profileurl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
                                     alt="profile"
                                     className={styles.image}
                                 />
