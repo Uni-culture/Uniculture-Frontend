@@ -374,5 +374,9 @@
     "introduce": "没有设置介绍。",
     "pass": "跳过",
     "chatting": "聊天"
+  },
+  "studyBanner": {
+    "title": "招募一起成长的学习小组",
+    "subTitle": "新语言，新朋友！现在加入学习小组吧！"
   }
 }
