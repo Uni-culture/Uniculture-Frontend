@@ -94,7 +94,7 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMe
     }
 
     const handleSimilarity = () => {
-        if(similarity < 70) setSimilarity(70);
+        if(similarity < 50) setSimilarity(50);
     }
 
     useEffect(()=> {
