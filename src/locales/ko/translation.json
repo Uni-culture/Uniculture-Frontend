@@ -367,5 +367,14 @@
     "searchPlaceholder": "검색...",
     "noAccount": "계정을 찾을 수 없습니다.",
     "chatting": "채팅"
+  },
+  "createRandomChat": {
+    "title": "랜덤 채팅",
+    "body": "어떤 언어로 상대와 채팅하고 싶은가요?",
+    "language": "언어를 선택해주세요.",
+    "search": "검색",
+    "introduce": "설정한 소개가 없습니다.",
+    "pass": "넘기기",
+    "chatting": "채팅하기"
   }
 }

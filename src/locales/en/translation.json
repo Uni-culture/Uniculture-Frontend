@@ -368,5 +368,14 @@
     "searchPlaceholder": "Search...",
     "noAccount": "Account not found.",
     "chatting": "Chatting"
+  },
+  "createRandomChat": {
+    "title": "Random Chat",
+    "body": "In which language would you like to chat with the other person?",
+    "language": "Please select a language.",
+    "search": "Search",
+    "introduce": "No introduction set.",
+    "pass": "Skip",
+    "chatting": "Chat"
   }
 }

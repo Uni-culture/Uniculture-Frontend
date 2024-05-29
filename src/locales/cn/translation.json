@@ -365,5 +365,14 @@
     "searchPlaceholder": "搜索...",
     "noAccount": "找不到账户。",
     "chatting": "聊天"
+  },
+  "createRandomChat": {
+    "title": "随机聊天",
+    "body": "你想用什么语言与对方聊天？",
+    "language": "请选择语言。",
+    "search": "搜索",
+    "introduce": "没有设置介绍。",
+    "pass": "跳过",
+    "chatting": "聊天"
   }
 }

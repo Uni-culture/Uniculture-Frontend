@@ -367,5 +367,14 @@
     "searchPlaceholder": "Buscar...",
     "noAccount": "No se pudo encontrar la cuenta.",
     "chatting": "Chateando"
+  },
+  "createRandomChat": {
+    "title": "Chat Aleatorio",
+    "body": "¿En qué idioma te gustaría chatear con la otra persona?",
+    "language": "Por favor selecciona un idioma.",
+    "search": "Buscar",
+    "introduce": "No hay una introducción configurada.",
+    "pass": "Saltar",
+    "chatting": "Chatear"
   }
 }
