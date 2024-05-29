@@ -185,7 +185,7 @@ const SignUpOption = () => {
                     icon: "success",
                     title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t("signUpOption.successMessage")}</div>`,
                     confirmButtonColor: "#8BC765",
-                    confirmButtonText: "확인",
+                    confirmButtonText: t('signUpOption.confirmButton'),
                 }).then(() => {
                     navigate("/");
                 })

@@ -110,7 +110,7 @@ export const ChatMessage = ({chat, userInfo, modify, chatroom}) => {
     >
       {userInfo.nickname === chat.sender? '' :  
       <div className={styles.profileImage}>
-        <img src={chatroom.profileurl ? chatroom.profileurl:"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"} alt="profileImg" className={styles.image} onClick={() => clickProfile(chat.sender)} />
+        <img src={chatroom.profileurl ? chatroom.profileurl:"/default_profile_image.png"} alt="profileImg" className={styles.image} onClick={() => clickProfile(chat.sender)} />
         <div className={styles.countryImageWrapper}>
           <img className={styles.country} alt='country' src={`/${chatroom.country}.png`} />
         </div>

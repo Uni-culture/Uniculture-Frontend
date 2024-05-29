@@ -194,7 +194,8 @@
     "addFriendsPrompt": "友達を追加してください。",
     "noResults": "申し訳ありませんが、該当条件に合う結果がありません。",
     "noRecommendedFriends": "残念ながら、現在システムでおすすめできる友達が見つかりませんでした。",
-    "moreInputPrompt": "ユーザーの活動や興味をもっと入力していただければ、より正確なおすすめを提供できます。"
+    "moreInputPrompt": "ユーザーの活動や興味をもっと入力していただければ、より正確なおすすめを提供できます。",
+    "recommend": "以下は、会員情報に基づいて抽出されたビッグデータに基づく推薦友達リストです。"
   },
   "study": {
     "전체": "全て",
@@ -238,6 +239,7 @@
     "friendRequestSuccess": "友達リクエスト成功"
   },
   "profileEdit": {
+    "update": "修正完了",
     "editProfile": "プロフィールを編集",
     "delete": "削除",
     "change": "変更",
@@ -283,13 +285,15 @@
   },
   "post": {
     "createPost": "投稿を作成",
+    "complete": "文の作成完了",
+    "update": "文の修正完了",
     "createStudy": "勉強を作成",
     "postButton": "投稿",
     "studyButton": "勉強",
     "title": "タイトル",
     "titlePlaceholder": "タイトルに要点をまとめてください。",
     "content": "内容",
-    "contentPlaceholder": "内容を記入してください～やほ～",
+    "contentPlaceholder": "内容を記入してください～",
     "categoryLabel": "カテゴリー設定",
     "DAILY": "日常",
     "HELP": "助け",
@@ -345,5 +349,21 @@
     "posts": "投稿",
     "friends": "友達",
     "allUsers": "全てのユーザー"
+  },
+  "Notification": {
+    "post": "があなたの投稿にコメントしました。",
+    "comment": "があなたのコメントに返信しました。",
+    "friend": "が友達リクエストを送りました。",
+    "noti": "通知",
+    "read": "すべて読む",
+    "close": "閉じる",
+    "noNoti": "通知がありません。"
+  },
+  "createChat": {
+    "title": "新しいメッセージ",
+    "subTitle": "受信者:",
+    "searchPlaceholder": "検索...",
+    "noAccount": "アカウントが見つかりません。",
+    "chatting": "チャット"
   }
 }
