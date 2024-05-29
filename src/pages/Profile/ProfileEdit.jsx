@@ -155,7 +155,16 @@ const ProfileEdit = () => {
                 );
                 alert(JSON.stringify(userInfo));
                 if (response.status === 200) {
-                    alert("수정 완료");
+                    Swal.fire({ // 수정 완료
+                        title: `<span style='font-size: 17px;'>${t('profileEdit.update')}</span>`,
+                        icon: "success",
+                        confirmButtonColor: "#8BC765",
+                        customClass: {
+                            popup: 'custom-ok-popup',
+                            confirmButton: 'custom-ok-button',
+                            title: 'custom-title'
+                        }
+                    });
                     window.location.reload();
                 }
             } catch (error) { 
@@ -302,7 +311,7 @@ const ProfileEdit = () => {
                                 }}
                             >
                                 <img
-                                    src={profileImg ? profileImg : (userInfo?.profileurl ? userInfo.profileurl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")}
+                                    src={profileImg ? profileImg : (userInfo?.profileurl ? userInfo.profileurl : "/default_profile_image.png")}
                                     className={styles.profileImage}
                                     alt="profile"
                                 />

@@ -10,6 +10,13 @@
     /*background-color: antiquewhite;*/
 }
 
+.infoText {
+    color: #808080;
+    font-size: 15px;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
 .home-content-layout {
     min-height: 100vh;
     margin-left: 50px;

@@ -379,7 +379,7 @@ const Header = () => {
         {
             label: (
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <img src="/korea.png" alt="korea" className="national-flag"/>
+                    <img src="/Korea.png" alt="korea" className="national-flag"/>
                     {t('header.한국어')}
                 </div>
             ),
@@ -401,7 +401,7 @@ const Header = () => {
         {
             label: (
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <img src="/japan.png" alt="japan" className="national-flag"/>
+                    <img src="/Japan.png" alt="japan" className="national-flag"/>
                     {t('header.일본어')}
                 </div>
             ),
@@ -412,7 +412,7 @@ const Header = () => {
         {
             label: (
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <img src="/china.png" alt="china" className="national-flag"/>
+                    <img src="/China.png" alt="china" className="national-flag"/>
                     {t('header.중국어')}
                 </div>
             ),
@@ -423,7 +423,7 @@ const Header = () => {
         {
             label: (
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <img src="/spain.png" alt="spain" className="national-flag"/>
+                    <img src="/Spain.png" alt="spain" className="national-flag"/>
                     {t('header.스페인어')}
                 </div>
             ),

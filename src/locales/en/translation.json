@@ -196,7 +196,8 @@
     "addFriendsPrompt": "Please add friends.",
     "noResults": "Sorry, there are no results matching the criteria.",
     "noRecommendedFriends": "Unfortunately, we couldn't find any friends to recommend at the moment.",
-    "moreInputPrompt": "Providing more details about your activities or interests can help us make more accurate recommendations."
+    "moreInputPrompt": "Providing more details about your activities or interests can help us make more accurate recommendations.",
+    "recommend": "Below is a list of recommended friends based on big data extracted from member information."
   },
   "study": {
     "전체": "All",
@@ -240,6 +241,7 @@
     "friendRequestSuccess": "Friend Request Sent Successfully"
   },
   "profileEdit": {
+    "update": "Modification complete",
     "editProfile": "Edit Profile",
     "delete": "delete",
     "change": "change",
@@ -286,13 +288,15 @@
   },
   "post": {
     "createPost": "Create Post",
+    "complete": "Writing is complete",
+    "update": "Writing Modification Completed",
     "createStudy": "Create Study",
     "postButton": "Post",
     "studyButton": "Study",
     "title": "Title",
     "titlePlaceholder": "Summarize the key content in the title.",
     "content": "Content",
-    "contentPlaceholder": "Please start writing content~ Yay~",
+    "contentPlaceholder": "Please start writing content.",
     "categoryLabel": "Set Category",
     "DAILY": "Daily",
     "HELP": "Help",
@@ -348,5 +352,21 @@
     "posts": "Posts",
     "friends": "Friends",
     "allUsers": "All Users"
+  },
+  "Notification": {
+    "post": " commented on your post.",
+    "comment": " replied to your comment.",
+    "friend": " sent you a friend request.",
+    "noti": "Notification",
+    "read": "Read All",
+    "close": "Close",
+    "noNoti": "No notifications."
+  },
+  "createChat": {
+    "title": "New Message",
+    "subTitle": "Recipient:",
+    "searchPlaceholder": "Search...",
+    "noAccount": "Account not found.",
+    "chatting": "Chatting"
   }
 }

@@ -15,7 +15,7 @@ export default function NotificationModal({handleModal, myNotification, readNoti
                     </>
                 );
             default:
-                return <div style={{fontSize: "13px", color: "#737373"}}>알림이 없습니다.</div>;
+                return <div style={{fontSize: "13px", color: "#737373"}}>{t('Notification.noNoti')}</div>;
         }
     };
 

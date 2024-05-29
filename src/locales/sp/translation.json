@@ -196,7 +196,8 @@
     "addFriendsPrompt": "Añade amigos.",
     "noResults": "Lo sentimos, no hay resultados para esa condición.",
     "noRecommendedFriends": "Lo sentimos, no hay amigos recomendados en este momento.",
-    "moreInputPrompt": "Introduce más actividades o intereses para obtener mejores recomendaciones."
+    "moreInputPrompt": "Introduce más actividades o intereses para obtener mejores recomendaciones.",
+    "recommend": "A continuación se muestra una lista de amigos recomendados basada en datos masivos extraídos de la información de los miembros."
   },
   "study": {
     "전체": "Todo",
@@ -240,6 +241,7 @@
     "friendRequestSuccess": "Solicitud de amistad enviada con éxito"
   },
   "profileEdit": {
+    "update": "modificación completa",
     "editProfile": "Editar perfil",
     "delete": "Eliminar",
     "change": "Cambiar",
@@ -285,13 +287,15 @@
   },
   "post": {
     "createPost": "Crear publicación",
+    "complete": "escritura completa",
+    "update": "modificación completa de los textos",
     "createStudy": "Crear estudio",
     "postButton": "Publicación",
     "studyButton": "Estudio",
     "title": "Título",
     "titlePlaceholder": "Resume el contenido principal en el título.",
     "content": "Contenido",
-    "contentPlaceholder": "Escribe el contenido aquí~ ¡Hurra!",
+    "contentPlaceholder": "Escribe el contenido aquí~",
     "categoryLabel": "Seleccionar categoría",
     "DAILY": "Diario",
     "HELP": "Ayuda",
@@ -347,5 +351,21 @@
     "posts": "Publicaciones",
     "friends": "Amigos",
     "allUsers": "Todos los usuarios"
+  },
+  "Notification": {
+    "post": "comentó en tu publicación.",
+    "comment": "respondió a tu comentario.",
+    "friend": "te ha enviado una solicitud de amistad.",
+    "noti": "Notificación",
+    "read": "Leer Todo",
+    "close": "Cerrar",
+    "noNoti": "No hay notificaciones."
+  },
+  "createChat": {
+    "title": "Nuevo mensaje",
+    "subTitle": "Destinatario:",
+    "searchPlaceholder": "Buscar...",
+    "noAccount": "No se pudo encontrar la cuenta.",
+    "chatting": "Chateando"
   }
 }
