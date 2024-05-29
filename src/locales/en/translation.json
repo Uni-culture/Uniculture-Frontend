@@ -377,5 +377,9 @@
     "introduce": "No introduction set.",
     "pass": "Skip",
     "chatting": "Chat"
+  },
+  "studyBanner": {
+    "title": "Recruit Study Groups to Grow Together",
+    "subTitle": "New language, new friends! Join a study group now!"
   }
 }

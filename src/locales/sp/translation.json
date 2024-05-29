@@ -376,5 +376,9 @@
     "introduce": "No hay una introducción configurada.",
     "pass": "Saltar",
     "chatting": "Chatear"
+  },
+  "studyBanner": {
+    "title": "Recluta Grupos de Estudio para Crecer Juntos",
+    "subTitle": "¡Nuevo idioma, nuevos amigos! ¡Únete a un grupo de estudio ahora!"
   }
 }
