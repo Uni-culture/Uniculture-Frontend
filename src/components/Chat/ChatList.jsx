@@ -3,7 +3,7 @@ import "./ChatList.css";
 // import "./ChatMain.css"
 import { useNavigate, useParams } from "react-router-dom";
 import { AiOutlineBell } from "react-icons/ai";
-import { Badge} from "antd";
+import { Badge, message} from "antd";
 import moment from "moment";
 import 'moment/locale/ko'
 import * as StompJs from "@stomp/stompjs";
@@ -13,19 +13,22 @@ import Swal from "sweetalert2";
 import { useTranslation } from "react-i18next";
 import api from "../../pages/api";
 
-const ChatList = ({onSelectedChatRoom, user}) => {
+const ChatList = ({onSelectedChatRoom, user, chatRooms, setChatRooms}) => {
   const { t } = useTranslation();
-    const [chatRooms, setChatRooms] = useState([]);
+    
     const navigate = useNavigate(); // 페이지 이동을 위한 navigate 함수
 
     const [stompClient, setStompClient] = useState(null);
 
     const {chatId} = useParams();
+    
 
     // 로그인 후 저장된 토큰 가져오는 함수
     const getToken = () => {
       return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
   };
+
+  const token = getToken();
 
   const errorModal = (error) => {
     if(error.response.status === 401) {
@@ -48,6 +51,31 @@ const ChatList = ({onSelectedChatRoom, user}) => {
     }
   };
 
+  const fetchChatRooms = async () => {
+    try {
+      const response = await api.get('/api/auth/room', {
+        headers: {
+        Authorization: `Bearer ${token}` // 헤더에 토큰 추가
+        }
+      });
+      console.log('서버응답:', response);
+      if(response.status===200) { 
+        const sortedRooms = response.data.sort((a,b) => new Date(b.latestMessageTime) - new Date(a.latestMessageTime));
+        setChatRooms(sortedRooms);
+        if(chatId){
+          const selectedRoom = response.data.find(room => room.id.toString() === chatId);
+          console.log("선택한 방 정보"+ selectedRoom);
+          selectedRoom.unreadCount = 0;
+          if(selectedRoom){
+            onSelectedChatRoom(selectedRoom);
+          }
+        }
+      }
+    } catch (error) {
+        errorModal(error);
+    }
+  };
+
   const updateChatRooms = (receivedMessage) =>{
     setChatRooms(prev => {
       const roomIndex = prev.findIndex(room => room.id === receivedMessage.roomId);
@@ -61,18 +89,21 @@ const ChatList = ({onSelectedChatRoom, user}) => {
           //latestMessage : receivedMessage.message,
           latestMessage : receivedMessage.type === "TALK" ? receivedMessage.message : receivedMessage.type === "ENTER" ? '[수정됨]' : '[이미지]',
           latestMessageTime: receivedMessage.createdDate,
+          messageType: receivedMessage.type,
           unreadCount: receivedMessage.roomId.toString() === chatId? 0: prev[roomIndex].unreadCount+1,
         };
         // return updatedRooms;
       } else {
-        updatedRooms = [{
-          id:receivedMessage.roomId,
-          username: receivedMessage.sender,
-          //latestMessage : receivedMessage.message,
-          latestMessage : receivedMessage.type === "TALK" ? receivedMessage.message : receivedMessage.type === "ENTER" ? '[수정됨]' : '[이미지]',
-          latestMessageTime: receivedMessage.createdTime,
-          unreadCount: receivedMessage.roomId.toString() === chatId? 0 : 1},...prev, ];
-        
+        fetchChatRooms();
+        // updatedRooms = [{
+        //   id:receivedMessage.roomId,
+        //   username: receivedMessage.sender,
+        //   //latestMessage : receivedMessage.message,
+        //   latestMessage : receivedMessage.type === "TALK" ? receivedMessage.message : receivedMessage.type === "ENTER" ? '[수정됨]' : '[이미지]',
+        //   latestMessageTime: receivedMessage.createDate,
+        //   messageType: receivedMessage.type,
+        //   unreadCount: receivedMessage.roomId.toString() === chatId? 0 : 1},...prev, ];
+        //   // window.location.reload();
       } 
       return updatedRooms.sort((a,b) => new Date(b.latestMessageTime) - new Date(a.latestMessageTime));
     })
@@ -80,36 +111,13 @@ const ChatList = ({onSelectedChatRoom, user}) => {
 
     // 채팅 목록 조회
     useEffect(() => {
-      const token = getToken();
+      
       if (!token) {// 토큰이 없으면 로그인 페이지로 이동
           alert("로그인 해주세요.")
           navigate('/sign-in');
           return;
       }
-      const fetchChatRooms = async () => {
-        try {
-          const response = await api.get('/api/auth/room', {
-            headers: {
-            Authorization: `Bearer ${token}` // 헤더에 토큰 추가
-            }
-          });
-          console.log('서버응답:', response);
-          if(response.status===200) { 
-            const sortedRooms = response.data.sort((a,b) => new Date(b.latestMessageTime) - new Date(a.latestMessageTime));
-            setChatRooms(sortedRooms);
-            if(chatId){
-              const selectedRoom = response.data.find(room => room.id.toString() === chatId);
-              console.log("선택한 방 정보"+ selectedRoom);
-              selectedRoom.unreadCount = 0;
-              if(selectedRoom){
-                onSelectedChatRoom(selectedRoom);
-              }
-            }
-          }
-        } catch (error) {
-            errorModal(error);
-        }
-      };
+      
       fetchChatRooms();
 
       const clientdata = new StompJs.Client({
@@ -150,7 +158,7 @@ const ChatList = ({onSelectedChatRoom, user}) => {
         }
 
       // navigate('/chat');
-    }, [navigate]);
+    }, [navigate,user.id, chatId, setChatRooms]);
     
     return (
         <div className="chat-list">
@@ -176,7 +184,7 @@ const ChatList = ({onSelectedChatRoom, user}) => {
                   </div>
                   <div className={styles.badge}><Badge count={room.unreadCount} size="large" overflowCount={99}/></div>
                   <div className={styles.introduce}>
-                    {room?.messageType === "TALK" ? room.latestMessage : room?.messageType === "ENTER" ? '[수정됨]' : room?.messageType === "IMAGE" ? '[이미지]' : ''}</div>
+                    {room.messageType === "TALK" ? room.latestMessage : room.messageType === "ENTER" ? '[수정됨]' : room.messageType === "IMAGE" ? '[이미지]' : ''}</div>
                   <div className={styles.time}> {room.latestMessageTime ? moment(room.latestMessageTime).add(9, "hour").fromNow() : " " }</div>
                 </div>
               /*

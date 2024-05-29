@@ -121,7 +121,7 @@ export const ChatMessage = ({chat, userInfo, modify, chatroom}) => {
       <div style={{display:"flex",flexDirection: isSender ? ('row-reverse') : ('row')}}>
         <div className="chat-text" style={{backgroundColor: isSender ? ("#E7F3FF") : ("FFFFFF")}}> 
           {/* {chat.sender} : */}
-          {chat.messageType==='TALK'? originalMessage : chat.messageType==="IMAGE"?<img src={chat.message} alt="image" className={styles.imageMessage}/> : ''}
+          {chat.messageType==="IMAGE"?<img src={chat.message} alt="image" className={styles.imageMessage}/> : originalMessage}
           
           {modifiedMessage && (
             <>
@@ -140,7 +140,7 @@ export const ChatMessage = ({chat, userInfo, modify, chatroom}) => {
           
         </div>
         <div className={styles.messageRight}>
-        {isMenuVisible ? (<ChatOption chat={chat} userInfo={userInfo} option={[handleEdit, translateComment]}/>) : ('')}
+          {chat.messageType!=='IMAGE' ? isMenuVisible ? (<ChatOption chat={chat} userInfo={userInfo} option={[handleEdit, translateComment]}/>) : ('') : ''}
           <div className={styles.chatTime}>
             {moment(chat.createDate).add(9, "hour").fromNow()}
           </div>  

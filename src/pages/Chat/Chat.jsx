@@ -25,6 +25,7 @@ const Chat = () => {
     const [createRandomChatModal, setCreateRandomChatModal] = useState(false);
     const [randomUsertModal, setRandomUsertModal] = useState(false);
     const { t } = useTranslation();
+    const [chatRooms, setChatRooms] = useState([]);
 
 
     // 로그인 후 저장된 토큰 가져오는 함수
@@ -127,8 +128,8 @@ const Chat = () => {
                 }
             });
             if (response.status === 200) {
-                setSelectedChatRoom(response.data); // 서버에서 받은 chatRoomId 저장
-                console.log("보기" + JSON.stringify(response.data));
+                // setSelectedChatRoom(response.data); // 서버에서 받은 chatRoomId 저장
+                // console.log("보기" + JSON.stringify(response.data));
                 console.log(response.data);
                 navigate(`/chat/${response.data.chatRoomId}`)
             }
@@ -178,7 +179,7 @@ const Chat = () => {
                         <h4 style={{ fontWeight: 'lighter' }}>{t('chat.chat')}</h4>
                         <div><GiPerspectiveDiceSixFacesRandom size={25} onClick={handleCreateRandomChatModal} style={{marginRight: "10px"}}/><LuMessageSquarePlus size={25} onClick={handleCreateChatModal}/></div>
                     </div>
-                    {userInfo ? (<ChatList onSelectedChatRoom={handleSelectChatRoom} user={userInfo}/>) : (<div>Loading</div>)}
+                    {userInfo ? (<ChatList onSelectedChatRoom={handleSelectChatRoom} user={userInfo} chatRooms={chatRooms} setChatRooms={setChatRooms}/>) : (<div>Loading</div>)}
                     
                 </aside>
                 <div className={styles.chatmain}>

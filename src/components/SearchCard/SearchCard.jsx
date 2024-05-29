@@ -10,6 +10,16 @@ export const SearchCard = ({post}) => {
     const navigate = useNavigate();
     const { t } = useTranslation();
 
+    // content에서 첫 번째 이미지 태그의 src 추출
+    const extractFirstImageSrc = (htmlContent) => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlContent, 'text/html');
+        const imgTag = doc.querySelector('img');
+        return imgTag ? imgTag.src : null;
+    }
+
+    const firstImageSrc = extractFirstImageSrc(post.content);
+
     //해당 게시물의 프로필로 이동
     const handleProfile = () => {
         navigate(`/profile/${post.writerName}`);
@@ -37,9 +47,11 @@ export const SearchCard = ({post}) => {
                 </div>
                 <b style={{marginLeft: '5px'}} onClick={handleProfile}>{post.writerName}</b>
             </div>
+            {firstImageSrc ? 
             <div className="search-card-body-img" onClick={() => {navigate(`/board/${post.postId}`)}}>
-                <img src={post?.imageurl ? post.imageurl : "default_image.jpg"} alt="Card Image" />
+                <img src={firstImageSrc ? firstImageSrc : "default_image.jpg"} alt="Card Image" />
             </div>
+            : ''}
             <div className="search-card-body-text" onClick={() => {navigate(`/board/${post.postId}`)}}>
                 <div className="search-card-body-text-title">{post.title}</div>
                 <div className="search-card-body-text-content">{post.content.replace(/(<([^>]+)>)/gi, '')}</div>
