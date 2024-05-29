@@ -54,6 +54,27 @@ const Chat = () => {
         }
     };
 
+    const errorModal2 = (error) => {
+        if(error.response.status === 401) {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('loginWarning.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('loginWarning.confirmButton'),
+            }).then(() => {
+                navigate("/sign-in", {})
+            })
+        }
+        else {
+            Swal.fire({
+                icon: "warning",
+                title: `<div style='font-size: 21px; margin-bottom: 10px;'>${t('searchError.title')}</div>`,
+                confirmButtonColor: "#8BC765",
+                confirmButtonText: t('searchError.confirmButton'),
+            })
+        }
+    };
+
     // 서버에 정보를 요청하는 함수
     const fetchUserInfo = async () => {
         try {
@@ -166,7 +187,7 @@ const Chat = () => {
                 setRandomUsertModal(true);
             }
         } catch (error) {
-            errorModal(error);
+            errorModal2(error);
         }
     }
 
