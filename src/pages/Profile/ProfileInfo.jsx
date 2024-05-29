@@ -145,7 +145,7 @@ const ProfileInfo = () => {
                     }
                 });
                 localStorage.setItem('username', requestData.nickname);
-                window.location.reload();
+                navigate(`/profile/${requestData.nickname}`)
             }
         } catch (err) {
             if (err.response.status === 400) {

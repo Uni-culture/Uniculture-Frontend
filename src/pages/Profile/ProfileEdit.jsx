@@ -79,6 +79,10 @@ const ProfileEdit = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
     };
 
+    const getUsername = () => {
+        return localStorage.getItem('username'); // 로컬 스토리지에서 닉네임 가져옴
+    };
+
     const errorModal = (error) => {
         if(error.response.status === 401) {
             Swal.fire({
@@ -136,6 +140,7 @@ const ProfileEdit = () => {
         else{
             try {
                 const token = getToken(); // 토큰 가져오기
+                const nickname = getUsername();
                 const response = await api.patch(
                     '/api/auth/member/editProfile',
                     {
@@ -165,7 +170,7 @@ const ProfileEdit = () => {
                             title: 'custom-title'
                         }
                     });
-                    window.location.reload();
+                    navigate(`/profile/${nickname}`)
                 }
             } catch (error) { 
                 errorModal(error);
