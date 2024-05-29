@@ -25,7 +25,7 @@ export const SearchCard = ({post}) => {
                 <div className='imageWrapper' onClick={handleProfile}>
                     <div className='profileImageWrapper'>
                         <img
-                            src={post?.profileurl ? post.profileurl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                            src={post?.profileurl ? post.profileurl : "/default_profile_image.png"}
                             alt="profile"
                             className='image'
                         />

@@ -205,8 +205,17 @@ export const Post = () => {
       })
       console.log('서버 응답:', res);
       console.log('response.status:', res.status);
-      if(res.status === 200) {
-        alert("글 작성 완료");
+      if(res.status === 200) { // 글 작성 완료
+        Swal.fire({
+          title: `<span style='font-size: 17px;'>${t('post.complete')}</span>`,
+          icon: "success",
+          confirmButtonColor: "#8BC765",
+          customClass: {
+            popup: 'custom-ok-popup',
+            confirmButton: 'custom-ok-button',
+            title: 'custom-title'
+          }
+        });
         if(type ==='post'){
           navigate("/",{});
         } else{

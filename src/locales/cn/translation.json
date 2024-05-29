@@ -194,7 +194,8 @@
     "addFriendsPrompt": "请添加朋友。",
     "noResults": "对不起，没有符合条件的结果。",
     "noRecommendedFriends": "遗憾的是，当前系统没有找到推荐的朋友。",
-    "moreInputPrompt": "如果您输入更多的活动或兴趣，系统将提供更准确的推荐。"
+    "moreInputPrompt": "如果您输入更多的活动或兴趣，系统将提供更准确的推荐。",
+    "recommend": "以下是基于会员信息提取的大数据推荐的朋友列表。"
   },
   "study": {
     "전체": "全部",
@@ -238,6 +239,7 @@
     "friendRequestSuccess": "好友请求成功"
   },
   "profileEdit": {
+    "update": "修改完成",
     "editProfile": "编辑个人资料",
     "delete": "删除",
     "change": "更改",
@@ -283,6 +285,8 @@
   },
   "post": {
     "createPost": "写文章",
+    "complete": "文章完成",
+    "update": "文章修改完成",
     "createStudy": "创建学习",
     "postButton": "文章",
     "studyButton": "学习",
@@ -345,5 +349,21 @@
     "posts": "文章",
     "friends": "朋友",
     "allUsers": "所有用户"
+  },
+  "Notification": {
+    "post": "评论了您的帖子。",
+    "comment": "回复了您的评论。",
+    "friend": "向您发送了好友请求。",
+    "noti": "通知",
+    "read": "全部阅读",
+    "close": "关闭",
+    "noNoti": "没有通知。"
+  },
+  "createChat": {
+    "title": "新消息",
+    "subTitle": "收件人:",
+    "searchPlaceholder": "搜索...",
+    "noAccount": "找不到账户。",
+    "chatting": "聊天"
   }
 }

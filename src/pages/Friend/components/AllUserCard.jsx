@@ -92,7 +92,7 @@ export default function AllUserCard({userInfo, sendFriendRequest, hb}) {
                     {/* 프로필 사진 */}
                     <div style={{marginRight:"10px"}} onClick={handleProfile}>
                         <img
-                            src={userInfo?.profileImage ? userInfo.profileImage : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                            src={userInfo?.profileImage ? userInfo.profileImage : "/default_profile_image.png"}
                             alt="profile"
                             style={{width:"40px", borderRadius: "50%"}}
                         />

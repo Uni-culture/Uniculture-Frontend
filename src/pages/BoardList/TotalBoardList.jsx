@@ -46,13 +46,13 @@ const TotalBoardList = ({activeTab}) => {
         try {
             const token = getToken(); // 토큰 가져오기
             // const page_number = searchParams.get("page");
-            let apiUrl = `/api/post/hot?ca=NORMAL&page=${page}&size=8`;
+            let apiUrl = `/api/post/hot?ca=NORMAL&page=${page}&size=18`;
             console.log(activeTab);
-            if(activeTab==="live") apiUrl = `/api/post/hot?ca=NORMAL&page=${page}&size=8`;
-            else if(activeTab==="new") apiUrl = `/api/post?ca=NORMAL&page=${page}&size=8`;
-            else if(activeTab==="daily") apiUrl = `/api/post?ca=NORMAL&pt=DAILY&page=${page}&size=8`;
-            else if(activeTab==="help") apiUrl = `/api/post?ca=NORMAL&pt=HELP&page=${page}&size=8`;
-            else if(activeTab==="friend") apiUrl = `/api/auth/post/friend?page=${page}&size=8`;
+            if(activeTab==="live") apiUrl = `/api/post/hot?ca=NORMAL&page=${page}&size=18`;
+            else if(activeTab==="new") apiUrl = `/api/post?ca=NORMAL&page=${page}&size=18`;
+            else if(activeTab==="daily") apiUrl = `/api/post?ca=NORMAL&pt=DAILY&page=${page}&size=18`;
+            else if(activeTab==="help") apiUrl = `/api/post?ca=NORMAL&pt=HELP&page=${page}&size=18`;
+            else if(activeTab==="friend") apiUrl = `/api/auth/post/friend?page=${page}&size=18`;
             console.log(apiUrl);
             const response = await api.get(apiUrl, {
                 headers: {
@@ -67,7 +67,7 @@ const TotalBoardList = ({activeTab}) => {
                 console.log(response.data.content);
                 setBoardList(response.data.content);
                 console.log(`totalElements : ${response.data.totalElements}`);
-                setPageCount(Math.ceil( response.data.totalElements / 8));
+                setPageCount(Math.ceil( response.data.totalElements / 18));
                 console.log("200 성공");
             }
 
