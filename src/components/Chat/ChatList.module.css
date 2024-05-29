@@ -25,6 +25,7 @@
 
 .countryImageWrapper {
     height: 22px;
+    width: 22px;
     border-radius: 50%;
     overflow: hidden;
     margin: auto 0px;
