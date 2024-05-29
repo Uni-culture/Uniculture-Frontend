@@ -314,7 +314,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                         <div className="comment-bottom">
                             <button className="reply-button" onClick={replyComponent}>{t('comments.Reply')}</button>
                             <div className="comment-date">
-                                {moment(comment.createdDate).fromNow()}
+                                {moment(comment.createdDate).add(9, "hour").fromNow()}
                             </div>
                         </div>
                     </div>
@@ -390,7 +390,7 @@ const Comment = ({ board_id, comment, getCommentList, updateTotalCommentsAndPage
                                             </div>
                                             <div className="replyComment-bottom">
                                                 <div className="replyComment-date">
-                                                    {moment(child.createdDate).fromNow()}
+                                                    {moment(child.createdDate).add(9, "hour").fromNow()}
                                                 </div>
                                             </div>
                                         </div>

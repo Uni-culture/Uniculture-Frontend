@@ -30,7 +30,7 @@ export const StudyListCard = ({data}) => {
                 </div>
                 <span className={styles.writer}>{data.writerName}</span>
                 <span>&nbsp;·&nbsp;</span>
-                <span>{moment(data.createDate).fromNow()}</span>
+                <span>{moment(data.createDate).add(9,'hour').fromNow()}</span>
               </div>
               <div className={styles.question_info_data}>
               <dl>
