@@ -28,7 +28,8 @@ export const ChatOption = ({chat,userInfo , option}) => {
         {visibleMenu ? (
           <div className={`message-options ${userInfo.nickname === chat.sender ? 'left' : 'right'}`} key={chat.id}>
               {userInfo.nickname === chat.sender ? (
-                <button button className="option-button btn btn-danger">{t('chatOption.deleteButton')}</button>
+                // <button button className="option-button btn btn-danger">{t('chatOption.deleteButton')}</button>
+                ''
               ) :  (chat.messageType ==='TALK' &&
                 <button className="option-button btn btn-success btn-sm" onClick={handleEdit}>{t('chatOption.editButton')}</button>
               )}
