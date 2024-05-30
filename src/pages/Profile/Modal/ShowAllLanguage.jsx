@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import PercentBar from '../../../components/PercentBar/PercentBar';
+import {useTranslation} from "react-i18next";
 
 export default function ShowAllLanguage({ canLanguages, wantLanguages, showAllLanguage }) {
     const [activeTab, setActiveTab] = useState('can');
+    const { t } = useTranslation();
 
     // 언어 모달창 : 선택된 탭에 따라 해당 목록을 표시하는 함수
     const renderTabContent = () => {
@@ -42,14 +44,14 @@ export default function ShowAllLanguage({ canLanguages, wantLanguages, showAllLa
                                 className={`nav-link ${activeTab === 'can' ? 'active' : ''}`}
                                 style={{ width: "150px", backgroundColor: activeTab === 'can' ? '#B7DAA1' : 'white', color: "black" }}
                                 onClick={() => setActiveTab('can')}
-                            >사용 언어</button>
+                            >{t('profileEdit.usedLanguages')}</button>
                         </li>
                         <li className="nav-item">
                             <button
                                 className={`nav-link ${activeTab === 'want' ? 'active' : ''}`}
                                 style={{ width: "150px", backgroundColor: activeTab === 'want' ? '#B7DAA1' : 'white', color: "black" }}
                                 onClick={() => setActiveTab('want')}
-                            >학습 언어</button>
+                            >{t('profileEdit.learningLanguages')}</button>
                         </li>
                     </ul>
 

@@ -217,7 +217,7 @@ export default function SearchUserCard({user, type}) {
                     </div>
                 </div>
 
-                <div className={styles.introduce}>{user?.introduce ? user.introduce : <span className={styles.introtext}>사용자가 설정한 소개가 없습니다.</span>}</div>
+                <div className={styles.introduce}>{user?.introduce ? user.introduce : <span className={styles.introtext}>{t('userProfile.userIntroduction')}</span>}</div>
             </div>
         </div>
     )
