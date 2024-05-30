@@ -165,7 +165,7 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb, sendMess
 
                     {CLList && 
                         <div style={{marginBottom: "15px"}}>
-                            <div style={{fontWeight: "bold"}}>🌎 사용 언어</div>
+                            <div style={{fontWeight: "bold"}}>🌎 {t('userProfile.사용 언어')}</div>
                             {CLList && CLList.map((language, index) => (
                                 <div style={{ padding: '8px' }}>
                                     <PercentBar key={index} language={language.language} level={language.level} color={"blue"}/>
@@ -176,7 +176,7 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb, sendMess
                     
                     {WLList && 
                         <div style={{marginBottom: "15px"}}>
-                            <div style={{fontWeight: "bold"}}>🌎 학습 언어</div>
+                            <div style={{fontWeight: "bold"}}>🌎 {t('userProfile.학습 언어')}</div>
                             {WLList.map((language, index) => (
                                 <div style={{ padding: '8px' }}>
                                     <PercentBar key={index} language={language.language} level={language.level} color={"red"}/>
@@ -187,7 +187,7 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb, sendMess
 
                     {userInfo.hobbies && 
                         <div style={{marginBottom: "20px"}}>
-                            <div style={{fontWeight: "bold", marginBottom: "5px"}}>❤️ 관심사</div>
+                            <div style={{fontWeight: "bold", marginBottom: "5px"}}>❤️ {t('userProfile.관심사')}</div>
                             {userInfo.hobbies.map((hobby, index) => (
                                 <div
                                     key={index} 
@@ -200,14 +200,15 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb, sendMess
                                         marginTop: "5px"
                                     }}
                                 >
-                                    # {hobby}
+                                    # {t(`interestTag.${hobby}`)}
                                 </div>
                             ))}
                         </div>
                     }
 
+                    {/*간략하게*/}
                     <div onClick={()=> setShowAllInfo(false)} style={{ height: "20px",cursor: "pointer", color: "blue" }}>
-                        - 간략하게
+                        {t('userProfile.brief')}
                     </div>
                 </div>
             ) : (
@@ -218,19 +219,19 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb, sendMess
                             {userInfo?.introduce}
                         </div>
                     ) : (
-                        <div style={{height: "20px", textAlign: "left", marginBottom: "15px", color: "#A6A3A3"}}>친구가 설정한 소개가 없습니다.</div>
+                        <div style={{height: "20px", textAlign: "left", marginBottom: "15px", color: "#A6A3A3"}}>{t('userProfile.friendIntroduction')}</div>
                     )}
 
                     {/* 사용언어, 학습언어 */}
                     {canLanguage ? (
                         <div style={{height: "22px", marginBottom: "15px"}}><PercentBar language={canLanguage.language} level={canLanguage.level} color={"blue"}/></div>
                     ) : (
-                        <div style={{height: "22px", marginBottom: "15px", color: "#A6A3A3"}}>친구가 설정한 사용 언어가 없습니다.</div>
+                        <div style={{height: "22px", marginBottom: "15px", color: "#A6A3A3"}}>{t('userProfile.friendUsageLanguage')}</div>
                     )}
                     {wantLanguage ? (
                         <div style={{height: "22px", marginBottom: "15px"}}><PercentBar language={wantLanguage.language} level={wantLanguage.level} color={"red"}/></div>
                     ) : (
-                        <div style={{height: "22px", marginBottom: "15px", color: "#A6A3A3"}}>친구가 설정한 학습 언어가 없습니다.</div>
+                        <div style={{height: "22px", marginBottom: "15px", color: "#A6A3A3"}}>{t('userProfile.friendLearningLanguage')}</div>
                     )}
 
                     {/* 관심사 */}
@@ -249,17 +250,17 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb, sendMess
                                         // marginTop: "5px",
                                     }}
                                 >
-                                    # {hobby}
+                                    # {t(`interestTag.${hobby}`)}
                                 </div>
                             ))}
                         </div>
                     ) : (
-                        <div style={{height: "30px",marginBottom: "10px", color: "#A6A3A3"}}>친구가 설정한 관심사가 없습니다.</div>
+                        <div style={{height: "30px",marginBottom: "10px", color: "#A6A3A3"}}>{t('userProfile.friendInterests')}</div>
                     )}
 
                     {( (CLList && CLList.length > 1) || (WLList && WLList.length > 1) || userInfo.hobbies.length > 4 ) ? (
                         <div onClick={()=> setShowAllInfo(true)} style={{ height: "20px",cursor: "pointer", color: "blue" }}>
-                            + 더 보기
+                            {t('userProfile.moreInfo')}{/*더 보기*/}
                         </div>
                     ) : (
                         <div style={{ height: "20px"}}/>
@@ -278,14 +279,14 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb, sendMess
                                             className={`nav-link ${activeTab2 === 'can' ? 'active' : ''}`} 
                                             style={{ width:"150px", backgroundColor: activeTab2 === 'can' ? '#B7DAA1' : 'white', color: "black"}}
                                             onClick={() => setActiveTab2('can')}
-                                        >사용 언어</button>
+                                        >{t('signUpOption.languageUsage')}</button>
                                     </li>
                                     <li className="nav-item">
                                         <button 
                                             className={`nav-link ${activeTab2 === 'want' ? 'active' : ''}`} 
                                             style={{ width:"150px", backgroundColor: activeTab2 === 'want' ? '#B7DAA1' : 'white', color: "black"}}
                                             onClick={() => setActiveTab2('want')}
-                                        >학습 언어</button>
+                                        >{t('signUpOption.learningLanguages')}</button>
                                     </li>
                                 </ul>
 
@@ -293,7 +294,7 @@ export default function FriendCard({userInfo, deleteFriend, cl, wl, hb, sendMess
                                 {renderTabContent2()}
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => {setShowAllLanguage(false); setActiveTab2('can')}}>닫기</button>
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => {setShowAllLanguage(false); setActiveTab2('can')}}>{t('profileDelete.closeButton')}</button>
                             </div>
                         </div>
                     </div>

@@ -126,7 +126,7 @@ export const ChatMessage = ({chat, userInfo, modify, chatroom}) => {
           {modifiedMessage && (
             <>
               <br/><hr/>
-              <span>[수정됨] : {modifiedMessage}</span>
+              <span>{t('chatOption.edited')} : {modifiedMessage}</span>
             </>
           )}
           {translation && (
@@ -134,7 +134,7 @@ export const ChatMessage = ({chat, userInfo, modify, chatroom}) => {
             {/* <div className="hr-sect"/> */}
             <hr/>
               {/* {transStatus ? (<><FaArrowUp onClick={ChangeTransStatus} /><span>[번역] : {translation}</span></>) : (<><FaArrowDown onClick={ChangeTransStatus} /></>)} */}
-              <span>[번역] {translation}</span>
+              <span>{t('chatOption.translated')} {translation}</span>
             </>
           )}
           
@@ -150,8 +150,8 @@ export const ChatMessage = ({chat, userInfo, modify, chatroom}) => {
       {isEditing ? (
         <div className='modify-message'>
           <input type="text" value={newMessage} onChange={(e)=> setNewMessage(e.target.value)}/>
-          <button onClick={() => handleModify(newMessage)}>저장</button>
-          <button onClick={handleCancelEdit}>취소</button>
+          <button onClick={() => handleModify(newMessage)}>{t('chatOption.saveButton')}</button>
+          <button onClick={handleCancelEdit}>{t('chatOption.cancelButton')}</button>
         </div>
       ): ''}
       </div>

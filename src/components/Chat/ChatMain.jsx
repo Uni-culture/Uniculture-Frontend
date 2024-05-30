@@ -188,7 +188,7 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
         {selectedChatRoom ? (
                 <>
                     <div className="chat-name">
-                        <h4>"{selectedChatRoom.username}"님과의 채팅방</h4>
+                        <h4>{t('chat.with', { username: selectedChatRoom.username })}</h4>
                     </div>
                     <div className="chats">
                         {chats.map(chat =>(
@@ -214,11 +214,11 @@ const ChatMain = ({selectedChatRoom, userInfo}) => {
                                 }
                             }}
                         />
-                            <button onClick={handleSendChat}>전송</button>
+                            <button onClick={handleSendChat}>{t('chat.sendButton')}</button>
                     </div>
                 </>
             ):(
-                <div>채팅방을 선택해주세요.</div>
+                <div>{t('chat.selectPrompt')}</div>
             )}
             
         </div>

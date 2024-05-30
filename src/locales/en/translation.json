@@ -176,10 +176,7 @@
     "중국어": "Chinese",
     "일본어": "Japanese",
     "영어": "English",
-    "베트남어": "Vietnamese",
-    "태국어": "Thai",
     "스페인어": "Spanish",
-    "포르투갈어": "Portuguese",
     "proficiencySelection": "Select proficiency level.",
     "최상": "Expert",
     "상": "Advanced",
@@ -226,7 +223,10 @@
     "chat": "ChatRoom List",
     "myMessages": "My Messages",
     "PrivateMessages": "Send private photos and messages to friends or groups.",
-    "sendMessage": "Send Message"
+    "sendMessage": "Send Message",
+    "with": "Chat with \"{{username}}\"",
+    "selectPrompt": "Please select a chat room.",
+    "sendButton": "Send"
   },
   "profile": {
     "posts": "Posts",
@@ -381,5 +381,34 @@
   "studyBanner": {
     "title": "Recruit Study Groups to Grow Together",
     "subTitle": "New language, new friends! Join a study group now!"
+  },
+  "userProfile": {
+    "사용 언어": "Usage Language",
+    "학습 언어": "Learning Language",
+    "관심사": "Interests",
+    "friendIntroduction": "No introduction set by the friend.",
+    "friendUsageLanguage": "No usage language set by the friend.",
+    "friendLearningLanguage": "No learning language set by the friend.",
+    "friendInterests": "No interests set by the friend.",
+    "moreInfo": "+ More info",
+    "brief": "- Brief",
+    "userUsageLanguage": "No usage language set by the user.",
+    "userLearningLanguage": "No learning language set by the user.",
+    "userIntroduction": "No introduction set by the user."
+  },
+  "tabTexts": {
+    "live": "This is the post that received the most likes in the past week.",
+    "new": "This is the most recently uploaded post.",
+    "help": "This is a post that is requesting help.",
+    "friend": "This is a post uploaded by my friends."
+  },
+  "chatOption": {
+    "deleteButton": "Delete",
+    "editButton": "Edit",
+    "TranslateButton": "Translate",
+    "edited": "[Edited]",
+    "translated": "[Translated]",
+    "saveButton": "Save",
+    "cancelButton": "Cancel"
   }
 }
