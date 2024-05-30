@@ -4,9 +4,11 @@ import {IoArrowBack} from "react-icons/io5";
 import { IoMdClose } from "react-icons/io";
 import { GiMale, GiFemale } from "react-icons/gi";
 import { Card } from 'antd';
+import {useTranslation} from "react-i18next";
 const { Meta } = Card;
 
 export default function RandomChatCard({modal, back, userInfo, searchUser, createChat}) {
+    const { t } = useTranslation();
 
     return (
         <div className="modal fade show" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
@@ -62,7 +64,7 @@ export default function RandomChatCard({modal, back, userInfo, searchUser, creat
                                                 {userInfo?.introduce}
                                             </div>
                                         ) : (
-                                            <div style={{height: "30px", textAlign: "left", color: "#00000073", fontSize: "13px"}}>설정한 소개가 없습니다.</div>
+                                            <div className={styles.noIntroduce} style={{height: "30px", textAlign: "left", color: "#00000073", fontSize: "12px"}}>{t('createRandomChat.introduce')}</div>
                                         )}
                                     </div>
                                 }
@@ -70,8 +72,8 @@ export default function RandomChatCard({modal, back, userInfo, searchUser, creat
                         </Card>
                     </div>
                     <div className="modal-footer" style={{width: "100%", display: "flex", flexDirection: "row", justifyContent: "center", height: "50px"}}>
-                        <button type="button" className="btn btn-primary" data-bs-dismiss="modal" style={{display:"inline-block", width:"45%"}} onClick={()=>{modal(); searchUser();}}>넘기기</button>
-                        <button type="button" className="btn btn-primary" data-bs-dismiss="modal" style={{display:"inline-block", width:"45%"}} onClick={()=>{modal(); createChat(userInfo);}}>채팅하기</button>
+                        <button type="button" className="btn btn-primary" data-bs-dismiss="modal" style={{display:"inline-block", width:"45%"}} onClick={()=>{modal(); searchUser();}}>{t('createRandomChat.pass')}</button>
+                        <button type="button" className="btn btn-primary" data-bs-dismiss="modal" style={{display:"inline-block", width:"45%"}} onClick={()=>{modal(); createChat(userInfo);}}>{t('createRandomChat.chatting')}</button>
                     </div>
                 </div>
             </div>

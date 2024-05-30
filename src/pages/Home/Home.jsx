@@ -30,13 +30,13 @@ const Home = () => {
     const renderActiveTabText = () => {
         switch (activeTab) {
             case 'live':
-                return '일주일 동안 좋아요를 가장 많이 받은 게시글 입니다.';
+                return t('tabTexts.live');
             case 'new':
-                return '가장 최신으로 올라온 게시물 입니다.';
+                return t('tabTexts.new');
             case 'help':
-                return '도움을 필요로 하는 게시물 입니다.';
+                return t('tabTexts.help');
             case 'friend':
-                return '내 친구들이 올린 게시물 입니다.';
+                return t('tabTexts.friend');
             default:
                 return '';
         }

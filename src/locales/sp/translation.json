@@ -176,10 +176,7 @@
     "중국어": "Chino",
     "일본어": "Japonés",
     "영어": "Inglés",
-    "베트남어": "Vietnamita",
-    "태국어": "Tailandés",
     "스페인어": "Español",
-    "포르투갈어": "Portugués",
     "proficiencySelection": "Selecciona el nivel de competencia.",
     "최상": "Avanzado",
     "상": "Intermedio alto",
@@ -226,7 +223,10 @@
     "chat": "Lista de chats",
     "myMessages": "Mis mensajes",
     "PrivateMessages": "Envía fotos y mensajes privados a tus amigos o grupos.",
-    "sendMessage": "Enviar mensaje"
+    "sendMessage": "Enviar mensaje",
+    "with": "Chat con \"{{username}}\"",
+    "selectPrompt": "Por favor, selecciona una sala de chat.",
+    "sendButton": "Enviar"
   },
   "profile": {
     "posts": "Publicaciones",
@@ -307,7 +307,7 @@
     "studyRecruitmentExample": "<p><strong>[Ejemplo de contenido para reclutamiento de estudios]</strong></p><ul><li>Tema del estudio :</li><li>Objetivo del estudio :</li><li>Horarios previstos del estudio :</li><li>Breve descripción del currículum previsto :</li><li>Número de personas previstas :</li><li>Introducción y motivo de la creación del estudio :</li><li>Consideraciones importantes relacionadas con el estudio :</li><li>Deja información sobre cómo unirse al estudio (correo electrónico, chat abierto de Kakao, formulario de Google, etc.).</li></ul><p><br></p>"
   },
   "board": {
-    "dateFormat": "YYYY년 M월 D일",
+    "dateFormat": "MMMM D, YYYY",
     "TranslateButton": "Traducir",
     "RevertButton": "Revertir",
     "DeleteButton": "Eliminar",
@@ -367,5 +367,47 @@
     "searchPlaceholder": "Buscar...",
     "noAccount": "No se pudo encontrar la cuenta.",
     "chatting": "Chateando"
+  },
+  "createRandomChat": {
+    "title": "Chat Aleatorio",
+    "body": "¿En qué idioma te gustaría chatear con la otra persona?",
+    "language": "Por favor selecciona un idioma.",
+    "search": "Buscar",
+    "introduce": "No hay una introducción configurada.",
+    "pass": "Saltar",
+    "chatting": "Chatear"
+  },
+  "studyBanner": {
+    "title": "Recluta Grupos de Estudio para Crecer Juntos",
+    "subTitle": "¡Nuevo idioma, nuevos amigos! ¡Únete a un grupo de estudio ahora!"
+  },
+  "userProfile": {
+    "사용 언어": "Idioma de uso",
+    "학습 언어": "Idioma de aprendizaje",
+    "관심사": "Intereses",
+    "friendIntroduction": "No hay una introducción configurada por el amigo.",
+    "friendUsageLanguage": "No hay un idioma de uso configurado por el amigo.",
+    "friendLearningLanguage": "No hay un idioma de aprendizaje configurado por el amigo.",
+    "friendInterests": "No hay intereses configurados por el amigo.",
+    "moreInfo": "+ Más información",
+    "brief": "- Breve",
+    "userUsageLanguage": "No hay un idioma de uso configurado por el usuario.",
+    "userLearningLanguage": "No hay un idioma de aprendizaje configurado por el usuario.",
+    "userIntroduction": "No hay una introducción configurada por el usuario."
+  },
+  "tabTexts": {
+    "live": "Esta es la publicación que recibió más me gusta en la última semana.",
+    "new": "Esta es la publicación más reciente.",
+    "help": "Esta es una publicación que necesita ayuda.",
+    "friend": "Esta es una publicación hecha por mis amigos."
+  },
+  "chatOption": {
+    "deleteButton": "Eliminar",
+    "editButton": "Editar",
+    "TranslateButton": "Traducir",
+    "edited": "[Editado]",
+    "translated": "[Traducido]",
+    "saveButton": "Guardar",
+    "cancelButton": "Cancelar"
   }
 }

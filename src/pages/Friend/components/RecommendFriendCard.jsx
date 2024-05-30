@@ -117,7 +117,7 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMe
                         <div className={styles.imageWrapper} onClick={handleProfile}>
                             <div className={styles.profileImageWrapper}>
                                 <img
-                                    src={userInfo?.profileurl ? userInfo.profileurl : "/default_profile_image.png"}
+                                    src={userInfo?.profileurl ? userInfo.profileurl : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
                                     alt="profile"
                                     className={styles.image}
                                 />
@@ -162,7 +162,7 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMe
                                         {userInfo?.introduce}
                                     </div>
                                 ) : (
-                                    <div style={{height: "30px", textAlign: "left", color: "#00000073", fontSize: "13px"}}>설정한 소개가 없습니다.</div>
+                                    <div className={styles.noIntroduce} style={{height: "30px", textAlign: "left", color: "#00000073", fontSize: "13px"}}>설정한 소개가 없습니다.</div>
                                 )}
                             </div>
                         }

@@ -174,10 +174,7 @@
     "중국어": "中国語",
     "일본어": "日本語",
     "영어": "英語",
-    "베트남어": "ベトナム語",
-    "태국어": "タイ語",
     "스페인어": "スペイン語",
-    "포르투갈어": "ポルトガル語",
     "proficiencySelection": "習熟度を選択してください。",
     "최상": "最高",
     "상": "上",
@@ -224,7 +221,10 @@
     "chat": "チャットリスト",
     "myMessages": "私のメッセージ",
     "PrivateMessages": "友達やグループにプライベートな写真とメッセージを送ってみてください。",
-    "sendMessage": "メッセージを送る"
+    "sendMessage": "メッセージを送る",
+    "with": "\"{{username}}\"とのチャットルーム",
+    "selectPrompt": "チャットルームを選択してください。",
+    "sendButton": "送信"
   },
   "profile": {
     "posts": "投稿",
@@ -365,5 +365,47 @@
     "searchPlaceholder": "検索...",
     "noAccount": "アカウントが見つかりません。",
     "chatting": "チャット"
+  },
+  "createRandomChat": {
+    "title": "ランダムチャット",
+    "body": "どの言語で相手とチャットしたいですか？",
+    "language": "言語を選択してください。",
+    "search": "検索",
+    "introduce": "設定された紹介がありません。",
+    "pass": "スキップ",
+    "chatting": "チャットする"
+  },
+  "studyBanner": {
+    "title": "一緒に成長するスタディグループを募集しましょう",
+    "subTitle": "新しい言語、新しい友達！今すぐスタディグループに参加しよう！"
+  },
+  "userProfile": {
+    "사용 언어": "使用言語",
+    "학습 언어": "学習言語",
+    "관심사": "関心",
+    "friendIntroduction": "友達が設定した紹介がありません。",
+    "friendUsageLanguage": "友達が設定した使用言語がありません。",
+    "friendLearningLanguage": "友達が設定した学習言語がありません。",
+    "friendInterests": "友達が設定した関心がありません。",
+    "moreInfo": "+ 詳しく",
+    "brief": "- 簡単に",
+    "userUsageLanguage": "ユーザーが設定した使用言語がありません。",
+    "userLearningLanguage": "ユーザーが設定した学習言語がありません。",
+    "userIntroduction": "ユーザーが設定した紹介がありません。"
+  },
+  "tabTexts": {
+    "live": "過去一週間で最もいいねを多く受けた投稿です。",
+    "new": "最も最近投稿されたものです。",
+    "help": "助けが必要な投稿です。",
+    "friend": "私の友達が投稿したものです。"
+  },
+  "chatOption": {
+    "deleteButton": "削除",
+    "editButton": "編集",
+    "TranslateButton": "翻訳",
+    "edited": "[編集済み]",
+    "translated": "[翻訳済み]",
+    "saveButton": "保存",
+    "cancelButton": "キャンセル"
   }
 }

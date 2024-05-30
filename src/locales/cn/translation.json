@@ -174,10 +174,7 @@
     "중국어": "中文",
     "일본어": "日语",
     "영어": "英语",
-    "베트남어": "越南语",
-    "태국어": "泰语",
     "스페인어": "西班牙语",
-    "포르투갈어": "葡萄牙语",
     "proficiencySelection": "选择熟练程度。",
     "최상": "最高",
     "상": "高",
@@ -224,7 +221,10 @@
     "chat": "聊天列表",
     "myMessages": "我的消息",
     "PrivateMessages": "给朋友或群组发送私人照片和消息。",
-    "sendMessage": "发送消息"
+    "sendMessage": "发送消息",
+    "with": "与\"{{username}}\"的聊天",
+    "selectPrompt": "请选择一个聊天室。",
+    "sendButton": "发送"
   },
   "profile": {
     "posts": "文章",
@@ -365,5 +365,47 @@
     "searchPlaceholder": "搜索...",
     "noAccount": "找不到账户。",
     "chatting": "聊天"
+  },
+  "createRandomChat": {
+    "title": "随机聊天",
+    "body": "你想用什么语言与对方聊天？",
+    "language": "请选择语言。",
+    "search": "搜索",
+    "introduce": "没有设置介绍。",
+    "pass": "跳过",
+    "chatting": "聊天"
+  },
+  "studyBanner": {
+    "title": "招募一起成长的学习小组",
+    "subTitle": "新语言，新朋友！现在加入学习小组吧！"
+  },
+  "userProfile": {
+    "사용 언어": "使用语言",
+    "학습 언어": "学习语言",
+    "관심사": "兴趣",
+    "friendIntroduction": "朋友没有设置介绍。",
+    "friendUsageLanguage": "朋友没有设置使用语言。",
+    "friendLearningLanguage": "朋友没有设置学习语言。",
+    "friendInterests": "朋友没有设置兴趣。",
+    "moreInfo": "+ 更多信息",
+    "brief": "- 简要",
+    "userUsageLanguage": "用户没有设置使用语言。",
+    "userLearningLanguage": "用户没有设置学习语言。",
+    "userIntroduction": "用户没有设置介绍。"
+  },
+  "tabTexts": {
+    "live": "这是过去一周内获得最多点赞的帖子。",
+    "new": "这是最新上传的帖子。",
+    "help": "这是需要帮助的帖子。",
+    "friend": "这是我朋友上传的帖子。"
+  },
+  "chatOption": {
+    "deleteButton": "删除",
+    "editButton": "编辑",
+    "TranslateButton": "翻译",
+    "edited": "[已编辑]",
+    "translated": "[已翻译]",
+    "saveButton": "保存",
+    "cancelButton": "取消"
   }
 }

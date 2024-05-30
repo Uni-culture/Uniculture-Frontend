@@ -127,7 +127,7 @@ export const ChatMessage = ({chat, userInfo, modify, chatroom}) => {
           {modifiedMessage && (
             <>
               <br/><hr/>
-              <span>[수정됨] : {modifiedMessage}</span>
+              <span>{t('chatOption.edited')} : {modifiedMessage}</span>
             </>
           )}
           {translation && (
@@ -135,7 +135,7 @@ export const ChatMessage = ({chat, userInfo, modify, chatroom}) => {
             {/* <div className="hr-sect"/> */}
             <hr/>
               {/* {transStatus ? (<><FaArrowUp onClick={ChangeTransStatus} /><span>[번역] : {translation}</span></>) : (<><FaArrowDown onClick={ChangeTransStatus} /></>)} */}
-              <span>[번역] {translation}</span>
+              <span>{t('chatOption.translated')} {translation}</span>
             </>
           )}
           
@@ -152,8 +152,8 @@ export const ChatMessage = ({chat, userInfo, modify, chatroom}) => {
         <div className={styles.modify_input} >
           <div className=' input-group'>
             <input type="text" className='form-control' value={newMessage} onChange={(e)=> setNewMessage(e.target.value)}/>
-            <button onClick={() => handleModify(newMessage)} type='button' className='btn btn-primary'>저장</button>
-            <button onClick={handleCancelEdit} type='button' className='btn btn-secondary'>취소</button>
+            <button onClick={() => handleModify(newMessage)} type='button' className='btn btn-primary'>{t('chatOption.saveButton')}</button>
+            <button onClick={handleCancelEdit} type='button' className='btn btn-secondary'>{t('chatOption.cancelButton')}</button>
           </div>
         </div>
       ): ''}

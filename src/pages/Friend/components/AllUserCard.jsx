@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import PercentBar from '../../../components/PercentBar/PercentBar';
 import { GiMale, GiFemale } from "react-icons/gi";
 import { FaExchangeAlt } from "react-icons/fa";
+import {useTranslation} from "react-i18next";
 
 export default function AllUserCard({userInfo, sendFriendRequest, hb}) {
     const navigate = useNavigate();
@@ -15,6 +16,8 @@ export default function AllUserCard({userInfo, sendFriendRequest, hb}) {
     const [showAllInfo, setShowAllInfo] = useState(false); // 모든 취미 표시 여부 상태
     const [showAllLanguage, setShowAllLanguage] = useState(false);
     const [activeTab2, setActiveTab2] = useState('can');
+
+    const { t } = useTranslation();
 
     //친구 프로필로 이동
     const handleProfile = () => {
@@ -123,7 +126,7 @@ export default function AllUserCard({userInfo, sendFriendRequest, hb}) {
                         }}
                         onClick={handleSendFriendRequest}
                     >
-                        친구 신청
+                        {t('profile.addFriend')}
                     </button>
 
                     <button
@@ -137,7 +140,7 @@ export default function AllUserCard({userInfo, sendFriendRequest, hb}) {
                             border:"0px"
                         }}
                     >
-                        채팅 보내기
+                        {t('profile.sendMessage')}
                     </button>
                 </div>
             </div>
@@ -167,7 +170,7 @@ export default function AllUserCard({userInfo, sendFriendRequest, hb}) {
                                     ))}
                                 </div>
                             ) : (
-                                <div style={{color: "#A6A3A3"}}> 사용자가 설정한 사용 언어가 없습니다.</div>
+                                <div style={{color: "#A6A3A3"}}>{t('userProfile.userUsageLanguage')}</div>
                             )}
 
                             {CLList && WLList ? ( 
@@ -185,7 +188,7 @@ export default function AllUserCard({userInfo, sendFriendRequest, hb}) {
                                     ))}
                                 </div>
                             ) : (
-                                <div style={{color: "#A6A3A3"}}> 사용자가 설정한 학습 언어가 없습니다.</div>
+                                <div style={{color: "#A6A3A3"}}> {t('userProfile.userLearningLanguage')}</div>
                             )}
 
                         </div>
@@ -204,12 +207,12 @@ export default function AllUserCard({userInfo, sendFriendRequest, hb}) {
                                     marginTop: "5px"
                                 }}
                             >
-                                {hobby.hobby ? `# ${hobby.hobby}` : `# ${hobby}`}
+                                {hobby.hobby ? `# ${t(`interestTag.${hobby.hobby}`)}` : `# ${t(`interestTag.${hobby}`)}`}
                             </div>
                         ))}
 
                         <div onClick={()=> setShowAllInfo(false)} style={{ cursor: "pointer", marginTop: "10px", padding: "0px 8px", color: "blue" }}>
-                            - 간략하게
+                            {t('userProfile.brief')}
                         </div>
                     </div>
                 ) : (
@@ -221,7 +224,7 @@ export default function AllUserCard({userInfo, sendFriendRequest, hb}) {
                                 {userInfo?.introduce}
                             </div>
                         ) : (
-                            <div style={{height: "20px", textAlign: "left", marginBottom: "15px", color: "#A6A3A3"}}> 사용자가 설정한 소개가 없습니다.</div>
+                            <div style={{height: "20px", textAlign: "left", marginBottom: "15px", color: "#A6A3A3"}}> {t('userProfile.userIntroduction')}</div>
                         )}
 
                         {/* 사용언어, 학습언어 */}
@@ -229,7 +232,7 @@ export default function AllUserCard({userInfo, sendFriendRequest, hb}) {
                             {canLanguage ? (
                                 <PercentBar language={canLanguage.language} level={canLanguage.level} color={"blue"}/>
                             ) : (
-                                <div style={{color: "#A6A3A3"}}> 사용자가 설정한 사용 언어가 없습니다.</div>
+                                <div style={{color: "#A6A3A3"}}> {t('userProfile.userUsageLanguage')}</div>
                             )}
                             {canLanguage && wantLanguage ? ( 
                                 <div style={{ marginLeft : "15px", marginRight : "15px" }}><FaExchangeAlt /></div>
@@ -239,7 +242,7 @@ export default function AllUserCard({userInfo, sendFriendRequest, hb}) {
                             {wantLanguage ? (
                                 <PercentBar language={wantLanguage.language} level={wantLanguage.level} color={"red"}/>
                             ) : (
-                                <div style={{color: "#A6A3A3"}}> 사용자가 설정한 학습 언어가 없습니다.</div>
+                                <div style={{color: "#A6A3A3"}}> {t('userProfile.userLearningLanguage')}</div>
                             )}
                         </div>
 
@@ -258,17 +261,17 @@ export default function AllUserCard({userInfo, sendFriendRequest, hb}) {
                                             marginRight: "3px"
                                         }}
                                     >
-                                        {hobby.hobby ? `# ${hobby.hobby}` : `# ${hobby}`}
+                                        {hobby.hobby ? `# ${t(`interestTag.${hobby.hobby}`)}` : `# ${t(`interestTag.${hobby}`)}`}
                                     </div>
                                 ))}
                             </div>
                         ) : (
-                            <div style={{height: "30px",marginBottom: "10px", color: "#A6A3A3"}}>친구가 설정한 관심사가 없습니다.</div>
+                            <div style={{height: "30px",marginBottom: "10px", color: "#A6A3A3"}}>{t('userProfile.friendInterests')}</div>
                         )}
 
                         {( (CLList && CLList.length > 1) || (WLList && WLList.length > 1) || userInfo.hobbies.length > 5 ) ? (
                             <div onClick={()=> setShowAllInfo(true)} style={{ height: "20px",cursor: "pointer", color: "blue" }}>
-                                + 더 보기
+                                {t('userProfile.moreInfo')}
                             </div>
                         ) : (
                             <div style={{ height: "20px"}}/>
@@ -288,14 +291,14 @@ export default function AllUserCard({userInfo, sendFriendRequest, hb}) {
                                             className={`nav-link ${activeTab2 === 'can' ? 'active' : ''}`} 
                                             style={{ width:"150px", backgroundColor: activeTab2 === 'can' ? '#B7DAA1' : 'white', color: "black"}}
                                             onClick={() => setActiveTab2('can')}
-                                        >사용 언어</button>
+                                        >{t('userProfile.사용 언어')}</button>
                                     </li>
                                     <li className="nav-item">
                                         <button 
                                             className={`nav-link ${activeTab2 === 'want' ? 'active' : ''}`} 
                                             style={{ width:"150px", backgroundColor: activeTab2 === 'want' ? '#B7DAA1' : 'white', color: "black"}}
                                             onClick={() => setActiveTab2('want')}
-                                        >학습 언어</button>
+                                        >{t('userProfile.학습 언어')}</button>
                                     </li>
                                 </ul>
 
@@ -303,7 +306,7 @@ export default function AllUserCard({userInfo, sendFriendRequest, hb}) {
                                 {renderTabContent2()}
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => {setShowAllLanguage(false); setActiveTab2('can')}}>닫기</button>
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => {setShowAllLanguage(false); setActiveTab2('can')}}>{t('profileDelete.closeButton')}</button>
                             </div>
                         </div>
                     </div>

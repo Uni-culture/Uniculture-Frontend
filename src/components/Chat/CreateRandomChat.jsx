@@ -24,14 +24,14 @@ export default function CreateRandomChat({modal, searchUser}) {
             <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div className="modal-content" style={{ minHeight: '400px' }}>
                     <div className="modal-header" style={{width: "100%", justifyContent: "normal"}}>
-                        <div className="modal-title" style={{fontWeight: "bold"}}>랜덤 채팅</div>
+                        <div className="modal-title" style={{fontWeight: "bold"}}>{t('createRandomChat.title')}</div>
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={modal}></button>
                     </div>
                     <div className="modal-body" style={{marginTop:"20px", alignContent: "center"}}>
-                        어떤 언어로 상대와 채팅하고 싶은가요?
+                        {t('createRandomChat.body')}
                         <div style={{textAlign:"center", marginTop:"20px"}}>
                             <select className="form-select" defaultValue="language" value={language} onChange={handleLanguageChange} aria-label="Default select example" style={{marginTop:"30px", marginBottom:"20px"}}>
-                                <option value="language" disabled>언어를 선택해주세요.</option>
+                                <option value="language" disabled>{t('createRandomChat.language')}</option>
                                 <option value="한국어">한국어</option>
                                 <option value="영어">English</option>
                                 <option value="중국어">中文</option>
@@ -41,7 +41,7 @@ export default function CreateRandomChat({modal, searchUser}) {
                         </div>
                     </div>
                     <div className="modal-footer" style={{width: "100%"}}>
-                        <button type="button" className="btn btn-primary" data-bs-dismiss="modal" style={{width: "100%"}} disabled={isSearchButtonDisabled}  onClick={()=>{searchUser(language); modal();}}>검색</button>
+                        <button type="button" className="btn btn-primary" data-bs-dismiss="modal" style={{width: "100%"}} disabled={isSearchButtonDisabled}  onClick={()=>{searchUser(language); modal();}}>{t('createRandomChat.search')}</button>
                     </div>
                 </div>
             </div>
