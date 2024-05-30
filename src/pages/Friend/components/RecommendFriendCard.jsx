@@ -162,7 +162,7 @@ export default function RecommendFriendCard({userInfo, sendFriendRequest, sendMe
                                         {userInfo?.introduce}
                                     </div>
                                 ) : (
-                                    <div style={{height: "30px", textAlign: "left", color: "#00000073", fontSize: "13px"}}>설정한 소개가 없습니다.</div>
+                                    <div className={styles.noIntroduce} style={{height: "30px", textAlign: "left", color: "#00000073", fontSize: "13px"}}>설정한 소개가 없습니다.</div>
                                 )}
                             </div>
                         }
