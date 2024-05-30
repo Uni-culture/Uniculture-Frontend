@@ -64,7 +64,7 @@ export default function RandomChatCard({modal, back, userInfo, searchUser, creat
                                                 {userInfo?.introduce}
                                             </div>
                                         ) : (
-                                            <div className={styles.noIntroduce} style={{height: "30px", textAlign: "left", color: "#00000073", fontSize: "13px"}}>{t('createRandomChat.introduce')}</div>
+                                            <div className={styles.noIntroduce} style={{height: "30px", textAlign: "left", color: "#00000073", fontSize: "12px"}}>{t('createRandomChat.introduce')}</div>
                                         )}
                                     </div>
                                 }

@@ -1,9 +1,11 @@
 import React from 'react'
 import { Select} from "antd";
 import { GrClose, GrPowerReset } from "react-icons/gr";
+import { useTranslation } from 'react-i18next';
 
 export default function FilterModal({handleSelect, resetFilter, ge, mina, maxa, cl, wl, hb}) {
     const { Option } = Select;
+    const { t } = useTranslation();
 
     const interestTag = [ // 관심사 태그
         "요리",
@@ -81,8 +83,10 @@ export default function FilterModal({handleSelect, resetFilter, ge, mina, maxa, 
             >
                 <Option value="cl" >Can Language</Option>
                 <Option value="한국어">한국어</Option>
-                <Option value="일본어">일본어</Option>
-                <Option value="중국어">중국어</Option>
+                <Option value="영어">English</Option>
+                <Option value="중국어">中文</Option>
+                <Option value="일본어">日本語</Option>
+                <Option value="스페인어">Español</Option>
             </Select>
 
             <Select
@@ -93,8 +97,10 @@ export default function FilterModal({handleSelect, resetFilter, ge, mina, maxa, 
             >
                 <Option value="wl" >Want Language</Option>
                 <Option value="한국어">한국어</Option>
-                <Option value="일본어">일본어</Option>
-                <Option value="중국어">중국어</Option>
+                <Option value="영어">English</Option>
+                <Option value="중국어">中文</Option>
+                <Option value="일본어">日本語</Option>
+                <Option value="스페인어">Español</Option>
             </Select>
 
             <Select
@@ -105,7 +111,7 @@ export default function FilterModal({handleSelect, resetFilter, ge, mina, maxa, 
             >
                 <Option value="hb" >Interest</Option>
                 {interestTag.map((hobby)=>(
-                    <Option value={hobby}>{hobby}</Option>
+                    <Option value={hobby}>{t(`interestTag.${hobby}`)}</Option>
                 ))}
             </Select>
 
