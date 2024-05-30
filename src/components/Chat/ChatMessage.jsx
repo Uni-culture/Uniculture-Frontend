@@ -121,7 +121,8 @@ export const ChatMessage = ({chat, userInfo, modify, chatroom}) => {
       <div style={{display:"flex",flexDirection: isSender ? ('row-reverse') : ('row')}}>
         <div className="chat-text" style={{backgroundColor: isSender ? ("#E7F3FF") : ("FFFFFF")}}> 
           {/* {chat.sender} : */}
-          {chat.messageType==="IMAGE"?<img src={chat.message} alt="image" className={styles.imageMessage}/> : originalMessage}
+          
+          {chat.messageType==="IMAGE"?<img src={chat.message} alt="image" className={styles.imageMessage}/> : chat.messageType==="ENTER"? <span className={styles.modifyMessage}>{originalMessage}</span> : originalMessage}
           
           {modifiedMessage && (
             <>
@@ -148,10 +149,12 @@ export const ChatMessage = ({chat, userInfo, modify, chatroom}) => {
         
       </div>
       {isEditing ? (
-        <div className='modify-message'>
-          <input type="text" value={newMessage} onChange={(e)=> setNewMessage(e.target.value)}/>
-          <button onClick={() => handleModify(newMessage)}>저장</button>
-          <button onClick={handleCancelEdit}>취소</button>
+        <div className={styles.modify_input} >
+          <div className=' input-group'>
+            <input type="text" className='form-control' value={newMessage} onChange={(e)=> setNewMessage(e.target.value)}/>
+            <button onClick={() => handleModify(newMessage)} type='button' className='btn btn-primary'>저장</button>
+            <button onClick={handleCancelEdit} type='button' className='btn btn-secondary'>취소</button>
+          </div>
         </div>
       ): ''}
       </div>

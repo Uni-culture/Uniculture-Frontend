@@ -27,11 +27,11 @@ export const ChatOption = ({chat,userInfo , option}) => {
         {visibleMenu ? (
           <div className={`message-options ${userInfo.nickname === chat.sender ? 'left' : 'right'}`} key={chat.id}>
               {userInfo.nickname === chat.sender ? (
-                <button button className="option-button">삭제</button>
+                <button button className="option-button btn btn-danger">삭제</button>
               ) :  (chat.messageType ==='TALK' &&
-                <button className="option-button" onClick={handleEdit}>수정</button>
+                <button className="option-button btn btn-success btn-sm" onClick={handleEdit}>수정</button>
               )}
-              <button className="option-button" onClick={handleTranslation}>번역</button>
+              <button className="option-button btn btn-primary btn-sm" onClick={handleTranslation}>번역</button>
             </div>
         ) : (
           <HiDotsHorizontal 

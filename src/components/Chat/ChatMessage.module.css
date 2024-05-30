@@ -11,7 +11,7 @@
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  overflow: hidden;
+  /* overflow: hidden; */
   bottom: -5px; /* 7시 방향을 위해 위치 조정 */
   left: -5px;  /* 7시 방향을 위해 위치 조정 */
 }
@@ -31,6 +31,11 @@
   object-fit: cover;
 }
 
+.modifyMessage{
+  color: red;
+  text-decoration: line-through;
+}
+
 .imageMessage{
   max-width: 300px;
   max-height: 300px;
@@ -48,4 +53,8 @@
   margin:5px;
   justify-self: flex-end;
 
+}
+
+.modify_input{
+  width: 70%;
 }
