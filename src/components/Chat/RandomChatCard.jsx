@@ -18,7 +18,7 @@ export default function RandomChatCard({modal, back, userInfo, searchUser, creat
     }
     
     return (
-        <div className="modal fade show" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" onClick={handleProfile} style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
+        <div className="modal fade show" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
             <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div className="modal-content" style={{ minHeight: '450px' }}>
                     <div style={{width: "100%", display: "flex", justifyContent: "space-between"}}>
@@ -29,6 +29,7 @@ export default function RandomChatCard({modal, back, userInfo, searchUser, creat
                     {/* <button type="button" className="btn-close closeButton" data-bs-dismiss="modal" aria-label="Close" onClick={modal}></button> */}
                     <div className="modal-body" style={{alignContent: "center"}}>
                         <Card
+                            onClick={handleProfile}
                             style={{width: "100%", height: "100%"}}
                             cover={
                                 <div className={styles.imageWrapper} >

@@ -35,6 +35,10 @@ const ProfileInfo = () => {
         return localStorage.getItem('accessToken'); // 쿠키 또는 로컬 스토리지에서 토큰을 가져옴
     };
 
+    const getUsername = () => {
+        return localStorage.getItem('username'); // 로컬 스토리지에서 닉네임 가져옴
+    };
+
     const errorModal = (error) => {
         if(error.response.status === 401) {
             Swal.fire({
@@ -107,7 +111,6 @@ const ProfileInfo = () => {
                     alert("닉네임이 유효하지 않습니다.")
                     return;
                 }
-                alert(userInfo.nickname + ", " + originalNickname);
                 requestData.nickname = userInfo.nickname;
             }
 
@@ -134,6 +137,7 @@ const ProfileInfo = () => {
                 }
             );
             if (response.status === 200) {
+                let name=userInfo.nickname;
                 Swal.fire({ // 수정 완료
                     title: `<span style='font-size: 17px;'>${t('profileEdit.update')}</span>`,
                     icon: "success",
@@ -144,8 +148,11 @@ const ProfileInfo = () => {
                         title: 'custom-title'
                     }
                 });
-                localStorage.setItem('username', requestData.nickname);
-                navigate(`/profile/${requestData.nickname}`)
+                if(requestData.nickname) {
+                    localStorage.setItem('username', requestData.nickname);
+                    name = requestData.nickname;
+                }
+                navigate(`/profile/${name}`)
             }
         } catch (err) {
             if (err.response.status === 400) {
