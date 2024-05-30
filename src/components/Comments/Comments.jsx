@@ -91,7 +91,7 @@ const Comments = ({board_id}) => {
         console.log("board_id: ", board_id);
         console.log("token: ", token);
         try {
-            const response = await api.get(`/api/comment?page=${page}&size=5&postId=${board_id}`, {
+            const response = await api.get(`/api/comment?page=${page}&size=10&postId=${board_id}`, {
                 headers: {
                     Authorization: `Bearer ${token}` // 헤더에 토큰 추가
                 }
