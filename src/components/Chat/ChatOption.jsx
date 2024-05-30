@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { HiDotsHorizontal } from "react-icons/hi";
 import './ChatOption.css';
+import {useTranslation} from "react-i18next";
 
 export const ChatOption = ({chat,userInfo , option}) => {
   const [visibleMenu, setVisibleMenu] = useState(null);
-
+  const { t } = useTranslation();
   
   const toggleMenuVisibility = (chatId) => {
     // setVisibleMenu(prev => (prev === chatId ? null : chatId));
@@ -27,11 +28,11 @@ export const ChatOption = ({chat,userInfo , option}) => {
         {visibleMenu ? (
           <div className={`message-options ${userInfo.nickname === chat.sender ? 'left' : 'right'}`} key={chat.id}>
               {userInfo.nickname === chat.sender ? (
-                <button button className="option-button">삭제</button>
+                <button button className="option-button">{t('chatOption.deleteButton')}</button>
               ) :  (chat.messageType ==='TALK' &&
-                <button className="option-button" onClick={handleEdit}>수정</button>
+                <button className="option-button" onClick={handleEdit}>{t('chatOption.editButton')}</button>
               )}
-              <button className="option-button" onClick={handleTranslation}>번역</button>
+              <button className="option-button" onClick={handleTranslation}>{t('chatOption.TranslateButton')}</button>
             </div>
         ) : (
           <HiDotsHorizontal 
