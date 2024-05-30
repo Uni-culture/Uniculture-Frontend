@@ -41,10 +41,7 @@ export default function AddLanuageModal({handleModal, addLanguage}) {
                                 <option value="영어">English</option>
                                 <option value="중국어">中文</option>
                                 <option value="일본어">日本語</option>
-                                <option value="베트남어">Tiếng Việt</option>
-                                <option value="태국어">ภาษาไทย</option>
                                 <option value="스페인어">Español</option>
-                                <option value="포르투갈어">Português</option>
                             </select>
 
                             <select className="form-select" defaultValue="level" value={level} onChange={handleLevelChange} aria-label="Default select example" style={{marginTop:"30px", marginBottom:"20px"}}>
