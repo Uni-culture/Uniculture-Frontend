@@ -5,13 +5,20 @@ import { IoMdClose } from "react-icons/io";
 import { GiMale, GiFemale } from "react-icons/gi";
 import { Card } from 'antd';
 import {useTranslation} from "react-i18next";
+import { useNavigate } from 'react-router-dom';
 const { Meta } = Card;
 
 export default function RandomChatCard({modal, back, userInfo, searchUser, createChat}) {
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
+    //프로필로 이동
+    const handleProfile = () => {
+        navigate(`/profile/${userInfo.nickname}`);
+    }
+    
     return (
-        <div className="modal fade show" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
+        <div className="modal fade show" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" onClick={handleProfile} style={{ display: "block", backgroundColor: "rgba(0, 0, 0, 0.5)" }}>
             <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div className="modal-content" style={{ minHeight: '450px' }}>
                     <div style={{width: "100%", display: "flex", justifyContent: "space-between"}}>
